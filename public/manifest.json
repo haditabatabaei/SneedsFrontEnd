@@ -1,6 +1,6 @@
 {
-  "name": "migrate",
-  "short_name": "migrate",
+  "name": "Sneeds Online Consultation Platform",
+  "short_name": "Sneeds",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

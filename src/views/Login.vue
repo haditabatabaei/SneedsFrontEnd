@@ -20,39 +20,12 @@
               </div>
               <div class="card-content">
                 <p class="card-description"></p>
-                <div class="alert alert-danger content-round" v-if="loginFailed.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <i class="material-icons">block</i>
-                    </div>
-                    {{loginFailed.message}}
-                  </div>
-                </div>
 
-                <div class="alert alert-warning content-round" v-if="loginLoading.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <img src="webimages/loading.svg" alt="loading icon"
-                           class="loadingIcon">
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                    </button>
-                    {{loginLoading.message}}
-                  </div>
-                </div>
+                <RectNotifBlock :message="loginLoading.message" type="warning" borderRound="true" v-if="loginLoading.value"></RectNotifBlock>
 
-                <div class="alert alert-success content-round" v-if="loginSuccess.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <i class="material-icons">done</i>
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                    </button>
-                   {{loginSuccess.message}}
-                  </div>
-                </div>
+                <RectNotifBlock :message="loginSuccess.message" type="success" borderRound="true" v-else-if="loginSuccess.value"></RectNotifBlock>
+
+                <RectNotifBlock :message="loginFailed.message" type="danger" borderRound="true" v-else-if="loginFailed.value"></RectNotifBlock>
 
                 <div class="input-group">
 									<span class="input-group-addon">
@@ -114,6 +87,7 @@
 </template>
 
 <script>
+  import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
 
   export default {
     name: "Login",
@@ -150,7 +124,7 @@
         },
       }
     },
-    components: {},
+    components: {RectNotifBlock},
     methods: {
       /*
         Input : -
@@ -254,16 +228,33 @@
           let loginPromise = this.$store.dispatch('login', this.userToLogin);
 
           loginPromise.then((response) => {
-            this.successLoadingLogic();
-            this.userToLogin = {
-              email: '',
-              password: '',
-            };
             console.log(response);
-            setTimeout(() => {
-              this.resetLoadingLogic();
-              this.$router.push('/');
-            }, 2000)
+
+            let userInfoPromise = this.$store.dispatch('getUserKey');
+
+            userInfoPromise.then((infoResponse) => {
+              console.log(infoResponse);
+              this.successLoadingLogic();
+              this.userToLogin = {
+                email: '',
+                password: '',
+              };
+              setTimeout(() => {
+                this.resetLoadingLogic();
+                this.$router.push('/');
+              }, 2000)
+            }).catch((infoError) => {
+              console.log(infoError);
+              console.log(infoError.response);
+              if(infoError.response !== undefined){
+                this.loginFailed.message =  'خطایی در ارتباط با سرور رخ داد.' + '\n' + infoError.response.data.detail;
+              }else{
+                this.loginFailed.message =  'خطایی در ارتباط با سرور رخ داد.';
+              }
+
+              this.failedLoadingLogic();
+            });
+
           }).catch((err) => {
             console.log(err);
             console.log(err.response);

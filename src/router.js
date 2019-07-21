@@ -7,6 +7,7 @@ import UserProfile from '@/views/UserProfile';
 import Error404 from '@/views/Error404';
 
 import store from './store';
+import ConsultantList from "./views/ConsultantList";
 
 Vue.use(Router);
 
@@ -32,12 +33,11 @@ let router = new Router({
       path: '/user/profile',
       name: 'UserProfile',
       component: UserProfile,
+    },{
+      path : '/consultants',
+      name : 'ConsultantList',
+      component : ConsultantList,
     },
-    // {
-    //   path: '/advisors',
-    //   name: 'AdvisorsList',
-    //   component: AdvisorsList,
-    // },
     {
       path: '/404',
       name: 'Error404',

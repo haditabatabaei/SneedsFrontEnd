@@ -42,7 +42,7 @@
       return {
         topMenuListItems: [
           {itemName: 'صفحه اول', target: '/', hasDropdown: false, dropdownItems: []},
-          {itemName: 'مشاوران', target: '/advisors', hasDropDown: false, dropdownItems: []},
+          {itemName: 'مشاوران', target: '/consultants', hasDropDown: false, dropdownItems: []},
           {itemName: 'تماس با ما', target: '/in-touch/contact', hasDropdown: false, dropdgownItems: []},
           {itemName: 'درباره ما', target: '/in-touch/aboutus', hasDropdown: false, dropdgownItems: []},
         ]

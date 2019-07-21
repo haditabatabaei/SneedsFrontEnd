@@ -13,42 +13,12 @@
             </h6>
             <div class="row">
               <div class="col-md-12">
-                <div class="alert alert-danger"
-                     v-if="registerFailed.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <i class="material-icons">block</i>
-                    </div>
-                   {{registerFailed.message}}
-                  </div>
-                </div>
 
-                <div class="alert alert-success"
-                     v-if="registerSuccess.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <i class="material-icons">done</i>
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                    </button>
-                    {{registerSuccess.message}}
-                  </div>
-                </div>
+                <RectNotifBlock :message="registerLoading.message" type="warning" borderRound="true" v-if="registerLoading.value"></RectNotifBlock>
 
-                <div class="alert alert-warning"
-                     v-if="registerLoading.value">
-                  <div class="container-fluid isansFont">
-                    <div class="alert-icon">
-                      <img src="webimages/loading.svg" alt="loading icon"
-                           class="loadingIcon">
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                    </button>
-                    {{registerLoading.message}}
-                  </div>
-                </div>
+                <RectNotifBlock :message="registerSuccess.message" type="success" borderRound="true" v-else-if="registerSuccess.value"></RectNotifBlock>
+
+                <RectNotifBlock :message="registerFailed.message" type="danger" borderRound="true" v-else-if="registerFailed.value"></RectNotifBlock>
 
               </div>
             </div>
@@ -212,6 +182,8 @@
 </template>
 
 <script>
+  import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+
   export default {
     name: "Register",
     data: function () {
@@ -255,7 +227,7 @@
         },
       }
     },
-    components: {},
+    components: {RectNotifBlock},
     methods: {
 
       /*

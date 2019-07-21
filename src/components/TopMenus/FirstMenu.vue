@@ -20,6 +20,14 @@
                         <li class="text-right">
                             <router-link to="/user/profile">ناحیه کاربری</router-link>
                         </li>
+                        <li class="text-right">
+                            <router-link to="/user/profile">جلسات رزرو شده</router-link>
+                        </li>
+                        <li class="divider" v-if="showConsultantsManagerLink"></li>
+                        <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
+                        <li class="text-right" v-if="showConsultantsManagerLink">
+                            <router-link to="/user/profile">مدیریت جلسات</router-link>
+                        </li>
                         <li class="divider"></li>
                         <li><a @click.prevent="logout()" class="btn btn-rose">خروج</a></li>
                     </ul>
@@ -46,6 +54,9 @@
             showProfileLink : function(){
                 return this.$store.getters.isLoggedIn;
             },
+            showConsultantsManagerLink : function(){
+                return this.$store.getters.getUserInfo.is_consultant;
+            }
         },methods : {
             logout: function () {
               this.$store.dispatch('logout');

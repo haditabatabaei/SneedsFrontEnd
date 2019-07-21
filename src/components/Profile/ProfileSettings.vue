@@ -5,43 +5,12 @@
         پنل تنظیمات اطلاعات کاربری
       </h4>
       <hr>
-      <div class="alert alert-warning content-round" v-if="editLoading.value">
-        <div class="container-fluid isansFont">
-          <div class="alert-icon">
-            <img src="../../../public/webimages/loading.svg" alt="loading icon"
-                 class="loadingIcon">
-            <!--<i class="material-icons">done</i>-->
-          </div>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-          </button>
-          {{editLoading.message}}
-        </div>
-      </div>
 
-      <div class="alert alert-success content-round" v-if="editSuccess.value">
-        <div class="container-fluid isansFont">
-          <div class="alert-icon">
-            <i class="material-icons">done</i>
-          </div>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-          </button>
-          {{editSuccess.message}}
-        </div>
-      </div>
+      <RectNotifBlock :message="editLoading.message" type="warning" borderRound="true" v-if="editLoading.value"></RectNotifBlock>
 
-      <div class="alert alert-danger content-round" v-if="editFailed.value">
-        <div class="container-fluid isansFont">
-          <div class="alert-icon">
-            <i class="material-icons">block</i>
-          </div>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-          </button>
-          {{editFailed.message}}
-        </div>
-      </div>
+      <RectNotifBlock :message="editSuccess.message" type="success" borderRound="true" v-else-if="editSuccess.value"></RectNotifBlock>
+
+      <RectNotifBlock :message="editFailed.message" type="danger" borderRound="true" v-else-if="editFailed.value"></RectNotifBlock>
 
       <h5 class="isansFont text-right pull-right">
         اطلاعات فردی :
@@ -156,8 +125,13 @@
 </template>
 
 <script>
+  import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+
   export default {
     name: "ProfileSettings",
+    components: {
+      RectNotifBlock
+    },
     data() {
       return {
         editInfoAvailable: false,

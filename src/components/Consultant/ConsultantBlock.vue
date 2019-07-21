@@ -2,7 +2,7 @@
     <div class="card card-profile">
         <div class="card-image">
             <router-link to="/">
-                <img class="img" src="webimages/card-profile.jpg">
+                <img class="img" src="../../../public/webimages/card-profile.jpg">
 
                 <div class="card-title">
                     <h4 class="isansFont" >

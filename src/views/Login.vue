@@ -267,7 +267,12 @@
           }).catch((err) => {
             console.log(err);
             console.log(err.response);
-            this.loginFailed.message =  'خطایی در ارتباط با سرور رخ داد.' + '\n' + err.response.data.detail;
+            if(err.response !== undefined){
+              this.loginFailed.message =  'خطایی در ارتباط با سرور رخ داد.' + '\n' + err.response.data.detail;
+            }else{
+              this.loginFailed.message =  'خطایی در ارتباط با سرور رخ داد.';
+            }
+
             this.failedLoadingLogic();
           })
         } else {

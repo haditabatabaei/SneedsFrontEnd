@@ -290,8 +290,12 @@
             this.successLoadingLogic();
             console.log(response);
             setTimeout(() => {
+              let promise = this.$store.dispatch('getUserKey');
+              promise.then(() => {
+                this.$store.dispatch('getUserWithKey', this.$store.getters.getUserInfo.user_pk)
+              });
               this.resetLoadingLogic();
-              this.$router.push('/');
+              // this.$router.push('/');
             }, 2000)
           }).catch((err) => {
             console.log(err);

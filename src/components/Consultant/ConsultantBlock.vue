@@ -23,11 +23,13 @@
             </h6>
 
             <p class="card-description text-justify isansFont">
-                توضیحات کوتاه درباره این مشاور
+                <span v-if="consultant.bio != null">{{consultant.bio}}</span>
                 <br>
 
                 رشته ها :
                 <br>
+
+                <!--                <img :src="'https://dummyimage.com/70X70/000/fff&text='" alt="">-->
                 <span :title="field.description" v-for="field in consultant.field_of_studies">
                     {{field.name}}
                     <br>
@@ -37,15 +39,18 @@
                 دانشگاه ها :
                 <br>
                 <span :title="university.description" v-for="university in consultant.universities">
-                    {{university.name}}
-                    <br>
+                    <img style="width:30px;height:30px;border-radius:10px;margin:5px"
+                         :src="'https://dummyimage.com/70X70/000/fff&text=' + university.slug" :alt="university.slug"
+                         :title="university.description">
                 </span>
                 <br>
 
                 کشور ها :
                 <br>
                 <span v-for="country in consultant.countries">
-                    {{country.name}},
+                    <img style="width:30px;height:30px;border-radius:10px;margin: 5px;"
+                         :src="'https://dummyimage.com/70X70/000/fff&text=' + country.slug" :alt="country.slug"
+                         :title="country.description">
                 </span>
             </p>
 
@@ -75,7 +80,7 @@
 
 <style scoped>
     .card {
-        min-height: 400px;
+        min-height: 615px;
     }
 
     .card-title {

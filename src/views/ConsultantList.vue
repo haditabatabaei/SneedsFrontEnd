@@ -1,13 +1,19 @@
 <template>
     <div>
-        <div class="page-header header-filter header-small" data-parallax="true"
-             style="background-image: url('../webimages/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+        <div class="page-header header-small">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2 text-center">
-                        <h2 class="title isansFont">
-                            لیست مشاوران
+                    <div class="col-md-5">
+                        <h2 class="title isansFont" style="margin-top:30px;">
+                            در تمام مراحل اپلای
+                            <br>
+                            کنار شما هستیم
                         </h2>
+                        <h3 class="isansFont">
+                            مشاوره با افرادی که 0 تا 100 مسیر رو طی کردن و بار مراحل اون آشنایی کامل دارن.
+                        </h3>
+                    </div>
+                    <div class="col-md-7 text-center" style="background:url('../webimages/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
                     </div>
                 </div>
             </div>
@@ -398,5 +404,9 @@
 </script>
 
 <style scoped>
-
+    .page-header {
+        min-height: 100vh;
+        background-image: url('../../public/webimages/consultantsBg.jpg');
+        background-size: cover;
+    }
 </style>

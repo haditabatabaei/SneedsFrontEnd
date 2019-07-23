@@ -28,7 +28,7 @@
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
                                             v-if="fetchLoading.value"></RectNotifBlock>
 
-<!--                            <CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
+                            <!--                            <CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
 
                             <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
                                             v-else-if="fetchSuccess.value"></RectNotifBlock>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="col-md-3 col-sm-12 col-xs-12 filterColumn">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -425,9 +425,8 @@
         background-size: cover;
     }
 
-    .row.is-flex {
-        display: flex;
-        flex-wrap: wrap;
+    .filterColumn {
+        z-index: 9999999999;
     }
 
     .row.is-flex > [class*='col-'] {

@@ -310,7 +310,6 @@
             addSelectPropertyToList(list) {
                 for (let i = 0; i < list.length; i++) {
                     list[i].select = false;
-                    // this.$set(list[i]['select'], false);
                 }
             },
             resetLoadingLogic: function () {
@@ -409,4 +408,13 @@
         background-image: url('../../public/webimages/consultantsBg.jpg');
         background-size: cover;
     }
+    .row.is-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .row.is-flex > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
+
 </style>

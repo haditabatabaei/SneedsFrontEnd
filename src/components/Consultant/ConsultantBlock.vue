@@ -2,16 +2,18 @@
     <div class="card card-profile">
         <div class="card-image">
             <router-link to="/">
-                <img class="img" src="../../../public/webimages/card-profile.jpg">
+                <img :alt="consultant.first_name + ' ' + consultant.last_name" class="img"
+                     :src="consultant.profile_picture" style="max-width:300px">
 
                 <div class="card-title">
-                    <h4 class="isansFont" >
-                        {{consultant.slug}}
+                    <h4 class="isansFont">
+                        {{consultant.first_name + ' ' + consultant.last_name}}
                     </h4>
 
                 </div>
             </router-link>
-            <div class="colored-shadow" style="background-image: url(&quot;assets/img/examples/card-profile4.jpg&quot;); opacity: 1;"></div>
+            <div class="colored-shadow"
+                 style="background-image: url(&quot;assets/img/examples/card-profile4.jpg&quot;); opacity: 1;"></div>
             <div class="ripple-container"></div>
         </div>
 
@@ -54,7 +56,9 @@
                         class="fa fa-instagram"></i></a>
             </div>
 
-            <router-link to="/" class="btn btn-info isansFont">رزرو مشاور<div class="ripple-container"></div></router-link>
+            <router-link to="/" class="btn btn-info isansFont">رزرو مشاور
+                <div class="ripple-container"></div>
+            </router-link>
         </div>
     </div>
 </template>
@@ -62,14 +66,18 @@
 <script>
     export default {
         name: "ConsultantBlock",
-        props : {
-            consultant : {},
+        props: {
+            consultant: {},
         }
 
     }
 </script>
 
 <style scoped>
+    .card {
+        min-height: 400px;
+    }
+
     .card-title {
         left: 0 !important;
         width: 100%;

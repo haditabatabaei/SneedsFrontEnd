@@ -13,7 +13,8 @@
                             مشاوره با افرادی که 0 تا 100 مسیر رو طی کردن و بار مراحل اون آشنایی کامل دارن.
                         </h3>
                     </div>
-                    <div class="col-md-7 text-center" style="background:url('../webimages/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
+                    <div class="col-md-7 text-center"
+                         style="background:url('../webimages/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
                     </div>
                 </div>
             </div>
@@ -26,6 +27,8 @@
 
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
                                             v-if="fetchLoading.value"></RectNotifBlock>
+
+<!--                            <CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
 
                             <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
                                             v-else-if="fetchSuccess.value"></RectNotifBlock>
@@ -152,12 +155,14 @@
     import axios from 'axios'
     import ConsultantBlock from '@/components/Consultant/ConsultantBlock';
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+    import CircleLoading from '@/components/NotifBlocks/CirlceLoading';
 
     export default {
         name: "ConsultantList",
         components: {
             ConsultantBlock,
-            RectNotifBlock
+            RectNotifBlock,
+            CircleLoading
         },
         data() {
             return {
@@ -403,15 +408,19 @@
 </script>
 
 <style scoped>
+
+
     .page-header {
         min-height: 100vh;
         background-image: url('../../public/webimages/consultantsBg.jpg');
         background-size: cover;
     }
+
     .row.is-flex {
         display: flex;
         flex-wrap: wrap;
     }
+
     .row.is-flex > [class*='col-'] {
         display: flex;
         flex-direction: column;

@@ -50,7 +50,10 @@
                                            aria-controls="collapseOne" class="collapsed">
                                             <h4 class="panel-title isansFont"
                                                 style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">کشور</span>
+                                                <span class="float-right">
+                                                    <i class="material-icons">flag</i>
+                                                    کشور
+                                                </span>
                                                 <i class="material-icons float-left">keyboard_arrow_down</i>
                                             </h4>
                                         </a>
@@ -77,7 +80,10 @@
                                            aria-controls="collapseOne" class="collapsed">
                                             <h4 class="panel-title isansFont"
                                                 style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">دانشگاه</span>
+                                                <span class="float-right">
+                                                                                                    <i class="material-icons">account_balance</i>
+                                                    دانشگاه
+                                                </span>
                                                 <i class="material-icons float-left">keyboard_arrow_down</i>
                                             </h4>
                                         </a>
@@ -105,7 +111,10 @@
                                            aria-controls="collapseOne" class="collapsed">
                                             <h4 class="panel-title isansFont"
                                                 style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">رشته</span>
+                                                <span class="float-right">
+                                                    <i class="material-icons">build</i>
+                                                    رشته
+                                                </span>
                                                 <i class="material-icons float-left">keyboard_arrow_down</i>
                                             </h4>
                                         </a>

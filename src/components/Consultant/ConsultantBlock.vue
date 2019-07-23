@@ -62,7 +62,11 @@
                 </a>
             </div>
 
-            <router-link to="/" class="btn btn-info isansFont">رزرو مشاور
+            <router-link to="/" class="btn btn-info isansFont">
+                <i class="material-icons">
+                    assignment
+                </i>
+                رزرو مشاور
                 <div class="ripple-container"></div>
             </router-link>
         </div>

@@ -5,9 +5,12 @@ import Login from '@/views/Login';
 import Register from '@/views/Register';
 import UserProfile from '@/views/UserProfile';
 import Error404 from '@/views/Error404';
+import ConsultantList from "@/views/ConsultantList";
+
+import ConsultantProfile from "@/views/ConsultantProfile";
+
 
 import store from './store';
-import ConsultantList from "./views/ConsultantList";
 
 Vue.use(Router);
 
@@ -37,6 +40,10 @@ let router = new Router({
       path : '/consultants',
       name : 'ConsultantList',
       component : ConsultantList,
+    },{
+      path : '/consultants/:consultantSlug',
+      name : 'ConsultantProfile',
+      component : ConsultantProfile,
     },
     {
       path: '/404',

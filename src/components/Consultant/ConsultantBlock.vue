@@ -1,9 +1,7 @@
 <template>
     <div class="card card-profile">
         <div class="card-image" :style="'background: url(' + consultant.profile_picture + ')'">
-            <router-link to="/">
-                <!--                <img :alt="consultant.first_name + ' ' + consultant.last_name" class="img"-->
-                <!--                     :src="consultant.profile_picture">-->
+            <router-link :to="'/consultants/' + consultant.slug">
 
                 <div class="card-title">
                     <h4 class="isansFont">
@@ -25,7 +23,8 @@
             </p>
 
             <div class="rate">
-                <span class="text-white isansFont label label-success">5 / 3.9</span>
+                <span class="text-white isansFont label label-default" v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
+                <span class="text-white isansFont label label-success" v-else>{{consultant.rate}}</span>
                 <span class="text-dark isansFont comments">(20 نظر)</span>
             </div>
             <!--                رشته ها :-->
@@ -62,7 +61,7 @@
                 </a>
             </div>
 
-            <router-link to="/" class="btn btn-info isansFont">
+            <router-link :to="'/consultants/' + consultant.slug" class="btn btn-info isansFont">
                 <i class="material-icons">
                     assignment
                 </i>

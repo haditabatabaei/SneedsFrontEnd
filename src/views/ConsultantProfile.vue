@@ -106,6 +106,16 @@
             }
         }, created() {
 
+
+            console.log('we have in consultant free times :', jalali('2019-07-26T08:00:00Z').locale('fa').format());
+            console.log('we have in table:', jalali('2019-07-26T07:30:00.291Z').locale('fa').format());
+
+            //2019-07-26T09:00:00Z
+            console.log('we have in consultant free times end :', jalali('2019-07-26T09:00:00Z').locale('fa').format());
+            console.log('we have in table:', jalali('2019-07-26T08:30:00.291Z').locale('fa').format());
+
+
+
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
             consultPromise.then(response => {
                 this.consultant = response.data;
@@ -113,8 +123,11 @@
                 let timesPromise = this.getListOfTimesById(this.consultant.id);
 
                 timesPromise.then(timeRes => {
+                    window.console.log('slot times:', timeRes.data);
                     this.slots = timeRes.data;
-
+                    let now = jalali().locale('fa');
+                    this.handleWeek(now);
+                    this.createCalendarTable(now);
 
                 }).catch(timesErr => {
                     console.log(timesErr.response);
@@ -123,11 +136,6 @@
             }).catch(error => {
                 window.console.log(error.response);
             });
-            let now = jalali().locale('fa');
-
-            this.handleWeek(now);
-            this.createCalendarTable(now);
-
 
         },
         mounted() {
@@ -292,8 +300,6 @@
             },
 
             handleWeek(now) {
-
-
                 this.days.push(this.generateSaturday(now));
                 this.days.push(this.generateSunday(now));
                 this.days.push(this.generateMonday(now));
@@ -301,7 +307,6 @@
                 this.days.push(this.generateWednesday(now));
                 this.days.push(this.generateThursday(now));
                 this.days.push(this.generateFriday(now));
-
             },
             createCalendarTable(now) {
 
@@ -321,32 +326,20 @@
                         this.tableData += '<tr>';
                         for (let j = 0; j < 8; j++) {
                             if (j == 0 && i == 1) {
-                                this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 9) + ':00' + '</td>';
+                                this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 8) + ':00' + '</td>';
                             } else if (j == 0 && i != 1) {
-                                this.tableData += '<td>' + (i + 8) + ':00 تا ' + (i + 9) + ':00' + '</td>';
+                                this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 8) + ':00' + '</td>';
                             } else {
-                                //in this for
-                                /**
-                                 * if first row times are :  (i + 7) until (i + 9)
-                                 * if not first row times are : (i + 8) until (i + 9)
-                                 * **/
-                                if (i == 1) {
-                                    /**
-                                     * Dates to add are this.days[j].
-                                     * date string : this.days[i].clone().hour(i + 7).locale('en').utc().format()
-                                     */
-                                    let datestrinValue = this.days[j - 1].clone().hour(i + 7).minute(0).second(0).locale("en").utc().toISOString();
-                                    if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).isBefore(now)) {
-                                        this.tableData += '<td class="timeNotAvailable" data-datestring="' + datestrinValue + '"></td>';
-                                    } else {
-                                        this.tableData += '<td class="timeAvailable" data-datestring="' + datestrinValue + '"></td>';
-                                    }
+                                let dateStartString = this.days[j - 1].clone().hour(i + 7).minute(0).second(0).locale("en").utc().toISOString();
+                                let dateEndString = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).locale("en").utc().toISOString();
+
+                                if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).isBefore(now)) {
+                                    this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                 } else {
-                                    let datestringValue = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).locale("en").utc().toISOString();
-                                    if (this.days[j - 1].clone().hour(i + 8).minute(0).second(0).isBefore(now)) {
-                                        this.tableData += '<td class="timeNotAvailable" data-datestring="' + datestringValue + '"></td>';
+                                    if (this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).locale("en").utc(),this.days[j - 1].clone().hour(i + 8).minute(0).second(0).locale("en").utc())) {
+                                        this.tableData += '<td class="timeAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                     } else {
-                                        this.tableData += '<td class="timeAvailable" data-datestring="' + datestringValue + '"></td>';
+                                        this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                     }
                                 }
 
@@ -362,7 +355,7 @@
 
                 for (let i = 0; i < list.length; i++) {
                     list[i].addEventListener('click', () => {
-                        if (list[i].dataset.datestring !== undefined && !list[i].classList.contains('timeNotAvailable')) {
+                        if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
                             if (list[i].classList.contains('timeSelected')) {
                                 list[i].classList.remove('timeSelected');
                                 this.selectedDates = this.removeElementFromArray(this.selectedDates, list[i].dataset.datestring);
@@ -414,11 +407,19 @@
                     return ele != value;
                 });
             },
-            isInConsultantTime() {
+            isInConsultantTime(cellStartDate,cellEndDate) {
+                for (let i = 0; i < this.slots.length; i++) {
+                    if (cellStartDate.isBefore(jalali(this.slots[i].start_time)) && jalali(this.slots[i].end_time).isBefore(cellEndDate)) {
+                        return true;
+                    }
+                }
+                return false;
+            },
 
-            }
         }
+
     }
+
 </script>
 
 <style>
@@ -439,20 +440,22 @@
         text-align: center;
     }
 
-    tr td[data-datestring] {
-        cursor: pointer;
+    tr td[data-datestart] {
+
     }
 
     .timeNotAvailable {
-        background-color: gray;
+        background-color: #999999;
         color: white;
     }
 
     .timeAvailable {
-        background-color: success;
+        background-color: #4caf50;
+        cursor: pointer;
     }
 
     .timeSelected {
         background-color: orange;
+        cursor: pointer;
     }
 </style>

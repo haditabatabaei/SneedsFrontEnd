@@ -241,7 +241,9 @@
                 })
             }).catch(err => {
                 this.failedLoadingLogic();
-                this.fetchFailed.message = err.response;
+                if (err.response) {
+                    this.fetchFailed.message = err.response;
+                }
             })
         },
         methods: {
@@ -427,6 +429,8 @@
 
     .filterColumn {
         z-index: 9999999999;
+        position: sticky;
+        top: 100px;
     }
 
     .row.is-flex > [class*='col-'] {

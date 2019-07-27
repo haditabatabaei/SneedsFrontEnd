@@ -20,8 +20,7 @@
               v-if="!editInfoAvailable">
         میخواهم اطلاعات زیر را ویرایش کنم
       </button>
-      <button @click.prevent="toggleChangeInfoAvailable()"
-              class="btn btn-small btn-rose isansFont pull-left" v-else>
+      <button @click.prevent="toggleChangeInfoAvailable()" class="btn btn-small btn-rose isansFont pull-left" v-else>
         نیازی به ویرایش اطلاعات ندارم
       </button>
       <div class="card card-contact">
@@ -37,10 +36,9 @@
                            id="firstname" type="text"
                            name="firstname" class="form-control isansFont"
                            v-bind:disabled="!editInfoAvailable">
-                    <span class="text-center isansFont text-danger"
-                          v-if="inputErrors.firstNameError">
-                                                لطفا یک نام معتبر وارد کنید
-                                                </span>
+                    <span class="text-center isansFont text-danger" v-if="inputErrors.firstNameError">
+                      لطفا یک نام معتبر وارد کنید
+                    </span>
                   </div>
                 </div>
               </div>
@@ -53,10 +51,9 @@
                            id="lastname" type="text"
                            name="lastname" class="form-control isansFont"
                            v-bind:disabled="!editInfoAvailable">
-                    <span class="text-center isansFont text-danger"
-                          v-if="inputErrors.lastNameError">
-                                                لطفا یک نام خانوادگی معتبر وارد کنید
-                                                </span>
+                    <span class="text-center isansFont text-danger" v-if="inputErrors.lastNameError">
+                      لطفا یک نام خانوادگی معتبر وارد کنید
+                    </span>
                   </div>
                 </div>
               </div>
@@ -87,8 +84,8 @@
                            v-bind:disabled="!editInfoAvailable">
                     <span class="text-center isansFont text-danger"
                           v-if="inputErrors.phoneError">
-                                                لطفا یک شماره تماس معتبر وارد کنید
-                                                </span>
+                      لطفا یک شماره تماس معتبر وارد کنید
+                    </span>
                   </div>
                 </div>
               </div>
@@ -103,7 +100,7 @@
                            v-bind:disabled="!editInfoAvailable">
                     <span class="text-center isansFont text-danger"
                           v-if="inputErrors.addressError">
-                                                لطفا یک آدرس معتبر وارد کنید
+                      لطفا یک آدرس معتبر وارد کنید
                                                 </span>
                   </div>
                 </div>

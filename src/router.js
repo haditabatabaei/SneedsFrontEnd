@@ -6,6 +6,7 @@ import Register from '@/views/Register';
 import UserProfile from '@/views/UserProfile';
 import Error404 from '@/views/Error404';
 import ConsultantList from "@/views/ConsultantList";
+import ConsultManagement from "@/views/ConsultManagement";
 
 import ConsultantProfile from "@/views/ConsultantProfile";
 
@@ -15,7 +16,6 @@ import store from './store';
 Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -37,6 +37,11 @@ let router = new Router({
       name: 'UserProfile',
       component: UserProfile,
     },{
+      path : '/user/consultantmanager',
+      name : 'ConsultManagement',
+      component : ConsultManagement,
+    },
+    {
       path : '/consultants',
       name : 'ConsultantList',
       component : ConsultantList,

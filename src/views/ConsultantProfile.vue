@@ -61,6 +61,14 @@
                                                          :title="country.description">
                                                 </span>
                             </p>
+
+                            <p v-if="consultant.resume != null" class="isansFont">
+                                فایل رزومه :
+                                <a :href="consultant.resume" class="btn btn-rose" target="_blank">
+                                    <i class="material-icons">done</i>
+                                    دانلود رزومه</a>
+                            </p>
+
                         </div>
                         <div class="col-md-6">
                             <h4 class="isansFont text-center videoTitle">ویدئو معرفی مشاور</h4>
@@ -72,8 +80,9 @@
                         <h4 class="videoTitle isansFont text-center">
                             تقویم مشاور
                         </h4>
-                        <div class="col-md-12">
-
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()"> < هفته قبلی</button>
+                            <button class="btn btn-info isansFont" @click.prevent="showNextWeek()">هفته بعدی ></button>
                             <div class="table-responsive">
                                 <table class="table table-bordered isansFont " id="myTable" v-html="tableData">
 
@@ -81,7 +90,11 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="videoTitle isansFont text-center">نظرات</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,17 +116,9 @@
                 days: [],
                 tableData: '',
                 selectedDates: [],
+                shownDate: {},
             }
         }, created() {
-
-
-            console.log('we have in consultant free times :', jalali('2019-07-26T08:00:00Z').locale('fa').format());
-            console.log('we have in table:', jalali('2019-07-26T07:30:00.291Z').locale('fa').format());
-
-            //2019-07-26T09:00:00Z
-            console.log('we have in consultant free times end :', jalali('2019-07-26T09:00:00Z').locale('fa').format());
-            console.log('we have in table:', jalali('2019-07-26T08:30:00.291Z').locale('fa').format());
-
 
 
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
@@ -125,9 +130,12 @@
                 timesPromise.then(timeRes => {
                     window.console.log('slot times:', timeRes.data);
                     this.slots = timeRes.data;
-                    let now = jalali().locale('fa');
-                    this.handleWeek(now);
-                    this.createCalendarTable(now);
+                    this.shownDate = jalali().locale('fa');
+                    this.handleWeek(this.shownDate);
+                    this.createCalendarTable(this.shownDate);
+                    this.$nextTick(function () {
+                        this.initDateSelector();
+                    })
 
                 }).catch(timesErr => {
                     console.log(timesErr.response);
@@ -139,10 +147,29 @@
 
         },
         mounted() {
-            this.initDateSelector();
             scroll(0, 0);
         },
         methods: {
+            showNextWeek: function () {
+                this.showWeek(1, 'next');
+            },
+
+            showWeek: function (numOfWeek, siblingStatus) {
+                if (siblingStatus == 'prev') {
+                    this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale('fa'));
+                } else if (siblingStatus == 'next') {
+                    this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale('fa'));
+                }
+                this.createCalendarTable(this.shownDate);
+                this.$nextTick(function () {
+                    this.initDateSelector();
+                })
+            },
+
+            showPrevWeek: function () {
+                this.showWeek(1, 'prev');
+            },
+
             generateSaturday(date) {
                 if (date.weekday() == 0) {
                     return date.clone();
@@ -300,6 +327,7 @@
             },
 
             handleWeek(now) {
+                this.days = [];
                 this.days.push(this.generateSaturday(now));
                 this.days.push(this.generateSunday(now));
                 this.days.push(this.generateMonday(now));
@@ -309,8 +337,8 @@
                 this.days.push(this.generateFriday(now));
             },
             createCalendarTable(now) {
-
-                for (let i = 0; i < 16; i++) {
+                this.tableData = '';
+                for (let i = 0; i < 17; i++) {
                     if (i == 0) {
                         this.tableData += '<tr>';
                         this.tableData += '<th>ساعت / روز</th>';
@@ -330,14 +358,14 @@
                             } else if (j == 0 && i != 1) {
                                 this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 8) + ':00' + '</td>';
                             } else {
-                                let dateStartString = this.days[j - 1].clone().hour(i + 7).minute(0).second(0).locale("en").utc().toISOString();
-                                let dateEndString = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).locale("en").utc().toISOString();
+                                let dateStartString = this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc().toISOString();
+                                let dateEndString = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc().toISOString();
 
-                                if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).isBefore(now)) {
+                                if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).isBefore(now)) {
                                     this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                 } else {
-                                    if (this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).locale("en").utc(),this.days[j - 1].clone().hour(i + 8).minute(0).second(0).locale("en").utc())) {
-                                        this.tableData += '<td class="timeAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
+                                    if (this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc(), this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc())) {
+                                        this.tableData += '<td class="timeOpen" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                     } else {
                                         this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                     }
@@ -352,17 +380,26 @@
             },
             initDateSelector() {
                 let list = document.getElementsByTagName('td');
-
                 for (let i = 0; i < list.length; i++) {
                     list[i].addEventListener('click', () => {
+                        console.log('td with date:', list[i].dataset.datestart, ' untill ', list[i].dataset.dateend);
+                        //if item is available
                         if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
-                            if (list[i].classList.contains('timeSelected')) {
-                                list[i].classList.remove('timeSelected');
-                                this.selectedDates = this.removeElementFromArray(this.selectedDates, list[i].dataset.datestring);
+                            if (list[i].classList.contains('timeOpen')) {
+                                list[i].classList.remove('timeOpen');
+                                list[i].classList.add('timeSelected');
+                                this.removeElementFromArray(this.selectedDates, {
+                                    'datestart': list[i].dataset.datestart,
+                                    'dateend': list[i].dataset.dateend
+                                });
                                 console.log(this.selectedDates);
                             } else {
-                                list[i].classList.add('timeSelected');
-                                this.selectedDates.push(list[i].dataset.datestring);
+                                list[i].classList.remove('timeSelected');
+                                list[i].classList.add('timeOpen');
+                                this.selectedDates.push({
+                                    'datestart': list[i].dataset.datestart,
+                                    'dateend': list[i].dataset.dateend
+                                });
                                 console.log(this.selectedDates);
                             }
                         }
@@ -384,7 +421,8 @@
                         reject(error);
                     })
                 })
-            }, getVideoFrameLink(aparatLink) {
+            },
+            getVideoFrameLink(aparatLink) {
                 return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
             },
             getListOfTimesById(id) {
@@ -403,19 +441,18 @@
                 })
             },
             removeElementFromArray(arr, value) {
-                return arr.filter(function (ele) {
-                    return ele != value;
+                this.selectedDates = arr.filter(function (val, index, arr) {
+                    return arr[index].datestart != value.datestart && arr[index].dateend != value.dateend;
                 });
             },
-            isInConsultantTime(cellStartDate,cellEndDate) {
+            isInConsultantTime(cellStartDate, cellEndDate) {
                 for (let i = 0; i < this.slots.length; i++) {
-                    if (cellStartDate.isBefore(jalali(this.slots[i].start_time)) && jalali(this.slots[i].end_time).isBefore(cellEndDate)) {
+                    if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'second') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'second')) {
                         return true;
                     }
                 }
                 return false;
             },
-
         }
 
     }
@@ -423,8 +460,6 @@
 </script>
 
 <style>
-
-
     .videoTitle {
         margin-top: 15px;
         margin-bottom: 30px;
@@ -440,22 +475,50 @@
         text-align: center;
     }
 
-    tr td[data-datestart] {
-
-    }
-
     .timeNotAvailable {
         background-color: #999999;
         color: white;
     }
 
-    .timeAvailable {
+    .timeOpen {
         background-color: #4caf50;
         cursor: pointer;
     }
 
+    .timeOpen::before {
+        content: "آماده انتخاب";
+        color: white;
+    }
+
     .timeSelected {
-        background-color: orange;
+        background-color: orange !important;
         cursor: pointer;
+    }
+
+    .timeSelected::before {
+        content: "انتخاب شده" !important;
+        color: white;
+    }
+
+
+    .itemIsReadyToResreve {
+        background-color: #e91e63;
+        color: white;
+        cursor: pointer;
+    }
+
+    .itemIsReadyToResreve::before {
+        color: white;
+        content: 'باز برای رزرو'
+    }
+
+    .timeReserved {
+        background-color: blue;
+        cursor: pointer;
+    }
+
+    .timereserved::before {
+        content: "رزرو شده";
+        color: white;
     }
 </style>

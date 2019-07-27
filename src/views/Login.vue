@@ -40,9 +40,8 @@
                     <span class="material-input"></span>
                     <span class="text-center isansFont text-danger"
                           v-if="inputErrors.emailError">
-                                                                          لطفا یک ایمیل معتبر وارد کنید
-
-                                        </span>
+                      لطفا یک ایمیل معتبر وارد کنید
+                    </span>
                   </div>
                 </div>
 

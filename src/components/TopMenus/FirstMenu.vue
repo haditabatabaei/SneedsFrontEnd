@@ -26,7 +26,7 @@
                         <li class="divider" v-if="showConsultantsManagerLink"></li>
                         <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
                         <li class="text-right" v-if="showConsultantsManagerLink">
-                            <router-link to="/user/profile">مدیریت جلسات</router-link>
+                            <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
                         </li>
                         <li class="divider"></li>
                         <li><a @click.prevent="logout()" class="btn btn-rose">خروج</a></li>

@@ -443,7 +443,9 @@
             width: 100%;
             max-height: 250px;
         }
+    }
 
+    @media only screen and (min-width: 0) and (max-width: 766.8px) {
         .filterColumn {
             position: static;
         }

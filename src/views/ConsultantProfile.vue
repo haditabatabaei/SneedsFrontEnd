@@ -382,9 +382,7 @@
                 let list = document.getElementsByTagName('td');
                 for (let i = 0; i < list.length; i++) {
                     list[i].addEventListener('click', () => {
-                        console.log('td with date:', list[i].dataset.datestart, ' untill ', list[i].dataset.dateend);
-                        //if item is available
-                        if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
+                            if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
                             if (list[i].classList.contains('timeOpen')) {
                                 list[i].classList.remove('timeOpen');
                                 list[i].classList.add('timeSelected');

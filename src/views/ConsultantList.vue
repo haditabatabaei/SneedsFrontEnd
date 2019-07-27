@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3 col-sm-12 col-xs-12 filterColumn">
+                        <div class="col-sm-3 col-xs-12 filterColumn">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -145,14 +145,13 @@
                             </div>
                         </div>
 
-                        <div class="col-md-9">
-                            <div class="row">
-                                <div class="col-md-4" v-for="consultantPerson in consultantList">
+                        <div class="col-sm-9 col-xs-12">
+                            <div class="row listingRow">
+                                <div class="col-sm-4" v-for="consultantPerson in consultantList">
                                     <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -436,6 +435,18 @@
     .row.is-flex > [class*='col-'] {
         display: flex;
         flex-direction: column;
+    }
+
+    @media only screen and (min-width: 0) and (max-width: 992px) {
+        .listingRow div[class*="col-sm"] {
+            display: block;
+            width: 100%;
+            max-height: 250px;
+        }
+
+        .filterColumn {
+            position: static;
+        }
     }
 
 </style>

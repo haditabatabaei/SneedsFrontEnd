@@ -2,28 +2,22 @@
     <div class="card card-profile">
         <div class="card-image" :style="'background: url(' + consultant.profile_picture + ')'">
             <router-link :to="'/consultants/' + consultant.slug">
-
                 <div class="card-title">
                     <h4 class="isansFont">
                         {{consultant.first_name + ' ' + consultant.last_name}}
                     </h4>
-
                 </div>
             </router-link>
             <div class="ripple-container"></div>
         </div>
 
         <div class="card-content">
-            <h6 class="category text-info">
-
-            </h6>
-
-            <p class="card-description text-justify isansFont" v-if="consultant.bio != null">
-<!--                {{consultant.bio}}-->
+            <p class="text-justify isansFont bio">
+                {{consultant.bio}}
             </p>
-
             <div class="rate">
-                <span class="text-white isansFont label label-default" v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
+                <span class="text-white isansFont label label-default"
+                      v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
                 <span class="text-white isansFont label label-success" v-else>{{consultant.rate}}</span>
                 <span class="text-dark isansFont comments">(20 نظر)</span>
             </div>
@@ -95,10 +89,48 @@
         justify-content: space-around;
     }
 
+    .bio {
+        color: gray;
+        font-size: 14px;
+        line-height: 25px;
+    }
+
     @media only screen and (min-width: 0) and (max-width: 992px) {
-        .card .card-image {
-            min-height: 500px;
-            min-width: 200px;
+
+        .card {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-around;
         }
+
+        .card .card-image {
+            min-height: 150px;
+            min-width: 150px;
+            margin: auto 10px auto 0;
+        }
+
+        .card .card-title {
+            font-size: 15px;
+        }
+
+        .card .card-content {
+            padding: 10px;
+        }
+
+        .card.card-profile {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rate {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .bio {
+            display: none;
+        }
+
     }
 </style>

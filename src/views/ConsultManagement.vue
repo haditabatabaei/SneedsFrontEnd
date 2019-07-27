@@ -52,7 +52,7 @@
 
                                 <div class="col-md-12 text-right">
                                     <RectNotifBlock :message="alertLoading.message" type="warning" borderRound="true"
-                                                    v-if="alertLoading.value"></RectNotifBlock>
+                                                        v-if="alertLoading.value"></RectNotifBlock>
 
                                     <RectNotifBlock :message="alertSuccess.message" type="success" borderRound="true"
                                                     v-else-if="alertSuccess.value"></RectNotifBlock>
@@ -60,7 +60,7 @@
                                     <RectNotifBlock :message="alertFailed.message" type="danger" borderRound="true"
                                                     v-else-if="alertFailed.value"></RectNotifBlock>
                                 </div>
-                                <div class="col-md-3 card stickyPanel">
+                                <div class="col-sm-3 card stickyPanel">
                                     <form action="" class="form">
                                         <div class="form-group form-rose gadugiFont isansFont">
                                             <p class="text-success text-right isansFont">پنل اضافه کردن جلسه:</p>
@@ -89,7 +89,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-sm-9">
                                     <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()"> < هفته
                                         قبلی
                                     </button>
@@ -166,9 +166,6 @@
                 }).catch(error => {
 
                 });
-            },
-            textExport() {
-                window.console.log('export', this.selectedDates, 'price', this.selectedPrice)
             },
             showNextWeek: function () {
                 this.showWeek(1, 'next');
@@ -482,37 +479,52 @@
                 this.alertFailed.value = false;
                 this.alertSuccess.value = true;
             },
+            resetInputErrors: function () {
+                for (let errorProperty in this.inputErrors) {
+                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
+                        this.inputErrors[errorProperty] = false;
+                    }
+                }
+            },
             addTimes() {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
-                console.log('selected dates:', this.selectedDates);
-                console.log('selected price:', this.selectedPrice);
-                let promises = [];
-                for (let i = 0; i < this.selectedDates.length; i++) {
-                    let payload = {
-                        "start_time": this.selectedDates[i].datestart,
-                        "end_time": this.selectedDates[i].dateend,
-                        "price": this.selectedPrice
-                    };
-                    let promise = this.sendAddTimesRequest(payload);
-                    promises.push(promise);
+                this.resetInputErrors();
+                    this.resetLoadingLogic();
+                    this.startLoadingLogic();
+                if(this.selectedPrice != null && this.selectedPrice.length != 0 && Number(this.selectedPrice) >= 0 && Number(this.selectedPrice) <= 100){
+                    console.log('selected dates:', this.selectedDates);
+                    console.log('selected price:', this.selectedPrice);
+                    let promises = [];
+                    for (let i = 0; i < this.selectedDates.length; i++) {
+                        let payload = {
+                            "start_time": this.selectedDates[i].datestart,
+                            "end_time": this.selectedDates[i].dateend,
+                            "price": this.selectedPrice
+                        };
+                        let promise = this.sendAddTimesRequest(payload);
+                        promises.push(promise);
+                    }
+
+                    Promise.all(promises).then(() => {
+
+                        console.log('all promises done');
+
+                        this.startReset();
+
+                        this.alertSuccess.message = 'جلسات انتخاب شده با موفقیت برای رزرو باز شدند';
+                        this.successLoadingLogic();
+                        setTimeout(() => {
+                            this.resetLoadingLogic();
+                        }, 2000);
+                    }).catch((error) => {
+                        console.log('all promises catch');
+                        this.failedLoadingLogic();
+                    })
+                }else{
+                    this.inputErrors.costError = true;
+                    this.failedLoadingLogic();
+                    this.alertFailed.message = "لطفا قیمت جلسات را عدد معتبر از 0 تا 100 وارد کنید"
                 }
 
-                Promise.all(promises).then(() => {
-
-                    console.log('all promises done');
-
-                    this.startReset();
-
-                    this.alertSuccess.message = 'جلسات انتخاب شده با موفقیت برای رزرو باز شدند';
-                    this.successLoadingLogic();
-                    setTimeout(() => {
-                        this.resetLoadingLogic();
-                    }, 2000);
-                }).catch((error) => {
-                    console.log('all promises catch');
-                    this.failedLoadingLogic();
-                })
             },
             sendAddTimesRequest(timePayload) {
                 return new Promise((resolve, reject) => {
@@ -550,7 +562,6 @@
                     slotsPromise.then(response => {
                         this.slots = response.data;
                         this.selectedDates = [];
-                        window.console.log('my available slots :', this.slots);
                         this.shownDate = jalali().locale('fa');
                         this.handleWeek(this.shownDate);
                         this.createCalendarTable(this.shownDate);
@@ -623,6 +634,28 @@
     .stickyPanel {
         position: sticky;
         top: 150px;
+        margin-top: 60px;
+    }
+
+    table {
+
+    }
+
+    @media only screen and (min-width: 767px) and (max-width: 992px) {
+
+        .form-group button {
+            font-size: 9px;
+        }
+    }
+
+    @media only screen and (min-width: 0) and (max-width: 766.8px) {
+        .stickyPanel {
+            position: static;
+        }
+
+        .form-group button {
+            font-size: 9px;
+        }
     }
 
 </style>

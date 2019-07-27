@@ -12,7 +12,7 @@ export default new Vuex.Store({
 
     userIsLoggedIn: false,
 
-    userInfo: {"user_pk": '', "is_consultant": ''},
+    userInfo: {"user_pk": '', "is_consultant": localStorage.getItem('is_consultant') || ''},
 
     inputUser: {},
 
@@ -62,6 +62,7 @@ export default new Vuex.Store({
 
     setUserConsultantStatus(state, cs) {
       state.userInfo.is_consultant = cs;
+      localStorage.setItem('is_consultant',cs);
     }
   },
   actions: {

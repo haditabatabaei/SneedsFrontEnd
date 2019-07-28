@@ -349,7 +349,7 @@
                 this.days.push(this.generateThursday(now));
                 this.days.push(this.generateFriday(now));
             },
-            createCalendarTable(now) {
+            createCalendarTable() {
                 this.tableData = '';
                 let justNow = jalali().locale('fa');
                 for (let i = 0; i < 17; i++) {

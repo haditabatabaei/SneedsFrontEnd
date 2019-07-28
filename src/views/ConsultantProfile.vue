@@ -94,6 +94,36 @@
                         <div class="col-md-12">
                             <h4 class="videoTitle isansFont text-center">نظرات</h4>
                         </div>
+                        <div class="col-md-12" v-for="comment in comments">
+                            <CommentBlock :config="{'showEdit':true,'showRemove':true}" :consultant="consultant" :comment="comment"></CommentBlock>
+                        </div>
+                    </div>
+                    <div class="row" v-if="this.$store.getters.isLoggedIn">
+                        <div class="col-md-12">
+                            <div class="media media-post">
+                                <div class="media-body">
+                                    <div class="form-group form-rose is-empty">
+                                        <label for="comment" class="isansFont">سوال یا نظری دارید بنویسید :</label>
+                                        <textarea id="comment" class="form-control isansFont"
+                                                  placeholder="نظرتون رو بنویسید" rows="6"
+                                                  v-model="inputComment"></textarea>
+                                        <span class="material-input"></span>
+                                    </div>
+                                    <div class="media-footer">
+                                        <button @click.prevet="submitComment()" class="btn btn-rose  isansFont">ثبت
+                                            نظر
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" v-else>
+                        <div class="col-md-12 text-center">
+                            <router-link to="/login" class="btn btn-sm btn-warning isansFont">برای ثبت نظر باید وارد
+                                حساب خود شوید. برای ورود کلیک کنید
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,12 +135,18 @@
 <script>
     import axios from 'axios';
     import jalali from 'jalali-moment';
+    import CommentBlock from '@/components/StandAlone/CommentBlock';
 
     export default {
         name: "ConsultantProfile",
+        components: {
+            CommentBlock,
+        },
         data() {
             return {
+                inputComment: '',
                 consultant: {},
+                comments: [],
                 aparatFrameLink: '',
                 slots: [],
                 days: [],
@@ -119,8 +155,6 @@
                 shownDate: {},
             }
         }, created() {
-
-
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
             consultPromise.then(response => {
                 this.consultant = response.data;
@@ -135,6 +169,13 @@
                     this.createCalendarTable(this.shownDate);
                     this.$nextTick(function () {
                         this.initDateSelector();
+                    });
+                    let commentsPromise = this.getConsultantComments(this.consultant.id);
+                    commentsPromise.then(response => {
+                        console.log(response.data);
+                        this.comments = response.data;
+                    }).catch(error => {
+                        console.log(error.response);
                     })
 
                 }).catch(timesErr => {
@@ -150,6 +191,68 @@
             scroll(0, 0);
         },
         methods: {
+
+            submitComment: function () {
+                if (this.inputComment != null && this.inputComment.length != 0) {
+                    console.log('sending request');
+                    let payload = {
+                        'consultant': this.consultant.id,
+                        'message': this.inputComment,
+                    };
+
+                    let commitPromise = this.sendSubmitCommentRequest(payload);
+
+                    commitPromise.then((response) => {
+                        console.log('response:', response.data);
+                    }).catch((error) => {
+                        console.log('error:', error.response);
+                    })
+                } else {
+                    console.log('comment was empty');
+                }
+
+
+            },
+
+            sendSubmitCommentRequest: function (payload) {
+                console.log('request method with payload : ', payload);
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'comment/comments/',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json',
+                        },
+                        data: payload,
+                    }).then(response => {
+                        console.log('response axios :',response.data);
+                        resolve(response);
+                    }).catch(error => {
+                        console.log('error axios :',error);
+                        reject(error);
+                    })
+                });
+            },
+
+            getConsultantComments: function (consultantId) {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'comment/comments/?consultant=' + consultantId,
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        console.log('axios response:', response);
+                        resolve(response);
+                    }).catch(error => {
+                        console.log('axios error:', error);
+                        reject(error);
+                    })
+                })
+            },
+
             showNextWeek: function () {
                 this.showWeek(1, 'next');
             },
@@ -192,6 +295,7 @@
                     }
                 }
             },
+
             generateSunday(date) {
                 if (date.weekday() == 1) {
                     return date.clone();
@@ -382,7 +486,7 @@
                 let list = document.getElementsByTagName('td');
                 for (let i = 0; i < list.length; i++) {
                     list[i].addEventListener('click', () => {
-                            if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
+                        if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
                             if (list[i].classList.contains('timeOpen')) {
                                 list[i].classList.remove('timeOpen');
                                 list[i].classList.add('timeSelected');

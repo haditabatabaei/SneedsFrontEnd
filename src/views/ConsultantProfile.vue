@@ -246,6 +246,7 @@
                 let addToCartPromise = this.sendAddItemsToCartRequest(payload);
                 addToCartPromise.then(response => {
                     console.log(response);
+                    this.$router.push('/user/cart');
                 }).catch(error => {
                     console.log(error);
                     if (error.response) {

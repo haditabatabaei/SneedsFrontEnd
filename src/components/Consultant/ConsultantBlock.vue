@@ -13,7 +13,7 @@
 
         <div class="card-content">
             <p class="text-justify isansFont bio">
-                {{consultant.bio}}
+<!--   {{consultant.bio}}-->
             </p>
             <div class="rate">
                 <span class="text-white isansFont label label-default"

@@ -23,6 +23,9 @@
                         <li class="text-right">
                             <router-link to="/user/profile">جلسات رزرو شده</router-link>
                         </li>
+                        <li class="text-right">
+                            <router-link to="/user/cart">سبد خرید</router-link>
+                        </li>
                         <li class="divider" v-if="showConsultantsManagerLink"></li>
                         <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
                         <li class="text-right" v-if="showConsultantsManagerLink">

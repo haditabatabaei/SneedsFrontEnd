@@ -21,7 +21,7 @@
         </div>
         <div class="main">
             <div class="section">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
 
@@ -147,7 +147,7 @@
 
                         <div class="col-sm-9 col-xs-12">
                             <div class="row listingRow">
-                                <div class="col-sm-4" v-for="consultantPerson in consultantList">
+                                <div class="col-sm-3" v-for="consultantPerson in consultantList">
                                     <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
                                 </div>
                             </div>

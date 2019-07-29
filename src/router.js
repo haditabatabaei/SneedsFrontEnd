@@ -12,6 +12,7 @@ import ConsultantProfile from "@/views/ConsultantProfile";
 
 
 import store from './store';
+import UserCard from "./views/UserCard";
 
 Vue.use(Router);
 
@@ -40,6 +41,10 @@ let router = new Router({
       path : '/user/consultantmanager',
       name : 'ConsultManagement',
       component : ConsultManagement,
+    },{
+      path : '/user/cart',
+      name : 'UserCart',
+      component : UserCard
     },
     {
       path : '/consultants',
@@ -64,7 +69,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
 
-  const requiredAuthRoutes = ['/user/profile'];
+  const requiredAuthRoutes = ['/user/profile','/user/consultantmanager' , '/user/cart'];
   const requiredNotAuth = ['/login', '/register'];
 
   window.console.log(to.path);

@@ -37,9 +37,9 @@
                                 <br>
 
                                 <span :title="field.description" v-for="field in consultant.field_of_studies">
-                                                    {{field.name}}
-                                                    <br>
-                                                </span>
+                                    {{field.name}}
+                                    <br>
+                                </span>
                                 <br>
 
                                 دانشگاه ها :
@@ -49,7 +49,7 @@
                                                          :src="'https://dummyimage.com/200X200/000/fff&text=' + university.slug"
                                                          :alt="university.slug"
                                                          :title="university.description">
-                                                </span>
+                                </span>
                                 <br>
 
                                 کشور ها :
@@ -95,7 +95,8 @@
                             <h4 class="videoTitle isansFont text-center">نظرات</h4>
                         </div>
                         <div class="col-md-12" v-for="comment in comments">
-                            <CommentBlock :config="{'showEdit':true,'showRemove':true}" :consultant="consultant" :comment="comment"></CommentBlock>
+                            <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}" :consultant="consultant"
+                                          :comment="comment"></CommentBlock>
                         </div>
                     </div>
                     <div class="row" v-if="this.$store.getters.isLoggedIn">
@@ -114,6 +115,21 @@
                                             نظر
                                         </button>
                                     </div>
+
+                                    <RectNotifBlock :message="submitCommentLoading.message"
+                                                    type="warning"
+                                                    borderRound="true"
+                                                    v-if="submitCommentLoading.value"></RectNotifBlock>
+
+                                    <RectNotifBlock :message="submitCommentSuccess.message"
+                                                    type="success"
+                                                    borderRound="true"
+                                                    v-else-if="submitCommentSuccess.value"></RectNotifBlock>
+
+                                    <RectNotifBlock :message="submitCommentFailed.message"
+                                                    type="danger"
+                                                    borderRound="true"
+                                                    v-else-if="submitCommentFailed.value"></RectNotifBlock>
                                 </div>
                             </div>
                         </div>
@@ -136,11 +152,12 @@
     import axios from 'axios';
     import jalali from 'jalali-moment';
     import CommentBlock from '@/components/StandAlone/CommentBlock';
+    import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock';
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentBlock,
+            CommentBlock, RectNotifBlock,
         },
         data() {
             return {
@@ -153,6 +170,24 @@
                 tableData: '',
                 selectedDates: [],
                 shownDate: {},
+
+                submitCommentSuccess: {
+                    value: false,
+                    message: 'نظر شما با موفقیت ثبت شد،چند لحظه صبر کنید...'
+                },
+
+                submitCommentLoading: {
+                    value: false,
+                    message:
+                        'چند لحظه صبر کنید...'
+                },
+
+                submitCommentFailed: {
+                    value: false,
+                    message: 'مشکلی در ثبت نظر رخ داد...'
+                },
+
+
             }
         }, created() {
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
@@ -188,11 +223,40 @@
 
         },
         mounted() {
-            scroll(0, 0);
+            scrollTo(0, 0);
         },
         methods: {
+            resetSubmitCommentLogic: function () {
+                window.console.log('no loading deploy');
+                this.submitCommentLoading.value = false;
+                this.submitCommentFailed.value = false;
+                this.submitCommentSuccess.value = false;
+            },
+
+            startSubmitCommentLogic: function () {
+                window.console.log('start loading deploy');
+                this.submitCommentLoading.value = true;
+                this.submitCommentFailed.value = false;
+                this.submitCommentSuccess.value = false;
+            },
+
+            failedSubmitCommentLogic: function () {
+                window.console.log('failed loading deploy');
+                this.submitCommentLoading.value = false;
+                this.submitCommentFailed.value = true;
+                this.submitCommentSuccess.value = false;
+            },
+
+            successSubmitCommentLogic: function () {
+                window.console.log('success loading deploy');
+                this.submitCommentLoading.value = false;
+                this.submitCommentFailed.value = false;
+                this.submitCommentSuccess.value = true;
+            },
 
             submitComment: function () {
+                this.resetSubmitCommentLogic();
+                this.startSubmitCommentLogic();
                 if (this.inputComment != null && this.inputComment.length != 0) {
                     console.log('sending request');
                     let payload = {
@@ -203,11 +267,29 @@
                     let commitPromise = this.sendSubmitCommentRequest(payload);
 
                     commitPromise.then((response) => {
+                        this.successSubmitCommentLogic();
+                        let commentsPromise = this.getConsultantComments(this.consultant.id);
+                        commentsPromise.then(response => {
+                            console.log(response.data);
+                            this.comments = response.data;
+                            this.resetSubmitCommentLogic();
+                        }).catch(error => {
+                            console.log(error.response);
+                        });
+
                         console.log('response:', response.data);
                     }).catch((error) => {
+                        if (error.response) {
+                            this.submitCommentFailed.message = 'خطایی هنگام ثبت نظر رخ داد. ' + error.response;
+                        } else {
+                            this.submitCommentFailed.message = 'خطایی هنگام ثبت نظر رخ داد. ';
+                        }
+                        this.failedSubmitCommentLogic();
                         console.log('error:', error.response);
                     })
                 } else {
+                    this.submitCommentFailed.message = 'لطفا فیلد نظر را بنویسید.';
+                    this.failedSubmitCommentLogic();
                     console.log('comment was empty');
                 }
 
@@ -226,10 +308,10 @@
                         },
                         data: payload,
                     }).then(response => {
-                        console.log('response axios :',response.data);
+                        console.log('response axios :', response.data);
                         resolve(response);
                     }).catch(error => {
-                        console.log('error axios :',error);
+                        console.log('error axios :', error);
                         reject(error);
                     })
                 });

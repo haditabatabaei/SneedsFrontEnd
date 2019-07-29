@@ -49,17 +49,6 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                                <div class="col-md-12 text-right">
-                                    <RectNotifBlock :message="alertLoading.message" type="warning" borderRound="true"
-                                                        v-if="alertLoading.value"></RectNotifBlock>
-
-                                    <RectNotifBlock :message="alertSuccess.message" type="success" borderRound="true"
-                                                    v-else-if="alertSuccess.value"></RectNotifBlock>
-
-                                    <RectNotifBlock :message="alertFailed.message" type="danger" borderRound="true"
-                                                    v-else-if="alertFailed.value"></RectNotifBlock>
-                                </div>
                                 <div class="col-sm-3 card stickyPanel">
                                     <form action="" class="form">
                                         <div class="form-group form-rose gadugiFont isansFont">
@@ -77,8 +66,17 @@
                                                     class="btn btn-success btn-block isansFont">
                                                 اضافه کردن جلسات انتخاب شده
                                             </button>
-
                                         </div>
+                                        <RectNotifBlock :message="alertLoading.message" type="warning"
+                                                        borderRound="true"
+                                                        v-if="alertLoading.value"></RectNotifBlock>
+
+                                        <RectNotifBlock :message="alertSuccess.message" type="success"
+                                                        borderRound="true"
+                                                        v-else-if="alertSuccess.value"></RectNotifBlock>
+
+                                        <RectNotifBlock :message="alertFailed.message" type="danger" borderRound="true"
+                                                        v-else-if="alertFailed.value"></RectNotifBlock>
                                         <hr>
                                         <div class="form-group">
                                             <p class="text-danger text-right isansFont">پنل حذف جلسه:</p>
@@ -454,7 +452,7 @@
                 this.alertLoading.value = false;
                 this.alertFailed.value = false;
                 this.alertSuccess.value = false;
-                scrollTo(0, 0);
+                // scrollTo(0, 0);
             },
 
             startLoadingLogic: function () {
@@ -462,7 +460,7 @@
                 this.alertLoading.value = true;
                 this.alertFailed.value = false;
                 this.alertSuccess.value = false;
-                scrollTo(0, 0);
+                // scrollTo(0, 0);
             },
 
             failedLoadingLogic: function () {
@@ -470,7 +468,7 @@
                 this.alertLoading.value = false;
                 this.alertFailed.value = true;
                 this.alertSuccess.value = false;
-                scrollTo(0, 0);
+                // scrollTo(0, 0);
             },
 
             successLoadingLogic: function () {
@@ -488,9 +486,9 @@
             },
             addTimes() {
                 this.resetInputErrors();
-                    this.resetLoadingLogic();
-                    this.startLoadingLogic();
-                if(this.selectedPrice != null && this.selectedPrice.length != 0 && Number(this.selectedPrice) >= 0 && Number(this.selectedPrice) <= 100){
+                this.resetLoadingLogic();
+                this.startLoadingLogic();
+                if (this.selectedPrice != null && this.selectedPrice.length != 0 && Number(this.selectedPrice) >= 0 && Number(this.selectedPrice) <= 100) {
                     console.log('selected dates:', this.selectedDates);
                     console.log('selected price:', this.selectedPrice);
                     let promises = [];
@@ -519,32 +517,32 @@
                         console.log('all promises catch');
                         this.failedLoadingLogic();
                     })
-                }else{
+                } else {
                     this.inputErrors.costError = true;
                     this.failedLoadingLogic();
                     this.alertFailed.message = "لطفا قیمت جلسات را عدد معتبر از 0 تا 100 وارد کنید"
                 }
 
             },
-            sendAddTimesRequest(timePayload) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'store/time-slot-sales/',
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json',
-                        },
-                        data: timePayload
-                    }).then(response => {
-                        console.log('axios response :', response);
-                        resolve(response);
-                    }).catch(error => {
-                        console.log('axios error :', error, error.response);
-                        reject(error);
+                sendAddTimesRequest(timePayload) {
+                    return new Promise((resolve, reject) => {
+                        axios({
+                            url: this.$store.getters.getApi + 'store/time-slot-sales/',
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'JWT ' + this.$store.getters.getToken,
+                                'Content-Type': 'application/json',
+                            },
+                            data: timePayload
+                        }).then(response => {
+                            console.log('axios response :', response);
+                            resolve(response);
+                        }).catch(error => {
+                            console.log('axios error :', error, error.response);
+                            reject(error);
+                        })
                     })
-                })
-            },
+                },
 
 
             startDeleteItems() {

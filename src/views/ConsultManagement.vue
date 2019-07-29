@@ -15,7 +15,7 @@
 
         <div class="main profile-page">
             <div class="profile-content">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-6 col-xs-offset-3">
                             <div class="profile">
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3 card stickyPanel">
+                                <div class="col-sm-2 card stickyPanel">
                                     <form action="" class="form">
                                         <div class="form-group form-rose gadugiFont isansFont">
                                             <p class="text-success text-right isansFont">پنل اضافه کردن جلسه:</p>
@@ -87,7 +87,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-10">
                                     <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()"> < هفته
                                         قبلی
                                     </button>
@@ -122,6 +122,7 @@
             return {
                 inputErrors: {costError: false},
                 slots: [],
+                soldSlots: [],
                 days: [],
                 tableData: '',
                 selectedDates: [],
@@ -146,23 +147,29 @@
             this.startReset();
         },
         mounted() {
-            // scrollTo(0, 0)
         },
         methods: {
             startReset() {
                 let slotsPromise = this.getListOfTimesById(this.userInfo.user_pk);
                 slotsPromise.then(response => {
-                    this.slots = response.data;
-                    this.selectedDates = [];
-                    window.console.log('my available slots :', this.slots);
-                    this.shownDate = jalali().locale('fa');
-                    this.handleWeek(this.shownDate);
-                    this.createCalendarTable(this.shownDate);
-                    this.$nextTick(function () {
-                        this.initDateSelector();
+                    let soldSlotsPromise = this.getListOfSoldTimesById(this.userInfo.user_pk);
+                    soldSlotsPromise.then(soldResponse => {
+                        this.slots = response.data;
+                        this.soldSlots = soldResponse.data;
+                        this.selectedDates = [];
+                        window.console.log('my available slots :', this.slots);
+                        window.console.log('my sold slots :', this.soldSlots);
+                        this.shownDate = jalali().locale('fa');
+                        this.handleWeek(this.shownDate);
+                        this.createCalendarTable(this.shownDate);
+                        this.$nextTick(function () {
+                            this.initDateSelector();
+                        })
+                    }).catch(soldError => {
+                        console.log(soldError.response);
                     })
                 }).catch(error => {
-
+                    console.log(error.response);
                 });
             },
             showNextWeek: function () {
@@ -374,11 +381,17 @@
                                 let dateEndString = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc().toISOString();
 
                                 if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).isBefore(justNow)) {
+                                    //dates before now that are not validated anymore
                                     this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                 } else {
-                                    if (this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc(), this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc())) {
+                                    //valid dates after now
+                                    let isInConsultantTime = this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc(), this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc());
+                                    let isInReservedTime = this.isInReservedTimes(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc(), this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc());
+                                    if (isInConsultantTime && !isInReservedTime) {
                                         this.tableData += '<td class="itemIsReadyToResreve" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
-                                    } else {
+                                    } else if(isInReservedTime && !isInConsultantTime){
+                                        this.tableData += '<td class="timeReserved" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
+                                    }else if(!isInConsultantTime && !isInReservedTime){
                                         this.tableData += '<td class="timeOpen" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
                                     }
                                 }
@@ -395,21 +408,24 @@
                 for (let i = 0; i < list.length; i++) {
                     list[i].addEventListener('click', () => {
                         console.log('td with date:', list[i].dataset.datestart, ' untill ', list[i].dataset.dateend)
-                        if (list[i].dataset.datestart !== undefined && list[i].dataset.dateend !== undefined && !list[i].classList.contains('timeNotAvailable') && !list[i].classList.contains('reserved')) {
-                            //time selected - open - ready to reserve
+                        if (list[i].dataset.datestart !== undefined && list[i].dataset.dateend !== undefined && !list[i].classList.contains('timeNotAvailable') && !list[i].classList.contains('timeReserved')) {
 
                             if (list[i].classList.contains('timeSelected')) {
                                 list[i].classList.remove('timeSelected');
+                                // console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
                                 this.removeElementFromArray(this.selectedDates, {
                                     'datestart': list[i].dataset.datestart,
                                     'dateend': list[i].dataset.dateend
                                 });
+                                console.log(this.selectedDates);
                             } else {
                                 list[i].classList.add('timeSelected');
+                                // console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
                                 this.selectedDates.push({
                                     'datestart': list[i].dataset.datestart,
                                     'dateend': list[i].dataset.dateend
                                 });
+                                console.log(this.selectedDates);
                             }
                         }
 
@@ -434,6 +450,22 @@
                     })
                 })
             },
+            getListOfSoldTimesById(id) {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'store/sold-time-slot-sales/',
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                        }
+                    }).then(response => {
+                        resolve(response);
+                    }).catch(error => {
+                        reject(error);
+                    })
+                })
+            },
             removeElementFromArray(arr, value) {
                 this.selectedDates = arr.filter(function (val, index, arr) {
                     return arr[index].datestart != value.datestart && arr[index].dateend != value.dateend;
@@ -447,6 +479,14 @@
                 }
                 return false;
             },
+            isInReservedTimes(cellStartDate,cellEndDate){
+                for (let i = 0; i < this.soldSlots.length; i++) {
+                    if (cellStartDate.isSame(jalali(this.soldSlots[i].start_time), 'hour') && cellEndDate.isSame(jalali(this.soldSlots[i].end_time), 'hour')) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
                 this.alertLoading.value = false;
@@ -454,7 +494,6 @@
                 this.alertSuccess.value = false;
                 // scrollTo(0, 0);
             },
-
             startLoadingLogic: function () {
                 window.console.log('start loading deploy');
                 this.alertLoading.value = true;
@@ -462,7 +501,6 @@
                 this.alertSuccess.value = false;
                 // scrollTo(0, 0);
             },
-
             failedLoadingLogic: function () {
                 window.console.log('failed loading deploy');
                 this.alertLoading.value = false;
@@ -470,7 +508,6 @@
                 this.alertSuccess.value = false;
                 // scrollTo(0, 0);
             },
-
             successLoadingLogic: function () {
                 window.console.log('success loading deploy');
                 this.alertLoading.value = false;
@@ -524,27 +561,25 @@
                 }
 
             },
-                sendAddTimesRequest(timePayload) {
-                    return new Promise((resolve, reject) => {
-                        axios({
-                            url: this.$store.getters.getApi + 'store/time-slot-sales/',
-                            method: 'POST',
-                            headers: {
-                                'Authorization': 'JWT ' + this.$store.getters.getToken,
-                                'Content-Type': 'application/json',
-                            },
-                            data: timePayload
-                        }).then(response => {
-                            console.log('axios response :', response);
-                            resolve(response);
-                        }).catch(error => {
-                            console.log('axios error :', error, error.response);
-                            reject(error);
-                        })
+            sendAddTimesRequest(timePayload) {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'store/time-slot-sales/',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json',
+                        },
+                        data: timePayload
+                    }).then(response => {
+                        console.log('axios response :', response);
+                        resolve(response);
+                    }).catch(error => {
+                        console.log('axios error :', error, error.response);
+                        reject(error);
                     })
-                },
-
-
+                })
+            },
             startDeleteItems() {
                 this.resetLoadingLogic();
                 this.startLoadingLogic();
@@ -580,15 +615,12 @@
                     console.log(error);
                 })
             },
-
             getSlotIdByDate(startDate, endDate) {
                 for (let i = 0; i < this.slots.length; i++) {
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
                 }
-                // return null;
             },
-
             sendDeleteTimesRequest(timeId) {
                 return new Promise((resolve, reject) => {
                     axios({

@@ -89,17 +89,23 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="col-md-12 text-center" v-if="isLoggedIn">
+                            <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()">اضافه کردن به
+                                سبد خرید
+                            </button>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <h4 class="videoTitle isansFont text-center">نظرات</h4>
                         </div>
                         <div class="col-md-12" v-for="comment in comments">
-                            <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}" :consultant="consultant"
+                            <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}"
+                                          :consultant="consultant"
                                           :comment="comment"></CommentBlock>
                         </div>
                     </div>
-                    <div class="row" v-if="this.$store.getters.isLoggedIn">
+                    <div class="row" v-if="isLoggedIn">
                         <div class="col-md-12">
                             <div class="media media-post">
                                 <div class="media-body">
@@ -189,7 +195,12 @@
 
 
             }
-        }, created() {
+        }, computed: {
+            isLoggedIn: function () {
+                return this.$store.getters.isLoggedIn;
+            },
+        },
+        created() {
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
             consultPromise.then(response => {
                 this.consultant = response.data;
@@ -226,6 +237,47 @@
             scrollTo(0, 0);
         },
         methods: {
+            addSelectedTimesToCart: function () {
+                console.log(this.selectedDates);
+                let payload = {"time_slot_sales": []};
+                for (let i = 0; i < this.selectedDates.length; i++) {
+                    payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
+                }
+                let addToCartPromise = this.sendAddItemsToCartRequest(payload);
+                addToCartPromise.then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                    if (error.response) {
+                        console.log(error.response);
+                    }
+                })
+            },
+            getSlotIdByDate(startDate, endDate) {
+                for (let i = 0; i < this.slots.length; i++) {
+                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
+                        return this.slots[i].id;
+                }
+            },
+
+            sendAddItemsToCartRequest: function (payload) {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'cart/carts/',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json',
+                        },
+                        data: payload,
+                    }).then(response => {
+                        resolve(response);
+                    }).catch(error => {
+                        reject(error);
+                    })
+                })
+            },
+
             resetSubmitCommentLogic: function () {
                 window.console.log('no loading deploy');
                 this.submitCommentLoading.value = false;
@@ -573,7 +625,8 @@
                             if (list[i].classList.contains('timeOpen')) {
                                 list[i].classList.remove('timeOpen');
                                 list[i].classList.add('timeSelected');
-                                this.removeElementFromArray(this.selectedDates, {
+                                console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
+                                this.selectedDates.push({
                                     'datestart': list[i].dataset.datestart,
                                     'dateend': list[i].dataset.dateend
                                 });
@@ -581,7 +634,8 @@
                             } else {
                                 list[i].classList.remove('timeSelected');
                                 list[i].classList.add('timeOpen');
-                                this.selectedDates.push({
+                                console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
+                                this.removeElementFromArray(this.selectedDates, {
                                     'datestart': list[i].dataset.datestart,
                                     'dateend': list[i].dataset.dateend
                                 });
@@ -699,10 +753,10 @@
 
     .timeReserved {
         background-color: blue;
-        cursor: pointer;
+        /*cursor: pointer;*/
     }
 
-    .timereserved::before {
+    .timeReserved::before {
         content: "رزرو شده";
         color: white;
     }

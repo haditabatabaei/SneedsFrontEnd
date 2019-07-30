@@ -25,7 +25,7 @@
                             <router-link to="/user/profile">ناحیه کاربری</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/profile">جلسات رزرو شده</router-link>
+                            <router-link to="/user/reserved">جلسات رزرو شده</router-link>
                         </li>
                         <li class="text-right">
                             <router-link to="/user/order">فاکتور های شما</router-link>

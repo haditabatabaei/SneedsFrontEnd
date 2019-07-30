@@ -102,7 +102,6 @@
                                                 </td>
                                                 <td class="td-actions">
                                                     <button type="button" rel="tooltip" data-placement="left"
-                                                            v-bind:onclick="delete"
                                                             title="حذف آیتم از سبد خرید" class="btn btn-simple"
                                                             data-original-title="Remove Item">
                                                         <i class="material-icons">close</i>

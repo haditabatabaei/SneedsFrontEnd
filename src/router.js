@@ -5,10 +5,12 @@ import Login from '@/views/Login';
 import Register from '@/views/Register';
 import UserProfile from '@/views/UserProfile';
 import Error404 from '@/views/Error404';
+
 import ConsultantList from "@/views/ConsultantList";
 import ConsultManagement from "@/views/ConsultManagement";
-
 import ConsultantProfile from "@/views/ConsultantProfile";
+
+import UserReservedSessions from "@/views/UserReservedSessions";
 
 import UserCard from "@/views/UserCard";
 import UserOrder from "@/views/UserOrder";
@@ -53,6 +55,11 @@ let router = new Router({
       component : UserOrder,
     },
     {
+      path : '/user/reserved',
+      name : 'UserReservedSessions',
+      component : UserReservedSessions
+    },
+    {
       path : '/consultants',
       name : 'ConsultantList',
       component : ConsultantList,
@@ -75,7 +82,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
 
-  const requiredAuthRoutes = ['/user/profile','/user/consultantmanager' , '/user/cart','/user/order'];
+  const requiredAuthRoutes = ['/user/profile','/user/consultantmanager' , '/user/cart','/user/order','/user/reserved'];
   const requiredNotAuth = ['/login', '/register'];
 
   window.console.log(to.path);

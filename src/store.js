@@ -14,7 +14,8 @@ export default new Vuex.Store({
 
         userInfo: {
             "user_pk": localStorage.getItem('user_pk') || '',
-            "is_consultant": localStorage.getItem('is_consultant') || ''
+            "is_consultant": localStorage.getItem('is_consultant') || '',
+            "consultant": localStorage.getItem('consultant') || ''
         },
 
         inputUser: {},
@@ -67,6 +68,11 @@ export default new Vuex.Store({
         setUserConsultantStatus(state, cs) {
             state.userInfo.is_consultant = cs;
             localStorage.setItem('is_consultant', cs);
+        },
+
+        setUserConsultantId(state, uci) {
+            state.userInfo.consultant = uci;
+            localStorage.setItem('consultant', uci);
         }
     },
     actions: {
@@ -85,7 +91,8 @@ export default new Vuex.Store({
                     .then((response) => {
                         console.log(response);
                         commit('setUserPk', response.data.user_pk);
-                        commit('setUserConsultantStatus', response.data.is_consultant)
+                        commit('setUserConsultantStatus', response.data.is_consultant);
+                        commit('setUserConsultantId', response.data.consultant);
                         resolve(response);
                     }).catch((error) => {
                     reject(error);

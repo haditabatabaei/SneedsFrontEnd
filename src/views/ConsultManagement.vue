@@ -150,9 +150,9 @@
         },
         methods: {
             startReset() {
-                let slotsPromise = this.getListOfTimesById(this.userInfo.user_pk);
+                let slotsPromise = this.getListOfTimesById(this.userInfo.consultant);
                 slotsPromise.then(response => {
-                    let soldSlotsPromise = this.getListOfSoldTimesById(this.userInfo.user_pk);
+                    let soldSlotsPromise = this.getListOfSoldTimesById(this.userInfo.consultant);
                     soldSlotsPromise.then(soldResponse => {
                         this.slots = response.data;
                         this.soldSlots = soldResponse.data;
@@ -514,6 +514,7 @@
                 this.alertFailed.value = false;
                 this.alertSuccess.value = true;
             },
+
             resetInputErrors: function () {
                 for (let errorProperty in this.inputErrors) {
                     if (this.inputErrors.hasOwnProperty(errorProperty)) {
@@ -521,6 +522,7 @@
                     }
                 }
             },
+
             addTimes() {
                 this.resetInputErrors();
                 this.resetLoadingLogic();
@@ -591,7 +593,7 @@
                 }
 
                 Promise.all(promises).then(() => {
-                    let slotsPromise = this.getListOfTimesById(this.userInfo.user_pk);
+                    let slotsPromise = this.getListOfTimesById(this.userInfo.consultant);
                     slotsPromise.then(response => {
                         this.slots = response.data;
                         this.selectedDates = [];

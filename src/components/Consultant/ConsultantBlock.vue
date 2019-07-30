@@ -69,8 +69,8 @@
         background-position: center !important;
         background-size: cover !important;
         background-repeat: no-repeat !important;
-        min-height: 200px;
-        min-width: 200px;
+        min-height: 150px;
+        min-width: 150px;
         margin-right: 7.5px;
         margin-left: 7.5px;
     }

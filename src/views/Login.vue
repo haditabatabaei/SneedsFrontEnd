@@ -19,18 +19,16 @@
                 </div>
               </div>
               <div class="card-content">
-                <p class="card-description"></p>
-
                 <RectNotifBlock :message="loginLoading.message" type="warning" borderRound="true" v-if="loginLoading.value"></RectNotifBlock>
 
                 <RectNotifBlock :message="loginSuccess.message" type="success" borderRound="true" v-else-if="loginSuccess.value"></RectNotifBlock>
 
                 <RectNotifBlock :message="loginFailed.message" type="danger" borderRound="true" v-else-if="loginFailed.value"></RectNotifBlock>
 
-                <div class="input-group">
-									<span class="input-group-addon">
-										<i class="material-icons">email</i>
-									</span>
+                <div  v-if="!loginSuccess.value" class="input-group">
+                  <span class="input-group-addon">
+                    <i class="material-icons">email</i>
+                  </span>
                   <div class="form-group form-rose gadugiFont isansFont">
                     <input required
                            v-model="userToLogin.email"
@@ -45,7 +43,7 @@
                   </div>
                 </div>
 
-                <div class="input-group">
+                <div v-if="!loginSuccess.value" class="input-group">
 									<span class="input-group-addon">
 										<i class="material-icons">lock_outline</i>
 									</span>
@@ -61,7 +59,8 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <div v-if="!loginSuccess.value" class="row">
+
                   <div class="col-sm-6 text-center">
                     <input type="submit" class="btn btn-rose isansFont" value="ورود">
 
@@ -73,8 +72,8 @@
 <!--                    </button>-->
 <!--                  </div>-->
                 </div>
-              </div>
 
+              </div>
               <div class="footer text-center">
               </div>
             </form>

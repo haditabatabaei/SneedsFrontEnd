@@ -89,10 +89,17 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-md-12 text-center" v-if="isLoggedIn">
-                            <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()">اضافه کردن به
-                                سبد خرید
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()" v-if="isLoggedIn">
+                                <i class="material-icons" v-if="reserveSuccess.value">done</i>
+                                <img src="../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+                                     v-if="reserveLoading.value">
+                                <i class="material-icons" v-if="reserveFailed.value">block</i>
+                                اضافه کردن به سبد خرید
                             </button>
+                            <router-link to="/login" class="btn btn-sm btn-warning isansFont" v-else>
+                                برای زرور جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
+                            </router-link>
                         </div>
                     </div>
                     <div class="row">
@@ -142,8 +149,8 @@
                     </div>
                     <div class="row" v-else>
                         <div class="col-md-12 text-center">
-                            <router-link to="/login" class="btn btn-sm btn-warning isansFont">برای ثبت نظر باید وارد
-                                حساب خود شوید. برای ورود کلیک کنید
+                            <router-link to="/login" class="btn btn-sm btn-warning isansFont">
+                                برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
                             </router-link>
                         </div>
                     </div>
@@ -176,6 +183,17 @@
                 tableData: '',
                 selectedDates: [],
                 shownDate: {},
+
+                reserveSuccess: {
+                    value: false,
+                },
+
+                reserveLoading: {
+                    value: false,
+                },
+                reserveFailed: {
+                    value: false,
+                },
 
                 submitCommentSuccess: {
                     value: false,
@@ -236,8 +254,38 @@
         mounted() {
             scrollTo(0, 0);
         },
+
         methods: {
+            resetReserveLogic: function () {
+                window.console.log('no loading deploy');
+                this.reserveLoading.value = false;
+                this.reserveFailed.value = false;
+                this.reserveSuccess.value = false;
+            },
+
+            startReserveLogic: function () {
+                window.console.log('start loading deploy');
+                this.reserveLoading.value = true;
+                this.reserveFailed.value = false;
+                this.reserveSuccess.value = false;
+            },
+
+            failedReserveLogic: function () {
+                window.console.log('failed loading deploy');
+                this.reserveLoading.value = false;
+                this.reserveFailed.value = true;
+                this.reserveSuccess.value = false;
+            },
+
+            successReserveLogic: function () {
+                window.console.log('success loading deploy');
+                this.reserveLoading.value = false;
+                this.reserveFailed.value = false;
+                this.reserveSuccess.value = true;
+            },
             addSelectedTimesToCart: function () {
+                this.resetReserveLogic();
+                this.startReserveLogic();
                 console.log(this.selectedDates);
                 let payload = {"time_slot_sales": []};
                 for (let i = 0; i < this.selectedDates.length; i++) {
@@ -246,8 +294,13 @@
                 let addToCartPromise = this.sendAddItemsToCartRequest(payload);
                 addToCartPromise.then(response => {
                     console.log(response);
-                    this.$router.push('/user/cart');
+                    this.successReserveLogic();
+                    setTimeout(() => {
+                        this.resetReserveLogic();
+                        this.$router.push('/user/cart');
+                    }, 1000)
                 }).catch(error => {
+                    this.failedReserveLogic();
                     console.log(error);
                     if (error.response) {
                         console.log(error.response);

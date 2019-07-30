@@ -16,6 +16,10 @@
                         <b class="caret"></b>
                         <div class="ripple-container"></div>
                     </button>
+                    <router-link to="/user/cart" class="btn btn-rose isansFont">
+                        <i class="material-icons">shopping_cart</i>
+                        سبد خرید
+                    </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
                         <li class="text-right">
                             <router-link to="/user/profile">ناحیه کاربری</router-link>
@@ -24,7 +28,7 @@
                             <router-link to="/user/profile">جلسات رزرو شده</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/cart">سبد خرید</router-link>
+                            <router-link to="/user/order">فاکتور های شما</router-link>
                         </li>
                         <li class="divider" v-if="showConsultantsManagerLink"></li>
                         <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
@@ -32,7 +36,7 @@
                             <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
                         </li>
                         <li class="divider"></li>
-                        <li><a @click.prevent="logout()" class="btn btn-rose">خروج</a></li>
+                        <li><a @click.prevent="logout()" class="btn btn-danger">خروج</a></li>
                     </ul>
                 </div>
 

@@ -217,6 +217,9 @@
             isLoggedIn: function () {
                 return this.$store.getters.isLoggedIn;
             },
+            activeCart: function () {
+                return this.$store.getters.getCart;
+            },
         },
         created() {
             let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
@@ -283,53 +286,75 @@
                 this.reserveFailed.value = false;
                 this.reserveSuccess.value = true;
             },
+
             addSelectedTimesToCart: function () {
                 this.resetReserveLogic();
                 this.startReserveLogic();
                 console.log(this.selectedDates);
+
                 let payload = {"time_slot_sales": []};
+
                 for (let i = 0; i < this.selectedDates.length; i++) {
                     payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
                 }
-                let addToCartPromise = this.sendAddItemsToCartRequest(payload);
-                addToCartPromise.then(response => {
-                    console.log(response);
-                    this.successReserveLogic();
-                    setTimeout(() => {
-                        this.resetReserveLogic();
-                        this.$router.push('/user/cart');
-                    }, 1000)
-                }).catch(error => {
-                    this.failedReserveLogic();
-                    console.log(error);
-                    if (error.response) {
-                        console.log(error.response);
+
+
+                if (this.activeCart != null && this.activeCart != {}) {
+                    //put new items in it
+                    console.log('put new items in cart');
+                    console.log(this.activeCart);
+                    for (let i = 0; i < payload.time_slot_sales.length; i++) {
+                        this.activeCart.time_slot_sales.push(payload.time_slot_sales[i]);
                     }
-                })
+
+
+                    let config = {
+                        "payload": {"time_slot_sales" : Array.from(new Set(this.activeCart.time_slot_sales)) } ,
+                        "cartId": this.activeCart.id,
+                    };
+
+                    console.log(config);
+                    this.$store.dispatch('putCartRequest', config).then(response => {
+                        console.log(response);
+                        this.successReserveLogic();
+                        setTimeout(() => {
+                            this.resetReserveLogic();
+                            this.$router.push('/user/cart');
+                        }, 1000)
+                    }).catch(error => {
+                        this.failedReserveLogic();
+                        console.log(error);
+                        if (error.response) {
+                            console.log(error.response);
+                        }
+                    });
+                } else {
+                    //card doesnt exits
+                    //post new items;
+                    console.log('post new items in cart');
+                    this.$store.dispatch('postCart', payload).then(response => {
+                        console.log(response);
+                        this.successReserveLogic();
+                        setTimeout(() => {
+                            this.resetReserveLogic();
+                            this.$router.push('/user/cart');
+                        }, 1000)
+                    }).catch(error => {
+                        this.failedReserveLogic();
+                        console.log(error);
+                        if (error.response) {
+                            console.log(error.response.data.detail);
+                        }
+                    })
+                }
+
             },
+
             getSlotIdByDate(startDate, endDate) {
                 for (let i = 0; i < this.slots.length; i++) {
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
                 }
-            },
-
-            sendAddItemsToCartRequest: function (payload) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'cart/carts/',
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json',
-                        },
-                        data: payload,
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
             },
 
             resetSubmitCommentLogic: function () {
@@ -507,6 +532,7 @@
                     }
                 }
             },
+
             generateMonday(date) {
                 if (date.weekday() == 2) {
                     return date.clone();
@@ -529,6 +555,7 @@
                     }
                 }
             },
+
             generateTuesday(date) {
                 if (date.weekday() == 3) {
                     return date.clone();
@@ -551,6 +578,7 @@
                     }
                 }
             },
+
             generateWednesday(date) {
                 if (date.weekday() == 4) {
                     return date.clone();
@@ -573,6 +601,7 @@
                     }
                 }
             },
+
             generateThursday(date) {
                 if (date.weekday() == 5) {
                     return date.clone();
@@ -595,6 +624,7 @@
                     }
                 }
             },
+
             generateFriday(date) {
                 if (date.weekday() == 6) {
                     return date.clone();
@@ -628,6 +658,7 @@
                 this.days.push(this.generateThursday(now));
                 this.days.push(this.generateFriday(now));
             },
+
             createCalendarTable() {
                 this.tableData = '';
                 let justNow = jalali().locale('fa');
@@ -671,6 +702,7 @@
 
                 }
             },
+
             initDateSelector() {
                 let list = document.getElementsByTagName('td');
                 for (let i = 0; i < list.length; i++) {
@@ -700,6 +732,7 @@
                     });
                 }
             },
+
             getConsultantBySlug(consultantSlug) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -715,9 +748,11 @@
                     })
                 })
             },
+
             getVideoFrameLink(aparatLink) {
                 return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
             },
+
             getListOfTimesById(id) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -733,11 +768,13 @@
                     })
                 })
             },
+
             removeElementFromArray(arr, value) {
                 this.selectedDates = arr.filter(function (val, index, arr) {
                     return arr[index].datestart != value.datestart && arr[index].dateend != value.dateend;
                 });
             },
+
             isInConsultantTime(cellStartDate, cellEndDate) {
                 for (let i = 0; i < this.slots.length; i++) {
                     if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'second') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'second')) {

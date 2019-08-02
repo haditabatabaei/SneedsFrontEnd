@@ -123,7 +123,7 @@
                                                                 ref="password"
                                                                 name="password"
                                                                 v-model="userToRegister.password"
-                                                                type="password"
+                                                                :type="passType"
                                                                 placeholder="رمز عبور..."
                                                                 class="form-control isansFont"><span
                                                             class="material-input"></span>
@@ -145,15 +145,23 @@
                                                                 v-model="userToRegister.password2"
                                                                 name="passwordConfirm"
                                                                 data-vv-as="password"
-                                                                type="password"
+                                                                :type="passType"
                                                                 placeholder="تکرار رمز عبور..."
                                                                 class="form-control isansFont">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
                                                               v-if="inputErrors.confirmPasswordError">
-                              لطفا تکرار رمز عبور را به درستی وارد کنید
-                            </span>
+                                                                لطفا تکرار رمز عبور را به درستی وارد کنید
+                                                        </span>
                                                     </div>
+                                                    <span class="input-group-addon" style="border-left:0;">
+                                                        <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
+                                                            @click="togglePassType()">
+                                                            <i class="material-icons" v-if="passType == 'password'">visibility</i>
+                                                            <i class="material-icons" v-else>visibility_off</i>
+                                                            <div class="ripple-container"></div>
+                                                        </button>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,6 +207,8 @@
         name: "Register",
         data: function () {
             return {
+                passType: 'password',
+
                 userToRegister: {
                     first_name: '',
                     last_name: '',
@@ -240,6 +250,14 @@
         },
         components: {RectNotifBlock},
         methods: {
+
+            togglePassType: function () {
+                if (this.passType == 'password') {
+                    this.passType = 'text'
+                } else {
+                    this.passType = 'password'
+                }
+            },
 
             /*
               Input : -
@@ -369,15 +387,6 @@
 
                     registerPromise.then((response) => {
                         this.successLoadingLogic();
-                        this.userToRegister = {
-                            first_name: '',
-                            last_name: '',
-                            email: '',
-                            phone_number: '',
-                            address: '',
-                            password: '',
-                            password2: '',
-                        };
                         console.log(response);
                         setTimeout(() => {
                             this.resetLoadingLogic();

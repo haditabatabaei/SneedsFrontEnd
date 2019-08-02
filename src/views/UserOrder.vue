@@ -38,64 +38,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <div class="row">
-                                <h3 class="isansFont text-center">
-                                    فاکتور های قبلی شما
-                                </h3>
-                                <div class="col-md-12">
-                                    <RectNotifBlock :message="cartsLoading.message"
-                                                    type="warning"
-                                                    borderRound="true"
-                                                    v-if="cartsLoading.value"></RectNotifBlock>
+                            <RectNotifBlock :message="cartsLoading.message"
+                                            type="warning"
+                                            borderRound="true"
+                                            v-if="cartsLoading.value"></RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsSuccess.message"
-                                                    type="success"
-                                                    borderRound="true"
-                                                    v-else-if="cartsSuccess.value"></RectNotifBlock>
+                            <RectNotifBlock :message="cartsSuccess.message"
+                                            type="success"
+                                            borderRound="true"
+                                            v-else-if="cartsSuccess.value"></RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsFailed.message"
-                                                    type="danger"
-                                                    borderRound="true"
-                                                    v-else-if="cartsFailed.value"></RectNotifBlock>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="isansFont">
-                                            <tr>
-                                                <th>#</th>
-                                                <th>کد پشتیبانی</th>
-                                                <th>تاریخ آخرین آپدیت</th>
-                                                <th>وضعیت</th>
-                                                <th>جزئیات</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr v-for="order in completedOrders">
-                                                <td>{{completedOrders.indexOf(order) + 1}}</td>
-                                                <td>{{order.order_id}}</td>
-                                                <td class="isansFont">
-                                                    {{
-                                                    getJalali(order.updated).locale('fa').
-                                                    format('YYYY/MM/DD HH:mm:ss')
-                                                    }}
-                                                </td>
-                                                <td class="td-actions isansFont" v-if="order.status == 'created'">
-                                                    منتظر پرداخت کاربر
-                                                </td>
-                                                <td class="td-actions isansFont" v-else-if="order.status == 'paid'">
-                                                    پرداخت موفق
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-round isansFont btn-info">مشاهده
-                                                        جزئیات
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
+                            <RectNotifBlock :message="cartsFailed.message"
+                                            type="danger"
+                                            borderRound="true"
+                                            v-else-if="cartsFailed.value"></RectNotifBlock>
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3 class="isansFont text-center" v-if="activeOrder != undefined">
@@ -149,7 +105,8 @@
                                                 <td class="td-actions isansFont" v-if="activeOrder.status == 'created'">
                                                     منتظر پرداخت کاربر
                                                 </td>
-                                                <td class="td-actions isansFont" v-else-if="activeOrder.status == 'paid'">
+                                                <td class="td-actions isansFont"
+                                                    v-else-if="activeOrder.status == 'paid'">
                                                     پرداخت موفق
                                                 </td>
                                             </tr>
@@ -178,6 +135,52 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <h3 class="isansFont text-center">
+                                    فاکتور های قبلی شما
+                                </h3>
+                                <div class="col-md-12">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="isansFont">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>کد پشتیبانی</th>
+                                                <th>تاریخ آخرین آپدیت</th>
+                                                <th>وضعیت</th>
+                                                <th>جزئیات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="order in completedOrders">
+                                                <td>{{completedOrders.indexOf(order) + 1}}</td>
+                                                <td>{{order.order_id}}</td>
+                                                <td class="isansFont">
+                                                    {{
+                                                    getJalali(order.updated).locale('fa').
+                                                    format('YYYY/MM/DD HH:mm:ss')
+                                                    }}
+                                                </td>
+                                                <td class="td-actions isansFont" v-if="order.status == 'created'">
+                                                    منتظر پرداخت کاربر
+                                                </td>
+                                                <td class="td-actions isansFont" v-else-if="order.status == 'paid'">
+                                                    پرداخت موفق
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-round isansFont btn-info">مشاهده
+                                                        جزئیات
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -264,14 +267,31 @@
             },
 
             factorPayment: function () {
+                this.resetCartsLogic();
+                this.startCartsLogic();
                 console.log('factor payment method');
                 let paymentAcceptPromise = this.sendPaymentAcceptRequest();
                 paymentAcceptPromise.then(response => {
                     console.log('response for factor payment : ', response);
+                    this.getOrders().then((orders) => {
+                        this.getPaidOrders().then((paidOrders) => {
+                            this.successCartsLogic();
+                            this.orders = orders;
+                            this.completedOrders = paidOrders;
+                            this.$store.commit('setCart', null);
+                            this.resetCartsLogic();
+                        }).catch(() => {
+                            this.failedCartsLogic();
+                        });
+                    }).catch(() => {
+                        this.failedCartsLogic();
+                    });
+
                 }).catch(error => {
                     console.log(error);
                     if (error.response)
                         console.log(error.response);
+                    this.failedCartsLogic();
                 })
             },
 

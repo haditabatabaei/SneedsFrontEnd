@@ -25,6 +25,8 @@ export default new Vuex.Store({
         api: 'http://193.176.241.131:8000/',
 
         authApi: 'http://193.176.241.131:8000/',
+
+        cart: {},
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
@@ -73,6 +75,10 @@ export default new Vuex.Store({
         setUserConsultantId(state, uci) {
             state.userInfo.consultant = uci;
             localStorage.setItem('consultant', uci);
+        },
+
+        setCart(state, cart) {
+            state.cart = cart;
         }
     },
     actions: {
@@ -134,7 +140,13 @@ export default new Vuex.Store({
                         commit('setToken', response.data.token);
                         commit('setExpires', response.data.expires);
                         commit('setLoggedInStatus', true);
-                        resolve(response);
+                        this.dispatch('getCart').then(cartResponse => {
+                            commit('setCart', cartResponse.data[0]);
+                            resolve(response);
+                        }).catch(cartError => {
+                            console.log(cartError);
+                            resolve(response);
+                        });
                     }).catch((error) => {
                     reject(error);
                 })
@@ -152,6 +164,13 @@ export default new Vuex.Store({
                         commit('setToken', response.data.token_response.token);
                         commit('setExpires', response.data.token_response.expires);
                         commit('setLoggedInStatus', true);
+                        this.dispatch('sendGetCartRequest').then(cartResponse => {
+                            commit('setCart', cartResponse.data[0]);
+                            resolve(response);
+                        }).catch(cartError => {
+                            console.log(cartError);
+                            resolve(response);
+                        });
                         resolve(response);
                     }).catch((error) => {
                     reject(error);
@@ -176,11 +195,80 @@ export default new Vuex.Store({
                 })
                     .then((response) => {
 
-                        // commit('setToken', response.data.token_response.token);
-                        // commit('setExpires', response.data.token_response.expires);
-                        // commit('setLoggedInStatus', true);
                         resolve(response);
                     }).catch((error) => {
+                    reject(error);
+                })
+            })
+        },
+
+        putCartRequest({commit}, config) {
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: this.getters.getApi + 'cart/carts/' + config.cartId + '/',
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'JWT ' + this.getters.getToken,
+                    },
+                    data: config.payload,
+                }).then(response => {
+                    resolve(response);
+                }).catch(error => {
+                    reject(error);
+                })
+            })
+        },
+
+        getCart({commit}) {
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: this.getters.getApi + 'cart/carts/',
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'JWT ' + this.getters.getToken,
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    commit('setCart', response.data[0]);
+                    resolve(response);
+                }).catch(error => {
+                    reject(error);
+                })
+            })
+        },
+
+        postCart({commit}, payload) {
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: this.getters.getApi + 'cart/carts/',
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'JWT ' + this.getters.getToken,
+                        'Content-Type': 'application/json',
+                    },
+                    data: payload,
+                }).then(response => {
+                    resolve(response);
+                }).catch(error => {
+                    reject(error);
+                })
+            })
+        },
+
+        deleteCart({commit}, cartId) {
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: this.getters.getApi + 'cart/carts/' + cartId + '/',
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'JWT ' + this.getters.getToken,
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    commit('setCart',{});
+                    resolve(response);
+                }).catch(error => {
                     reject(error);
                 })
             })
@@ -202,6 +290,8 @@ export default new Vuex.Store({
         getUserInfo: state => state.userInfo,
 
         getInputUser: state => state.inputUser,
+
+        getCart: state => state.cart,
 
         getApi:
             state => state.api,

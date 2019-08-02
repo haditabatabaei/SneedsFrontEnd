@@ -19,7 +19,7 @@
                 <span class="text-white isansFont label label-default"
                       v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
                 <span class="text-white isansFont label label-success" v-else>{{consultant.rate}}</span>
-                <span class="text-dark isansFont comments">(20 نظر)</span>
+                <span class="text-dark isansFont comments">( {{consultant.comment_number}} نظر)</span>
             </div>
 
             <div class="footer">

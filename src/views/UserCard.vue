@@ -75,8 +75,10 @@
                                                 <th></th>
                                             </tr>
                                             </thead>
+
                                             <tbody>
-                                            <tr v-for="slotDetail in activeCart.time_slot_sales_detail">
+                                            <tr v-for="slotDetail in activeCart.time_slot_sales_detail"
+                                                :data-slotId="slotDetail.id">
                                                 <td class="td-name">
                                                     <router-link
                                                             :to="'/consultants/' + slotDetail.consultant_slug">
@@ -103,7 +105,8 @@
                                                 <td class="td-actions">
                                                     <button type="button" rel="tooltip" data-placement="left"
                                                             title="حذف آیتم از سبد خرید" class="btn btn-simple"
-                                                            data-original-title="Remove Item">
+                                                            data-original-title="Remove Item"
+                                                            @click="removeSlotFromCard(slotDetail.id)">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>
@@ -150,7 +153,6 @@
         },
         data: function () {
             return {
-                carts: [],
                 cartsSuccess: {
                     value: false,
                     message: 'عملیات موفق آمیز بود'
@@ -169,9 +171,10 @@
             }
         }, created() {
             this.startCartsLogic();
-            let promise = this.getCarts();
+            let promise = this.$store.dispatch('getCart');
             promise.then((res) => {
                 this.resetCartsLogic();
+                console.log(res);
             }).catch((err) => {
                 this.failedCartsLogic();
             })
@@ -209,6 +212,71 @@
                 this.cartsSuccess.value = true;
             },
 
+            removeElementFromArray(arr, value) {
+                return arr.filter(function (val, index, arr) {
+                    return arr[index] != value;
+                });
+            },
+
+            removeSlotFromCard: function (slotId) {
+                this.resetCartsLogic();
+                this.startCartsLogic();
+                console.log('remove slot with id', slotId);
+                this.activeCart.time_slot_sales = this.removeElementFromArray(this.activeCart.time_slot_sales, slotId);
+
+                if (this.activeCart.time_slot_sales.length == 0) {
+                    console.log('entire cart must delete');
+                    //entire cart must delete
+                    this.$store.dispatch('deleteCart', this.activeCart.id).then(response => {
+                        console.log(response);
+                        this.$store.dispatch('getCart').then(getResponse => {
+                            console.log(getResponse);
+                            this.successCartsLogic();
+                            setTimeout(() => {
+                                this.resetCartsLogic();
+                            }, 1000)
+                        }).catch(getError => {
+                            console.log(getError);
+                            if (getError.response) {
+                                console.log(getError.response.data);
+                            }
+                            this.failedCartsLogic();
+                        })
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response) {
+                            console.log(error.response.data);
+                        }
+                        this.failedCartsLogic();
+                    });
+
+                } else {
+                    console.log('cart edit by putting new items');
+                    console.log(this.activeCart.id);
+                    this.$store.dispatch('putCartRequest', {
+                        "payload": {"time_slot_sales": this.activeCart.time_slot_sales},
+                        "cartId": this.activeCart.id
+                    }).then(response => {
+                        console.log('response from put req:', response);
+                        this.$store.dispatch('getCart').then(getCartsRes => {
+                            this.successCartsLogic();
+                            setTimeout(() => {
+                                this.resetCartsLogic();
+                            }, 1000)
+                        }).catch(getCartsError => {
+                            this.failedCartsLogic();
+
+                        });
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response) {
+                            console.log(error.response);
+                        }
+                        this.failedCartsLogic();
+                    })
+                }
+
+            },
 
             factorCreation: function () {
                 this.resetCartsLogic();
@@ -221,8 +289,10 @@
                 }).catch(error => {
                     this.failedCartsLogic();
                     console.log(error);
-                    if (error.response)
+                    if (error.response){
+                        this.cartsFailed.message = 'خطایی رخ داد...'  + error.response.data.detail;
                         console.log(error.response)
+                    }
                 })
             },
 
@@ -241,24 +311,6 @@
                         reject(error);
                     })
                 })
-            },
-
-            getCarts: function () {
-                return new Promise((resolve, reject) => {
-                    console.log('get carts called');
-                    let cartsPromise = this.sendGetCartRequest();
-                    cartsPromise.then(response => {
-                        console.log('carts response :', response);
-                        this.carts = response.data;
-                        resolve(response);
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                        reject(error);
-                    })
-                });
             },
 
             sendGetCartRequest: function () {
@@ -289,7 +341,7 @@
                 return this.$store.getters.getUserInfo
             },
             activeCart: function () {
-                return this.carts[0];
+                return this.$store.getters.getCart;
             },
         }
     }

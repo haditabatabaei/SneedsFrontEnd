@@ -4,6 +4,7 @@ import Home from "@/views/Home";
 import Login from '@/views/Login';
 import Register from '@/views/Register';
 import UserProfile from '@/views/UserProfile';
+import ResetPassword from "@/views/ResetPassword";
 import Error404 from '@/views/Error404';
 
 import ConsultantList from "@/views/ConsultantList";
@@ -58,6 +59,10 @@ let router = new Router({
       path : '/user/reserved',
       name : 'UserReservedSessions',
       component : UserReservedSessions
+    },{
+      path : '/user/password-reset',
+      name : 'ResetPassword',
+      component : ResetPassword
     },
     {
       path : '/consultants',

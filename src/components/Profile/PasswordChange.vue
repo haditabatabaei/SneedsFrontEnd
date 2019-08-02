@@ -25,7 +25,7 @@
                                         <label for="inputNewPassword" class="isansFont">پسورد
                                             جدید : </label>
                                         <input v-model="inputUser.password"
-                                               id="inputNewPassword" type="password"
+                                               id="inputNewPassword" :type="passType"
                                                name="inputNewPassword"
                                                class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
@@ -41,7 +41,7 @@
                                         <label for="confirmInputNewPassword" class="isansFont">تکرار
                                             پسورد جدید :</label>
                                         <input v-model="inputUser.password2"
-                                               id="confirmInputNewPassword" type="password"
+                                               id="confirmInputNewPassword" :type="passType"
                                                name="confirmInputNewPassword"
                                                class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
@@ -49,6 +49,15 @@
                               لطفا تکرار رمز عبور را به درستی وارد کنید
                             </span>
                                     </div>
+                                    <span class="input-group-addon" style="border-left:0;">
+                                    <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
+                                            @click="togglePassType()">
+                                        <i class="material-icons" v-if="passType == 'password'">visibility</i>
+                                        <i class="material-icons" v-else>visibility_off</i>
+                                        <div class="ripple-container"></div>
+                                    </button>
+
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -76,6 +85,8 @@
         },
         data() {
             return {
+                passType: 'password',
+
                 inputUser: {
                     password: '',
                     password2: '',
@@ -103,6 +114,14 @@
                 },
             }
         }, methods: {
+            togglePassType: function () {
+
+                if (this.passType == 'password') {
+                    this.passType = 'text'
+                } else {
+                    this.passType = 'password'
+                }
+            },
 
             resetInputErrors: function () {
                 for (let errorProperty in this.inputErrors) {

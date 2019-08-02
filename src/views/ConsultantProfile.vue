@@ -298,8 +298,8 @@
                     payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
                 }
 
-
-                if (this.activeCart != null && this.activeCart != {}) {
+                console.log("active card is :",this.activeCart);
+                if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
                     //put new items in it
                     console.log('put new items in cart');
                     console.log(this.activeCart);

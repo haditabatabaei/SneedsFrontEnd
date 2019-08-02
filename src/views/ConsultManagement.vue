@@ -583,39 +583,42 @@
                 })
             },
             startDeleteItems() {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
-                let promises = [];
-                for (let i = 0; i < this.selectedDates.length; i++) {
-                    let itemIdToDelete = this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend);
-                    let deletePromise = this.sendDeleteTimesRequest(itemIdToDelete);
-                    promises.push(deletePromise);
+                if(window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')){
+                    this.resetLoadingLogic();
+                    this.startLoadingLogic();
+                    let promises = [];
+                    for (let i = 0; i < this.selectedDates.length; i++) {
+                        let itemIdToDelete = this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend);
+                        let deletePromise = this.sendDeleteTimesRequest(itemIdToDelete);
+                        promises.push(deletePromise);
+                    }
+
+                    Promise.all(promises).then(() => {
+                        let slotsPromise = this.getListOfTimesById(this.userInfo.consultant);
+                        slotsPromise.then(response => {
+                            this.slots = response.data;
+                            this.selectedDates = [];
+                            this.shownDate = jalali().locale('fa');
+                            this.handleWeek(this.shownDate);
+                            this.createCalendarTable(this.shownDate);
+
+                            this.$nextTick(function () {
+                                this.initDateSelector();
+                            });
+                            this.alertSuccess.message = 'جلسات انتخاب شده با موفقیت حذف شدند';
+                            this.successLoadingLogic();
+                            setTimeout(() => {
+                                this.resetLoadingLogic();
+                            }, 2000);
+
+                        }).catch(error => {
+
+                        });
+                    }).catch((error) => {
+                        console.log(error);
+                    })
                 }
 
-                Promise.all(promises).then(() => {
-                    let slotsPromise = this.getListOfTimesById(this.userInfo.consultant);
-                    slotsPromise.then(response => {
-                        this.slots = response.data;
-                        this.selectedDates = [];
-                        this.shownDate = jalali().locale('fa');
-                        this.handleWeek(this.shownDate);
-                        this.createCalendarTable(this.shownDate);
-
-                        this.$nextTick(function () {
-                            this.initDateSelector();
-                        });
-                        this.alertSuccess.message = 'جلسات انتخاب شده با موفقیت حذف شدند';
-                        this.successLoadingLogic();
-                        setTimeout(() => {
-                            this.resetLoadingLogic();
-                        }, 2000);
-
-                    }).catch(error => {
-
-                    });
-                }).catch((error) => {
-                    console.log(error);
-                })
             },
             getSlotIdByDate(startDate, endDate) {
                 for (let i = 0; i < this.slots.length; i++) {

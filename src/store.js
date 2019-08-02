@@ -26,7 +26,7 @@ export default new Vuex.Store({
 
         authApi: 'http://193.176.241.131:8000/',
 
-        cart: {},
+        cart: null,
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {

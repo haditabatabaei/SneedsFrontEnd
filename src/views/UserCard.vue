@@ -119,6 +119,7 @@
                                                 </td>
                                                 <td class="td-price isansFont">
                                                     {{activeCart.total}}
+                                                    <span style="font-size:15px">هزار تومان</span>
                                                 </td>
                                                 <td colspan="3" class="text-right">
                                                     <button class="btn btn-info btn-round isansFont"
@@ -219,61 +220,64 @@
             },
 
             removeSlotFromCard: function (slotId) {
-                this.resetCartsLogic();
-                this.startCartsLogic();
-                console.log('remove slot with id', slotId);
-                this.activeCart.time_slot_sales = this.removeElementFromArray(this.activeCart.time_slot_sales, slotId);
+                if(window.confirm('برای حذف این مورد مطمئنید ؟')){
+                    this.resetCartsLogic();
+                    this.startCartsLogic();
+                    console.log('remove slot with id', slotId);
+                    this.activeCart.time_slot_sales = this.removeElementFromArray(this.activeCart.time_slot_sales, slotId);
 
-                if (this.activeCart.time_slot_sales.length == 0) {
-                    console.log('entire cart must delete');
-                    //entire cart must delete
-                    this.$store.dispatch('deleteCart', this.activeCart.id).then(response => {
-                        console.log(response);
-                        this.$store.dispatch('getCart').then(getResponse => {
-                            console.log(getResponse);
-                            this.successCartsLogic();
-                            setTimeout(() => {
-                                this.resetCartsLogic();
-                            }, 1000)
-                        }).catch(getError => {
-                            console.log(getError);
-                            if (getError.response) {
-                                console.log(getError.response.data);
+                    if (this.activeCart.time_slot_sales.length == 0) {
+                        console.log('entire cart must delete');
+                        //entire cart must delete
+                        this.$store.dispatch('deleteCart', this.activeCart.id).then(response => {
+                            console.log(response);
+                            this.$store.dispatch('getCart').then(getResponse => {
+                                console.log(getResponse);
+                                this.successCartsLogic();
+                                setTimeout(() => {
+                                    this.resetCartsLogic();
+                                }, 1000)
+                            }).catch(getError => {
+                                console.log(getError);
+                                if (getError.response) {
+                                    console.log(getError.response.data);
+                                }
+                                this.failedCartsLogic();
+                            })
+                        }).catch(error => {
+                            console.log(error);
+                            if (error.response) {
+                                console.log(error.response.data);
+                            }
+                            this.failedCartsLogic();
+                        });
+
+                    } else {
+                        console.log('cart edit by putting new items');
+                        console.log(this.activeCart.id);
+                        this.$store.dispatch('putCartRequest', {
+                            "payload": {"time_slot_sales": this.activeCart.time_slot_sales},
+                            "cartId": this.activeCart.id
+                        }).then(response => {
+                            console.log('response from put req:', response);
+                            this.$store.dispatch('getCart').then(getCartsRes => {
+                                this.successCartsLogic();
+                                setTimeout(() => {
+                                    this.resetCartsLogic();
+                                }, 1000)
+                            }).catch(getCartsError => {
+                                this.failedCartsLogic();
+
+                            });
+                        }).catch(error => {
+                            console.log(error);
+                            if (error.response) {
+                                console.log(error.response);
                             }
                             this.failedCartsLogic();
                         })
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response.data);
-                        }
-                        this.failedCartsLogic();
-                    });
+                    }
 
-                } else {
-                    console.log('cart edit by putting new items');
-                    console.log(this.activeCart.id);
-                    this.$store.dispatch('putCartRequest', {
-                        "payload": {"time_slot_sales": this.activeCart.time_slot_sales},
-                        "cartId": this.activeCart.id
-                    }).then(response => {
-                        console.log('response from put req:', response);
-                        this.$store.dispatch('getCart').then(getCartsRes => {
-                            this.successCartsLogic();
-                            setTimeout(() => {
-                                this.resetCartsLogic();
-                            }, 1000)
-                        }).catch(getCartsError => {
-                            this.failedCartsLogic();
-
-                        });
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                        this.failedCartsLogic();
-                    })
                 }
 
             },

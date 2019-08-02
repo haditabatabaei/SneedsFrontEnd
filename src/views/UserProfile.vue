@@ -58,7 +58,7 @@
                         <div class="tab-pane" v-bind:class="{active: activeCommentsSection}" id="commentSection">
                             <div class="row">
                                 <div class="col-md-8 col-md-offset-2" v-for="comment in comments">
-                                    <CommentBlock :config="{'showEdit':false,'showRemove':true}" :comment="comment"></CommentBlock>
+                                    <CommentBlock :config="{'showEdit':false,'showRemove':true}" :comment="comment" @update-comments="getAccountComments()"></CommentBlock>
                                 </div>
                             </div>
                         </div>
@@ -108,6 +108,8 @@
                         }
                     }).then(response => {
                         resolve(response);
+                        console.log(response.data);
+                        this.comments = response.data;
                     }).catch(error => {
                         reject(error);
                     })
@@ -130,8 +132,6 @@
                 promise.then(() => {
                     let commentPromise = this.getAccountComments();
                     commentPromise.then(response => {
-                        console.log(response.data);
-                        this.comments = response.data;
                     }).catch(error => {
                         console.log(error.response);
                     })

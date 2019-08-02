@@ -109,6 +109,7 @@
                         <div class="col-md-12" v-for="comment in comments">
                             <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}"
                                           :consultant="consultant"
+                                          @update-comments="getConsultantComments(consultant.id)"
                                           :comment="comment"></CommentBlock>
                         </div>
                     </div>
@@ -124,25 +125,15 @@
                                         <span class="material-input"></span>
                                     </div>
                                     <div class="media-footer">
-                                        <button @click.prevet="submitComment()" class="btn btn-rose  isansFont">ثبت
-                                            نظر
+                                        <button @click.prevet="submitComment()" class="btn btn-rose  isansFont">
+                                            <i class="material-icons" v-if="submitCommentFailed.value">block</i>
+                                            <i class="material-icons" v-if="submitCommentSuccess.value">done</i>
+                                            <img src="../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+                                                 v-if="submitCommentLoading.value" style="width:15px;height:15px">
+                                            ثبت نظر
                                         </button>
                                     </div>
 
-                                    <RectNotifBlock :message="submitCommentLoading.message"
-                                                    type="warning"
-                                                    borderRound="true"
-                                                    v-if="submitCommentLoading.value"></RectNotifBlock>
-
-                                    <RectNotifBlock :message="submitCommentSuccess.message"
-                                                    type="success"
-                                                    borderRound="true"
-                                                    v-else-if="submitCommentSuccess.value"></RectNotifBlock>
-
-                                    <RectNotifBlock :message="submitCommentFailed.message"
-                                                    type="danger"
-                                                    borderRound="true"
-                                                    v-else-if="submitCommentFailed.value"></RectNotifBlock>
                                 </div>
                             </div>
                         </div>
@@ -239,8 +230,6 @@
                     });
                     let commentsPromise = this.getConsultantComments(this.consultant.id);
                     commentsPromise.then(response => {
-                        console.log(response.data);
-                        this.comments = response.data;
                     }).catch(error => {
                         console.log(error.response);
                     })
@@ -298,7 +287,7 @@
                     payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
                 }
 
-                console.log("active card is :",this.activeCart);
+                console.log("active card is :", this.activeCart);
                 if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
                     //put new items in it
                     console.log('put new items in cart');
@@ -309,7 +298,7 @@
 
 
                     let config = {
-                        "payload": {"time_slot_sales" : Array.from(new Set(this.activeCart.time_slot_sales)) } ,
+                        "payload": {"time_slot_sales": Array.from(new Set(this.activeCart.time_slot_sales))},
                         "cartId": this.activeCart.id,
                     };
 
@@ -458,6 +447,8 @@
                         }
                     }).then(response => {
                         console.log('axios response:', response);
+                        console.log(response.data);
+                        this.comments = response.data;
                         resolve(response);
                     }).catch(error => {
                         console.log('axios error:', error);

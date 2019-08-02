@@ -2,21 +2,21 @@
     <div class="card commentBlock" v-if="!config.deleted">
         <div class="commentWrapper">
             <div class="commentSender">
-                <h5 class="senderName isansFont">{{comment.first_name}}</h5>
-                <h6 class="dateCreated isansFont">{{this.fromNow}}</h6>
+                <h5 class="senderName isansFont"> {{comment.first_name}} </h5>
+                <h6 class="dateCreated isansFont"> ({{this.fromNow}})</h6>
             </div>
 
-            <div class="commmentMessage">
+            <div class="commentMessage">
                 <p class="isansFont">{{comment.message}}</p>
             </div>
         </div>
         <div class="commentWrapper" v-if="comment.admin_reply != null">
             <div class="commentSender">
-                <h5 class="senderName isansFont">ادمین</h5>
-                <h6 class="dateCreated isansFont">{{this.adminFromNow}}</h6>
+                <h5 class="senderName isansFont"> ادمین </h5>
+                <h6 class="dateCreated isansFont">({{this.adminFromNow}})</h6>
             </div>
 
-            <div class="commmentMessage">
+            <div class="commentMessage">
                 <p class="isansFont">{{comment.admin_reply.message}}</p>
             </div>
         </div>
@@ -24,43 +24,30 @@
              v-if="this.$store.getters.isLoggedIn && comment.user == this.$store.getters.getUserInfo.user_pk">
             <button @click.prevent="deleteComment()" v-if="config.showRemove" class="btn btn-danger btn-sm isansFont">
                 <img src="../../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
-                     v-if="commentLoading.value">
-                <i class="material-icons" v-if="commentSuccess.value">done</i>
+                     v-if="removeCommentLoading.value">
+                <i class="material-icons" v-if="removeCommentSuccess.value">done</i>
+                <i class="material-icons" v-if="removeCommentFailed.value">block</i>
                 حذف نظر
             </button>
             <button @click.prevent="toggleEditComment()" v-if="config.showEdit" class="btn btn-info btn-sm isansFont">
                 ویرایش این نظر
             </button>
             <div class="w-100 d-block" v-if="showEditPanel">
-                <div class="form-group form-rose is-empty">
+                <div class="form-group form-rose is-empty editForm">
                     <label for="editComment" class="isansFont">نظر خود را ویرایش کنید :</label>
                     <textarea id="editComment" class="form-control isansFont" v-model="editedCommentInput"
                               rows="6"></textarea>
                     <span class="material-input"></span>
-                    <button class="btn btn-success btn-sm isansFont" @click="editComment()">ثبت تغییرات</button>
+                    <button class="btn btn-success btn-sm isansFont" @click="editComment()">
+                        <img src="../../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+                             v-if="editCommentLoading.value">
+                        <i class="material-icons" v-if="editCommentSuccess.value">done</i>
+                        <i class="material-icons" v-if="editCommentFailed.value">block</i>
+                        ثبت تغییرات
+                    </button>
                 </div>
             </div>
         </div>
-        <RectNotifBlock
-                :message="commentLoading.message"
-                type="warning"
-                borderRound="true"
-                v-if="commentLoading.value">
-        </RectNotifBlock>
-
-        <RectNotifBlock
-                :message="commentSuccess.message"
-                type="success"
-                borderRound="true"
-                v-else-if="commentSuccess.value">
-        </RectNotifBlock>
-
-        <RectNotifBlock
-                :message="commentFailed.message"
-                type="danger"
-                borderRound="true"
-                v-else-if="commentFailed.value">
-        </RectNotifBlock>
     </div>
 
 </template>
@@ -79,17 +66,32 @@
             return {
                 showEditPanel: false,
                 editedCommentInput: this.comment.message,
-                commentSuccess: {
+                removeCommentSuccess: {
                     value: false,
                     message: 'تغییرات شما با موفقیت اعمال شد ...'
                 },
 
-                commentLoading: {
+                removeCommentLoading: {
                     value: false,
                     message: 'چند لحظه صبر کنید'
                 },
 
-                commentFailed: {
+                removeCommentFailed: {
+                    value: false,
+                    message: 'مشکلی رخ داد...'
+                },
+
+                editCommentSuccess: {
+                    value: false,
+                    message: 'تغییرات شما با موفقیت اعمال شد ...'
+                },
+
+                editCommentLoading: {
+                    value: false,
+                    message: 'چند لحظه صبر کنید'
+                },
+
+                editCommentFailed: {
                     value: false,
                     message: 'مشکلی رخ داد...'
                 },
@@ -101,52 +103,75 @@
             config: {},
         },
         methods: {
-            resetCommentLogic: function () {
+            resetremoveCommentLogic: function () {
                 window.console.log('no loading deploy');
-                this.commentLoading.value = false;
-                this.commentFailed.value = false;
-                this.commentSuccess.value = false;
+                this.removeCommentLoading.value = false;
+                this.removeCommentFailed.value = false;
+                this.removeCommentSuccess.value = false;
             },
-            startCommentLogic: function () {
+            startremoveCommentLogic: function () {
                 window.console.log('start loading deploy');
-                this.commentLoading.value = true;
-                this.commentFailed.value = false;
-                this.commentSuccess.value = false;
+                this.removeCommentLoading.value = true;
+                this.removeCommentFailed.value = false;
+                this.removeCommentSuccess.value = false;
             },
-            failedCommentLogic: function () {
+            failedremoveCommentLogic: function () {
                 window.console.log('failed loading deploy');
-                this.commentLoading.value = false;
-                this.commentFailed.value = true;
-                this.commentSuccess.value = false;
+                this.removeCommentLoading.value = false;
+                this.removeCommentFailed.value = true;
+                this.removeCommentSuccess.value = false;
             },
-            successCommentLogic: function () {
+            successremoveCommentLogic: function () {
                 window.console.log('success loading deploy');
-                this.commentLoading.value = false;
-                this.commentFailed.value = false;
-                this.commentSuccess.value = true;
+                this.removeCommentLoading.value = false;
+                this.removeCommentFailed.value = false;
+                this.removeCommentSuccess.value = true;
+            },
+            reseteditCommentLogic: function () {
+                window.console.log('no loading deploy');
+                this.editCommentLoading.value = false;
+                this.editCommentFailed.value = false;
+                this.editCommentSuccess.value = false;
+            },
+            starteditCommentLogic: function () {
+                window.console.log('start loading deploy');
+                this.editCommentLoading.value = true;
+                this.editCommentFailed.value = false;
+                this.editCommentSuccess.value = false;
+            },
+            failededitCommentLogic: function () {
+                window.console.log('failed loading deploy');
+                this.editCommentLoading.value = false;
+                this.editCommentFailed.value = true;
+                this.editCommentSuccess.value = false;
+            },
+            successeditCommentLogic: function () {
+                window.console.log('success loading deploy');
+                this.editCommentLoading.value = false;
+                this.editCommentFailed.value = false;
+                this.editCommentSuccess.value = true;
             },
             toggleEditComment: function () {
                 this.showEditPanel = !this.showEditPanel;
             },
             editComment: function () {
-                this.resetCommentLogic();
-                this.startCommentLogic();
+                this.reseteditCommentLogic();
+                this.starteditCommentLogic();
                 let payload = {'consultant': this.consultant.id, 'message': this.editedCommentInput};
                 let editPromise = this.sendEditRequest(payload);
                 editPromise.then(response => {
                     window.console.log(response);
-                    this.successCommentLogic();
-                    setTimeout(() => {
-                        this.resetCommentLogic();
-                    }, 2000)
+                    this.successeditCommentLogic();
+                    this.showEditPanel = false;
+                    this.$emit('update-comments');
                 }).catch(error => {
                     console.log(error.response);
                     if (error.response) {
-                        this.commentFailed.message = 'مشکلی رخ داد...' + error.response;
+                        this.editCommentFailed.message = 'مشکلی رخ داد...' + error.response;
                     } else {
-                        this.commentFailed.message = 'مشکلی رخ داد...';
+                        this.editCommentFailed.message = 'مشکلی رخ داد...';
                     }
-                    this.failedCommentLogic();
+                    this.failededitCommentLogic();
                 })
             },
             sendEditRequest: function (payload) {
@@ -167,24 +192,21 @@
                 })
             },
             deleteComment: function () {
-                this.resetCommentLogic();
-                this.startCommentLogic();
+                this.resetremoveCommentLogic();
+                this.startremoveCommentLogic();
                 let deletePromise = this.sendDeleteRequest();
                 deletePromise.then(response => {
-                    this.successCommentLogic();
+                    this.successremoveCommentLogic();
                     console.log(response);
-                    setTimeout(() => {
-                        this.resetCommentLogic();
-                        this.config.deleted = true;
-                    }, 2000)
+                    this.$emit('update-comments');
                 }).catch(error => {
                     // console.log(error.response);
                     if (error.response) {
-                        this.commentFailed.message = 'مشکلی رخ داد...' + error.response;
+                        this.removeCommentFailed.message = 'مشکلی رخ داد...' + error.response;
                     } else {
-                        this.commentFailed.message = 'مشکلی رخ داد...';
+                        this.removeCommentFailed.message = 'مشکلی رخ داد...';
                     }
-                    this.failedCommentLogic();
+                    this.failedremoveCommentLogic();
                 })
             },
             sendDeleteRequest: function () {
@@ -202,7 +224,7 @@
                         reject(error);
                     })
                 })
-            }
+            },
         },
         computed: {
             fromNow: function () {
@@ -227,16 +249,26 @@
 
     .commentWrapper {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 
     .commentSender {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-around;
         align-items: center;
+        margin-right: 10px;
+    }
+
+    .commentMessage p {
+        padding: 20px;
+    }
+
+    .dateCreated {
+        margin-right: 5px;
     }
 
     .editPanel {
@@ -244,10 +276,15 @@
         align-items: center;
         flex-direction: row;
         justify-content: space-around;
+        flex-wrap: wrap;
     }
 
     .loadingIcon {
         width: 20px !important;
         height: 20px !important;
+    }
+
+    .editForm {
+        padding: 20px;
     }
 </style>

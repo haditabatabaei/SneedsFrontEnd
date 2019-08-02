@@ -17,24 +17,6 @@
             <div class="profile-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-6 col-xs-offset-3">
-                            <div class="profile">
-                                <div class="avatar">
-                                    <img src="../../public/webimages/marc.jpg" alt="Circle Image"
-                                         class="img-circle img-responsive img-raised">
-                                </div>
-                                <div class="name">
-                                    <h3 class="title isansFont">
-                                        جلسات رزرو شده شما
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2 follow">
-
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="card card-profile card-plain col-md-6 flexCard" v-for="session in reservedSessions">
                             <div class="card-image">
                                 <a href="#pablo">

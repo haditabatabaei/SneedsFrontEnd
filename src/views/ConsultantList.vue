@@ -28,7 +28,7 @@
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
                                             v-if="fetchLoading.value"></RectNotifBlock>
 
-                            <!--                            <CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
+                            <!--<CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
 
                             <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
                                             v-else-if="fetchSuccess.value"></RectNotifBlock>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-3 col-xs-12 filterColumn">
+                        <div v-if="showFilterPanel" class="col-sm-3 col-xs-12 filterColumn">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div v-else class="col-sm-3 col-xs-12 filterToggler"></div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row listingRow">
                                 <div class="col-sm-3" v-for="consultantPerson in consultantList">
@@ -174,6 +174,7 @@
         },
         data() {
             return {
+                showFilterPanel: true,
                 consultantList: [],
                 countriesList: [],
                 universitiesList: [],
@@ -412,6 +413,10 @@
                         reject(error);
                     })
                 })
+            },
+
+            toggleFilterPanel: function () {
+                this.showFilterPanel = !this.showFilterPanel;
             }
         }
     }
@@ -427,7 +432,7 @@
     }
 
     .filterColumn {
-        z-index: 9999999999;
+        z-index: 999;
         position: sticky;
         top: 100px;
     }
@@ -447,7 +452,7 @@
 
     @media only screen and (min-width: 0) and (max-width: 766.8px) {
         .filterColumn {
-            position: static;
+            position:static;
         }
     }
 

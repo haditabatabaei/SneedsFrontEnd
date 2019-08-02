@@ -18,23 +18,6 @@
             <div class="profile-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-6 col-xs-offset-3">
-                            <div class="profile">
-                                <div class="avatar">
-                                    <img src="../../public/webimages/marc.jpg" alt="Circle Image"
-                                         class="img-circle img-responsive img-raised">
-                                </div>
-                                <div class="name">
-                                    <h3 class="title isansFont">{{user.first_name}}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2 follow">
-
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                             <div class="profile-tabs">
                                 <div class="nav-align-center">

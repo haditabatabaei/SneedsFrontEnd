@@ -16,28 +16,8 @@
         <div class="main profile-page">
             <div class="profile-content">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-xs-6 col-xs-offset-3">
-                            <div class="profile">
-                                <div class="avatar">
-                                    <img src="../../public/webimages/marc.jpg" alt="Circle Image"
-                                         class="img-circle img-responsive img-raised">
-                                </div>
-                                <div class="name">
-                                    <h3 class="title isansFont">
-                                        {{user.first_name}}
-
-                                        {{user.last_name}}
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2 follow">
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-center">
+                    <div class="row5">
+                        <div class="col-md-12 text-center" style="margin-top:20px;">
                             <RectNotifBlock :message="cartsLoading.message"
                                             type="warning"
                                             borderRound="true"
@@ -170,7 +150,8 @@
                                                     پرداخت موفق
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-round isansFont btn-info">مشاهده
+                                                    <button @click="showOrderDesc(order)"
+                                                            class="btn btn-sm btn-round isansFont btn-info">مشاهده
                                                         جزئیات
                                                     </button>
                                                 </td>
@@ -180,7 +161,85 @@
                                     </div>
                                 </div>
                             </div>
+                            <div v-if="orderDescShown" class="row card table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr class="isansFont">
+                                        <th>مشاور</th>
+                                        <th class="th-description">تاریخ جلسه</th>
+                                        <th class="th-description">ساعت شروع</th>
+                                        <th>ساعت پایان</th>
+                                        <th>مدت ( ساعت )</th>
+                                        <th>هزینه</th>
+                                    </tr>
+                                    </thead>
 
+                                    <tbody>
+                                    <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail" :data-slotId="slotDetail.id">
+                                        <td class="td-name">
+                                            <router-link
+                                                    :to="'/consultants/' + slotDetail.consultant_slug">
+                                                {{slotDetail.consultant_slug}}
+                                            </router-link>
+                                        </td>
+                                        <td class="isansFont">
+                                            {{getJalali(slotDetail.start_time).locale('fa').format('YYYY/MM/DD')}}
+                                            <br>
+                                            {{getJalali(slotDetail.start_time).locale('fa').format('dddd')}}
+                                        </td>
+                                        <td>
+                                            {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
+                                        </td>
+                                        <td>
+                                            {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
+                                        </td>
+                                        <td class="td-number">
+                                            1
+                                        </td>
+                                        <td class="td-number">
+                                            {{slotDetail.price}}
+                                        </td>
+                                    </tr>
+                                    <tr class="isansFont">
+                                        <td>
+                                            تاریخ ایجاد فاکتور :
+                                            <br>
+                                            {{
+                                            getJalali(orderDescToShow.created).locale('fa').
+                                            format('YYYY/MM/DD HH:mm:ss')
+                                            }}
+                                        </td>
+                                        <td>
+                                            تاریخ آخرین آپدیت فاکتور :
+                                            <br>
+                                            {{
+                                            getJalali(orderDescToShow.updated).locale('fa').
+                                            format('YYYY/MM/DD HH:mm:ss')
+                                            }}
+                                        </td>
+                                         <td>
+                                             شماره پیگیری فاکتور :
+                                             <br>
+                                             {{orderDescToShow.order_id}}
+                                         </td>
+                                        <td class="td-total isansFont">
+                                            جمع:
+                                        </td>
+                                        <td class="td-price isansFont">
+                                            {{orderDescToShow.total}}
+                                            <span style="font-size:15px">هزار تومان</span>
+                                        </td>
+                                        <td colspan="3" class="text-right">
+                                            <button class="btn btn-danger btn-round isansFont"
+                                                    @click="hideOrderDesc()">
+                                                <i class="material-icons">close</i>
+                                                بستن
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -201,6 +260,8 @@
         },
         data: function () {
             return {
+                orderDescShown: false,
+                orderDescToShow : {},
                 orders: [],
                 completedOrders: [],
                 cartsSuccess: {
@@ -237,6 +298,17 @@
             scrollTo(0, 0);
         },
         methods: {
+
+            hideOrderDesc(){
+              this.orderDescShown = false;
+              this.orderDescToShow = {};
+            },
+
+            showOrderDesc(order) {
+                console.log('show order :',order);
+                this.orderDescShown = true;
+                this.orderDescToShow = order;
+            },
 
             resetCartsLogic: function () {
                 window.console.log('no loading deploy');

@@ -155,8 +155,9 @@
                                                         </span>
                                                     </div>
                                                     <span class="input-group-addon" style="border-left:0;">
-                                                        <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
-                                                            @click="togglePassType()">
+                                                        <button type="button"
+                                                                class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
+                                                                @click="togglePassType()">
                                                             <i class="material-icons" v-if="passType == 'password'">visibility</i>
                                                             <i class="material-icons" v-else>visibility_off</i>
                                                             <div class="ripple-container"></div>
@@ -415,7 +416,19 @@
 <style scoped>
     .page-header {
         min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
+    .page-header > .container {
+        margin-bottom: 25px;
+    }
+
+    .card-signup .card-content {
+        padding: 0 10px;
+    }
+
 
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {

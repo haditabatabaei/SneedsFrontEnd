@@ -98,7 +98,7 @@
                                 اضافه کردن به سبد خرید
                             </button>
                             <router-link to="/login" class="btn btn-sm btn-warning isansFont" v-else>
-                                برای زرور جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
+                                برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
                             </router-link>
                         </div>
                     </div>

@@ -134,7 +134,7 @@ export default new Vuex.Store({
                 //setting payload
                 window.console.log("login payload :", user);
 
-                //performing post register request
+                //performing post login request
                 axios({url: this.getters.getApi + 'auth/jwt/token/', data: user, method: 'POST'})
                     .then((response) => {
                         commit('setToken', response.data.token);
@@ -164,13 +164,6 @@ export default new Vuex.Store({
                         commit('setToken', response.data.token_response.token);
                         commit('setExpires', response.data.token_response.expires);
                         commit('setLoggedInStatus', true);
-                        this.dispatch('sendGetCartRequest').then(cartResponse => {
-                            commit('setCart', cartResponse.data[0]);
-                            resolve(response);
-                        }).catch(cartError => {
-                            console.log(cartError);
-                            resolve(response);
-                        });
                         resolve(response);
                     }).catch((error) => {
                     reject(error);

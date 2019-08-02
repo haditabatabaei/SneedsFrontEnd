@@ -442,6 +442,13 @@
         flex-direction: column;
     }
 
+    .card .card-content {
+        padding: 10px;
+    }
+
+    .card-image {
+    }
+
     @media only screen and (min-width: 0) and (max-width: 992px) {
         .listingRow div[class*="col-sm"] {
             display: block;
@@ -452,7 +459,7 @@
 
     @media only screen and (min-width: 0) and (max-width: 766.8px) {
         .filterColumn {
-            position:static;
+            position: static;
         }
     }
 

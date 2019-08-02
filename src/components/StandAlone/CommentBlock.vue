@@ -192,22 +192,25 @@
                 })
             },
             deleteComment: function () {
-                this.resetremoveCommentLogic();
-                this.startremoveCommentLogic();
-                let deletePromise = this.sendDeleteRequest();
-                deletePromise.then(response => {
-                    this.successremoveCommentLogic();
-                    console.log(response);
-                    this.$emit('update-comments');
-                }).catch(error => {
-                    // console.log(error.response);
-                    if (error.response) {
-                        this.removeCommentFailed.message = 'مشکلی رخ داد...' + error.response;
-                    } else {
-                        this.removeCommentFailed.message = 'مشکلی رخ داد...';
-                    }
-                    this.failedremoveCommentLogic();
-                })
+                if(window.confirm('از حذف نظر خود مطمئنید ؟')){
+                    this.resetremoveCommentLogic();
+                    this.startremoveCommentLogic();
+                    let deletePromise = this.sendDeleteRequest();
+                    deletePromise.then(response => {
+                        this.successremoveCommentLogic();
+                        console.log(response);
+                        this.$emit('update-comments');
+                    }).catch(error => {
+                        // console.log(error.response);
+                        if (error.response) {
+                            this.removeCommentFailed.message = 'مشکلی رخ داد...' + error.response;
+                        } else {
+                            this.removeCommentFailed.message = 'مشکلی رخ داد...';
+                        }
+                        this.failedremoveCommentLogic();
+                    })
+                }
+
             },
             sendDeleteRequest: function () {
                 return new Promise((resolve, reject) => {

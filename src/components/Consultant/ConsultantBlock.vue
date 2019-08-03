@@ -1,6 +1,11 @@
 <template>
     <div class="card card-profile">
         <div class="card-image" :style="'background: url(' + consultant.profile_picture + ')'">
+
+            <div class="ripple-container"></div>
+        </div>
+
+        <div class="card-content">
             <router-link :to="'/consultants/' + consultant.slug">
                 <div class="card-title">
                     <h4 class="isansFont">
@@ -8,10 +13,6 @@
                     </h4>
                 </div>
             </router-link>
-            <div class="ripple-container"></div>
-        </div>
-
-        <div class="card-content">
             <p class="text-justify isansFont bio">
 <!--   {{consultant.bio}}-->
             </p>
@@ -77,11 +78,10 @@
 
     .card-title {
         left: 0 !important;
-        width: 100%;
+        color: #4b4b4b;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(0, 0, 0, 0.5);
     }
 
     .footer {
@@ -95,7 +95,11 @@
         line-height: 25px;
     }
 
-    @media only screen and (min-width: 0) and (max-width: 992px) {
+    .card .card-content {
+        padding: 10px;
+    }
+
+    @media only screen and (min-width: 0) and (max-width: 1024px) {
 
         .card {
             display: flex;

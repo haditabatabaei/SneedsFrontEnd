@@ -65,7 +65,7 @@
                                             <div class="checkbox isansFont" v-for="country in countriesList">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="country.name"
-                                                           v-model="country.select">
+                                                           v-model="country.select" @change="doFilter()">
                                                     <span class="check"></span>
                                                     {{country.name}}
                                                 </label>
@@ -81,7 +81,7 @@
                                             <h4 class="panel-title isansFont"
                                                 style="display:flex;align-items:center;justify-content:space-between">
                                                 <span class="float-right">
-                                                                                                    <i class="material-icons">account_balance</i>
+                                                    <i class="material-icons">account_balance</i>
                                                     دانشگاه
                                                 </span>
                                                 <i class="material-icons float-left">keyboard_arrow_down</i>
@@ -96,7 +96,7 @@
                                             <div class="checkbox isansFont" v-for="university in universitiesList">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="university.name"
-                                                           v-model="university.select">
+                                                           v-model="university.select"  @change="doFilter()">
                                                     <span class="check"></span>
                                                     {{university.name}}
                                                 </label>
@@ -126,21 +126,13 @@
                                             <div class="checkbox isansFont" v-for="field in fieldOfStudiesList">
                                                 <label :title="field.description">
                                                     <input type="checkbox" name="country" :value="field.name"
-                                                           v-model="field.select">
+                                                           v-model="field.select"  @change="doFilter()">
                                                     <span class="check"></span>
                                                     {{field.name}}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <button class="btn btn-rose btn-block isansFont" style="margin-top:30px;"
-                                            @click="doFilter()">اعمال فیلتر
-                                    </button>
-                                    <button class="btn btn-default btn-block isansFont" style="margin-top:30px;"
-                                            @click="resetFilter()">
-                                        پاکسازی فیلتر ها
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +259,6 @@
                         query += '&field_of_studies=' + this.fieldOfStudiesList[i].id;
                     }
                 }
-
                 return query;
             },
 
@@ -449,7 +440,7 @@
     .card-image {
     }
 
-    @media only screen and (min-width: 0) and (max-width: 992px) {
+    @media only screen and (min-width: 0) and (max-width: 1024px) {
         .listingRow div[class*="col-sm"] {
             display: block;
             width: 100%;

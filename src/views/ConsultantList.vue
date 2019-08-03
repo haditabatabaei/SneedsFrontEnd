@@ -22,22 +22,6 @@
         <div class="main">
             <div class="section">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
-                                            v-if="fetchLoading.value"></RectNotifBlock>
-
-                            <!--<CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
-
-                            <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
-                                            v-else-if="fetchSuccess.value"></RectNotifBlock>
-
-                            <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
-                                            v-else-if="fetchFailed.value"></RectNotifBlock>
-
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div v-if="showFilterPanel" class="col-sm-3 col-xs-12 filterColumn">
@@ -135,6 +119,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
+                                            v-if="fetchLoading.value"></RectNotifBlock>
+
+                            <!--<CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
+
+                            <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
+                                            v-else-if="fetchSuccess.value"></RectNotifBlock>
+
+                            <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
+                                            v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
                         <div v-else class="col-sm-3 col-xs-12 filterToggler"></div>
                         <div class="col-sm-9 col-xs-12">

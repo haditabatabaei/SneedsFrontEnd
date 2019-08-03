@@ -1,7 +1,6 @@
 <template>
     <div class="card card-profile">
-        <div class="card-image" :style="'background: url(' + consultant.profile_picture + ')'">
-
+        <div class="card-image" @click="$router.push('/consultants/' + consultant.slug)" :style="'background: url(' + consultant.profile_picture + ')'">
             <div class="ripple-container"></div>
         </div>
 
@@ -14,7 +13,7 @@
                 </div>
             </router-link>
             <p class="text-justify isansFont bio">
-<!--   {{consultant.bio}}-->
+                <!--   {{consultant.bio}}-->
             </p>
             <div class="rate">
                 <span class="text-white isansFont label label-default"
@@ -66,7 +65,20 @@
         align-items: center;
     }
 
+    .card {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card:hover > .card-image {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
     .card .card-image {
+        transition: all 0.3s ease-in-out;
         background-position: center !important;
         background-size: cover !important;
         background-repeat: no-repeat !important;
@@ -74,6 +86,7 @@
         min-width: 150px;
         margin-right: 7.5px;
         margin-left: 7.5px;
+        cursor:pointer;
     }
 
     .card-title {

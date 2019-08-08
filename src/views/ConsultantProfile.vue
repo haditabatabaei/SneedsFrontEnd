@@ -81,8 +81,9 @@
                             تقویم مشاور
                         </h4>
                         <div class="col-md-12 text-center">
-                            <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()"> < هفته قبلی</button>
-                            <button class="btn btn-info isansFont" @click.prevent="showNextWeek()">هفته بعدی ></button>
+                            <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()">< هفته قبلی</button>
+                            <button class="btn btn-info isansFont
+" @click.prevent="showNextWeek()">هفته بعدی ></button>
                             <div class="table-responsive">
                                 <table class="table table-bordered isansFont " id="myTable" v-html="tableData">
 

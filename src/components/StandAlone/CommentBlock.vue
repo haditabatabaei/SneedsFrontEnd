@@ -192,12 +192,15 @@
                 })
             },
             deleteComment: function () {
-                if(window.confirm('از حذف نظر خود مطمئنید ؟')){
+                if (window.confirm('از حذف نظر خود مطمئنید ؟')) {
                     this.resetremoveCommentLogic();
                     this.startremoveCommentLogic();
                     let deletePromise = this.sendDeleteRequest();
                     deletePromise.then(response => {
                         this.successremoveCommentLogic();
+                        setTimeout(() => {
+                            this.resetremoveCommentLogic();
+                        }, 1000);
                         console.log(response);
                         this.$emit('update-comments');
                     }).catch(error => {

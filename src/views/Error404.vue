@@ -1,16 +1,17 @@
 <template>
     <div>
-        <div class="page-header header-filter header-small" data-parallax="false" id="top" style="transform: translate3d(0px, 0px, 0px);">
+        <div class="page-header header-filter header-small" data-parallax="false" id="top"
+             style="transform: translate3d(0px, 0px, 0px);">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="brand">
-                            <h1 class="title yekanFont text-center">404</h1>
-                            <h4 class="yekanFont text-center">
-                                متاسفانه صفحه ای که دنبالش بودید پیدا نشد.!
-                            </h4>
-                        </div>
-                    </div>
+                <div class="brand text-center">
+                    <h1 class="title isansFont text-center">404</h1>
+                    <h4 class="isansFont text-center">
+                        متاسفانه صفحه ای که دنبالش بودید پیدا نشد.!
+                    </h4>
+                    <router-link to="/" class="btn btn-warning btn-lg isansFont">
+                        <i class="material-icons">keyboard_arrow_left</i>
+                        بازگشت به صفحه اول
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -20,15 +21,24 @@
 <script>
     export default {
         name: "Error404",
-        components: {
-        },mounted(){
-            scrollTo(0,0);
+        components: {}, mounted() {
+            scrollTo(0, 0);
         }
     }
 </script>
 
 <style scoped>
-    .page-header{
-        background-image:url('../../public/webimages/bg3.jpg');
+    .container{
+        padding-top:220px;
+    }
+
+    .container .btn{
+        color:rgb(51,51,51);
+        font-weight:bold;
+    }
+
+    .page-header {
+        height: 100vh;
+        background-image: url('../../public/webimages/bg3.jpg');
     }
 </style>

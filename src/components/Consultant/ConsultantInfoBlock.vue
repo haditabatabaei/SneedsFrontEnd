@@ -42,7 +42,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         border-left: 1px solid white;
         flex-wrap:wrap;
     }

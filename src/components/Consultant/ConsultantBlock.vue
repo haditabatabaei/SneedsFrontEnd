@@ -5,6 +5,7 @@
         </div>
 
         <div class="card-content">
+
             <router-link :to="'/consultants/' + consultant.slug">
                 <div class="card-title">
                     <h4 class="isansFont">
@@ -12,9 +13,7 @@
                     </h4>
                 </div>
             </router-link>
-            <p class="text-justify isansFont bio">
-                <!--   {{consultant.bio}}-->
-            </p>
+
             <div class="rate">
                 <span class="text-white isansFont label label-default"
                       v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
@@ -38,6 +37,7 @@
                 رزرو مشاور
                 <div class="ripple-container"></div>
             </router-link>
+
         </div>
     </div>
 </template>

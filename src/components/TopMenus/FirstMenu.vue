@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fullwidth customContainer firstContainer navbar navbar-info navbar-transparent navbar-color-on-scroll" color-on-scroll=" ">
+    <div class="container-fullwidth customContainer firstContainer navbar navbar-warning">
         <div class="row">
             <div class="col-md-4">
                 <div class="navbar-header navbar-right pull-right">
@@ -78,6 +78,10 @@
         box-shadow: none;
         border-radius: 0;
         padding-right: 15px !important;
+    }
+
+    .customContainer .row{
+        margin-left:0;
     }
 
 

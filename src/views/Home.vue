@@ -1,51 +1,7 @@
 <template>
     <div>
-        <!--        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">-->
-        <!--            <div class="carousel slide" data-ride="carousel">-->
-
-        <!--                &lt;!&ndash; Indicators &ndash;&gt;-->
-        <!--                <ol class="carousel-indicators">-->
-        <!--                    <li data-target="#carousel-example-generic" :data-slide-to="key"-->
-        <!--                        v-bind:class="{'active' : (key === 0)}" v-for="(value, key) in slides"></li>-->
-        <!--                </ol>-->
-
-        <!--                &lt;!&ndash; Wrapper for slides &ndash;&gt;-->
-        <!--                <div class="carousel-inner">-->
-        <!--                    <div class="item" v-for="(slide,key) in slides" v-bind:class="{'active' : (key === 0)}">-->
-        <!--                        <div class="page-header header-filter"-->
-        <!--                             :style="'background-image: url(\'' + slide.imageStyle + '\');'">-->
-        <!--                            <div class="container">-->
-        <!--                                <div class="row">-->
-        <!--                                    <div class="col-md-6 text-left">-->
-        <!--                                        <h1 class="title isansFont text-right">{{slide.title}}</h1>-->
-        <!--                                        <h4 class="isansFont text-justify">-->
-        <!--                                            {{slide.description}}-->
-        <!--                                        </h4>-->
-        <!--                                        <br>-->
-        <!--                                        <div class="buttons" v-if="slide.hasButton">-->
-        <!--                                            <router-link :to="slide.button.target" class="btn isansFont btn-lg"-->
-        <!--                                                         :class="'btn-' + slide.button.colorTheme">-->
-        <!--                                                {{slide.button.value}}-->
-        <!--                                            </router-link>-->
-        <!--                                        </div>-->
-        <!--                                    </div>-->
-        <!--                                </div>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash; Controls &ndash;&gt;-->
-        <!--                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">-->
-        <!--                    <i class="material-icons">keyboard_arrow_left</i>-->
-        <!--                </a>-->
-        <!--                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">-->
-        <!--                    <i class="material-icons">keyboard_arrow_right</i>-->
-        <!--                </a>-->
-        <!--            </div>-->
-        <!--        </div>-->
-
-        <div class="page-header" style="background-image:url('webimages/homebg.jpg'); background-repeat:no-repeat; background-size:cover">
+        <div class="page-header"
+             style="background-image:url('webimages/homebg.jpg'); background-repeat:no-repeat; background-size:cover">
             <div class="container" style="display:flex;justify-content:flex-end;align-items:center">
                 <div class="homeTitleBox" style="color:rgb(51,51,51)">
                     <h1 class="isansFont" style="font-weight:bold;line-height:70px;">
@@ -54,13 +10,142 @@
                     <h3 class="isansFont">
                         اولین پلتفرم آنلاین مشاوره در زمینه <br> اپلای، مهاجرت و کارآفرینی
                     </h3>
-                    <a href="#" class="btn btn-lg btn-warning isansFont" style="color: #434343;">
+                    <router-link to="/consultants" class="btn btn-lg btn-warning isansFont" style="color: #434343;">
                         <i class="material-icons">keyboard_arrow_left</i>
-                        مشاوره اپلای
-                    </a>
+                        مشاهده مشاوران
+                    </router-link>
                 </div>
             </div>
+        </div>
+        <div class="cd-section main" id="features">
 
+            <div class="container">
+                <div class="features-1">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <h2 class="title isansFont">3 ویژگی که خدمات مشاوره اسنیدز رو متفاوت میکنه</h2>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-info">
+                                    <i class="material-icons">money_off</i>
+                                </div>
+                                <h4 class="info-title isansFont">پرداخت کمترین هزینه</h4>
+                                <p class="isansFont text-justify">
+                                    با توجه به اینکه ما یک پلتفرم دانشجویی هستیم، شما می‎تونید با پرداخت کم‎ترین هزینه
+                                    از خدمات ما با بالاترین سطح کیفیت استفاده کنید.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-success">
+                                    <i class="material-icons">verified_user</i>
+                                </div>
+                                <h4 class="info-title isansFont">بهترین مشاوران</h4>
+                                <p class="text-justify isansFont">
+                                    همه‎ی مشاوران ما صفر تا صد مسیر اپلای رو خودشون طی کردن و با آگاهی از تمامی مراحل و
+                                    شرایط، بهترین راهنمایان شما در مسیر اپلای هستند
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-danger">
+                                    <i class="material-icons">alarm</i>
+                                </div>
+                                <h4 class="info-title isansFont">مشاوره آنلاین</h4>
+                                <p class="text-justify isansFont">بدون هیچگونه اتلاف وقت، می‎تونید در هرجایی که هستید از
+                                    خدمات مشاوره‎ی اسنیدز به صورت کاملا آنلاین و تصویری استفاده کنید.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="pricing-1 main" style="background-color:white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 text-center">
+                        <h2 class="title isansFont">تعرفه خدمات مشاوره آنلاین اسنیدز</h2>
+                        <div class="section-space"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="card card-pricing card-plain">
+                            <div class="card-content">
+                                <h6 class="category isansFont">بسته برنزی</h6>
+                                <div class="icon">
+                                    <i class="material-icons">border_style</i>
+                                </div>
+                                <h3 class="card-title isansFont">1 جلسه مشاوره</h3>
+                                <p class="card-description isansFont">
+                                    مشاوره به صورت تصویری و آنلاین
+                                    <br>
+                                    زمان هر جلسه : 60 دقیقه
+                                </p>
+                                <p class="card-price isansFont">80 هزار تومان</p>
+                                <router-link to="/consultants" class="btn btn-white btn-round isansFont">مشاهده لیست
+                                    مشاوران
+                                </router-link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-pricing card-raised">
+                            <div class="card-content">
+                                <h6 class="category isansFont">بسته اقتصادی</h6>
+                                <div class="icon icon-success">
+                                    <i class="material-icons">data_usage</i>
+                                </div>
+                                <h3 class="card-title isansFont">2 جلسه مشاوره</h3>
+                                <p class="card-description isansFont">
+                                    مشاوره به صورت تصویری و آنلاین
+                                    <br>
+                                    زمان هرجلسه ۶۰ دقیقه
+                                </p>
+                                <p class="card-price isansFont">140 هزار تومان</p>
+                                <router-link to="/consultants" class="btn btn-success btn-round isansFont">مشاهده لیست مشاوران</router-link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-pricing card-plain">
+                            <div class="card-content">
+                                <h6 class="category isansFont">بسته طلایی</h6>
+                                <div class="icon">
+                                    <i class="material-icons">border_style</i>
+                                </div>
+                                <h3 class="card-title isansFont">3 جلسه مشاوره</h3>
+                                <p class="card-description isansFont">
+                                    مشاوره به صورت تصویری و آنلاین
+                                    <br>
+                                        <mark> + بررسی و تصحیح رزومه</mark>
+                                    <br>
+                                    زمان هر جلسه : 60 دقیقه
+                                </p>
+                                <p class="card-price isansFont">240 هزار تومان</p>
+                                <router-link to="/consultants" class="btn btn-white btn-round isansFont">مشاهده لیست
+                                    مشاوران
+                                </router-link>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 </template>
@@ -105,8 +190,8 @@
 
 <style scoped>
 
-    .page-header{
-        height:calc(100vh);
+    .page-header {
+        height: calc(100vh);
     }
 
     .homeTitleBox {
@@ -117,9 +202,9 @@
     }
 
 
-    .homeTitleBox a.btn{
-        border-radius:25px;
-        font-weight:bold;
+    .homeTitleBox a.btn {
+        border-radius: 25px;
+        font-weight: bold;
     }
 
     .datetimepicker {

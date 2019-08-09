@@ -1,8 +1,11 @@
 <template>
-    <nav id="topNavbar" class="navbar">
-        <FirstMenu></FirstMenu>
-        <SecondMenu></SecondMenu>
-    </nav>
+        <nav id="topNavbar" class="navbar navbar-fixed-top navbar-transparent navbar-color-on-scroll" color-on-scroll=" ">
+
+            <!--<div class="loadingBox navbar-fixed-top" :class="[{'d-none' : this.$store.getters.getLoadingDisplay}]"-->
+            <!--:style="'width:' + this.$store.getters.getLoadingPercent + '%;'"></div>-->
+            <FirstMenu></FirstMenu>
+            <SecondMenu></SecondMenu>
+        </nav>
 
 </template>
 
@@ -30,9 +33,6 @@
     .navbar {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
-        position: sticky;
-        top: 0;
-        z-index: 99;
-        margin-bottom: 0;
     }
+
 </style>

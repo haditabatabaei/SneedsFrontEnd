@@ -80,7 +80,7 @@
                                             <div class="checkbox isansFont" v-for="university in universitiesList">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="university.name"
-                                                           v-model="university.select"  @change="doFilter()">
+                                                           v-model="university.select" @change="doFilter()">
                                                     <span class="check"></span>
                                                     {{university.name}}
                                                 </label>
@@ -110,7 +110,7 @@
                                             <div class="checkbox isansFont" v-for="field in fieldOfStudiesList">
                                                 <label :title="field.description">
                                                     <input type="checkbox" name="country" :value="field.name"
-                                                           v-model="field.select"  @change="doFilter()">
+                                                           v-model="field.select" @change="doFilter()">
                                                     <span class="check"></span>
                                                     {{field.name}}
                                                 </label>
@@ -181,6 +181,9 @@
                     message: 'مشکلی در دریافت اطلاعات رخ داد...'
                 },
             }
+        },
+        mounted() {
+            scrollTo(0, 0);
         },
         created() {
             this.resetLoadingLogic();

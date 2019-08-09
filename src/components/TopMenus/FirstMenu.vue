@@ -1,12 +1,12 @@
 <template>
-    <div class="container-fullwidth customContainer firstContainer navbar navbar-warning">
-        <div class="row">
-            <div class="col-md-4">
+    <div class="container-fullwidth customContainer firstContainer navbar navbar-info">
+        <div class="firstMenu">
+            <div class="logoWrapper">
                 <div class="navbar-header navbar-right pull-right">
                     <Logo></Logo>
                 </div>
             </div>
-            <div class="col-md-4 col-md-offset-4">
+            <div class="profileWrapper">
                 <div class="dropdown navbar-left pull-left authButton" v-if="showProfileLink">
                     <button href="#" class="dropdown-toggle btn btn-white gadugiFont isansFont"
                             data-toggle="dropdown"
@@ -52,36 +52,45 @@
 
 <script>
     import Logo from './LogoComponent';
+
     export default {
         name: "FirstMenu",
-        components : {
+        components: {
             Logo,
         },
-        computed:{
-            showProfileLink : function(){
+        computed: {
+            showProfileLink: function () {
                 return this.$store.getters.isLoggedIn;
             },
-            showConsultantsManagerLink : function(){
+            showConsultantsManagerLink: function () {
                 return this.$store.getters.getUserInfo.is_consultant;
             }
-        },methods : {
+        }, methods: {
             logout: function () {
-              this.$store.dispatch('logout');
-              this.$router.push('/login');
+                this.$store.dispatch('logout');
+                this.$router.push('/login');
             },
         }
     }
 </script>
 
 <style scoped>
+
+    .firstMenu {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
     .firstContainer {
         box-shadow: none;
         border-radius: 0;
         padding-right: 15px !important;
     }
 
-    .customContainer .row{
-        margin-left:0;
+    .customContainer .row {
+        margin-left: 0;
     }
 
 
@@ -94,7 +103,6 @@
     }
 
     .authButton {
-        margin-top: 10px !important;
         margin-left: 15px;
     }
 
@@ -103,7 +111,13 @@
         min-width: 122px !important;
     }
 
-    .navbar{
-        margin-bottom:0;
+    .navbar {
+        margin-bottom: 0;
+    }
+
+    @media only screen and (max-width: 460px) and (min-width: 0) {
+        .firstMenu {
+            justify-content: center;
+        }
     }
 </style>

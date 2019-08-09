@@ -51,6 +51,8 @@
         topMenuListItems: [
           {itemName: 'صفحه اصلی', target: '/', type : 'router' , hasDropdown: false, dropdownItems: []},
           {itemName: 'مشاوران', target: '/consultants', type : 'router', hasDropDown: false, dropdownItems: []},
+          {itemName: 'مشاوره اپلای' , target : '/consultant/apply', type : 'router', hasDropdown: false, dropdownItems: []},
+          {itemName: 'مشاوره کسب و کار' , target : '/consultant/business', type : 'router', hasDropdown: false, dropdownItems: []},
           {itemName: 'بلاگ' , target: 'http://sneeds.ir/%d8%a8%d9%84%d8%a7%da%af/' , type : 'hyper' , hasDropdown: false, dropdownItems : []},
           {itemName: 'مصاحبه' , target: 'http://sneeds.ir/category/conversation/' , type : 'hyper' , hasDropdown: true, dropdownItems : [
               {itemName: 'مصاحبه اپلای' , target: 'http://sneeds.ir/category/conversation/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87-%d8%a7%d9%be%d9%84%d8%a7%db%8c/' , type : 'hyper' , hasDropdown: false, dropdownItems : []},

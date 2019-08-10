@@ -18,7 +18,7 @@
                     </button>
                     <router-link to="/user/cart" class="btn btn-rose isansFont">
                         <i class="material-icons">shopping_cart</i>
-                        <span>پروفایل</span>
+                        <span>سبد خرید</span>
                     </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
                         <li class="text-right">

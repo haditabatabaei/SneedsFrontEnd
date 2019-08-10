@@ -77,7 +77,11 @@
 <style scoped>
 
     .navbar.navbar-info .dropdown-menu li > a:hover {
-        background-color : #00bcd4 !important;
+        background-color: #00bcd4 !important;
+    }
+
+    .authButton .btn-white {
+        margin-left: 5px;
     }
 
     .firstMenu {
@@ -127,6 +131,7 @@
         .firstMenu {
             justify-content: space-around;
         }
+
         .authButton {
             margin-left: 0;
         }

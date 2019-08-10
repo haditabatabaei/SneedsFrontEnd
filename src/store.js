@@ -12,11 +12,7 @@ export default new Vuex.Store({
 
         userIsLoggedIn: false,
 
-        userInfo: {
-            "user_pk": localStorage.getItem('user_pk') || '',
-            "is_consultant": localStorage.getItem('is_consultant') || '',
-            "consultant": localStorage.getItem('consultant') || ''
-        },
+        userInfo: JSON.parse(localStorage.getItem('userInfo')) || {"user_pk": '', "is_consultant": '', 'consultant': ''},
 
         inputUser: {},
 
@@ -39,7 +35,7 @@ export default new Vuex.Store({
             state.userIsLoggedIn = false;
             state.user = {};
             state.inputUser = {};
-            state.userInfo = {"user_pk": '', "is_consultant": ''};
+            state.userInfo = {"user_pk": '', "is_consultant": '', 'consultant': ''};
 
             localStorage.clear();
         },
@@ -64,17 +60,17 @@ export default new Vuex.Store({
 
         setUserPk(state, pk) {
             state.userInfo.user_pk = pk;
-            localStorage.setItem('user_pk', pk);
+            localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
         setUserConsultantStatus(state, cs) {
             state.userInfo.is_consultant = cs;
-            localStorage.setItem('is_consultant', cs);
+            localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
         setUserConsultantId(state, uci) {
             state.userInfo.consultant = uci;
-            localStorage.setItem('consultant', uci);
+            localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
         setCart(state, cart) {
@@ -259,7 +255,7 @@ export default new Vuex.Store({
                         'Content-Type': 'application/json',
                     },
                 }).then(response => {
-                    commit('setCart',{});
+                    commit('setCart', {});
                     resolve(response);
                 }).catch(error => {
                     reject(error);
@@ -288,11 +284,8 @@ export default new Vuex.Store({
 
         getApi:
             state => state.api,
+
         getAuthApi:
             state => state.authApi,
-        downloadedBooklets:
-            state => state.downloadedBooklets,
-        likedPosts:
-            state => state.likedPosts,
     }
 })

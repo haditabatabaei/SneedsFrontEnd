@@ -228,7 +228,7 @@
                                         </td>
                                         <td class="td-price isansFont">
                                             {{orderDescToShow.total}}
-                                            <span style="font-size:15px">هزار تومان</span>
+                                            <span style="font-size:15px">تومان</span>
                                         </td>
                                         <td colspan="3" class="text-right">
                                             <button class="btn btn-danger btn-round isansFont"

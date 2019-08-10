@@ -99,7 +99,7 @@
                                                 </td>
                                                 <td class="td-price isansFont">
                                                     {{activeCart.total}}
-                                                    <span style="font-size:15px">هزار تومان</span>
+                                                    <span style="font-size:15px">تومان</span>
                                                 </td>
                                                 <td colspan="3" class="text-right">
                                                     <button class="btn btn-info btn-round isansFont"

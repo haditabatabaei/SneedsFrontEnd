@@ -162,6 +162,8 @@
 
                 passType: 'password',
 
+                emailRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+
                 userToLogin: {
                     email: '',
                     password: '',
@@ -232,11 +234,11 @@
               Functionality : updates user errors upon user input and validation
             */
             inputsValidation: function () {
-                if (this.userToLogin.email == null || this.userToLogin.email.length == 0) {
+                if (this.userToLogin.email == null || this.userToLogin.email.length === 0 || !this.userToLogin.email.match(this.emailRegex)) {
                     this.inputErrors.emailError = true;
                 }
 
-                if (this.userToLogin.password == null || this.userToLogin.password.length == 0 || this.userToLogin.password.length != 6) {
+                if (this.userToLogin.password == null || this.userToLogin.password.length === 0 || this.userToLogin.password.length !== 6) {
                     this.inputErrors.passwordError = true;
                 }
 
@@ -361,7 +363,7 @@
                 this.resetLoadingLogic();
                 this.loginLoading.message = 'چند لحظه صبر کنید...'
                 this.startLoadingLogic();
-                if (this.inputEmailForgetPass != undefined && this.inputEmailForgetPass != null && this.inputEmailForgetPass.length != 0) {
+                if (this.inputEmailForgetPass != undefined && this.inputEmailForgetPass != null && this.inputEmailForgetPass.length != 0 && this.inputEmailForgetPass.match(this.emailRegex)) {
 
                     let payload = {
                         "email": this.inputEmailForgetPass,
@@ -406,8 +408,9 @@
         },
         mounted() {
             scrollTo(0, 0);
-        }
+        },
     }
+
 </script>
 
 <style scoped>

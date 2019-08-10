@@ -133,6 +133,8 @@
       return {
         editInfoAvailable: false,
 
+        phoneRegex : /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
+
         inputErrors: {
           firstNameError: false,
           lastNameError: false,
@@ -196,7 +198,7 @@
           this.inputErrors.lastNameError = true;
         }
 
-        if (this.inputUser.phone_number == null || this.inputUser.phone_number.length == 0 || this.inputUser.phone_number.length != 11) {
+        if (this.inputUser.phone_number == null || this.inputUser.phone_number.length == 0 || !this.inputUser.phone_number.match(this.phoneRegex)) {
           this.inputErrors.phoneError = true;
         }
       },

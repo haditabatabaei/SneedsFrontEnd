@@ -210,6 +210,9 @@
             return {
                 passType: 'password',
 
+                phoneRegex : /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
+                emailRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+
                 userToRegister: {
                     first_name: '',
                     last_name: '',
@@ -304,11 +307,11 @@
                     this.inputErrors.lastNameError = true;
                 }
 
-                if (this.userToRegister.email == null || this.userToRegister.email.length == 0) {
+                if (this.userToRegister.email == null || this.userToRegister.email.length == 0 || !this.userToRegister.email.match(this.emailRegex)) {
                     this.inputErrors.emailError = true;
                 }
 
-                if (this.userToRegister.phone_number == null || this.userToRegister.phone_number.length == 0 || this.userToRegister.phone_number.length != 11) {
+                if (this.userToRegister.phone_number == null || this.userToRegister.phone_number.length == 0 || !this.userToRegister.phone_number.match(this.phoneRegex)) {
                     this.inputErrors.phoneError = true;
                 }
 

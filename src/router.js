@@ -17,103 +17,109 @@ import UserCard from "@/views/UserCard";
 import UserOrder from "@/views/UserOrder";
 
 import store from './store';
+import Payment from "@/views/Payment";
 
 Vue.use(Router);
 
 let router = new Router({
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-    }, {
-      path: '/login',
-      name: Login,
-      component: Login,
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register,
-    },
-    {
-      path: '/user/profile',
-      name: 'UserProfile',
-      component: UserProfile,
-    },{
-      path : '/user/consultantmanager',
-      name : 'ConsultManagement',
-      component : ConsultManagement,
-    },{
-      path : '/user/cart',
-      name : 'UserCart',
-      component : UserCard
-    },
-    {
-      path : '/user/order',
-      name : 'UserOrder',
-      component : UserOrder,
-    },
-    {
-      path : '/user/reserved',
-      name : 'UserReservedSessions',
-      component : UserReservedSessions
-    },{
-      path : '/user/password-reset',
-      name : 'ResetPassword',
-      component : ResetPassword
-    },
-    {
-      path : '/consultants',
-      name : 'ConsultantList',
-      component : ConsultantList,
-    },{
-      path : '/consultants/:consultantSlug',
-      name : 'ConsultantProfile',
-      component : ConsultantProfile,
-    },
-    {
-      path: '/404',
-      name: 'Error404',
-      component: Error404,
-    },
-    {
-      path: '*',
-      redirect: '/404',
-    }
-  ]
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '/',
+            name: 'Home',
+            component: Home,
+        }, {
+            path: '/login',
+            name: Login,
+            component: Login,
+        },
+        {
+            path: '/register',
+            name: 'Register',
+            component: Register,
+        },
+        {
+            path: '/user/profile',
+            name: 'UserProfile',
+            component: UserProfile,
+        }, {
+            path: '/user/consultantmanager',
+            name: 'ConsultManagement',
+            component: ConsultManagement,
+        }, {
+            path: '/user/cart',
+            name: 'UserCart',
+            component: UserCard
+        },
+        {
+            path: '/user/order',
+            name: 'UserOrder',
+            component: UserOrder,
+        },
+        {
+            path: '/user/reserved',
+            name: 'UserReservedSessions',
+            component: UserReservedSessions
+        }, {
+            path: '/user/password-reset',
+            name: 'ResetPassword',
+            component: ResetPassword
+        },
+        {
+            path: '/consultants',
+            name: 'ConsultantList',
+            component: ConsultantList,
+        }, {
+            path: '/consultants/:consultantSlug',
+            name: 'ConsultantProfile',
+            component: ConsultantProfile,
+        },
+        {
+            path: '/payment/accept',
+            name: 'Payment',
+            component: Payment,
+        },
+        {
+            path: '/404',
+            name: 'Error404',
+            component: Error404,
+        },
+        {
+            path: '*',
+            redirect: '/404',
+        }
+    ]
 });
 
 router.beforeEach((to, from, next) => {
 
-  const requiredAuthRoutes = ['/user/profile','/user/consultantmanager' , '/user/cart','/user/order','/user/reserved'];
-  const requiredNotAuth = ['/login', '/register'];
+    const requiredAuthRoutes = ['/user/profile', '/user/consultantmanager', '/user/cart', '/user/order', '/user/reserved', '/payment/accept'];
+    const requiredNotAuth = ['/login', '/register'];
 
-  window.console.log(to.path);
+    window.console.log(to.path);
 
-  if (requiredAuthRoutes.includes(to.path)) {
-    window.console.log(to.path + " requires auth");
-    if (store.getters.isLoggedIn) {
-      window.console.log("auth good going in");
-      next();
+    if (requiredAuthRoutes.includes(to.path)) {
+        window.console.log(to.path + " requires auth");
+        if (store.getters.isLoggedIn) {
+            window.console.log("auth good going in");
+            next();
+        } else {
+            window.console.log("auth not good going login");
+            next('/login');
+        }
+    } else if (requiredNotAuth.includes(to.path)) {
+        window.console.log(to.path + " requires not auth");
+        if (!store.getters.isLoggedIn) {
+            window.console.log("is not auth good going in");
+            next();
+        } else {
+            window.console.log("is not auth not good do nothing");
+            next('/');
+        }
     } else {
-      window.console.log("auth not good going login");
-      next('/login');
+        window.console.log("not condition going in");
+        next();
     }
-  } else if (requiredNotAuth.includes(to.path)) {
-    window.console.log(to.path + " requires not auth");
-    if (!store.getters.isLoggedIn) {
-      window.console.log("is not auth good going in");
-      next();
-    } else {
-      window.console.log("is not auth not good do nothing");
-      next('/');
-    }
-  } else {
-    window.console.log("not condition going in");
-    next();
-  }
 });
 
 export default router;

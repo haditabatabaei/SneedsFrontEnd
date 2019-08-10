@@ -55,12 +55,12 @@
                                             <p class="text-success text-right isansFont">پنل اضافه کردن جلسه:</p>
                                             <label for="selectedPrice" class="isansFont">هزینه کلاس:</label>
                                             <input id="selectedPrice" class="isansFont d-block w-100" type="number"
-                                                   min="0" v-model="selectedPrice" required
+                                                   min="1000" v-model="selectedPrice" required
                                                    placeholder="لطفا هزینه کلاس را وارد کنید">
                                             <span class="material-input"></span>
                                             <span class="text-center isansFont text-danger"
                                                   v-if="inputErrors.costError">
-                      لطفا هزینه شرکت در جلسه را مشخص نمایید از 0 ( رایگان ) تا 100 ( هزار تومان )
+                      لطفا هزینه شرکت در جلسه را مشخص نمایید حداقل 1000. ( معادل 1000 تومان )
                                                  </span>
                                             <button @click.prevent="addTimes()"
                                                     class="btn btn-success btn-block isansFont">
@@ -527,7 +527,7 @@
                 this.resetInputErrors();
                 this.resetLoadingLogic();
                 this.startLoadingLogic();
-                if (this.selectedPrice != null && this.selectedPrice.length != 0 && Number(this.selectedPrice) >= 0 && Number(this.selectedPrice) <= 100) {
+                if (this.selectedPrice != null && this.selectedPrice.length != 0 && Number(this.selectedPrice) >= 1000) {
                     console.log('selected dates:', this.selectedDates);
                     console.log('selected price:', this.selectedPrice);
                     let promises = [];
@@ -559,7 +559,7 @@
                 } else {
                     this.inputErrors.costError = true;
                     this.failedLoadingLogic();
-                    this.alertFailed.message = "لطفا قیمت جلسات را عدد معتبر از 0 تا 100 وارد کنید"
+                    this.alertFailed.message = "لطفا هزینه شرکت در جلسه را مشخص نمایید حداقل 1000. ( معادل 1000 تومان )"
                 }
 
             },

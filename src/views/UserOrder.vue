@@ -175,7 +175,8 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail" :data-slotId="slotDetail.id">
+                                    <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail"
+                                        :data-slotId="slotDetail.id">
                                         <td class="td-name">
                                             <router-link
                                                     :to="'/consultants/' + slotDetail.consultant_slug">
@@ -217,11 +218,11 @@
                                             format('YYYY/MM/DD HH:mm:ss')
                                             }}
                                         </td>
-                                         <td>
-                                             شماره پیگیری فاکتور :
-                                             <br>
-                                             {{orderDescToShow.order_id}}
-                                         </td>
+                                        <td>
+                                            شماره پیگیری فاکتور :
+                                            <br>
+                                            {{orderDescToShow.order_id}}
+                                        </td>
                                         <td class="td-total isansFont">
                                             جمع:
                                         </td>
@@ -240,6 +241,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div v-html="paymentError"></div>
                         </div>
                     </div>
                 </div>
@@ -261,7 +263,7 @@
         data: function () {
             return {
                 orderDescShown: false,
-                orderDescToShow : {},
+                orderDescToShow: {},
                 orders: [],
                 completedOrders: [],
                 cartsSuccess: {
@@ -279,6 +281,7 @@
                     value: false,
                     message: 'مشکلی رخ داد...'
                 },
+                paymentError: '',
             }
         }, created() {
             this.startCartsLogic();
@@ -299,13 +302,13 @@
         },
         methods: {
 
-            hideOrderDesc(){
-              this.orderDescShown = false;
-              this.orderDescToShow = {};
+            hideOrderDesc() {
+                this.orderDescShown = false;
+                this.orderDescToShow = {};
             },
 
             showOrderDesc(order) {
-                console.log('show order :',order);
+                console.log('show order :', order);
                 this.orderDescShown = true;
                 this.orderDescToShow = order;
             },
@@ -345,24 +348,27 @@
                 let paymentAcceptPromise = this.sendPaymentAcceptRequest();
                 paymentAcceptPromise.then(response => {
                     console.log('response for factor payment : ', response);
-                    this.getOrders().then((orders) => {
-                        this.getPaidOrders().then((paidOrders) => {
-                            this.successCartsLogic();
-                            this.orders = orders;
-                            this.completedOrders = paidOrders;
-                            this.$store.commit('setCart', null);
-                            this.resetCartsLogic();
-                        }).catch(() => {
-                            this.failedCartsLogic();
-                        });
-                    }).catch(() => {
-                        this.failedCartsLogic();
-                    });
+                    window.open(response.data.redirect, '_blank');
+                    // this.getOrders().then((orders) => {
+                    //     this.getPaidOrders().then((paidOrders) => {
+                    //         this.successCartsLogic();
+                    //         this.orders = orders;
+                    //         this.completedOrders = paidOrders;
+                    //         this.$store.commit('setCart', null);
+                    //         this.resetCartsLogic();
+                    //     }).catch(() => {
+                    //         this.failedCartsLogic();
+                    //     });
+                    // }).catch(() => {
+                    //     this.failedCartsLogic();
+                    // });
 
                 }).catch(error => {
                     console.log(error);
-                    if (error.response)
+                    if (error.response) {
                         console.log(error.response);
+                        this.paymentError = error.response.data;
+                    }
                     this.failedCartsLogic();
                 })
             },
@@ -370,7 +376,7 @@
             sendPaymentAcceptRequest: function () {
                 return new Promise((resolve, reject) => {
                     axios({
-                        url: this.$store.getters.getApi + 'order/orders/' + this.activeOrder.id + '/accept/',
+                        url: this.$store.getters.getApi + 'payment/request/',
                         method: 'POST',
                         headers: {
                             'Authorization': 'JWT ' + this.$store.getters.getToken,

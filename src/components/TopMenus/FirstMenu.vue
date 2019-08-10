@@ -76,6 +76,10 @@
 
 <style scoped>
 
+    .navbar.navbar-info .dropdown-menu li > a:hover {
+        background-color : #00bcd4 !important;
+    }
+
     .firstMenu {
         display: flex;
         align-items: center;
@@ -123,8 +127,6 @@
         .firstMenu {
             justify-content: space-around;
         }
-
-
         .authButton {
             margin-left: 0;
         }

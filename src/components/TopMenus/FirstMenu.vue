@@ -7,18 +7,18 @@
                 </div>
             </div>
             <div class="profileWrapper">
-                <div class="dropdown navbar-left pull-left authButton" v-if="showProfileLink">
+                <div class="dropdown authButton" v-if="showProfileLink">
                     <button href="#" class="dropdown-toggle btn btn-white gadugiFont isansFont"
                             data-toggle="dropdown"
                             aria-expanded="false">
                         <i class="material-icons">account_circle</i>
-                        پروفایل
+                        <span>پروفایل</span>
                         <b class="caret"></b>
                         <div class="ripple-container"></div>
                     </button>
                     <router-link to="/user/cart" class="btn btn-rose isansFont">
                         <i class="material-icons">shopping_cart</i>
-                        سبد خرید
+                        <span>پروفایل</span>
                     </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
                         <li class="text-right">
@@ -115,9 +115,28 @@
         margin-bottom: 0;
     }
 
+    .authButton .btn span {
+        margin-right: 5px;
+    }
+
     @media only screen and (max-width: 460px) and (min-width: 0) {
         .firstMenu {
-            justify-content: center;
+            justify-content: space-around;
         }
+
+
+        .authButton {
+            margin-left: 0;
+        }
+
+        .authButton .btn span {
+            display: none;
+        }
+
+        .authButton .btn {
+            padding: 5px 20px;
+            font-size: 11px;
+        }
+
     }
 </style>

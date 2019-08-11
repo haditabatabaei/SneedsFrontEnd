@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="page-header header-filter header-small" data-parallax="true" style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+        <div class="page-header header-filter header-small" data-parallax="true"
+             style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -16,15 +17,43 @@
             <div class="profile-content">
                 <div class="container">
                     <div class="row">
+                        <div class="col-md-12 text-center" style="margin-top:10px;"
+                             v-if="reservedSessions.length === 0">
+
+                            <RectNotifBlock :message="cartsLoading.message"
+                                            type="warning"
+                                            borderRound="true"
+                                            v-if="cartsLoading.value"></RectNotifBlock>
+
+                            <RectNotifBlock :message="cartsSuccess.message"
+                                            type="success"
+                                            borderRound="true"
+                                            v-else-if="cartsSuccess.value"></RectNotifBlock>
+
+                            <RectNotifBlock :message="cartsFailed.message"
+                                            type="danger"
+                                            borderRound="true"
+                                            v-else-if="cartsFailed.value"></RectNotifBlock>
+
+                            <p class="isansFont">جلسه ای برای نمایش وجود ندارد</p>
+                            <router-link to="/consultants" class="btn btn-info btn-simple btn-lg text-center isansFont">
+                                مشاهده مشاوران
+                            </router-link>
+                        </div>
                         <div class="card card-profile card-plain col-md-6 flexCard" v-for="session in reservedSessions">
                             <div class="card-image">
-                                <a href="#pablo">
-                                    <img class="img img-fluid" v-if="consultants[reservedSessions.indexOf(session)]" v-bind:src="consultants[reservedSessions.indexOf(session)].profile_picture" alt="image">
-                                </a>
+                                <router-link :to="'consultants/' + session.consultant_slug">
+                                    <img class="img img-fluid" v-if="consultants[reservedSessions.indexOf(session)]"
+                                         v-bind:src="consultants[reservedSessions.indexOf(session)].profile_picture"
+                                         alt="image">
+                                </router-link>
                             </div>
                             <div class="col-md-7">
                                 <div class="card-content">
-                                    <h4 class="card-title isansFont" v-if="consultants[reservedSessions.indexOf(session)]"> مشاور : {{ consultants[reservedSessions.indexOf(session)].first_name + ' ' + consultants[reservedSessions.indexOf(session)].last_name }}</h4>
+                                    <h4 class="card-title isansFont"
+                                        v-if="consultants[reservedSessions.indexOf(session)]"> مشاور : {{
+                                        consultants[reservedSessions.indexOf(session)].first_name + ' ' +
+                                        consultants[reservedSessions.indexOf(session)].last_name }}</h4>
                                     <br>
                                     <p class="isansFont">
                                         تاریخ برگزاری :
@@ -74,14 +103,32 @@
 <script>
     import axios from 'axios'
     import jalali from 'jalali-moment'
+    import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
 
     export default {
         name: "UserReservedSessions",
+        components: {RectNotifBlock},
         data() {
             return {
                 reservedSessions: [],
                 consultants: [],
-                inputRate : '',
+                inputRate: '',
+
+                cartsSuccess: {
+                    value: false,
+                    message: 'عملیات موفق آمیز بود'
+                },
+
+                cartsLoading: {
+                    value: false,
+                    message:
+                        'چند لحظه صبر کنید...'
+                },
+
+                cartsFailed: {
+                    value: false,
+                    message: 'مشکلی رخ داد...'
+                },
 
             }
         },
@@ -97,10 +144,13 @@
 
         },
         mounted() {
+            this.resetCartsLogic();
+            this.startCartsLogic();
             this.getReservedTimes().then(() => {
-                console.log('---------------------------final reserved sessions :---------------------------', this.reservedSessions);
+                console.log(this.reservedSessions);
+                this.resetCartsLogic();
             }).catch(() => {
-
+                this.failedCartsLogic();
             });
         },
         methods: {
@@ -215,7 +265,36 @@
                         reject(error);
                     })
                 })
-            }
+            },
+
+
+            resetCartsLogic: function () {
+                window.console.log('no loading deploy');
+                this.cartsLoading.value = false;
+                this.cartsFailed.value = false;
+                this.cartsSuccess.value = false;
+            },
+
+            startCartsLogic: function () {
+                window.console.log('start loading deploy');
+                this.cartsLoading.value = true;
+                this.cartsFailed.value = false;
+                this.cartsSuccess.value = false;
+            },
+
+            failedCartsLogic: function () {
+                window.console.log('failed loading deploy');
+                this.cartsLoading.value = false;
+                this.cartsFailed.value = true;
+                this.cartsSuccess.value = false;
+            },
+
+            successCartsLogic: function () {
+                window.console.log('success loading deploy');
+                this.cartsLoading.value = false;
+                this.cartsFailed.value = false;
+                this.cartsSuccess.value = true;
+            },
         },
     }
 

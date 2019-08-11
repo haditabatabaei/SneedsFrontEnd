@@ -9,13 +9,29 @@
 
                     <div class="row">
                         <div class="col-xs-6 col-xs-offset-3">
-                            <ConsultantTitle :consultant="consultant"></ConsultantTitle>
+                            <ConsultantTitle :consultant="consultant" v-if="!profileLoading.value"></ConsultantTitle>
                         </div>
                     </div>
 
+                    <div class="row mt-5">
+                        <RectNotifBlock :message="profileLoading.message"
+                                        type="warning"
+                                        borderRound="true"
+                                        v-if="profileLoading.value"></RectNotifBlock>
+
+                        <RectNotifBlock :message="profileSuccess.message"
+                                        type="success"
+                                        borderRound="true"
+                                        v-else-if="profileSuccess.value"></RectNotifBlock>
+
+                        <RectNotifBlock :message="profileFailed.message"
+                                        type="danger"
+                                        borderRound="true"
+                                        v-else-if="profileFailed.value"></RectNotifBlock>
+                    </div>
 
                     <div class="row">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-rose d-inline-block isansFont">
                                 <li class="active"><a href="#description" data-toggle="tab"
                                                       aria-expanded="true">مشخصات</a></li>
@@ -25,7 +41,7 @@
                             </ul>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" v-if="!profileLoading.value">
                             <div class="tab-content tab-space">
                                 <div class="tab-pane active" id="description">
                                     <div class="row">
@@ -47,7 +63,8 @@
                                         <h4 class="videoTitle isansFont text-center">
                                             تقویم مشاور
                                         </h4>
-                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig" v-if="consultant.id"></Calendar>
+                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig"
+                                                  v-if="consultant.id"></Calendar>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="comments">
@@ -153,6 +170,22 @@
                     message: 'مشکلی در ثبت نظر رخ داد...'
                 },
 
+                profileSuccess: {
+                    value: false,
+                    message: 'عملیات موفقیت آمیز بود'
+                },
+
+                profileLoading: {
+                    value: false,
+                    message:
+                        'چند لحظه صبر کنید...'
+                },
+
+                profileFailed: {
+                    value: false,
+                    message: 'مشکلی رخ داد...'
+                },
+
 
             }
         },
@@ -165,13 +198,19 @@
             },
         },
         created() {
-            let consultPromise = this.getConsultantBySlug(this.$route.params.consultantSlug);
-            consultPromise.then(response => {
+            this.resetprofileLogic();
+            this.startprofileLogic();
+            this.getConsultantBySlug(this.$route.params.consultantSlug).then(response => {
                 this.consultant = response.data;
                 this.aparatFrameLink = this.getVideoFrameLink(this.consultant.aparat_link);
-                this.getConsultantComments(this.consultant.id);
+                this.getConsultantComments(this.consultant.id).then(() => {
+                    this.resetprofileLogic();
+                }).catch(error => {
+                    this.failedprofileLogic();
+                });
             }).catch(error => {
                 window.console.log(error.response);
+                this.failedprofileLogic();
             });
 
         },
@@ -180,6 +219,34 @@
         },
 
         methods: {
+
+            resetprofileLogic: function () {
+                window.console.log('no loading deploy');
+                this.profileLoading.value = false;
+                this.profileFailed.value = false;
+                this.profileSuccess.value = false;
+            },
+
+            startprofileLogic: function () {
+                window.console.log('start loading deploy');
+                this.profileLoading.value = true;
+                this.profileFailed.value = false;
+                this.profileSuccess.value = false;
+            },
+
+            failedprofileLogic: function () {
+                window.console.log('failed loading deploy');
+                this.profileLoading.value = false;
+                this.profileFailed.value = true;
+                this.profileSuccess.value = false;
+            },
+
+            successprofileLogic: function () {
+                window.console.log('success loading deploy');
+                this.profileLoading.value = false;
+                this.profileFailed.value = false;
+                this.profileSuccess.value = true;
+            },
 
             resetSubmitCommentLogic: function () {
                 window.console.log('no loading deploy');

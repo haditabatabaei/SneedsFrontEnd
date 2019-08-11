@@ -41,7 +41,10 @@
                                                     type="danger"
                                                     borderRound="true"
                                                     v-else-if="cartsFailed.value"></RectNotifBlock>
-                                    <div v-if="activeCart == undefined" class="isansFont">سبد خرید شما خالی است.</div>
+                                    <div v-if="activeCart == undefined" class="isansFont">
+                                        <p>سبد خرید شما خالیست.</p>
+                                        <router-link class="btn btn-simple btn-lg btn-info isansFont" to="/consultants">مشاهده مشاوران</router-link>
+                                    </div>
                                     <div v-else class="row card table-responsive">
                                         <table class="table table-shopping">
                                             <thead>

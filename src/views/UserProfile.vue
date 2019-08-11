@@ -57,6 +57,7 @@
                         </div>
                         <div class="tab-pane" v-bind:class="{active: activeCommentsSection}" id="commentSection">
                             <div class="row">
+                                <p v-if="comments.length === 0" class="isansFont text-center">نظری برای نمایش وجود ندارد.</p>
                                 <div class="col-md-8 col-md-offset-2" v-for="comment in comments">
                                     <CommentBlock :config="{'showEdit':false,'showRemove':true}" :comment="comment" @update-comments="getAccountComments()"></CommentBlock>
                                 </div>

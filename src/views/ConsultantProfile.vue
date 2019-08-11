@@ -1,7 +1,7 @@
 <template>
     <div class="profile-page">
         <div class="page-header header-filter" data-parallax="true"
-             style="background-image: url('../webimages/userbg.jpg');"></div>
+             style="background-image: url('http://193.176.241.131/sneedsAssets/img/userbg.jpg');"></div>
 
         <div class="main">
             <div class="profile-content">
@@ -80,7 +80,7 @@
                                                                 class="btn btn-rose  isansFont">
                                                             <i class="material-icons" v-if="submitCommentFailed.value">block</i>
                                                             <i class="material-icons" v-if="submitCommentSuccess.value">done</i>
-                                                            <img src="../../public/webimages/loading.svg"
+                                                            <img src="http://193.176.241.131/sneedsAssets/img/loading.svg"
                                                                  alt="loading icon"
                                                                  class="loadingIcon"
                                                                  v-if="submitCommentLoading.value"

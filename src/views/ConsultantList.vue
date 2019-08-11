@@ -14,7 +14,7 @@
                         </h3>
                     </div>
                     <div class="col-md-7 text-center"
-                         style="background:url('../webimages/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
+                         style="background:url('http://193.176.241.131/sneedsAssets/img/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
                     </div>
                 </div>
             </div>
@@ -415,7 +415,7 @@
 
     .page-header {
         min-height: 100vh;
-        background-image: url('../../public/webimages/consultantsBg.jpg');
+        background-image: url('http://193.176.241.131/sneedsAssets/img/consultantsBg.jpg');
         background-size: cover;
     }
 

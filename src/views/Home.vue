@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header"
-             style="background-image:url('webimages/homebg.jpg'); background-repeat:no-repeat; background-size:cover">
+             style="background-image:url('http://193.176.241.131/sneedsAssets/img/homebg.jpg'); background-repeat:no-repeat; background-size:cover">
             <div class="container" style="display:flex;justify-content:flex-end;align-items:center">
                 <div class="homeTitleBox" style="color:rgb(51,51,51)">
                     <h1 class="isansFont" style="font-weight:bold;line-height:70px;">

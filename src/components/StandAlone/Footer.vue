@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <router-link to="/">
                             <h5 class="isansFont text-right">
-                                <img class="brand-image" src="webimages/sneedsLogo.png"
+                                <img class="brand-image" src="http://193.176.241.131/sneedsAssets/img/sneedsLogo.png"
                                      alt="لوگو اسنیدز">
                                 اسنیدز
                             </h5>
@@ -87,13 +87,13 @@
                             نماد های اعتماد الکترونیک :
                         </h4>
                         <div class="gallery-feed">
-                            <img src="webimages/samandehi.png" alt="نماد ساماندهی"
+                            <img src="http://193.176.241.131/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
                                  class="img img-raised">
-                            <img src="webimages/samandehi.png" alt="نماد ساماندهی"
+                            <img src="http://193.176.241.131/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
                                  class="img img-raised">
-                            <img src="webimages/samandehi.png" alt="نماد ساماندهی"
+                            <img src="http://193.176.241.131/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
                                  class="img img-raised">
-                            <img src="webimages/samandehi.png" alt="نماد ساماندهی"
+                            <img src="http://193.176.241.131/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
                                  class="img img-raised">
                         </div>
                     </div>

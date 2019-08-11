@@ -11,7 +11,7 @@
         <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()"
                 v-if="isLoggedIn && config.showAddToCart">
             <i class="material-icons" v-if="reserveSuccess.value">done</i>
-            <img src="../../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+            <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
                  v-if="reserveLoading.value">
             <i class="material-icons" v-if="reserveFailed.value">block</i>
             اضافه کردن به سبد خرید

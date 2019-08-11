@@ -23,7 +23,7 @@
         <div class="editPanel"
              v-if="this.$store.getters.isLoggedIn && comment.user == this.$store.getters.getUserInfo.user_pk">
             <button @click.prevent="deleteComment()" v-if="config.showRemove" class="btn btn-danger btn-sm isansFont">
-                <img src="../../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+                <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
                      v-if="removeCommentLoading.value">
                 <i class="material-icons" v-if="removeCommentSuccess.value">done</i>
                 <i class="material-icons" v-if="removeCommentFailed.value">block</i>
@@ -39,7 +39,7 @@
                               rows="6"></textarea>
                     <span class="material-input"></span>
                     <button class="btn btn-success btn-sm isansFont" @click="editComment()">
-                        <img src="../../../public/webimages/loading.svg" alt="loading icon" class="loadingIcon"
+                        <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
                              v-if="editCommentLoading.value">
                         <i class="material-icons" v-if="editCommentSuccess.value">done</i>
                         <i class="material-icons" v-if="editCommentFailed.value">block</i>

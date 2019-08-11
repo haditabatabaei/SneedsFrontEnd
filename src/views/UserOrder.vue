@@ -91,15 +91,25 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">
+                                                <td class="td-total isansFont">
+                                                    میزان تخفیف :
+                                                    {{activeOrder.cart.time_slot_sales_discount}}
+                                                    درصد
                                                 </td>
                                                 <td class="td-total isansFont">
-                                                    جمع:
+                                                    جمع اولیه :
                                                 </td>
                                                 <td class="td-price isansFont">
-                                                    <p>{{activeOrder.total}}
-                                                        <br>
-                                                        <span style="font-size:12px">هزار تومان</span>
+                                                    <del class="text-danger">{{activeOrder.cart.subtotal}}</del>
+                                                    <span style="font-size:15px;margin-right:5px">تومان</span>
+                                                </td>
+                                                <td class="td-total isansFont">
+                                                    قابل پرداخت با اعمال تخفیف :
+                                                </td>
+                                                <td class="td-price isansFont">
+                                                    <p>
+                                                        <span class="text-success">{{activeOrder.total}}</span>
+                                                        <span style="font-size:12px;margin-right:5px">تومان</span>
                                                     </p>
                                                 </td>
                                                 <td colspan="3" class="text-right">

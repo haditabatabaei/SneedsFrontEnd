@@ -92,16 +92,26 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">
+                                                <td class="td-total isansFont">
+                                                    میزان تخفیف :
+                                                    {{activeCart.time_slot_sales_discount}}
+                                                    درصد
                                                 </td>
                                                 <td class="td-total isansFont">
-                                                    جمع:
+                                                    جمع اولیه :
                                                 </td>
                                                 <td class="td-price isansFont">
-                                                    {{activeCart.total}}
-                                                    <span style="font-size:15px">تومان</span>
+                                                     <del class="text-danger">{{activeCart.subtotal}}</del>
+                                                    <span style="font-size:12px;margin-right:5px">تومان</span>
                                                 </td>
-                                                <td colspan="3" class="text-right">
+                                                <td class="td-total isansFont">
+                                                    قابل پرداخت با اعمال تخفیف :
+                                                </td>
+                                                <td class="td-price isansFont">
+                                                    <span class="text-success">{{activeCart.total}}</span>
+                                                    <span style="font-size:12px;margin-right:5px">تومان</span>
+                                                </td>
+                                                <td class="text-right">
                                                     <button class="btn btn-info btn-round isansFont"
                                                             @click="factorCreation()">
                                                         <i class="material-icons">keyboard_arrow_left</i>

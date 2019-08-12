@@ -42,11 +42,11 @@
                                                                 type="text"
                                                                 class="form-control gadugiFont isansFont"
                                                                 name="fullName"
-                                                                placeholder="نام...">
+                                                                placeholder="نام">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="inputErrors.firstNameError">
-                              لطفا نام خود را وارد کنید
+                                                              v-if="!firstNameIsValid">
+                              لطفا نام خود را وارد کنید.
                             </span>
                                                     </div>
                                                 </div>
@@ -62,11 +62,11 @@
                                                                 type="text"
                                                                 class="form-control gadugiFont isansFont"
                                                                 name="fullName"
-                                                                placeholder="نام خانوادگی...">
+                                                                placeholder="نام خانوادگی">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="inputErrors.lastNameError">
-                              لطفا نام خانوادگی خود را وارد کنید
+                                                              v-if="!lastNameIsValid">
+                              لطفا نام خانوادگی خود را وارد کنید.
                             </span>
                                                     </div>
                                                 </div>
@@ -83,10 +83,10 @@
                                                             name="emailAddress"
                                                             v-model="userToRegister.email"
                                                             class="form-control isansFont"
-                                                            placeholder="ایمیل..."><span
+                                                            placeholder="ایمیل"><span
                                                             class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="inputErrors.emailError">
+                                                              v-if="!emailIsValid">
                               لطفا یک ایمیل معتبر وارد کنید
                             </span>
                                                     </div>
@@ -99,15 +99,14 @@
 											</span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                                type="number"
                                                                 v-model="userToRegister.phone_number"
                                                                 class="form-control gadugiFont isansFont"
-                                                                placeholder="شماره تماس...."
+                                                                placeholder="شماره تماس"
                                                                 name="phoneNumber"
                                                         >
                                                         <span class="material-input"></span></div>
                                                     <span class="text-center isansFont text-danger"
-                                                          v-if="inputErrors.phoneError">لطفا یک شماره تماس معتبر وارد کنید</span>
+                                                          v-if="!phoneNumberIsValid">لطفا یک شماره تماس موبایل معتبر ایران وارد کنید</span>
                                                 </div>
                                             </div>
 
@@ -124,12 +123,12 @@
                                                                 name="password"
                                                                 v-model="userToRegister.password"
                                                                 :type="passType"
-                                                                placeholder="رمز عبور..."
+                                                                placeholder="رمز عبور"
                                                                 class="form-control isansFont"><span
                                                             class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="inputErrors.passwordError">
-                              لطفا یک رمز عبور معتبر وارد کنید
+                                                              v-if="!passwordIsValid">
+                              لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                             </span>
                                                     </div>
                                                 </div>
@@ -146,11 +145,11 @@
                                                                 name="passwordConfirm"
                                                                 data-vv-as="password"
                                                                 :type="passType"
-                                                                placeholder="تکرار رمز عبور..."
+                                                                placeholder="تکرار رمز عبور"
                                                                 class="form-control isansFont">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="inputErrors.confirmPasswordError">
+                                                              v-if="!confirmPasswordIsValid">
                                                                 لطفا تکرار رمز عبور را به درستی وارد کنید
                                                         </span>
                                                     </div>
@@ -181,13 +180,13 @@
                                                     </label>
                                                 </div>
                                                 <span class="text-center isansFont text-danger"
-                                                      v-if="inputErrors.applyWithRulesError">
+                                                      v-if="!applyWithRules">
                               برای ثبت نام باید حتما قوانین ما را خوانده و بپذیرید
-                        </span>
+                                                </span>
                                             </div>
 
                                             <div class="col-sm-6 text-center">
-                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام">
+                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام" :disabled="!formIsValid">
                                             </div>
                                         </div>
                                     </div>
@@ -210,7 +209,8 @@
             return {
                 passType: 'password',
 
-                phoneRegex : /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
+                phoneRegexIran: /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
+
                 emailRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
                 userToRegister: {
@@ -221,16 +221,6 @@
                     address: '',
                     password: '',
                     password2: '',
-                },
-
-                inputErrors: {
-                    firstNameError: false,
-                    lastNameError: false,
-                    emailError: false,
-                    phoneError: false,
-                    passwordError: false,
-                    confirmPasswordError: false,
-                    applyWithRulesError: false,
                 },
 
                 applyWithRules: false,
@@ -252,6 +242,30 @@
                 },
             }
         },
+        computed: {
+            emailIsValid() {
+                return this.userToRegister.email.match(this.emailRegex);
+            },
+            firstNameIsValid() {
+                return this.userToRegister.first_name.trim();
+            },
+            lastNameIsValid() {
+                return this.userToRegister.last_name.trim();
+            },
+            phoneNumberIsValid() {
+                return this.userToRegister.phone_number.match(this.phoneRegexIran);
+            },
+            passwordIsValid() {
+                return this.userToRegister.password.length >= 6;
+            },
+            confirmPasswordIsValid() {
+                return this.userToRegister.password2.length >= 6 && this.userToRegister.password2 === this.userToRegister.password
+            },
+            formIsValid() {
+                return this.emailIsValid && this.firstNameIsValid && this.lastNameIsValid && this.phoneNumberIsValid && this.passwordIsValid && this.confirmPasswordIsValid && this.applyWithRules
+            },
+
+        },
         components: {RectNotifBlock},
         methods: {
 
@@ -261,86 +275,6 @@
                 } else {
                     this.passType = 'password'
                 }
-            },
-
-            /*
-              Input : -
-              Output : -
-              Functionality : resets input errors object to default false value
-            */
-            resetInputErrors: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        this.inputErrors[errorProperty] = false;
-                    }
-                }
-            },
-
-            /*
-              Input : -
-              Output : true / false
-              Functionality : checks whether all errors are false or not
-            */
-            userCanRegister: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        if (this.inputErrors[errorProperty] === true) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            },
-
-            /*
-              Input : -
-              Output : -
-              Functionality : updates user errors upon user input and validation
-            */
-            inputsValidation: function () {
-
-                if (this.userToRegister.first_name == null || this.userToRegister.first_name.length == 0) {
-                    this.inputErrors.firstNameError = true;
-                }
-
-                if (this.userToRegister.last_name == null || this.userToRegister.last_name.length == 0) {
-                    this.inputErrors.lastNameError = true;
-                }
-
-                if (this.userToRegister.email == null || this.userToRegister.email.length == 0 || !this.userToRegister.email.match(this.emailRegex)) {
-                    this.inputErrors.emailError = true;
-                }
-
-                if (this.userToRegister.phone_number == null || this.userToRegister.phone_number.length == 0 || !this.userToRegister.phone_number.match(this.phoneRegex)) {
-                    this.inputErrors.phoneError = true;
-                }
-
-                if (this.userToRegister.password == null || this.userToRegister.password.length == 0 || this.userToRegister.password.length != 6) {
-                    this.inputErrors.passwordError = true;
-                }
-
-                if (this.userToRegister.password2 == null || this.userToRegister.password2.length == 0 || this.userToRegister.password2.length != 6 || this.userToRegister.password2 != this.userToRegister.password) {
-                    this.inputErrors.confirmPasswordError = true;
-                }
-
-                if (!this.applyWithRules) {
-                    this.inputErrors.applyWithRulesError = true;
-                }
-            },
-
-            /*
-             Input : -
-             Output : true / false
-             Functionality : checks if a user can register or not
-             */
-            isRegisterFormValid: function () {
-                //Resetting error object
-                this.resetInputErrors();
-
-                //update user validation errors
-                this.inputsValidation();
-
-                return this.userCanRegister();
             },
 
             resetLoadingLogic: function () {
@@ -380,12 +314,10 @@
                 //loading logic updated
                 this.startLoadingLogic();
 
-                let registerFormValid = this.isRegisterFormValid();
-                window.console.log("user registration is valid : ", registerFormValid);
                 window.console.log('user input data : ', this.userToRegister);
                 window.console.log('apply With rules : ', this.applyWithRules);
 
-                if (registerFormValid) {
+                if (this.formIsValid) {
                     window.console.log("dispatching register with payload");
                     let registerPromise = this.$store.dispatch('register', this.userToRegister);
 
@@ -412,7 +344,6 @@
             scrollTo(0, 0)
         }
         ,
-        computed: {}
     }
 </script>
 
@@ -431,7 +362,6 @@
     .card-signup .card-content {
         padding: 0 10px;
     }
-
 
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {

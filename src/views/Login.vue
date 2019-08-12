@@ -40,7 +40,7 @@
                                                placeholder="ایمیل...">
                                         <span class="material-input"></span>
                                         <span class="text-center isansFont text-danger"
-                                              v-if="inputErrors.emailError">
+                                              v-if="!emailIsValid">
                       لطفا یک ایمیل معتبر وارد کنید
                     </span>
                                     </div>
@@ -61,8 +61,8 @@
                                         <span class="material-input"></span>
 
                                         <span class="text-center isansFont text-danger"
-                                              v-if="inputErrors.passwordError">
-                                           لطفا یک رمز عبور معتبر وارد کنید
+                                              v-if="!passwordIsValid">
+                                           لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                                         </span>
                                     </div>
 
@@ -81,8 +81,7 @@
                                 <div v-if="!loginSuccess.value" class="row">
 
                                     <div class="col-sm-6 text-center">
-                                        <input type="submit" class="btn btn-rose isansFont" value="ورود">
-
+                                        <input type="submit" class="btn btn-rose isansFont" value="ورود" :disabled="!formIsValid">
                                     </div>
                                     <div class="col-sm-6 text-center">
                                         <button @click.prevent="toggleResetPassword()"
@@ -123,7 +122,7 @@
                                                class="form-control"
                                                placeholder="ایمیل خود را وارد کنید...">
                                         <span class="material-input"></span>
-                                        <span class="text-center isansFont text-danger" v-if="inputForgetEmailError">
+                                        <span class="text-center isansFont text-danger" v-if="!resetPassEmailIsValid">
                                                 لطفا یک ایمیل معتبر وارد کنید
                                         </span>
                                     </div>
@@ -131,7 +130,7 @@
 
                                 <div v-if="!loginSuccess.value" class="row">
                                     <div class="col-sm-6 text-center">
-                                        <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی">
+                                        <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی" :disabled="!resetPassEmailIsValid">
                                     </div>
                                     <div class="col-sm-6 text-center">
                                         <button @click.prevent="toggleResetPassword()"
@@ -169,12 +168,6 @@
                     password: '',
                 },
 
-                inputErrors: {
-                    emailError: false,
-                    passwordError: false,
-                },
-
-                inputForgetEmailError: false,
                 inputEmailForgetPass: '',
 
                 loginOrReset: true,
@@ -197,54 +190,26 @@
             }
         },
         components: {RectNotifBlock},
+        computed : {
+            emailIsValid() {
+                return this.userToLogin.email.match(this.emailRegex);
+            },
+
+            passwordIsValid() {
+                return this.userToLogin.password.length >= 6;
+            },
+
+            formIsValid(){
+                return this.emailIsValid && this.passwordIsValid;
+            },
+
+            resetPassEmailIsValid() {
+                return this.inputEmailForgetPass.match(this.emailRegex);
+            }
+        },
         methods: {
-            /*
-              Input : -
-              Output : -
-              Functionality : resets input errors object to default false value
-            */
-            resetInputErrors: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        this.inputErrors[errorProperty] = false;
-                    }
-                }
-                this.inputForgetEmailError = false;
-            },
 
-            /*
-              Input : -
-              Output : true / false
-              Functionality : checks whether all errors are false or not
-            */
-            userCanLogin: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        if (this.inputErrors[errorProperty] === true) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            },
-
-            /*
-              Input : -
-              Output : -
-              Functionality : updates user errors upon user input and validation
-            */
-            inputsValidation: function () {
-                if (this.userToLogin.email == null || this.userToLogin.email.length === 0 || !this.userToLogin.email.match(this.emailRegex)) {
-                    this.inputErrors.emailError = true;
-                }
-
-                if (this.userToLogin.password == null || this.userToLogin.password.length === 0 || this.userToLogin.password.length !== 6) {
-                    this.inputErrors.passwordError = true;
-                }
-
-            },
-
-            resetLoadingLogic: function () {
+           LoadingLogic: function () {
                 window.console.log('no loading deploy');
                 this.loginLoading.value = false;
                 this.loginFailed.value = false;
@@ -279,27 +244,14 @@
             },
 
 
-            isLoginFormValid: function () {
-                //Resetting error object
-                this.resetInputErrors();
-
-                //update user validation errors
-                this.inputsValidation();
-
-                return this.userCanLogin();
-            },
-
             login: function () {
                 window.console.log('login pressed');
 
                 //loading logic updated
                 this.startLoadingLogic();
 
-                let loginFormValid = this.isLoginFormValid();
-                window.console.log("user login is valid : ", loginFormValid);
                 window.console.log('user input data : ', this.userToLogin);
-
-                if (loginFormValid) {
+                if (this.formIsValid) {
                     window.console.log("dispatching login with payload");
                     let loginPromise = this.$store.dispatch('login', this.userToLogin);
 
@@ -315,7 +267,7 @@
                             setTimeout(() => {
                                 this.resetLoadingLogic();
                                 this.$router.push('/');
-                            }, 2000)
+                            }, 1000)
                         }).catch((infoError) => {
                             console.log(infoError);
                             console.log(infoError.response);
@@ -330,12 +282,12 @@
 
                     }).catch((err) => {
                         console.log(err);
-                        console.log(err.response);
-                        if (err.response !== undefined) {
-                            this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.' + '\n' + err.response.data.detail;
+                        if (err.response) {
+                            this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.' + err.response.data.detail;
                         } else {
                             this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
                         }
+                        console.log(err.response);
 
                         this.failedLoadingLogic();
                     })
@@ -355,15 +307,15 @@
             },
 
             toggleResetPassword: function () {
-                this.resetInputErrors();
                 this.resetLoadingLogic();
                 this.loginOrReset = !this.loginOrReset;
             },
+
             resetPassword: function () {
                 this.resetLoadingLogic();
                 this.loginLoading.message = 'چند لحظه صبر کنید...'
                 this.startLoadingLogic();
-                if (this.inputEmailForgetPass != undefined && this.inputEmailForgetPass != null && this.inputEmailForgetPass.length != 0 && this.inputEmailForgetPass.match(this.emailRegex)) {
+                if (this.resetPassEmailIsValid) {
 
                     let payload = {
                         "email": this.inputEmailForgetPass,
@@ -389,7 +341,8 @@
                     this.inputForgetEmailError = true;
                     this.loginFailed.message = 'لطفا یک ایمیل معتبر وارد کنید'
                 }
-            }, sendResetPassRequest: function (payload) {
+            },
+            sendResetPassRequest: function (payload) {
                 return new Promise((resolve, reject) => {
                     axios({
                         url: this.$store.getters.getApi + 'auth/password-reset/',

@@ -31,7 +31,7 @@
                                     </div>
                                     <span class="text-center isansFont text-danger"
                                           v-if="!passwordIsValid">
-                              لطفا یک رمز عبور معتبر وارد کنید. حدااقل 6 کاراکتر
+                              لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                             </span>
                                 </div>
                             </div>

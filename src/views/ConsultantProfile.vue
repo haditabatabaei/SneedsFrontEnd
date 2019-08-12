@@ -36,7 +36,7 @@
                                 <li class="active"><a href="#description" data-toggle="tab"
                                                       aria-expanded="true">مشخصات</a></li>
                                 <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
-                                <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{consultant.comment_number}}</sup></a>
+                                <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
                             </ul>
                         </div>

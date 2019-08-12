@@ -482,6 +482,7 @@
 <style>
     tr th, tr td {
         text-align: center;
+        transition: all 0.1s ease-in-out;
     }
 
     .timeNotAvailable {
@@ -495,6 +496,7 @@
     }
 
     .timeOpen::before {
+        transition: all 0.1s ease-in-out;
         content: "آماده انتخاب";
         color: white;
     }
@@ -505,6 +507,7 @@
     }
 
     .timeSelected::before {
+        transition: all 0.1s ease-in-out;
         content: "انتخاب شده" !important;
         color: white;
     }
@@ -517,6 +520,7 @@
     }
 
     .itemIsReadyToResreve::before {
+        transition: all 0.1s ease-in-out;
         color: white;
         content: 'باز برای رزرو'
     }
@@ -527,6 +531,7 @@
     }
 
     .timeReserved::before {
+        transition: all 0.1s ease-in-out;
         content: "رزرو شده";
         color: white;
     }

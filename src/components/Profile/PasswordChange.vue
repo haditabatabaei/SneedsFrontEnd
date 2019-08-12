@@ -52,7 +52,7 @@
                                     <span class="input-group-addon" style="border-left:0;">
                                     <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
                                             @click="togglePassType()">
-                                        <i class="material-icons" v-if="passType == 'password'">visibility</i>
+                                        <i class="material-icons" v-if="passType === 'password'">visibility</i>
                                         <i class="material-icons" v-else>visibility_off</i>
                                         <div class="ripple-container"></div>
                                     </button>

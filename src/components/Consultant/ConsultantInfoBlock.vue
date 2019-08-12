@@ -1,11 +1,7 @@
 <template>
     <div class="descBox">
         <div class="infoBox" v-if="consultant.universities && consultant.countries && consultant.field_of_studies">
-            <ConsultantInfoItem :item="{'icon' : 'account_balance','text' : consultant.universities[0].name}"></ConsultantInfoItem>
-            <ConsultantInfoItem :item="{'icon' : 'flag' , 'text' : consultant.countries[0].name}"></ConsultantInfoItem>
-            <ConsultantInfoItem :item="{'icon' : 'book' , 'text' : consultant.field_of_studies[0].name}"></ConsultantInfoItem>
-            <ConsultantInfoItem :item="{'icon' : 'star' , 'text' : consultant.rate.toFixed(1)}" v-if="consultant.rate"></ConsultantInfoItem>
-            <ConsultantInfoItem :item="{'icon' : 'star' , 'text' : 'بدون امتیاز'}" v-else></ConsultantInfoItem>
+            <ConsultantInfoItem v-for="item in items" :item="item" ></ConsultantInfoItem>
         </div>
 
         <ConsultantActionBox :consultant="consultant"></ConsultantActionBox>
@@ -19,6 +15,27 @@
 
     export default {
         name: "ConsultantInfoBlock",
+        data() {
+            return {
+                items : [
+                    {
+                        icon : 'account_balance',
+                        text : this.consultant.universities[0].name
+                    },                    {
+                        icon : 'flag',
+                        text : this.consultant.countries[0].name
+                    },
+                    {
+                        icon : 'book',
+                        text : this.consultant.field_of_studies[0].name
+                    },
+                    {
+                        icon : 'star',
+                        text : (this.consultant.rate && this.consultant.rate.toFixed(1)) || 'بدون امتیاز'
+                    },
+                ]
+            }
+        },
         components : {
             ConsultantInfoItem,
             ConsultantActionBox

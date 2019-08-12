@@ -28,11 +28,11 @@
                                                id="inputNewPassword" :type="passType"
                                                name="inputNewPassword"
                                                class="form-control isansFont">
-                                        <span class="text-center isansFont text-danger"
-                                              v-if="inputErrors.passwordError">
-                              لطفا یک رمز عبور معتبر وارد کنید
-                            </span>
                                     </div>
+                                    <span class="text-center isansFont text-danger"
+                                          v-if="!passwordIsValid">
+                              لطفا یک رمز عبور معتبر وارد کنید. حدااقل 6 کاراکتر
+                            </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -44,11 +44,11 @@
                                                id="confirmInputNewPassword" :type="passType"
                                                name="confirmInputNewPassword"
                                                class="form-control isansFont">
-                                        <span class="text-center isansFont text-danger"
-                                              v-if="inputErrors.confirmPasswordError">
+                                    </div>
+                                    <span class="text-center isansFont text-danger"
+                                          v-if="!confirmPasswordIsValid">
                               لطفا تکرار رمز عبور را به درستی وارد کنید
                             </span>
-                                    </div>
                                     <span class="input-group-addon" style="border-left:0;">
                                     <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
                                             @click="togglePassType()">
@@ -64,8 +64,7 @@
                         <div class="row mt-10">
                             <div class="col-md-6"></div>
                             <div class="col-md-6">
-                                <input type="submit" value="تغییر رمز عبور"
-                                       class="btn btn-success isansFont pull-left">
+                                <input type="submit" value="تغییر رمز عبور" class="btn btn-success isansFont pull-left" :disabled="!formIsValid">
                             </div>
                         </div>
                     </div>
@@ -113,7 +112,23 @@
                     message: 'مشکلی در تغییر رمز عبور رخ داد...'
                 },
             }
-        }, methods: {
+        },
+        computed: {
+            passwordIsValid() {
+                if (this.inputUser.password.length > 0) {
+                    return this.inputUser.password.length >= 6
+                } else return false;
+            },
+            confirmPasswordIsValid() {
+                if (this.inputUser.password2.length > 0) {
+                    return this.inputUser.password2 === this.inputUser.password
+                } else return false
+            },
+            formIsValid() {
+                return this.passwordIsValid && this.confirmPasswordIsValid;
+            }
+        },
+        methods: {
             togglePassType: function () {
 
                 if (this.passType == 'password') {
@@ -121,46 +136,6 @@
                 } else {
                     this.passType = 'password'
                 }
-            },
-
-            resetInputErrors: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        this.inputErrors[errorProperty] = false;
-                    }
-                }
-            },
-
-            userCanEdit: function () {
-                for (let errorProperty in this.inputErrors) {
-                    if (this.inputErrors.hasOwnProperty(errorProperty)) {
-                        if (this.inputErrors[errorProperty] === true) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            },
-
-            inputsValidation: function () {
-                if (this.inputUser.password == null || this.inputUser.password.length == 0 || this.inputUser.password.length != 6) {
-                    this.inputErrors.passwordError = true;
-                }
-
-                if (this.inputUser.password2 == null || this.inputUser.password2.length == 0 || this.inputUser.password2.length != 6 || this.inputUser.password2 != this.inputUser.password) {
-                    this.inputErrors.confirmPasswordError = true;
-                }
-
-            },
-
-            isEditFormValid: function () {
-                //Resetting error object
-                this.resetInputErrors();
-
-                //update user validation errors
-                this.inputsValidation();
-
-                return this.userCanEdit();
             },
 
             resetLoadingLogic: function () {
@@ -197,12 +172,10 @@
                 //loading logic updated
                 this.startLoadingLogic();
 
-                let editFormValid = this.isEditFormValid();
-                window.console.log("user edit is valid : ", editFormValid);
                 window.console.log('user input data : ', this.inputUser);
                 // window.console.log('apply With rules : ', this.applyWithRules);
 
-                if (editFormValid) {
+                if (this.formIsValid) {
                     window.console.log("dispatching edit with payload");
 
                     delete this.inputUser.email;

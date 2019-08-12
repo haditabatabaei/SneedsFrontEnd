@@ -209,7 +209,7 @@
         },
         methods: {
 
-           LoadingLogic: function () {
+           resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
                 this.loginLoading.value = false;
                 this.loginFailed.value = false;
@@ -262,12 +262,8 @@
 
                         userInfoPromise.then((infoResponse) => {
                             console.log(infoResponse);
-
-                            this.successLoadingLogic();
-                            setTimeout(() => {
-                                this.resetLoadingLogic();
-                                this.$router.push('/');
-                            }, 1000)
+                            this.resetLoadingLogic();
+                            this.$router.push('/');
                         }).catch((infoError) => {
                             console.log(infoError);
                             console.log(infoError.response);

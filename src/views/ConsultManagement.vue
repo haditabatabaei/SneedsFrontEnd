@@ -147,6 +147,7 @@
             this.startReset();
         },
         mounted() {
+            scrollTo(0, 0);
         },
         methods: {
             startReset() {

@@ -100,6 +100,9 @@
         created() {
             console.log("token query parameter :", this.$route.query.token);
         },
+        mounted(){
+            scrollTo(0, 0);
+        },
         methods: {
             togglePassType: function () {
 

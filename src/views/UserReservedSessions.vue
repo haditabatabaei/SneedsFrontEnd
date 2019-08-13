@@ -144,6 +144,7 @@
 
         },
         mounted() {
+            scrollTo(0,0);
             this.resetCartsLogic();
             this.startCartsLogic();
             this.getReservedTimes().then(() => {

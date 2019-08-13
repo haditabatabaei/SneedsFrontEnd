@@ -42,18 +42,23 @@
                         </div>
                         <div class="card card-profile card-plain col-md-6 flexCard" v-for="session in reservedSessions">
                             <div class="card-image">
-                                <router-link :to="'consultants/' + session.consultant_slug">
-                                    <img class="img img-fluid" v-if="consultants[reservedSessions.indexOf(session)]"
-                                         v-bind:src="consultants[reservedSessions.indexOf(session)].profile_picture"
+                                <router-link :to="'consultants/' + session.consultant.slug">
+                                    <img class="img img-fluid"
+                                         v-bind:src="session.consultant.profile_picture"
                                          alt="image">
                                 </router-link>
                             </div>
                             <div class="col-md-7">
                                 <div class="card-content">
                                     <h4 class="card-title isansFont"
-                                        v-if="consultants[reservedSessions.indexOf(session)]"> مشاور : {{
-                                        consultants[reservedSessions.indexOf(session)].first_name + ' ' +
-                                        consultants[reservedSessions.indexOf(session)].last_name }}</h4>
+                                        v-if="!isConsultant">
+                                        مشاور :
+                                        {{session.consultant.first_name + " " + session.consultant.last_name }}
+                                    </h4>
+                                    <h4 class="card-title isansFont" v-else>
+                                        کاربر :
+                                        {{session.sold_to.first_name + ' ' + session.sold_to.last_name}}
+                                    </h4>
                                     <br>
                                     <p class="isansFont">
                                         تاریخ برگزاری :
@@ -76,19 +81,42 @@
                                     </p>
 
                                     <div class="cart-flex-footer mt-10">
-                                        <router-link class="isansFont btn btn-info"
-                                                     :to="'/consultants/' + session.consultant_slug">مشاهده صفحه مشاور
+                                        <a class="isansFont btn btn-info btn-sm" href="#">
+                                            ورود به جلسه
+                                        </a>
+                                        <router-link v-if="!isConsultant" class="btn btn-info isansFont btn-sm"
+                                                     :to="'/consultants/' + session.consultant.slug">صفحه مشاور
                                         </router-link>
-                                        <p class="text-info isansFont">
-                                            {{getJalali(session.start_time).locale('fa').fromNow()}}</p>
                                     </div>
-                                    <div class="rateWrapper">
-                                        <button @click="submitRate(session.id,5)">rate 5</button>
-                                        <button @click="submitRate(session.id,4)">rate 4</button>
-                                        <button @click="submitRate(session.id,3)">rate 3</button>
-                                        <button @click="submitRate(session.id,2)">rate 2</button>
-                                        <button @click="submitRate(session.id,1)">rate 1</button>
-                                        <button @click="submitRate(session.id,0)">rate 0</button>
+                                    <p class="text-info isansFont">
+                                        {{getJalali(session.start_time).locale('fa').fromNow()}}
+                                    </p>
+                                    <div class="rateWrapper" v-if="!isConsultant && !slotHasRate(session.id)">
+                                        <StarRating v-model="session.starRate"
+                                                    :rtl="true"
+                                                    :star-size="25"
+                                                    :rounded-corners="true">
+                                        </StarRating>
+                                        <button @click="submitRate(session.id,session.starRate)"
+                                                class="isansFont btn btn-rose btn-sm btn-round">ثبت امتیاز
+                                        </button>
+                                    </div>
+                                    <div v-else-if="!isConsultant && slotHasRate(session.id)">
+                                        <p class="isansFont">
+                                            شما به مشاور در این جلسه امتیاز {{slotHasRate(session.id)}}
+                                            از 5 دادید
+                                        </p>
+                                    </div>
+                                    <div v-else-if="isConsultant && slotHasRate(session.id)">
+                                        <p class="isansFont">
+                                            این کاربر به شما در این جلسه امتیاز {{slotHasRate(session.id)}} از 5 داده
+                                            است
+                                        </p>
+                                    </div>
+                                    <div v-else-if="isConsultant && !slotHasRate(session.id)">
+                                        <p class="isansFont">
+                                            این کاربر هنوز به شما در این جلسه امتیازی نداده است
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -104,15 +132,16 @@
     import axios from 'axios'
     import jalali from 'jalali-moment'
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+    import StarRating from 'vue-star-rating'
 
     export default {
         name: "UserReservedSessions",
-        components: {RectNotifBlock},
+        components: {RectNotifBlock, StarRating},
         data() {
             return {
                 reservedSessions: [],
-                consultants: [],
-                inputRate: '',
+                availableRates: [],
+                starRate: '',
 
                 cartsSuccess: {
                     value: false,
@@ -138,45 +167,63 @@
             },
             showReserved: function () {
                 return this.reservedSessions;
+            },
+            isConsultant: function () {
+                return this.$store.getters.getUserInfo.is_consultant;
             }
         },
         created() {
-
-        },
-        mounted() {
-            scrollTo(0,0);
             this.resetCartsLogic();
             this.startCartsLogic();
-            this.getReservedTimes().then(() => {
-                console.log(this.reservedSessions);
-                this.resetCartsLogic();
+            this.getReservedTimes().then((responseSessions) => {
+                this.getListOfRates().then(responseRates => {
+                    for (let i = 0; i < responseSessions.data.length; i++) {
+                        responseSessions.data[i]["starRate"] = null;
+                    }
+                    this.reservedSessions = responseSessions.data;
+
+                    this.availableRates = responseRates.data;
+                    console.log('reserved sessions:', this.reservedSessions);
+                    console.log('rates :', this.availableRates);
+                    this.resetCartsLogic();
+                }).catch(error => {
+                    this.failedCartsLogic();
+                });
             }).catch(() => {
                 this.failedCartsLogic();
             });
         },
+        mounted() {
+            scrollTo(0, 0);
+        },
         methods: {
+
+            showStarRate: function () {
+                console.log('star rate :', this.starRate)
+            },
+
             getJalali: function (date) {
                 return jalali(date);
             },
 
+            slotHasRate: function (slotId) {
+                for (let i = 0; i < this.availableRates.length; i++) {
+                    if (this.availableRates[i].sold_time_slot == slotId) {
+                        return this.availableRates[i].rate;
+                    }
+                }
+                return false;
+            },
+
             getReservedTimes: async function () {
                 return new Promise((resolve, reject) => {
-                    this.sendReservedTimesRequest().then(async response => {
-                        this.reservedSessions = response.data;
-                        this.getConsultants().then(() => {
-                            for (let i = 0; i < this.reservedSessions.length; i++) {
-                                this.reservedSessions[i].consultant_person = this.consultants[i];
-                            }
-                            resolve();
-                        }).catch(() => {
-
-                        })
-
+                    this.sendReservedTimesRequest().then(response => {
+                        resolve(response);
                     }).catch(error => {
                         console.log(error);
                         if (error.response)
                             console.log(error.response);
-                        reject()
+                        reject(error)
                     })
                 })
             },
@@ -203,6 +250,24 @@
                 return new Promise((resolve, reject) => {
                     this.sendConsultantRate(soldSlotId, rate).then(response => {
                         console.log(response);
+                        this.resetCartsLogic();
+                        this.startCartsLogic();
+                        this.getReservedTimes().then((responseSessions) => {
+                            this.getListOfRates().then(responseRates => {
+                                for (let i = 0; i < responseSessions.data.length; i++) {
+                                    responseSessions.data[i]["starRate"] = null;
+                                }
+                                this.reservedSessions = responseSessions.data;
+                                this.availableRates = responseRates.data;
+                                console.log('reserved sessions:', this.reservedSessions);
+                                console.log('rates :', this.availableRates);
+                                this.resetCartsLogic();
+                            }).catch(error => {
+                                this.failedCartsLogic();
+                            });
+                        }).catch(() => {
+                            this.failedCartsLogic();
+                        });
                         resolve();
                     }).catch(error => {
                         console.log(error);
@@ -234,35 +299,22 @@
                 })
             },
 
-            getConsultants: function () {
-                return new Promise((resolve, reject) => {
-                    let consultantsPromises = []
-                    for (let i = 0; i < this.reservedSessions.length; i++) {
-                        consultantsPromises.push(this.sendConsultantReqBySlug(this.reservedSessions[i].consultant_slug));
-                    }
-
-                    Promise.all(consultantsPromises).then(() => {
-                        resolve();
-                    }).catch(() => {
-                        reject();
-                    })
-                });
-            },
-
-
-            sendConsultantReqBySlug: function (slug) {
+            getListOfRates: function () {
                 return new Promise((resolve, reject) => {
                     axios({
-                        url: this.$store.getters.getApi + 'account/consultant-profiles/' + slug,
+                        url: this.$store.getters.getApi + 'comment/sold-time-slot-rates/',
                         method: 'GET',
                         headers: {
-                            'Content-Type': 'application/json',
                             'Authorization': 'JWT ' + this.$store.getters.getToken,
-                        },
-                    }).then(response => {
-                        this.consultants.push(response.data);
+                            'Content-Type': 'application/json',
+                        }
+                    }).then((response) => {
+                        console.log(response);
                         resolve(response);
-                    }).catch(error => {
+                    }).catch((error) => {
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
                         reject(error);
                     })
                 })
@@ -302,10 +354,20 @@
 </script>
 
 <style scoped>
+
+    .rateWrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
     .flexCard {
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
         justify-content: space-evenly;
     }
 
@@ -326,6 +388,7 @@
     .cart-flex-footer {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 </style>

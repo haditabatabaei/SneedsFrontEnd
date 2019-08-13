@@ -32,15 +32,15 @@
                   <span class="input-group-addon">
                     <i class="material-icons">email</i>
                   </span>
-                                    <div class="form-group form-rose gadugiFont isansFont">
+                                    <div class="form-group gadugiFont isansFont"
+                                         :class="[{'form-danger' : $v.userToLogin.email.$error}, {'form-rose' : !$v.userToLogin.email.$dirty}, {'form-success' : !$v.userToLogin.email.$error}]">
                                         <input required
-                                               v-model="userToLogin.email"
-                                               type="email"
+                                               v-model="$v.userToLogin.email.$model"
                                                class="form-control"
                                                placeholder="ایمیل...">
                                         <span class="material-input"></span>
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!emailIsValid">
+                                              v-if="$v.userToLogin.email.$error">
                       لطفا یک ایمیل معتبر وارد کنید
                     </span>
                                     </div>
@@ -52,16 +52,17 @@
 										<i class="material-icons">lock_outline</i>
                                     </span>
 
-                                    <div class="form-group form-rose isansFont gadugiFont">
+                                    <div class="form-group isansFont gadugiFont"
+                                         :class="[{'form-danger' : $v.userToLogin.password.$error}, {'form-rose' : !$v.userToLogin.password.$dirty}, {'form-success' : !$v.userToLogin.password.$error}]">
                                         <input required
-                                               v-model="userToLogin.password"
+                                               v-model="$v.userToLogin.password.$model"
                                                :type="passType"
                                                placeholder="رمز عبور..."
                                                class="form-control">
                                         <span class="material-input"></span>
 
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!passwordIsValid">
+                                              v-if="$v.userToLogin.password.$error">
                                            لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                                         </span>
                                     </div>
@@ -81,8 +82,9 @@
                                 <div v-if="!loginSuccess.value" class="row">
 
                                     <div class="col-sm-6 text-center">
-                                        <input type="submit" class="btn btn-rose isansFont" value="ورود" :disabled="!formIsValid">
-                                    </div>
+                                        <input type="submit" class="btn btn-rose isansFont" value="ورود"
+                                               :disabled="$v.userToLogin.$anyError || !$v.userToLogin.$anyDirty" >
+                                </div>
                                     <div class="col-sm-6 text-center">
                                         <button @click.prevent="toggleResetPassword()"
                                                 class="forgetPassButton btn btn-rose isansFont btn-simple btn-sm">
@@ -115,22 +117,24 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">email</i>
                                     </span>
-                                    <div class="form-group form-rose gadugiFont isansFont">
+                                    <div class="form-group gadugiFont isansFont"
+                                         :class="[{'form-danger' : $v.userToLogin.email.$error}, {'form-rose' : !$v.userToLogin.email.$dirty}, {'form-success' : !$v.userToLogin.email.$error}]">
                                         <input required
-                                               v-model="inputEmailForgetPass"
-                                               type="email"
+                                               v-model="$v.userToLogin.email.$model"
                                                class="form-control"
                                                placeholder="ایمیل خود را وارد کنید...">
                                         <span class="material-input"></span>
-                                        <span class="text-center isansFont text-danger" v-if="!resetPassEmailIsValid">
+                                        <span class="text-center isansFont text-danger"
+                                              v-if="$v.userToLogin.email.$error">
                                                 لطفا یک ایمیل معتبر وارد کنید
                                         </span>
                                     </div>
                                 </div>
 
-                                <div v-if="!loginSuccess.value" class="row">
-                                    <div class="col-sm-6 text-center">
-                                        <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی" :disabled="!resetPassEmailIsValid">
+                                <div class="row">
+                                    <div v-if="!loginSuccess.value" class="col-sm-6 text-center">
+                                            <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی"
+                                                   :disabled="$v.userToLogin.email.$error || !$v.userToLogin.email.$dirty">
                                     </div>
                                     <div class="col-sm-6 text-center">
                                         <button @click.prevent="toggleResetPassword()"
@@ -138,8 +142,8 @@
                                             ورود
                                         </button>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
                             <div class="footer text-center"></div>
                         </form>
@@ -153,9 +157,30 @@
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
     import axios from 'axios';
+    import {required, email, minLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "Login",
+
+        userToLogin: {
+            email: '',
+            password: '',
+        },
+
+        validations: {
+            userToLogin: {
+                email: {
+                    required,
+                    email,
+                },
+                password: {
+                    required,
+                    minLength: minLength(6)
+                }
+            },
+
+
+        },
         data: function () {
             return {
 
@@ -167,8 +192,6 @@
                     email: '',
                     password: '',
                 },
-
-                inputEmailForgetPass: '',
 
                 loginOrReset: true,
 
@@ -190,26 +213,15 @@
             }
         },
         components: {RectNotifBlock},
-        computed : {
-            emailIsValid() {
-                return this.userToLogin.email.match(this.emailRegex);
-            },
+        created() {
 
-            passwordIsValid() {
-                return this.userToLogin.password.length >= 6;
-            },
+        },
+        computed: {
 
-            formIsValid(){
-                return this.emailIsValid && this.passwordIsValid;
-            },
-
-            resetPassEmailIsValid() {
-                return this.inputEmailForgetPass.match(this.emailRegex);
-            }
         },
         methods: {
 
-           resetLoadingLogic: function () {
+            resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
                 this.loginLoading.value = false;
                 this.loginFailed.value = false;
@@ -249,9 +261,8 @@
 
                 //loading logic updated
                 this.startLoadingLogic();
-
                 window.console.log('user input data : ', this.userToLogin);
-                if (this.formIsValid) {
+                if (!this.$v.userToLogin.$anyError) {
                     window.console.log("dispatching login with payload");
                     let loginPromise = this.$store.dispatch('login', this.userToLogin);
 
@@ -311,10 +322,10 @@
                 this.resetLoadingLogic();
                 this.loginLoading.message = 'چند لحظه صبر کنید...'
                 this.startLoadingLogic();
-                if (this.resetPassEmailIsValid) {
+                if (!this.$v.userToLogin.email.$error) {
 
                     let payload = {
-                        "email": this.inputEmailForgetPass,
+                        "email": this.userToLogin.email,
                     };
                     console.log('payload', payload);
 

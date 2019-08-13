@@ -38,14 +38,13 @@
                           </span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                                v-model="userToRegister.first_name"
-                                                                type="text"
+                                                                v-model="$v.userToRegister.first_name.$model"
                                                                 class="form-control gadugiFont isansFont"
                                                                 name="fullName"
                                                                 placeholder="نام">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="!firstNameIsValid">
+                                                              v-if="$v.userToRegister.first_name.$error">
                               لطفا نام خود را وارد کنید.
                             </span>
                                                     </div>
@@ -58,14 +57,13 @@
 											</span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                                v-model="userToRegister.last_name"
-                                                                type="text"
+                                                                v-model="$v.userToRegister.last_name.$model"
                                                                 class="form-control gadugiFont isansFont"
                                                                 name="fullName"
                                                                 placeholder="نام خانوادگی">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="!lastNameIsValid">
+                                                              v-if="$v.userToRegister.last_name.$error">
                               لطفا نام خانوادگی خود را وارد کنید.
                             </span>
                                                     </div>
@@ -78,15 +76,14 @@
 											<span class="input-group-addon">
 												<i class="material-icons">email</i>
 											</span>
-                                                    <div class="form-group form-rose"><input
-                                                            type="email"
+                                                    <div class="form-group englishInput form-rose"><input
                                                             name="emailAddress"
-                                                            v-model="userToRegister.email"
+                                                            v-model="$v.userToRegister.email.$model"
                                                             class="form-control isansFont"
                                                             placeholder="ایمیل"><span
                                                             class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="!emailIsValid">
+                                                              v-if="$v.userToRegister.email.$error">
                               لطفا یک ایمیل معتبر وارد کنید
                             </span>
                                                     </div>
@@ -99,14 +96,14 @@
 											</span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                                v-model="userToRegister.phone_number"
-                                                                class="form-control gadugiFont isansFont"
+                                                                v-model="$v.userToRegister.phone_number.$model"
+                                                                class="form-control gadugiFont isansFont englishInput"
                                                                 placeholder="شماره تماس"
                                                                 name="phoneNumber"
                                                         >
                                                         <span class="material-input"></span></div>
                                                     <span class="text-center isansFont text-danger"
-                                                          v-if="!phoneNumberIsValid">لطفا یک شماره تماس موبایل معتبر ایران وارد کنید</span>
+                                                          v-if="$v.userToRegister.phone_number.$error">لطفا یک شماره تماس موبایل معتبر ایران وارد کنید</span>
                                                 </div>
                                             </div>
 
@@ -121,13 +118,13 @@
                                                         <input
                                                                 ref="password"
                                                                 name="password"
-                                                                v-model="userToRegister.password"
+                                                                v-model="$v.userToRegister.password.$model"
                                                                 :type="passType"
                                                                 placeholder="رمز عبور"
                                                                 class="form-control isansFont"><span
                                                             class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="!passwordIsValid">
+                                                              v-if="$v.userToRegister.password.$error">
                               لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                             </span>
                                                     </div>
@@ -141,7 +138,7 @@
 											</span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                                v-model="userToRegister.password2"
+                                                                v-model="$v.userToRegister.password2.$model"
                                                                 name="passwordConfirm"
                                                                 data-vv-as="password"
                                                                 :type="passType"
@@ -149,7 +146,7 @@
                                                                 class="form-control isansFont">
                                                         <span class="material-input"></span>
                                                         <span class="text-center isansFont text-danger"
-                                                              v-if="!confirmPasswordIsValid">
+                                                              v-if="$v.userToRegister.password2.$error">
                                                                 لطفا تکرار رمز عبور را به درستی وارد کنید
                                                         </span>
                                                     </div>
@@ -170,7 +167,7 @@
                                                 <div class="checkbox">
                                                     <label class="isansFont">
                                                         <input type="checkbox" name="optionsCheckboxes"
-                                                               v-model="applyWithRules">
+                                                               v-model="$v.applyWithRules.$model">
                                                         با
                                                         <router-link to="/services/terms" class="isansFont text-info">
                                                             قوانین و
@@ -180,14 +177,13 @@
                                                     </label>
                                                 </div>
                                                 <span class="text-center isansFont text-danger"
-                                                      v-if="!applyWithRules">
+                                                      v-if="$v.applyWithRules.$error">
                               برای ثبت نام باید حتما قوانین ما را خوانده و بپذیرید
                                                 </span>
                                             </div>
 
                                             <div class="col-sm-6 text-center">
-                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام"
-                                                       :disabled="!formIsValid">
+                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام" :disabled="$v.userToRegister.$anyError || $v.applyWithRules.$error || !$v.applyWithRules.$dirty || !$v.userToRegister.$anyDirty">
                                             </div>
                                         </div>
                                     </div>
@@ -203,14 +199,32 @@
 
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+    import {required, email, minLength, sameAs, helpers} from 'vuelidate/lib/validators'
+
+    const iranianPhone = helpers.regex('phone_number', /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig)
+
+
+    const trueBoolCheck = (value) => {
+        return value == true;
+    };
 
     export default {
         name: "Register",
+        validations: {
+            userToRegister: {
+                first_name: {required},
+                last_name: {required},
+                email: {required, email},
+                phone_number: {required, iranianPhone},
+                password: {required, minLength: minLength(6)},
+                password2: {required, sameAs: sameAs('password')},
+            },
+            applyWithRules: {trueBoolCheck}
+        },
         data: function () {
             return {
                 passType: 'password',
 
-                phoneRegexIran: /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
 
                 emailRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
@@ -242,30 +256,6 @@
                     message: 'مشکلی در ثبت نام رخ داد...'
                 },
             }
-        },
-        computed: {
-            emailIsValid() {
-                return this.userToRegister.email.match(this.emailRegex);
-            },
-            firstNameIsValid() {
-                return this.userToRegister.first_name.trim();
-            },
-            lastNameIsValid() {
-                return this.userToRegister.last_name.trim();
-            },
-            phoneNumberIsValid() {
-                return this.userToRegister.phone_number.match(this.phoneRegexIran);
-            },
-            passwordIsValid() {
-                return this.userToRegister.password.length >= 6;
-            },
-            confirmPasswordIsValid() {
-                return this.userToRegister.password2.length >= 6 && this.userToRegister.password2 === this.userToRegister.password
-            },
-            formIsValid() {
-                return this.emailIsValid && this.firstNameIsValid && this.lastNameIsValid && this.phoneNumberIsValid && this.passwordIsValid && this.confirmPasswordIsValid && this.applyWithRules
-            },
-
         },
         components: {RectNotifBlock},
         methods: {
@@ -318,7 +308,7 @@
                 window.console.log('user input data : ', this.userToRegister);
                 window.console.log('apply With rules : ', this.applyWithRules);
 
-                if (this.formIsValid) {
+                if (!(this.$v.userToRegister.$anyError || this.$v.applyWithRules.$error || !this.$v.applyWithRules.$dirty || !this.$v.userToRegister.$anyDirty)) {
                     window.console.log("dispatching register with payload");
                     let registerPromise = this.$store.dispatch('register', this.userToRegister);
 
@@ -397,5 +387,10 @@
 
     .actionRows {
         margin-bottom: 20px;
+    }
+
+    .englishInput{
+        direction:ltr !important;
+        text-align:right !important;
     }
 </style>

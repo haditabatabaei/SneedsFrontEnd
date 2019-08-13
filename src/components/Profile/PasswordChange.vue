@@ -24,13 +24,13 @@
                                     <div class="form-group mt-0">
                                         <label for="inputNewPassword" class="isansFont">پسورد
                                             جدید : </label>
-                                        <input v-model="inputUser.password"
+                                        <input v-model="$v.inputUser.password.$model"
                                                id="inputNewPassword" :type="passType"
                                                name="inputNewPassword"
                                                class="form-control isansFont">
                                     </div>
                                     <span class="text-center isansFont text-danger"
-                                          v-if="!passwordIsValid">
+                                          v-if="$v.inputUser.password.$error">
                               لطفا یک رمز عبور معتبر وارد کنید. حداقل 6 کاراکتر
                             </span>
                                 </div>
@@ -40,13 +40,13 @@
                                     <div class="form-group mt-0">
                                         <label for="confirmInputNewPassword" class="isansFont">تکرار
                                             پسورد جدید :</label>
-                                        <input v-model="inputUser.password2"
+                                        <input v-model="$v.inputUser.password2.$model"
                                                id="confirmInputNewPassword" :type="passType"
                                                name="confirmInputNewPassword"
                                                class="form-control isansFont">
                                     </div>
                                     <span class="text-center isansFont text-danger"
-                                          v-if="!confirmPasswordIsValid">
+                                          v-if="$v.inputUser.password2.$error">
                               لطفا تکرار رمز عبور را به درستی وارد کنید
                             </span>
                                     <span class="input-group-addon" style="border-left:0;">
@@ -64,7 +64,7 @@
                         <div class="row mt-10">
                             <div class="col-md-6"></div>
                             <div class="col-md-6">
-                                <input type="submit" value="تغییر رمز عبور" class="btn btn-success isansFont pull-left" :disabled="!formIsValid">
+                                <input type="submit" value="تغییر رمز عبور" class="btn btn-success isansFont pull-left" :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
                             </div>
                         </div>
                     </div>
@@ -76,11 +76,18 @@
 
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+    import {required, sameAs, minLength } from 'vuelidate/lib/validators'
 
     export default {
         name: "PasswordChange",
         components: {
             RectNotifBlock
+        },
+        validations: {
+            inputUser: {
+                password: {required, minLength: minLength(6)},
+                password2 : {required, sameAs : sameAs('password')},
+            },
         },
         data() {
             return {
@@ -111,21 +118,6 @@
                     value: false,
                     message: 'مشکلی در تغییر رمز عبور رخ داد...'
                 },
-            }
-        },
-        computed: {
-            passwordIsValid() {
-                if (this.inputUser.password.length > 0) {
-                    return this.inputUser.password.length >= 6
-                } else return false;
-            },
-            confirmPasswordIsValid() {
-                if (this.inputUser.password2.length > 0) {
-                    return this.inputUser.password2 === this.inputUser.password
-                } else return false
-            },
-            formIsValid() {
-                return this.passwordIsValid && this.confirmPasswordIsValid;
             }
         },
         methods: {
@@ -175,7 +167,7 @@
                 window.console.log('user input data : ', this.inputUser);
                 // window.console.log('apply With rules : ', this.applyWithRules);
 
-                if (this.formIsValid) {
+                if (!(this.$v.inputUser.$anyError || !this.$v.inputUser.$anyDirty)) {
                     window.console.log("dispatching edit with payload");
 
                     delete this.inputUser.email;

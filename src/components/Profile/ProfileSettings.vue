@@ -36,12 +36,12 @@
                                 <div class="input-group w-100">
                                     <div class="form-group mt-0">
                                         <label for="firstname" class="isansFont">نام : </label>
-                                        <input v-model="inputUser.first_name"
+                                        <input v-model="$v.inputUser.first_name.$model"
                                                id="firstname" type="text"
                                                name="firstname" class="form-control isansFont"
                                                v-bind:disabled="!editInfoAvailable">
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!firstNameIsValid">
+                                              v-if="$v.inputUser.first_name.$error">
                       لطفا یک نام معتبر وارد کنید
                     </span>
                                     </div>
@@ -52,12 +52,12 @@
                                     <div class="form-group mt-0">
                                         <label for="lastname" class="isansFont">نام خانوادگی
                                             : </label>
-                                        <input v-model="inputUser.last_name"
+                                        <input v-model="$v.inputUser.last_name.$model"
                                                id="lastname" type="text"
                                                name="lastname" class="form-control isansFont"
                                                v-bind:disabled="!editInfoAvailable">
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!lastNameIsValid">
+                                              v-if="$v.inputUser.last_name.$error">
                       لطفا یک نام خانوادگی معتبر وارد کنید
                     </span>
                                     </div>
@@ -71,7 +71,7 @@
                                     <div class="form-group mt-0">
                                         <label for="email" class="isansFont">ایمیل (غیر قابل تغییر) : </label>
                                         <input id="email" type="email"
-                                               v-model="inputUser.email" name="email"
+                                               v-model="$v.inputUser.email.$model" name="email"
                                                class="form-control isansFont"
                                                disabled>
                                     </div>
@@ -85,11 +85,11 @@
                                         <label for="phonenum" class="isansFont">شماره تماس
                                             : </label>
                                         <input id="phonenum" type="number"
-                                               v-model="inputUser.phone_number"
+                                               v-model="$v.inputUser.phone_number.$model"
                                                name="phonenum" class="form-control isansFont"
                                                v-bind:disabled="!editInfoAvailable">
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!phoneNumberIsValid">
+                                              v-if="$v.inputUser.phone_number.$error">
                       لطفا یک شماره تماس معتبر وارد کنید
                     </span>
                                     </div>
@@ -101,11 +101,11 @@
                                         <label for="address" class="isansFont">آدرس
                                             : </label>
                                         <input id="address" type="text"
-                                               v-model="inputUser.address"
+                                               v-model="$v.inputUser.address.$model"
                                                name="address" class="form-control isansFont"
                                                v-bind:disabled="!editInfoAvailable">
                                         <span class="text-center isansFont text-danger"
-                                              v-if="!addressIsValid">
+                                              v-if="$v.inputUser.address.$error">
                       لطفا یک آدرس معتبر وارد کنید
                                                 </span>
                                     </div>
@@ -117,7 +117,7 @@
                             <div class="col-md-6">
                                 <input type="submit" value="ذخیره تغییرات"
                                        class="btn btn-success isansFont pull-left"
-                                       v-if="editInfoAvailable" :disabled="!formIsValid">
+                                       v-if="editInfoAvailable" :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
                             </div>
                         </div>
                     </div>
@@ -129,27 +129,27 @@
 
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
+    import {required, email, helpers} from 'vuelidate/lib/validators'
+
+    const iranianPhone = helpers.regex('phone_number', /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig)
 
     export default {
         name: "ProfileSettings",
         components: {
             RectNotifBlock
         },
+        validations: {
+            inputUser: {
+                first_name: {required},
+                last_name: {required},
+                phone_number: {required, iranianPhone},
+                email : {required,email},
+                address : {},
+            },
+        },
         data() {
             return {
                 editInfoAvailable: false,
-
-                phoneRegexIran: /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig,
-
-                inputErrors: {
-                    firstNameError: false,
-                    lastNameError: false,
-                    phoneError: false,
-                    addressError: false,
-                    passwordError: false,
-                    confirmPasswordError: false,
-                    applyWithRulesError: false,
-                },
 
                 editSuccess: {
                     value: false,
@@ -170,29 +170,6 @@
             }
         }, props: {
             user: {}, inputUser: {}
-        },
-        computed : {
-            firstNameIsValid() {
-                return this.inputUser.first_name.trim();
-            },
-
-            lastNameIsValid() {
-                return this.inputUser.last_name.trim();
-            },
-
-            addressIsValid() {
-                if(this.inputUser.address.length > 0) {
-                    return this.inputUser.address.trim()
-                } else return true
-            },
-
-            phoneNumberIsValid() {
-                return this.inputUser.phone_number.match(this.phoneRegexIran);
-            },
-
-            formIsValid() {
-               return this.firstNameIsValid && this.lastNameIsValid && this.phoneNumberIsValid && this.addressIsValid
-            },
         },
         methods: {
             toggleChangeInfoAvailable: function () {
@@ -237,7 +214,7 @@
                 window.console.log('user input data : ', this.inputUser);
                 // window.console.log('apply With rules : ', this.applyWithRules);
 
-                if (this.formIsValid) {
+                if (!(this.$v.inputUser.$anyError || !this.$v.inputUser.$anyDirty)) {
                     window.console.log("dispatching edit with payload");
 
                     delete this.inputUser.email;

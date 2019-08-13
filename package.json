@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "jalali-moment": "^3.3.3",
     "core-js": "^2.6.5",
+    "jalali-moment": "^3.3.3",
     "register-service-worker": "^1.6.2",
-    "vue-star-rating": "^1.6.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-star-rating": "^1.6.1",
+    "vuelidate": "^0.7.4",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

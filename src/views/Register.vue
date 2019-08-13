@@ -186,7 +186,8 @@
                                             </div>
 
                                             <div class="col-sm-6 text-center">
-                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام" :disabled="!formIsValid">
+                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام"
+                                                       :disabled="!formIsValid">
                                             </div>
                                         </div>
                                     </div>
@@ -322,12 +323,9 @@
                     let registerPromise = this.$store.dispatch('register', this.userToRegister);
 
                     registerPromise.then((response) => {
-                        this.successLoadingLogic();
                         console.log(response);
-                        setTimeout(() => {
-                            this.resetLoadingLogic();
-                            this.$router.push('/');
-                        }, 2000)
+                        this.resetLoadingLogic();
+                        this.$router.push('/user/profile');
                     }).catch((err) => {
                         console.log(err);
                         console.log(err.response);

@@ -263,7 +263,7 @@
                         userInfoPromise.then((infoResponse) => {
                             console.log(infoResponse);
                             this.resetLoadingLogic();
-                            this.$router.push('/');
+                            this.$router.push('/user/profile');
                         }).catch((infoError) => {
                             console.log(infoError);
                             console.log(infoError.response);

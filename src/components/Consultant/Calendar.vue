@@ -1,11 +1,62 @@
 <template>
     <div v-if="consultant" class="col-md-12 text-center">
-        <button class="btn btn-info isansFont" @click.prevent="showPrevWeek()">< هفته قبلی</button>
-        <button class="btn btn-info isansFont" @click.prevent="showNextWeek()">هفته بعدی ></button>
-        <div class="table-responsive">
-            <table class="table table-bordered isansFont " id="myTable" v-html="tableData">
+        <button class="btn btn-simple btn-week isansFont" @click.prevent="showPrevWeek()">
+            <i class="fas fa-chevron-circle-right"></i>
+            هفته قبلی
+        </button>
+        <button class="btn btn-simple btn-week isansFont" @click.prevent="showNextWeek()">
+            هفته بعدی
+            <i class="fas fa-chevron-circle-left"></i>
+        </button>
+        <div class="myTable isansFont">
+            <div class="myTableRow firstRow">
+                <div class="myTableCell">ساعت / روز</div>
+                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
+                    <p>{{day.date.format('dddd')}}</p>
+                    <p class="monthSmallText">{{day.date.format('DD MMMM')}}</p>
+                </div>
+                <div class="myTableCell">روز / ساعت</div>
+            </div>
+            <div v-for="index in 16" :key="index" class="myTableRow">
+                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) +
+                    ":00"}}
+                </div>
+                <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
+                    <div
+                            :data-datestart="days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString()"
+                            :data-dateend="days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString()"
+                            v-if="days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).isBefore(justNowDate)"
+                            class="myTableSemiCell timeNotAvailable"
+                    ></div>
 
-            </table>
+                    <div
+                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
+                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())"
+                            :class="[
+                            {'timeOpen' : !isDatePresentOnSelectedList(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
+                            {'timeSelected' : isDatePresentOnSelectedList(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
+                            ]"
+                    ></div>
+
+                    <div
+                            :data-datestart="days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString()"
+                            :data-dateend="days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString()"
+                            v-else="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
+                            class="myTableSemiCell timeNotAvailable"
+                    ></div>
+                </div>
+                <div class="myTableCell lastCellInRow">
+                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
+                </div>
+            </div>
+            <div class="myTableRow firstRow">
+                <div class="myTableCell">ساعت / روز</div>
+                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
+                    <p>{{day.date.format('dddd')}}</p>
+                    <p class="monthSmallText">{{day.date.format('DD MMMM')}}</p>
+                </div>
+                <div class="myTableCell">روز / ساعت</div>
+            </div>
         </div>
 
         <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()"
@@ -40,6 +91,16 @@
                 tableData: '',
                 selectedDates: [],
                 shownDate: {},
+                justNowDate: jalali().locale('fa'),
+                tableDataArray: [
+                    {date: {}},
+                    {date: {}},
+                    {date: {}},
+                    {date: {}},
+                    {date: {}},
+                    {date: {}},
+                    {date: {}}
+                ],
 
                 reserveSuccess: {
                     value: false,
@@ -66,10 +127,6 @@
                 this.slots = timeRes.data;
                 this.shownDate = jalali().locale('fa');
                 this.handleWeek(this.shownDate);
-                this.createCalendarTable(this.shownDate);
-                this.$nextTick(function () {
-                    this.initDateSelector();
-                });
             }).catch(timesErr => {
                 console.log(timesErr.response);
             })
@@ -78,6 +135,31 @@
 
         },
         methods: {
+            itemClickHandler(datestart, dateend) {
+                //check see if this time is not added to the list
+                if (!this.isDatePresentOnSelectedList(datestart, dateend)) {
+                    this.selectedDates.push({
+                        'datestart': datestart,
+                        'dateend': dateend
+                    });
+                }// else means that element is present in the list, so we will remove it from the list
+                else {
+                    this.removeElementFromArray(this.selectedDates, {
+                        'datestart': datestart,
+                        'dateend': dateend
+                    });
+                }
+                console.log(this.selectedDates);
+            },
+
+            isDatePresentOnSelectedList(datestart, dateend) {
+                for (let i = 0; i < this.selectedDates.length; i++) {
+                    if (this.selectedDates[i].datestart == datestart && this.selectedDates[i].dateend == dateend)
+                        return true;
+                }
+                return false;
+            },
+
             resetReserveLogic: function () {
                 window.console.log('no loading deploy');
                 this.reserveLoading.value = false;
@@ -383,80 +465,10 @@
                 this.days.push(this.generateWednesday(now));
                 this.days.push(this.generateThursday(now));
                 this.days.push(this.generateFriday(now));
-            },
-
-            createCalendarTable() {
-                this.tableData = '';
-                let justNow = jalali().locale('fa');
-                for (let i = 0; i < 17; i++) {
-                    if (i == 0) {
-                        this.tableData += '<tr>';
-                        this.tableData += '<th>ساعت / روز</th>';
-                        this.tableData += '<th>' + this.days[0].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[1].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[2].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[3].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[4].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[5].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '<th>' + this.days[6].format('YYYY/MM/DD dddd') + '</th>';
-                        this.tableData += '</tr>';
-                    } else {
-                        this.tableData += '<tr>';
-                        for (let j = 0; j < 8; j++) {
-                            if (j == 0 && i == 1) {
-                                this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 8) + ':00' + '</td>';
-                            } else if (j == 0 && i != 1) {
-                                this.tableData += '<td>' + (i + 7) + ':00 تا ' + (i + 8) + ':00' + '</td>';
-                            } else {
-                                let dateStartString = this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale("en").utc().toISOString();
-                                let dateEndString = this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc().toISOString();
-
-                                if (this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).isBefore(justNow)) {
-                                    this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
-                                } else {
-                                    if (this.isInConsultantTime(this.days[j - 1].clone().hour(i + 7).minute(0).second(0).millisecond(0).locale('en').utc(), this.days[j - 1].clone().hour(i + 8).minute(0).second(0).millisecond(0).locale("en").utc())) {
-                                        this.tableData += '<td class="timeOpen" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
-                                    } else {
-                                        this.tableData += '<td class="timeNotAvailable" data-datestart="' + dateStartString + '" data-dateend="' + dateEndString + '"></td>';
-                                    }
-                                }
-
-                            }
-                        }
-                        this.tableData += '</tr>';
-                    }
-
+                for (let i = 0; i < this.days.length; i++) {
+                    this.tableDataArray[i].date = this.days[i];
                 }
-            },
-
-            initDateSelector() {
-                let list = document.getElementsByTagName('td');
-                for (let i = 0; i < list.length; i++) {
-                    list[i].addEventListener('click', () => {
-                        if (list[i].dataset.datestart !== undefined && !list[i].classList.contains('timeNotAvailable')) {
-                            if (list[i].classList.contains('timeOpen')) {
-                                list[i].classList.remove('timeOpen');
-                                list[i].classList.add('timeSelected');
-                                console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
-                                this.selectedDates.push({
-                                    'datestart': list[i].dataset.datestart,
-                                    'dateend': list[i].dataset.dateend
-                                });
-                                console.log(this.selectedDates);
-                            } else {
-                                list[i].classList.remove('timeSelected');
-                                list[i].classList.add('timeOpen');
-                                console.log(list[i].dataset.datestart + ' ' + list[i].dataset.dateend);
-                                this.removeElementFromArray(this.selectedDates, {
-                                    'datestart': list[i].dataset.datestart,
-                                    'dateend': list[i].dataset.dateend
-                                });
-                                console.log(this.selectedDates);
-                            }
-                        }
-
-                    });
-                }
+                console.log(this.tableDataArray);
             },
 
             removeElementFromArray(arr, value) {
@@ -479,39 +491,25 @@
     }
 </script>
 
-<style>
-    tr th, tr td {
-        text-align: center;
-        transition: all 0.1s ease-in-out;
-    }
+<style scoped>
+    /*tr th, tr td {*/
+    /*    text-align: center;*/
+    /*    transition: all 0.1s ease-in-out;*/
+    /*}*/
 
     .timeNotAvailable {
-        background-color: #999999;
         color: white;
     }
 
     .timeOpen {
-        background-color: #4caf50;
+        background-color: #4ee367;
         cursor: pointer;
-    }
-
-    .timeOpen::before {
-        transition: all 0.1s ease-in-out;
-        content: "آماده انتخاب";
-        color: white;
     }
 
     .timeSelected {
-        background-color: orange !important;
+        background-color: #ffca18 !important;
         cursor: pointer;
     }
-
-    .timeSelected::before {
-        transition: all 0.1s ease-in-out;
-        content: "انتخاب شده" !important;
-        color: white;
-    }
-
 
     .itemIsReadyToResreve {
         background-color: #e91e63;
@@ -535,4 +533,92 @@
         content: "رزرو شده";
         color: white;
     }
+
+    .myTable {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .myTableRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .myTableLargerCell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .myTableRow > div {
+        width: calc(100% / 8);
+        min-height: 50px;
+    }
+
+    .firstRow .myTableCell {
+        margin-right: 8px;
+    }
+
+    .myTableRow {
+        min-height: 50px;
+        background-color: #eee;
+    }
+
+    .myTableCell, .myTableLargerCell div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dayTitleCell {
+        flex-direction: column;
+    }
+
+    .dayTitleCell p {
+        margin: 0;
+        color: #4D4D4D;
+    }
+
+    .dayTitleCell .monthSmallText {
+        color: #808080;
+        /*font-weight: normal;*/
+        font-size: 10px;
+    }
+
+    .myTableLargerCell div {
+        border-radius: 20px;
+        min-height: 35px;
+        width: 90%;
+    }
+
+    .firstRow {
+        background-color: white;
+    }
+
+    .firstCellInRow {
+        background-color: white;
+    }
+
+    .lastCellInRow {
+        background-color: white;
+    }
+
+    .btn-week {
+        color: #666666;
+    }
+
+    .btn-week:hover {
+        color: #3d3d3d;
+    }
+
 </style>

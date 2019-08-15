@@ -28,7 +28,10 @@
                             <router-link to="/user/reserved">جلسات رزرو شده</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/order">فاکتور های شما</router-link>
+                            <router-link to="/user/order">فاکتور ها</router-link>
+                        </li>
+                        <li class="text-right">
+                            <router-link to="/user/tickets">پیام ها FIXME</router-link>
                         </li>
                         <li class="divider" v-if="showConsultantsManagerLink"></li>
                         <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>

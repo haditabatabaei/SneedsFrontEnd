@@ -109,13 +109,12 @@
                                     </div>
                                     <div v-else-if="isConsultant && slotHasRate(session.id)">
                                         <p class="isansFont">
-                                            این کاربر به شما در این جلسه امتیاز {{slotHasRate(session.id)}} از 5 داده
-                                            است
+                                            این کاربر امتیاز خود را ثبت کرده است.
                                         </p>
                                     </div>
                                     <div v-else-if="isConsultant && !slotHasRate(session.id)">
                                         <p class="isansFont">
-                                            این کاربر هنوز به شما در این جلسه امتیازی نداده است
+                                            این کاربر هنوز به شما در این جلسه امتیازی نداده است.
                                         </p>
                                     </div>
                                 </div>

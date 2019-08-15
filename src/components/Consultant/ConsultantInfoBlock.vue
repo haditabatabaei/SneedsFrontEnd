@@ -1,11 +1,10 @@
 <template>
     <div class="descBox">
         <div class="infoBox" v-if="consultant.universities && consultant.countries && consultant.field_of_studies">
-            <ConsultantInfoItem v-for="item in items" :item="item" ></ConsultantInfoItem>
+            <ConsultantInfoItem v-for="item in items" :item="item"></ConsultantInfoItem>
         </div>
 
         <ConsultantActionBox :consultant="consultant"></ConsultantActionBox>
-
     </div>
 </template>
 
@@ -17,31 +16,35 @@
         name: "ConsultantInfoBlock",
         data() {
             return {
-                items : [
+                items: [
                     {
-                        icon : 'account_balance',
-                        text : this.consultant.universities[0].name
-                    },                    {
-                        icon : 'flag',
-                        text : this.consultant.countries[0].name
+                        icon: 'account_balance',
+                        text: this.consultant.universities[0].name,
+                        iconColor : '#ED8CB6'
+                    }, {
+                        icon: 'flag',
+                        text: this.consultant.countries[0].name,
+                        iconColor : '#8AC0E6'
                     },
                     {
-                        icon : 'book',
-                        text : this.consultant.field_of_studies[0].name
+                        icon: 'book',
+                        text: this.consultant.field_of_studies[0].name,
+                        iconColor : '#73BFBA'
                     },
                     {
-                        icon : 'star',
-                        text : (this.consultant.rate && this.consultant.rate.toFixed(1)) || 'بدون امتیاز'
+                        icon: 'star',
+                        text: (this.consultant.rate && this.consultant.rate.toFixed(1)) || 'بدون امتیاز',
+                        iconColor : '#FBD497'
                     },
                 ]
             }
         },
-        components : {
+        components: {
             ConsultantInfoItem,
             ConsultantActionBox
         },
-        props : {
-            consultant : {},
+        props: {
+            consultant: {},
         },
     }
 </script>
@@ -53,6 +56,7 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
+        border-right: 7px solid #fcf265;
     }
 
     .infoBox {
@@ -61,6 +65,6 @@
         align-items: center;
         justify-content: center;
         border-left: 1px solid white;
-        flex-wrap:wrap;
+        flex-wrap: wrap;
     }
 </style>

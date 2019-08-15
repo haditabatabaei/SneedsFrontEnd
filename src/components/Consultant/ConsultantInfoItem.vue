@@ -1,6 +1,6 @@
 <template>
     <div class="item">
-        <i class="material-icons">{{item.icon}}</i>
+        <i class="material-icons" :style="'color:' + item.iconColor">{{item.icon}}</i>
         <p class="isansFont">{{item.text}}</p>
     </div>
 </template>

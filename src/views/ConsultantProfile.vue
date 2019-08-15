@@ -32,7 +32,7 @@
 
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
-                            <ul class="nav nav-pills nav-pills-rose d-inline-block isansFont">
+                            <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
                                 <li class="active"><a href="#description" data-toggle="tab"
                                                       aria-expanded="true">مشخصات</a></li>
                                 <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
@@ -60,7 +60,8 @@
 
                                 <div class="tab-pane" id="calendar">
                                     <div class="row">
-                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig" v-if="consultant.id"></Calendar>
+                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig"
+                                                  v-if="consultant.id"></Calendar>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="comments">
@@ -392,6 +393,12 @@
         width: 100%;
         min-height: 400px;
         border: none;
+    }
+
+    .nav-pills.nav-pills-white > li.active > a {
+        background-color: white;
+        color: #555555;
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
     }
 
 </style>

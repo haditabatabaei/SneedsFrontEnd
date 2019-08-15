@@ -60,18 +60,11 @@
 
                                 <div class="tab-pane" id="calendar">
                                     <div class="row">
-                                        <h4 class="videoTitle isansFont text-center">
-                                            تقویم مشاور
-                                        </h4>
-                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig"
-                                                  v-if="consultant.id"></Calendar>
+                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig" v-if="consultant.id"></Calendar>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="comments">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <h4 class="videoTitle isansFont text-center">نظرات</h4>
-                                        </div>
                                         <div class="col-md-12" v-for="comment in comments">
                                             <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}"
                                                           :consultant="consultant"
@@ -384,7 +377,7 @@
 
 </script>
 
-<style>
+<style scoped>
     .description {
         padding: 15px;
         line-height: 25px;
@@ -401,54 +394,4 @@
         border: none;
     }
 
-    tr th, tr td {
-        text-align: center;
-    }
-
-    .timeNotAvailable {
-        background-color: #999999;
-        color: white;
-    }
-
-    .timeOpen {
-        background-color: #4caf50;
-        cursor: pointer;
-    }
-
-    .timeOpen::before {
-        content: "آماده انتخاب";
-        color: white;
-    }
-
-    .timeSelected {
-        background-color: orange !important;
-        cursor: pointer;
-    }
-
-    .timeSelected::before {
-        content: "انتخاب شده" !important;
-        color: white;
-    }
-
-
-    .itemIsReadyToResreve {
-        background-color: #e91e63;
-        color: white;
-        cursor: pointer;
-    }
-
-    .itemIsReadyToResreve::before {
-        color: white;
-        content: 'باز برای رزرو'
-    }
-
-    .timeReserved {
-        background-color: blue;
-        /*cursor: pointer;*/
-    }
-
-    .timeReserved::before {
-        content: "رزرو شده";
-        color: white;
-    }
 </style>

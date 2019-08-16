@@ -15,7 +15,7 @@
 
         <div class="main profile-page">
             <div class="profile-content">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="row">
@@ -63,9 +63,9 @@
                                             <tr v-for="slotDetail in activeCart.time_slot_sales_detail"
                                                 :data-slotId="slotDetail.id">
                                                 <td class="td-name">
-                                                    <router-link
+                                                    <router-link class="isansFont"
                                                             :to="'/consultants/' + slotDetail.consultant_slug">
-                                                        {{slotDetail.consultant_slug}}
+                                                        مشاهده مشاور
                                                     </router-link>
                                                 </td>
                                                 <td class="isansFont">

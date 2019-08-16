@@ -60,9 +60,9 @@
                                             <tbody>
                                             <tr v-for="slotDetail in activeOrder.cart.time_slot_sales_detail">
                                                 <td class="td-name">
-                                                    <router-link
+                                                    <router-link class="isansFont"
                                                             :to="'/consultants/' + slotDetail.consultant_slug">
-                                                        {{slotDetail.consultant_slug}}
+                                                        مشاهده مشاور
                                                     </router-link>
                                                 </td>
                                                 <td class="isansFont">
@@ -188,9 +188,9 @@
                                     <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail"
                                         :data-slotId="slotDetail.id">
                                         <td class="td-name">
-                                            <router-link
+                                            <router-link class="isansFont"
                                                     :to="'/consultants/' + slotDetail.consultant_slug">
-                                                {{slotDetail.consultant_slug}}
+                                                مشاهده مشاور
                                             </router-link>
                                         </td>
                                         <td class="isansFont">
@@ -241,7 +241,7 @@
                                             <span style="font-size:15px">تومان</span>
                                         </td>
                                         <td colspan="3" class="text-right">
-                                            <button class="btn btn-danger btn-round isansFont"
+                                            <button class="btn btn-danger btn-sm btn-round isansFont"
                                                     @click="hideOrderDesc()">
                                                 <i class="material-icons">close</i>
                                                 بستن

@@ -1,13 +1,48 @@
 <template>
-    <div class="card commentBlock" v-if="!config.deleted">
+    <div class="commentBlock" v-if="!config.deleted">
         <div class="commentWrapper">
             <div class="commentSender">
                 <h5 class="senderName isansFont"> {{comment.first_name}} </h5>
-                <h6 class="dateCreated isansFont"> ({{this.fromNow}})</h6>
+                <h6 class="dateCreated isansFont">{{this.fromNow}}</h6>
             </div>
 
             <div class="commentMessage">
-                <p class="isansFont">{{comment.message}}</p>
+                <p class="isansFont text-justify" v-if="!showEditPanel">{{comment.message}}</p>
+                <form @submit.prevent="editComment()" v-else>
+                    <div class="form-group form-rose is-empty editForm">
+                        <label for="editComment" class="isansFont">نظر خود را ویرایش کنید :</label>
+                        <textarea id="editComment" class="form-control isansFont" v-model="$v.editedCommentInput.$model"
+                                  rows="10" cols="100"></textarea>
+                        <span class="material-input"></span>
+                        <span class="text-danger d-block editError isansFont" v-if="$v.editedCommentInput.$error">برای
+                            ویرایش باید یک چیزی وارد کنید.</span>
+                        <button class="btn btn-success btn-sm isansFont pull-left mb-10 " title="ثبت تغییرات">
+                            <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
+                                 class="loadingIcon"
+                                 v-if="editCommentLoading.value">
+                            <i class="material-icons" v-if="editCommentSuccess.value">done</i>
+                            <i class="material-icons" v-if="editCommentFailed.value">block</i>
+                            ثبت تغییرات
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="commentAction"
+                 v-if="this.$store.getters.isLoggedIn && comment.user == this.$store.getters.getUserInfo.user_pk">
+                <button @click.prevent="deleteComment()" v-if="config.showRemove" title="حذف نظر"
+                        class="btn btn-fab btn-fab-mini btn-simple isansFont btn-remove">
+                    <i class="material-icons">delete_forever</i>
+                    <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
+                         class="loadingIcon"
+                         v-if="removeCommentLoading.value">
+                    <i class="material-icons" v-if="removeCommentSuccess.value">done</i>
+                    <i class="material-icons" v-if="removeCommentFailed.value">block</i>
+                </button>
+                <button @click.prevent="toggleEditComment()" v-if="config.showEdit" title="ویرایش نظر"
+                        class="btn btn-fab btn-fab-mini btn-simple btn-sm isansFont btn-edit">
+                    <i class="material-icons">border_color</i>
+                </button>
             </div>
         </div>
         <div class="commentWrapper" v-if="comment.admin_reply != null">
@@ -20,34 +55,6 @@
                 <p class="isansFont">{{comment.admin_reply.message}}</p>
             </div>
         </div>
-        <div class="editPanel"
-             v-if="this.$store.getters.isLoggedIn && comment.user == this.$store.getters.getUserInfo.user_pk">
-            <button @click.prevent="deleteComment()" v-if="config.showRemove" class="btn btn-danger btn-sm isansFont">
-                <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
-                     v-if="removeCommentLoading.value">
-                <i class="material-icons" v-if="removeCommentSuccess.value">done</i>
-                <i class="material-icons" v-if="removeCommentFailed.value">block</i>
-                حذف نظر
-            </button>
-            <button @click.prevent="toggleEditComment()" v-if="config.showEdit" class="btn btn-info btn-sm isansFont">
-                ویرایش این نظر
-            </button>
-            <div class="w-100 d-block" v-if="showEditPanel">
-                <div class="form-group form-rose is-empty editForm">
-                    <label for="editComment" class="isansFont">نظر خود را ویرایش کنید :</label>
-                    <textarea id="editComment" class="form-control isansFont" v-model="editedCommentInput"
-                              rows="6"></textarea>
-                    <span class="material-input"></span>
-                    <button class="btn btn-success btn-sm isansFont" @click="editComment()">
-                        <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
-                             v-if="editCommentLoading.value">
-                        <i class="material-icons" v-if="editCommentSuccess.value">done</i>
-                        <i class="material-icons" v-if="editCommentFailed.value">block</i>
-                        ثبت تغییرات
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
 </template>
@@ -56,11 +63,15 @@
     import jalali from 'jalali-moment'
     import axios from 'axios'
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock';
+    import {required} from 'vuelidate/lib/validators'
 
     export default {
         name: "CommentBlock",
         components: {
             RectNotifBlock,
+        },
+        validations: {
+            editedCommentInput: {required}
         },
         data: function () {
             return {
@@ -153,6 +164,7 @@
             },
             toggleEditComment: function () {
                 this.showEditPanel = !this.showEditPanel;
+                this.editedCommentInput = this.comment.message;
             },
             editComment: function () {
                 this.reseteditCommentLogic();
@@ -161,7 +173,7 @@
                 let editPromise = this.sendEditRequest(payload);
                 editPromise.then(response => {
                     window.console.log(response);
-                    this.successeditCommentLogic();
+                    this.reseteditCommentLogic();
                     this.showEditPanel = false;
                     this.$emit('update-comments');
                 }).catch(error => {
@@ -197,10 +209,7 @@
                     this.startremoveCommentLogic();
                     let deletePromise = this.sendDeleteRequest();
                     deletePromise.then(response => {
-                        this.successremoveCommentLogic();
-                        setTimeout(() => {
-                            this.resetremoveCommentLogic();
-                        }, 1000);
+                        this.resetremoveCommentLogic();
                         console.log(response);
                         this.$emit('update-comments');
                     }).catch(error => {
@@ -251,6 +260,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: stretch;
+        margin-bottom: 20px;
     }
 
     .commentWrapper {
@@ -263,18 +273,33 @@
 
     .commentSender {
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
         margin-right: 10px;
     }
 
+    .commentAction {
+        align-self: flex-end;
+    }
+
     .commentMessage p {
-        padding: 20px;
+        padding: 10px 20px;
+        font-size: 15px;
+        /*font-weight:bold;*/
+        color: #838383;
     }
 
     .dateCreated {
-        margin-right: 5px;
+        margin: 5px 10px;
+        color: #b3b3b3;
+
+    }
+
+    .senderName {
+        margin: 5px 10px;
+        font-weight: bold;
+        color: #555555;
     }
 
     .editPanel {
@@ -292,5 +317,19 @@
 
     .editForm {
         padding: 20px;
+        margin-top: 0;
+    }
+
+    .btn-edit:hover {
+        color: #9c27b0;
+    }
+
+    .btn-remove:hover {
+        color: #d9534f;
+    }
+
+    .editError {
+        font-size: 12px;
+        padding: 5px;
     }
 </style>

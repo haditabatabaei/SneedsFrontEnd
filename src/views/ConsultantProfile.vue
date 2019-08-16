@@ -33,7 +33,8 @@
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
-                                <li class="active"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
+                                <li class="active"><a href="#description" data-toggle="tab"
+                                                      aria-expanded="true">مشخصات</a></li>
                                 <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
                                 <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
@@ -400,9 +401,15 @@
         box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
     }
 
-
     .sticky-top {
         top: 120px;
         position: sticky;
+    }
+
+    @media only screen and (min-width: 0) and (max-width: 992px) {
+        .sticky-top {
+            position: static;
+            top: initial;
+        }
     }
 </style>

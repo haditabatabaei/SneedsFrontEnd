@@ -1,7 +1,7 @@
 <template>
     <div class="descBox">
         <div class="infoBox" v-if="consultant.universities && consultant.countries && consultant.field_of_studies">
-            <ConsultantInfoItem v-for="item in items" :item="item"></ConsultantInfoItem>
+            <ConsultantInfoItem v-for="item in items" :item="item" :key="items.indexOf(item)"></ConsultantInfoItem>
         </div>
 
         <ConsultantActionBox :consultant="consultant"></ConsultantActionBox>

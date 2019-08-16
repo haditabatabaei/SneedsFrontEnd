@@ -161,12 +161,6 @@
 
     export default {
         name: "Login",
-
-        userToLogin: {
-            email: '',
-            password: '',
-        },
-
         validations: {
             userToLogin: {
                 email: {

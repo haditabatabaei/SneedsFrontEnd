@@ -13,7 +13,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-5">
+                    <div class="row" style="margin-top:20px;">
                         <RectNotifBlock :message="profileLoading.message"
                                         type="warning"
                                         borderRound="true"
@@ -33,8 +33,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
-                                <li class="active"><a href="#description" data-toggle="tab"
-                                                      aria-expanded="true">مشخصات</a></li>
+                                <li class="active"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
                                 <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
                                 <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
@@ -60,27 +59,19 @@
 
                                 <div class="tab-pane" id="calendar">
                                     <div class="row">
-                                        <Calendar v-bind:consultant="consultant" v-bind:config="calendarConfig"
-                                                  v-if="consultant.id"></Calendar>
+                                        <Calendar
+                                                :consultantId="consultant.id"
+                                                :config="calendarConfig"
+                                                v-if="consultant.id">
+                                        </Calendar>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="comments">
                                     <div class="row">
-                                        <div class="col-md-12" v-for="comment in comments">
-                                            <CommentBlock :config="{'showEdit':true,'showRemove':true,'deleted': false}"
-                                                          :consultant="consultant"
-                                                          @update-comments="getConsultantComments(consultant.id)"
-                                                          :comment="comment"></CommentBlock>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" v-if="isLoggedIn">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4 sticky-top" v-if="isLoggedIn">
                                             <div class="media media-post">
                                                 <div class="media-body">
                                                     <div class="form-group form-rose is-empty">
-                                                        <label for="comment" class="isansFont">سوال یا نظری دارید
-                                                            بنویسید :</label>
                                                         <textarea id="comment" class="form-control isansFont"
                                                                   placeholder="نظرتون رو بنویسید" rows="6"
                                                                   v-model="inputComment"></textarea>
@@ -88,7 +79,7 @@
                                                     </div>
                                                     <div class="media-footer">
                                                         <button @click.prevet="submitComment()"
-                                                                class="btn btn-rose  isansFont">
+                                                                class="btn btn-rose  isansFont pull-left">
                                                             <i class="material-icons" v-if="submitCommentFailed.value">block</i>
                                                             <i class="material-icons" v-if="submitCommentSuccess.value">done</i>
                                                             <img src="http://193.176.241.131/sneedsAssets/img/loading.svg"
@@ -103,12 +94,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" v-else>
-                                        <div class="col-md-12 text-center">
+
+                                        <div class="col-md-4 text-center sticky-top" v-else>
                                             <router-link to="/login" class="btn btn-sm btn-warning isansFont">
                                                 برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
                                             </router-link>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <CommentBlock v-for="comment in comments"
+                                                          :config="{'showEdit':true,'showRemove':true,'deleted': false}"
+                                                          :consultant="consultant"
+                                                          @update-comments="getConsultantComments(consultant.id)"
+                                                          :comment="comment"></CommentBlock>
                                         </div>
                                     </div>
                                 </div>
@@ -144,8 +142,8 @@
                 aparatFrameLink: '',
 
                 calendarConfig: {
-                    showAddToCart: true,
-                    showConsultantManagePanel: false
+                    usersConfig: true,
+                    managerConfig: false
                 },
 
                 submitCommentSuccess: {
@@ -288,6 +286,7 @@
                         commentsPromise.then(response => {
                             console.log(response.data);
                             this.comments = response.data;
+                            this.inputComment = '';
                             this.resetSubmitCommentLogic();
                         }).catch(error => {
                             console.log(error.response);
@@ -401,4 +400,9 @@
         box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
     }
 
+
+    .sticky-top {
+        top: 120px;
+        position: sticky;
+    }
 </style>

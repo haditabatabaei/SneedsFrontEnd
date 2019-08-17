@@ -18,15 +18,6 @@
             <h5 class="isansFont text-right pull-right">
                 اطلاعات فردی :
             </h5>
-            <button @click.prevent="toggleChangeInfoAvailable()"
-                    class="btn btn-small btn-info isansFont pull-left"
-                    v-if="!editInfoAvailable">
-                میخواهم اطلاعات زیر را ویرایش کنم
-            </button>
-            <button @click.prevent="toggleChangeInfoAvailable()" class="btn btn-small btn-rose isansFont pull-left"
-                    v-else>
-                نیازی به ویرایش اطلاعات ندارم
-            </button>
             <div class="card card-contact">
                 <form action="" id="contact-form" method="post"
                       @submit.prevent="edit()">
@@ -38,8 +29,7 @@
                                         <label for="firstname" class="isansFont">نام : </label>
                                         <input v-model="$v.inputUser.first_name.$model"
                                                id="firstname" type="text"
-                                               name="firstname" class="form-control isansFont"
-                                               v-bind:disabled="!editInfoAvailable">
+                                               name="firstname" class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
                                               v-if="$v.inputUser.first_name.$error">
                       لطفا یک نام معتبر وارد کنید
@@ -54,8 +44,7 @@
                                             : </label>
                                         <input v-model="$v.inputUser.last_name.$model"
                                                id="lastname" type="text"
-                                               name="lastname" class="form-control isansFont"
-                                               v-bind:disabled="!editInfoAvailable">
+                                               name="lastname" class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
                                               v-if="$v.inputUser.last_name.$error">
                       لطفا یک نام خانوادگی معتبر وارد کنید
@@ -86,8 +75,7 @@
                                             : </label>
                                         <input id="phonenum" type="number"
                                                v-model="$v.inputUser.phone_number.$model"
-                                               name="phonenum" class="form-control isansFont"
-                                               v-bind:disabled="!editInfoAvailable">
+                                               name="phonenum" class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
                                               v-if="$v.inputUser.phone_number.$error">
                       لطفا یک شماره تماس معتبر وارد کنید
@@ -102,8 +90,7 @@
                                             : </label>
                                         <input id="address" type="text"
                                                v-model="$v.inputUser.address.$model"
-                                               name="address" class="form-control isansFont"
-                                               v-bind:disabled="!editInfoAvailable">
+                                               name="address" class="form-control isansFont">
                                         <span class="text-center isansFont text-danger"
                                               v-if="$v.inputUser.address.$error">
                       لطفا یک آدرس معتبر وارد کنید
@@ -117,7 +104,7 @@
                             <div class="col-md-6">
                                 <input type="submit" value="ذخیره تغییرات"
                                        class="btn btn-success isansFont pull-left"
-                                       v-if="editInfoAvailable" :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
+                                       :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
                             </div>
                         </div>
                     </div>
@@ -149,8 +136,6 @@
         },
         data() {
             return {
-                editInfoAvailable: false,
-
                 editSuccess: {
                     value: false,
                     message: 'اطلاعات شما با موفقیت ویرایش شد،چند لحظه صبر کنید...'
@@ -172,11 +157,6 @@
             user: {}, inputUser: {}
         },
         methods: {
-            toggleChangeInfoAvailable: function () {
-                this.editInfoAvailable = !this.editInfoAvailable;
-            },
-
-
             resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
                 this.editLoading.value = false;

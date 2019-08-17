@@ -11,12 +11,12 @@
         <div v-if="config.usersConfig" class="calendarTopWrapper">
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                <button class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</button>
-                <button class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</button>
-                <button class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</button>
+                <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
+                <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
+                <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
             </div>
 
-            <button class="btn btn-rose isansFont" @click="addSelectedTimesToCart()"
+            <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
                     v-if="isLoggedIn && config.usersConfig">
                 <i class="material-icons" v-if="reserveSuccess.value">done</i>
                 <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
@@ -30,7 +30,6 @@
                 برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
             </router-link>
         </div>
-
         <div v-if="config.usersConfig" class="myTable isansFont">
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
@@ -41,8 +40,7 @@
                 <div class="myTableCell">روز / ساعت</div>
             </div>
             <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) +
-                    ":00"}}
+                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
@@ -72,6 +70,16 @@
         </div>
 
         <div v-else class="myTable isansFont">
+            <div class="calendarTopWrapper">
+                <div class="calendarGuideWrapper">
+                    <span class="isansFont text-sm">راهنمایی تقویم :</span>
+                    <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
+                    <span class="btn btn-round btn-sm btn-sample timeOpenForManagerToSet isansFont text-dark">باز برای افزودن به تایم ها</span>
+                    <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز برای رزرو کاربر</span>
+                    <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
+                    <span class="btn btn-round btn-sm btn-sample timeReserved isansFont">رزرو شده</span>
+                </div>
+            </div>
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
                 <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
@@ -115,14 +123,6 @@
                 <div class="myTableCell lastCellInRow">
                     {{ (index + 7) + ":00" + " تا " + (index + 8) + ":00"}}
                 </div>
-            </div>
-            <div class="myTableRow firstRow">
-                <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
-                    <p>{{day.date.format('dddd')}}</p>
-                    <p class="monthSmallText">{{day.date.format('DD MMMM')}}</p>
-                </div>
-                <div class="myTableCell">روز / ساعت</div>
             </div>
         </div>
 
@@ -844,6 +844,14 @@
         cursor: default !important;
     }
 
+    .btn-sample.text-dark {
+        color: #b3b3b3;
+    }
+
+    .btn-sample.text-dark:hover {
+        color: #b3b3b3;
+    }
+
     .timeNotAvailable {
         background-color: #d8d8d8;
     }
@@ -875,11 +883,6 @@
         background-color: rgb(156, 39, 176);;
     }
 
-    .timeReserved:before {
-        content: "رزرو شده";
-        color: white;
-    }
-
     .calendarTopWrapper {
         display: flex;
         justify-content: space-evenly;
@@ -888,6 +891,7 @@
         position: sticky;
         top: 110px;
         background-color: white;
+        width: 100%;
     }
 
     .myTable {
@@ -957,8 +961,8 @@
 
     .firstRow {
         background-color: white;
-        position:sticky;
-        top:170px;
+        position: sticky;
+        top: 156px;
     }
 
     .firstCellInRow {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="page-header header-filter header-small" data-parallax="true"
+        <div class="page-header header-filter header-small" data-parallax="false"
              style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">

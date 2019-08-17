@@ -42,11 +42,13 @@ let router = new Router({
             path: '/user/profile',
             name: 'UserProfile',
             component: UserProfile,
-        }, {
+        },
+        {
             path: '/user/consultantmanager',
             name: 'ConsultManagement',
             component: ConsultManagement,
-        }, {
+        },
+        {
             path: '/user/cart',
             name: 'UserCart',
             component: UserCard
@@ -69,7 +71,8 @@ let router = new Router({
             path: '/consultants',
             name: 'ConsultantList',
             component: ConsultantList,
-        }, {
+        },
+        {
             path: '/consultants/:consultantSlug',
             name: 'ConsultantProfile',
             component: ConsultantProfile,

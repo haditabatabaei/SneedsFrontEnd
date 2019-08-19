@@ -1,6 +1,7 @@
 <template>
     <div class="card card-profile">
-        <div class="card-image" @click="$router.push('/consultants/' + consultant.slug)" :style="'background: url(' + consultant.profile_picture + ')'">
+        <div class="card-image" @click="$router.push('/consultants/' + consultant.slug)"
+             :style="'background: url(' + consultant.profile_picture + ')'">
             <div class="ripple-container"></div>
         </div>
 
@@ -17,20 +18,12 @@
             <div class="rate">
                 <span class="text-white isansFont label label-default"
                       v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
-                <span class="text-white isansFont label label-success" v-else> 5 / {{consultant.rate.toFixed(1)}} </span>
+                <span class="text-white isansFont label label-success"
+                      v-else> 5 / {{consultant.rate.toFixed(1)}} </span>
                 <span class="text-dark isansFont comments">( {{consultant.comment_number}} نظر)</span>
             </div>
 
-            <div class="footer">
-                <a href="#" class="btn btn-just-icon btn-simple btn-twitter">
-                    <i class="fa fa-linkedin"></i>
-                </a>
-                <a href="#" class="btn btn-just-icon btn-simple btn-instagram">
-                    <i class="fa fa-instagram"></i>
-                </a>
-            </div>
-
-            <router-link :to="'/consultants/' + consultant.slug" class="btn btn-info isansFont">
+            <router-link :to="'/consultants/' + consultant.slug" class="btn btn-sm btn-block btn-info isansFont">
                 <i class="material-icons">
                     assignment
                 </i>
@@ -83,9 +76,8 @@
         background-repeat: no-repeat !important;
         min-height: 150px;
         min-width: 150px;
-        margin-right: 7.5px;
-        margin-left: 7.5px;
-        cursor:pointer;
+        margin: 7.5px;
+        cursor: pointer;
     }
 
     .card-title {
@@ -118,12 +110,12 @@
             align-items: center;
             flex-direction: row;
             justify-content: space-around;
+            flex-wrap: wrap;
         }
 
         .card .card-image {
             min-height: 150px;
             min-width: 150px;
-            margin: auto 10px auto 0;
         }
 
         .card .card-title {
@@ -147,6 +139,11 @@
         .bio {
             display: none;
         }
+    }
 
+    @media only screen and (min-width: 0) and (max-width: 354px) {
+        .card.card-profile {
+            margin-top: 70px;
+        }
     }
 </style>

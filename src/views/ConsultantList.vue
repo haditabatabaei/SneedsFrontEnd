@@ -1,37 +1,23 @@
 <template>
     <div>
-        <div class="page-header header-small">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5">
-                        <h2 class="title isansFont" style="margin-top:30px;">
-                            در تمام مراحل اپلای
-                            <br>
-                            کنار شما هستیم
-                        </h2>
-                        <h3 class="isansFont">
-                            مشاوره با افرادی که 0 تا 100 مسیر رو طی کردن و با مراحل اون آشنایی کامل دارن.
-                        </h3>
-                    </div>
-                    <div class="col-md-7 text-center"
-                         style="background:url('http://193.176.241.131/sneedsAssets/img/topConsultantBg.png') no-repeat;background-size:cover;height:calc(100vh - 150px);">
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="main">
             <div class="section">
                 <div class="container-fluid">
-
                     <div class="row">
-                        <div v-if="showFilterPanel" class="col-sm-3 col-xs-12 filterColumn">
+                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering" :class="[]">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
-                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel-group filterPanel" id="filterPanel" role="tablist"
+                                 aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="countryFilter">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                           href="#countryFilterCollapse" aria-expanded="false"
-                                           aria-controls="collapseOne" class="collapsed">
+                                        <a
+                                                role="button"
+                                                data-toggle="collapse"
+                                                data-parent="#filterPanel"
+                                                href="#countryFilterCollapse"
+                                                aria-expanded="false"
+                                                aria-controls="collapseOne"
+                                                class="collapsed">
                                             <h4 class="panel-title isansFont"
                                                 style="display:flex;align-items:center;justify-content:space-between">
                                                 <span class="float-right">
@@ -59,7 +45,7 @@
 
                                     <div class="panel-heading" role="tab" id="universityFilter"
                                          style="margin-top:25px;">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
                                            href="#universityFilterCollapse" aria-expanded="false"
                                            aria-controls="collapseOne" class="collapsed">
                                             <h4 class="panel-title isansFont"
@@ -90,7 +76,7 @@
 
                                     <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
                                          style="margin-top:25px;">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
                                            href="#fieldOfStudiesCollapse" aria-expanded="false"
                                            aria-controls="collapseOne" class="collapsed">
                                             <h4 class="panel-title isansFont"
@@ -121,16 +107,125 @@
                             </div>
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
                                             v-if="fetchLoading.value"></RectNotifBlock>
-
-                            <!--<CircleLoading  v-if="fetchLoading.value"></CircleLoading>-->
-
                             <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
                                             v-else-if="fetchSuccess.value"></RectNotifBlock>
-
                             <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
                                             v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
-                        <div v-else class="col-sm-3 col-xs-12 filterToggler"></div>
+                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-else>
+                            <div class="bottomFilterColumnTitle" @click="toggleFilterPanel()">
+                                <p class="isansFont filterColumnTitle">
+                                    <i class="material-icons">note</i>
+                                    فیلتر نتایج
+                                </p>
+                                <button class="btn btn-simple isansFont">
+                                    <span v-if="showFilterPanel" class="isansFont">بستن</span>
+                                    <i class="material-icons" v-if="showFilterPanel">close</i>
+                                    <i class="material-icons" v-else>keyboard_arrow_up</i>
+                                </button>
+                            </div>
+
+                            <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="countryFilter">
+                                        <a
+                                                role="button"
+                                                data-toggle="collapse"
+                                                data-parent="#filterPanel"
+                                                href="#countryFilterCollapse"
+                                                aria-expanded="false"
+                                                aria-controls="collapseOne"
+                                                class="collapsed">
+                                            <p class="panel-title isansFont"
+                                               style="display:flex;align-items:center;justify-content:space-between">
+                                                <span class="float-right">
+                                                    کشور
+                                                </span>
+                                                <i class="material-icons float-left">keyboard_arrow_down</i>
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
+                                        <div class="panel-body" style="background-color:#f7f7f7">
+                                            <div class="checkbox isansFont" v-for="country in countriesList">
+                                                <label>
+                                                    <input type="checkbox" name="country" :value="country.name"
+                                                           v-model="country.select">
+                                                    <span class="check"></span>
+                                                    {{country.name}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-heading" role="tab" id="universityFilter"
+                                         style="margin-top:25px;">
+                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
+                                           href="#universityFilterCollapse" aria-expanded="false"
+                                           aria-controls="collapseOne" class="collapsed">
+                                            <p class="panel-title isansFont"
+                                               style="display:flex;align-items:center;justify-content:space-between">
+                                                <span class="float-right">
+                                                    دانشگاه
+                                                </span>
+                                                <i class="material-icons float-left">keyboard_arrow_down</i>
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
+                                        <div class="panel-body" style="background-color:#f7f7f7">
+
+                                            <div class="checkbox isansFont" v-for="university in universitiesList">
+                                                <label>
+                                                    <input type="checkbox" name="country" :value="university.name"
+                                                           v-model="university.select">
+                                                    <span class="check"></span>
+                                                    {{university.name}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
+                                         style="margin-top:25px;">
+                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
+                                           href="#fieldOfStudiesCollapse" aria-expanded="false"
+                                           aria-controls="collapseOne" class="collapsed">
+                                            <p class="panel-title isansFont"
+                                               style="display:flex;align-items:center;justify-content:space-between">
+                                                <span class="float-right">
+                                                    رشته
+                                                </span>
+                                                <i class="material-icons float-left">keyboard_arrow_down</i>
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
+                                        <div class="panel-body" style="background-color:#f7f7f7">
+                                            <div class="checkbox isansFont" v-for="field in fieldOfStudiesList">
+                                                <label :title="field.description">
+                                                    <input type="checkbox" name="country" :value="field.name"
+                                                           v-model="field.select">
+                                                    <span class="check"></span>
+                                                    {{field.name}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottomActionPanel">
+                                    <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">پاکسازی فیلتر ها</button>
+                                    <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها</button>
+                                </div>
+                            </div>
+                            <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
+                                            v-if="fetchLoading.value"></RectNotifBlock>
+                            <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
+                                            v-else-if="fetchSuccess.value"></RectNotifBlock>
+                            <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
+                                            v-else-if="fetchFailed.value"></RectNotifBlock>
+                        </div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row listingRow">
                                 <div class="col-sm-3" v-for="consultantPerson in consultantList">
@@ -160,7 +255,7 @@
         },
         data() {
             return {
-                showFilterPanel: true,
+                showFilterPanel: false,
                 consultantList: [],
                 countriesList: [],
                 universitiesList: [],
@@ -180,10 +275,21 @@
                     value: false,
                     message: 'مشکلی در دریافت اطلاعات رخ داد...'
                 },
+                tempScroll: window.scrollY,
             }
         },
         mounted() {
             scrollTo(0, 0);
+            this.tempScroll = window.scrollY;
+            console.log(this.tempScroll);
+        },
+        computed: {
+            minimizedFiltering: function () {
+                if (window.innerWidth < 768) {
+                    console.log(window.innerWidth);
+                    return true;
+                } else return false;
+            },
         },
         created() {
             this.resetLoadingLogic();
@@ -259,7 +365,7 @@
                 return query;
             },
 
-            doFilter() {
+            doFilter(toggleIndicator) {
                 this.resetLoadingLogic();
                 this.startLoadingLogic();
                 let promise = this.sendUpdateRequestFilter(this.generateQueryParameters());
@@ -270,6 +376,9 @@
                     if (this.consultantList.length == 0) {
                         this.failedLoadingLogic();
                         this.fetchFailed.message = 'مشاوری با این اطلاعات یافت نشد.'
+                    }
+                    if(toggleIndicator){
+                        this.toggleFilterPanel();
                     }
                 }).catch(err => {
                     this.failedLoadingLogic();
@@ -294,7 +403,7 @@
                 })
             },
 
-            resetFilter: function () {
+            resetFilter: function (toggleIndicator) {
                 this.resetLoadingLogic();
                 this.startLoadingLogic();
 
@@ -305,6 +414,9 @@
                 promise.then(response => {
                     this.resetLoadingLogic();
                     this.consultantList = response;
+                    if(toggleIndicator){
+                        this.toggleFilterPanel();
+                    }
                 }).catch(error => {
                     this.failedLoadingLogic();
                     this.fetchFailed.message = 'خطایی رخ داد. ' + error.response;
@@ -405,13 +517,25 @@
 
             toggleFilterPanel: function () {
                 this.showFilterPanel = !this.showFilterPanel;
+                // if (document.getElementById('filterPanel').style.display == "none") {
+                //     document.getElementById('filterPanel').style.display = "block"
+                // } else {
+                //     document.getElementById('filterPanel').style.display = "none"
+                // }
             }
-        }
+        }, watch: {
+            tempScroll: function (newValue) {
+                console.log(newValue);
+            }
+        },
     }
 </script>
 
 <style scoped>
 
+    .section {
+        margin-top: 100px;
+    }
 
     .page-header {
         min-height: 100vh;
@@ -434,7 +558,8 @@
         padding: 10px;
     }
 
-    .card-image {
+    .filterPanel {
+        display: block;
     }
 
     @media only screen and (min-width: 0) and (max-width: 1024px) {
@@ -445,10 +570,77 @@
         }
     }
 
-    @media only screen and (min-width: 0) and (max-width: 766.8px) {
-        .filterColumn {
-            position: static;
-        }
+
+    .bottomFilterColumn {
+        position: fixed;
+        bottom: 0;
+        background-color: white;
+        width: 100%;
+        z-index: 9999;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        border-top: 1px solid #ccc;
+        overflow-y: scroll;
     }
+
+    .fullHeightBottomFilter {
+        height:calc(100vh - 110px);
+    }
+
+    .bottomFilterColumnTitle {
+        cursor: pointer;
+    }
+
+    .bottomFilterColumnTitle p {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-right: 5px;
+        margin-bottom: 0;
+        color: #666;
+    }
+
+    .bottomFilterColumnTitle button {
+        margin: 10px;
+        color: #666;
+        padding: 10px 5px;
+    }
+
+    .bottomFilterColumn p:first-child i {
+        margin-left: 5px;
+    }
+
+    .bottomFilterColumnTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    .bottomFilterColumn .panel {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+    }
+
+    .bottomFilterColumn .panel div[role="tab"] {
+        padding: 5px;
+        margin: 20px 20px 0 20px;
+    }
+
+    .bottomFilterColumn .panel-heading i.float-left{
+        font-size:15px;
+    }
+
+    .bottomFilterColumn .bottomActionPanel{
+        margin-top:40px;
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+    }
+    .bottomFilterColumn .bottomActionPanel button{
+        margin-left:20px;
+    }
+
 
 </style>

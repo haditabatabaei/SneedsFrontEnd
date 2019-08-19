@@ -33,8 +33,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
-                                <li class="active"><a href="#description" data-toggle="tab"
-                                                      aria-expanded="true">مشخصات</a></li>
+                                <li class="active"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
                                 <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
                                 <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
@@ -382,6 +381,7 @@
     .description {
         padding: 15px;
         line-height: 25px;
+        word-break: break-all;
     }
 
     .videoTitle {
@@ -390,7 +390,6 @@
     }
 
     .aparatFrame {
-        width: 100%;
         min-height: 400px;
         border: none;
     }

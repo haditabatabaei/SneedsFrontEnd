@@ -286,7 +286,7 @@
     .commentMessage p {
         padding: 10px 20px;
         font-size: 15px;
-        /*font-weight:bold;*/
+        word-break:break-all;
         color: #838383;
     }
 

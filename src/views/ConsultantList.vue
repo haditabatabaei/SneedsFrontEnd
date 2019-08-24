@@ -2,7 +2,7 @@
     <div>
         <div class="main">
             <div class="section">
-                <div class="container-fluid">
+                <div class="container">
                     <div class="row">
                         <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering" :class="[]">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
@@ -125,7 +125,8 @@
                                 </button>
                             </div>
 
-                            <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist" aria-multiselectable="true">
+                            <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist"
+                                 aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="countryFilter">
                                         <a
@@ -215,8 +216,11 @@
                                     </div>
                                 </div>
                                 <div class="bottomActionPanel">
-                                    <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">پاکسازی فیلتر ها</button>
-                                    <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها</button>
+                                    <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">
+                                        پاکسازی فیلتر ها
+                                    </button>
+                                    <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها
+                                    </button>
                                 </div>
                             </div>
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
@@ -228,7 +232,7 @@
                         </div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row listingRow">
-                                <div class="col-sm-3" v-for="consultantPerson in consultantList">
+                                <div class="col-sm-12" v-for="consultantPerson in consultantList">
                                     <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
                                 </div>
                             </div>
@@ -368,6 +372,7 @@
             doFilter(toggleIndicator) {
                 this.resetLoadingLogic();
                 this.startLoadingLogic();
+                console.log(this.generateQueryParameters());
                 let promise = this.sendUpdateRequestFilter(this.generateQueryParameters());
 
                 promise.then(newList => {
@@ -377,7 +382,7 @@
                         this.failedLoadingLogic();
                         this.fetchFailed.message = 'مشاوری با این اطلاعات یافت نشد.'
                     }
-                    if(toggleIndicator){
+                    if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
                 }).catch(err => {
@@ -414,7 +419,7 @@
                 promise.then(response => {
                     this.resetLoadingLogic();
                     this.consultantList = response;
-                    if(toggleIndicator){
+                    if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
                 }).catch(error => {
@@ -535,6 +540,7 @@
 
     .section {
         margin-top: 100px;
+        background-color: #eeeeee;
     }
 
     .page-header {
@@ -547,6 +553,9 @@
         z-index: 999;
         position: sticky;
         top: 100px;
+        background-color:white;
+        border-radius:10px;
+        padding:10px;
     }
 
     .row.is-flex > [class*='col-'] {
@@ -566,7 +575,7 @@
         .listingRow div[class*="col-sm"] {
             display: block;
             width: 100%;
-            max-height: 250px;
+            /*max-height: 250px;*/
         }
     }
 
@@ -583,7 +592,7 @@
     }
 
     .fullHeightBottomFilter {
-        height:calc(100vh - 110px);
+        /*height:calc(100vh - 110px);*/
     }
 
     .bottomFilterColumnTitle {
@@ -628,18 +637,19 @@
         margin: 20px 20px 0 20px;
     }
 
-    .bottomFilterColumn .panel-heading i.float-left{
-        font-size:15px;
+    .bottomFilterColumn .panel-heading i.float-left {
+        font-size: 15px;
     }
 
-    .bottomFilterColumn .bottomActionPanel{
-        margin-top:40px;
-        display:flex;
-        align-items:center;
-        justify-content:flex-end;
+    .bottomFilterColumn .bottomActionPanel {
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
-    .bottomFilterColumn .bottomActionPanel button{
-        margin-left:20px;
+
+    .bottomFilterColumn .bottomActionPanel button {
+        margin-left: 20px;
     }
 
 

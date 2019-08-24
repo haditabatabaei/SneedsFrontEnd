@@ -16,19 +16,19 @@
                 <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
             </div>
 
-            <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
-                    v-if="isLoggedIn && config.usersConfig">
-                <i class="material-icons" v-if="reserveSuccess.value">done</i>
-                <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"
-                     v-if="reserveLoading.value">
-                <i class="material-icons" v-if="reserveFailed.value">block</i>
-                <i class="material-icons">add_shopping_cart</i>
-                افزودن زمان های انتخاب شده به سبد خرید
-            </button>
-            <router-link to="/login" class="btn btn-sm btn-warning isansFont"
-                         v-else-if="!isLoggedIn && config.usersConfig">
-                برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
-            </router-link>
+            <!--            <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"-->
+            <!--                    v-if="isLoggedIn && config.usersConfig">-->
+            <!--                <i class="material-icons" v-if="reserveSuccess.value">done</i>-->
+            <!--                <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"-->
+            <!--                     v-if="reserveLoading.value">-->
+            <!--                <i class="material-icons" v-if="reserveFailed.value">block</i>-->
+            <!--                <i class="material-icons">add_shopping_cart</i>-->
+            <!--                افزودن زمان های انتخاب شده به سبد خرید-->
+            <!--            </button>-->
+            <!--            <router-link to="/login" class="btn btn-sm btn-warning isansFont"-->
+            <!--                         v-else-if="!isLoggedIn && config.usersConfig">-->
+            <!--                برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید-->
+            <!--            </router-link>-->
         </div>
         <div v-if="config.usersConfig" class="myTable isansFont">
             <div class="myTableRow firstRow">
@@ -40,7 +40,8 @@
                 <div class="myTableCell">روز / ساعت</div>
             </div>
             <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
+                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) +
+                    ":00"}}
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
@@ -66,7 +67,6 @@
                     {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
                 </div>
             </div>
-
         </div>
 
         <div v-else class="myTable isansFont">
@@ -175,6 +175,52 @@
                                 v-else-if="alertFailed.value"></RectNotifBlock>
             </div>
         </div>
+
+        <div class="selectedDateBox">
+            <div class="selectedDateBlockHeader">
+                <p class="isansFont">جلسات انتخاب شده :</p>
+            </div>
+            <div class="selectedDateBlockContent">
+                <div class="selectedDateBlock" v-for="selectedDate in selectedDates">
+                    <button class="btn btn-just-icon btn-simple" @click="removeElementFromSelectedDates({
+                        'datestart': selectedDate.datestart,
+                        'dateend': selectedDate.dateend
+                    })">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <p class="isansFont">
+                        {{getJalali(selectedDate.datestart).locale('fa').format('dddd DD MMMM')}}
+                        <br>
+                        ساعت :
+                        {{getJalali(selectedDate.datestart).locale('fa').format('HH:mm') + " تا " +
+                        getJalali(selectedDate.dateend).locale('fa').format('HH:mm')}}
+                    </p>
+                </div>
+            </div>
+            <div class="selectedDateBlockFooter isansFont">
+                <p>تخفیفات : </p>
+                <p v-for="discount in listOfDiscounts">
+                    {{discount.number}}
+                    جلسه :
+                    <mark>  {{discount.discount}} درصد </mark>
+
+                </p>
+                <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
+                        v-if="isLoggedIn && config.usersConfig">
+                    <i class="material-icons" v-if="reserveSuccess.value">done</i>
+                    <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
+                         class="loadingIcon"
+                         v-if="reserveLoading.value">
+                    <i class="material-icons" v-if="reserveFailed.value">block</i>
+                    <i class="material-icons">add_shopping_cart</i>
+                    افزودن زمان های انتخاب شده به سبد خرید
+                </button>
+                <router-link to="/login" class="btn btn-sm btn-warning isansFont"
+                             v-else-if="!isLoggedIn && config.usersConfig">
+                    برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
+                </router-link>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -204,6 +250,7 @@
                 selectedDates: [],
                 selectedDatesToOpen: [],
                 selectedDatesToRemove: [],
+                listOfDiscounts: [],
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [
@@ -263,6 +310,9 @@
 
         },
         methods: {
+            getJalali: function (date) {
+                return jalali(date);
+            },
             initComp: function () {
                 this.startLoadingLogic();
                 this.getListOfTimesById(this.consultantId).then(timeRes => {
@@ -280,6 +330,11 @@
                             this.failedLoadingLogic();
                         })
                     }
+                    this.getListOfNumberDiscounts().then(discountRes => {
+                        this.listOfDiscounts = discountRes;
+                    }).catch(error => {
+
+                    });
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
                     this.resetLoadingLogic();
@@ -346,6 +401,27 @@
                 }
 
             },
+
+            getListOfNumberDiscounts: function () {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'discount/time-slot-sale-number-discounts/',
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        console.log('number response : ',response.data);
+                        resolve(response.data)
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
+                        reject(error);
+                    })
+                })
+            },
+
             sendAddTimesRequest(timePayload) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -839,6 +915,64 @@
 </script>
 
 <style scoped>
+
+    .selectedDateBox {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #f9f9f9;
+        border-top: 1px solid #e2e2e2;
+        min-height: 60px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .selectedDateBlockContent {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .selectedDateBlock {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 1px solid #a8a8a8;
+    }
+
+    .selectedDateBlock button {
+        margin-right: 5px;
+    }
+
+    .selectedDateBlock:last-child {
+        border-left: none;
+    }
+
+    .selectedDateBlock p {
+        font-size: 12px;
+        padding: 10px;
+        margin-bottom: 0;
+    }
+
+    .selectedDateBlockHeader p {
+        margin-top: 20px;
+    }
+
+    .selectedDateBlockFooter {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        align-self: stretch;
+        flex-wrap:wrap;
+    }
+
+    .selectedDateBlockFooter p{
+        /*float:right;*/
+    }
 
     .btn-sample {
         cursor: default !important;

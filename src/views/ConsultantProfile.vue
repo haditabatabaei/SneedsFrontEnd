@@ -33,16 +33,16 @@
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
-                                <li class="active"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
-                                <li class=""><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
-                                <li class=""><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
+                                <li :class="{'active' :  activeDesc}"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
+                                <li :class="{'active' :  activeCalendar}"><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
+                                <li :class="{'active' :  activeComments}"><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="col-md-12" v-if="!profileLoading.value">
                             <div class="tab-content tab-space">
-                                <div class="tab-pane active" id="description">
+                                <div class="tab-pane" :class="{'active' :  activeDesc}" id="description">
                                     <div class="row">
                                         <div class="col-md-7">
                                             <ConsultantInfoBlock :consultant="consultant"></ConsultantInfoBlock>
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane" id="calendar">
+                                <div class="tab-pane" id="calendar" :class="{'active' :  activeCalendar}">
                                     <div class="row">
                                         <Calendar
                                                 :consultantId="consultant.id"
@@ -66,7 +66,7 @@
                                         </Calendar>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="comments">
+                                <div class="tab-pane" id="comments" :class="{'active' :  activeComments}">
                                     <div class="row">
                                         <div class="col-md-4 sticky-top" v-if="isLoggedIn">
                                             <div class="media media-post">
@@ -188,6 +188,15 @@
             activeCart: function () {
                 return this.$store.getters.getCart;
             },
+            activeCalendar: function() {
+                return this.$route.query.as === 'calendar'
+            },
+            activeDesc: function() {
+                return this.$route.query.as === 'desc'  || this.$route.query.as == undefined;;
+            },
+            activeComments : function(){
+                return this.$route.query.as === 'comments';
+            }
         },
         created() {
             this.resetprofileLogic();

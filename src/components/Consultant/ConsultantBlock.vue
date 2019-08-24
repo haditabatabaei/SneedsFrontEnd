@@ -1,36 +1,38 @@
 <template>
-    <div class="consultantBlock">
-        <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
-                     :style="'background-image: url(' + consultant.profile_picture + ')'">
-            <div class="ripple-container"></div>
-        </router-link>
+    <div class="consultantBlock row">
+        <div class="consultantBlockData col-md-8">
+                <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
+                             :style="'background-image: url(' + consultant.profile_picture + ')'">
+                    <div class="ripple-container"></div>
+                </router-link>
 
-        <div class="consultantBlockInfo">
-            <div class="consultantBlockInfoItem">
-                <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
-                    {{consultant.first_name + ' ' + consultant.last_name}}
-                </router-link>
-                <router-link class="isansFont consultantCalendarLink" :to="'/consultants/' + consultant.slug">
-                    <i class="material-icons">assignment</i>
-                    مشاهده تقویم مشاور
-                </router-link>
-            </div>
-            <div class="consultantBlockInfoItem">
-                <p class="isansFont consultantBio">
-                    دانشجوی معماری دانشگاه بریتیش کلمبیا
-                </p>
-            </div>
-            <div class="consultantBlockInfoItem">
+                <div class="consultantBlockInfo">
+                    <div class="consultantBlockInfoItem">
+                        <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
+                            {{consultant.first_name + ' ' + consultant.last_name}}
+                        </router-link>
+                        <router-link class="isansFont consultantCalendarLink" :to="'/consultants/' + consultant.slug + '?as=calendar'">
+                            <i class="material-icons">assignment</i>
+                            مشاهده تقویم مشاور
+                        </router-link>
+                    </div>
+                    <div class="consultantBlockInfoItem">
+                        <p class="isansFont consultantBio">
+                            دانشجوی معماری دانشگاه بریتیش کلمبیا
+                        </p>
+                    </div>
+                    <div class="consultantBlockInfoItem">
                 <span class="rate noRate isansFont" style="font-size:12px;top:-2px;"
                       v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
-                <span class="rate goodRate" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
-                <span class="rate badRate" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
-                <span class="isansFont comments"> {{consultant.comment_number}} نظر ثبت شده</span>
-            </div>
+                        <span class="rate goodRate" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
+                        <span class="rate badRate" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
+                        <span class="isansFont comments"> {{consultant.comment_number}} نظر ثبت شده</span>
+                    </div>
+                </div>
         </div>
 
-        <div class="consultantBlockAction">
-            <router-link :to="'/consultants/' + consultant.slug" class="consultantShowButton isansFont">
+        <div class="consultantBlockAction col-md-4">
+            <router-link :to="'/consultants/' + consultant.slug" class="btn consultantShowButton isansFont">
                 مشاهده مشاور
             </router-link>
         </div>
@@ -59,8 +61,16 @@
 
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-around;
         flex-wrap: wrap;
+    }
+
+    .consultantBlockData {
+        display:flex;
+        align-items:center;
+        justify-content:space-around;
+
+        flex-wrap:wrap;
     }
 
     .consultantBlock:hover {
@@ -150,18 +160,13 @@
         background-color: #ccc;
     }
 
-    .consultantBlockAction {
-        margin-right: auto;
-    }
-
     .consultantShowButton {
         border: 1px solid #333333;
         color: #333;
         padding: 10px 20px;
         border-radius: 10px;
         transition: all 0.2s ease;
-        margin-right: auto;
-        margin-left: auto;
+        background-color:white;
     }
 
     .consultantShowButton:hover {
@@ -169,14 +174,18 @@
         color: white;
     }
 
-    @media only screen and (max-width: 767.8px ) and (min-width: 0) {
-        .consultantBlock {
-            justify-content: center;
-        }
-
-        .consultantBlockInfoItem {
-            margin-top: 10px;
-        }
+    .consultantBlockAction{
+        display:block;
     }
+
+    /*@media only screen and (max-width: 767.8px ) and (min-width: 0) {*/
+    /*    .consultantBlock {*/
+    /*        justify-content: center;*/
+    /*    }*/
+
+    /*    .consultantBlockInfoItem {*/
+    /*        margin-top: 10px;*/
+    /*    }*/
+    /*}*/
 
 </style>

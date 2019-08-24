@@ -3,6 +3,18 @@
         <div class="main">
             <div class="section">
                 <div class="container">
+                    <div class="row groupRow">
+                        <div class="col-md-12 text-center">
+                            <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
+                                <li class="active"><a href="#" data-toggle="tab" aria-expanded="false">گروه مهندسی</a>
+                                </li>
+                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه تجربی</a></li>
+                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه انسانی</a>
+                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه هنر</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering" :class="[]">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
@@ -231,7 +243,7 @@
                                             v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
                         <div class="col-sm-9 col-xs-12">
-                            <div class="row listingRow">
+                            <div class="row">
                                 <div class="col-sm-12" v-for="consultantPerson in consultantList">
                                     <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
                                 </div>
@@ -522,11 +534,6 @@
 
             toggleFilterPanel: function () {
                 this.showFilterPanel = !this.showFilterPanel;
-                // if (document.getElementById('filterPanel').style.display == "none") {
-                //     document.getElementById('filterPanel').style.display = "block"
-                // } else {
-                //     document.getElementById('filterPanel').style.display = "none"
-                // }
             }
         }, watch: {
             tempScroll: function (newValue) {
@@ -543,24 +550,44 @@
         background-color: #eeeeee;
     }
 
+    .row {
+        margin-right: 0;
+        margin-left: -10px;
+    }
+
     .page-header {
         min-height: 100vh;
         background-image: url('http://193.176.241.131/sneedsAssets/img/consultantsBg.jpg');
         background-size: cover;
     }
 
+    .nav-pills.nav-pills-white > li.active > a {
+        background-color: white;
+        color: #555555;
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .groupRow {
+        margin-bottom: 15px;
+        position: sticky;
+        top: 110px;
+        z-index: 999;
+        background-color: white;
+        padding-top: 5px;
+        /*padding-right: 0;*/
+        /*padding-left: 0;*/
+        border-radius: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
     .filterColumn {
         z-index: 999;
         position: sticky;
         top: 100px;
-        background-color:white;
-        border-radius:10px;
-        padding:10px;
-    }
-
-    .row.is-flex > [class*='col-'] {
-        display: flex;
-        flex-direction: column;
+        background-color: white;
+        border-radius: 10px;
+        padding: 10px;
     }
 
     .card .card-content {
@@ -571,18 +598,10 @@
         display: block;
     }
 
-    @media only screen and (min-width: 0) and (max-width: 1024px) {
-        .listingRow div[class*="col-sm"] {
-            display: block;
-            width: 100%;
-            /*max-height: 250px;*/
-        }
-    }
-
-
     .bottomFilterColumn {
         position: fixed;
         bottom: 0;
+        left: 0;
         background-color: white;
         width: 100%;
         z-index: 9999;
@@ -651,6 +670,4 @@
     .bottomFilterColumn .bottomActionPanel button {
         margin-left: 20px;
     }
-
-
 </style>

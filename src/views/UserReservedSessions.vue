@@ -75,13 +75,14 @@
                                         وضعیت جلسه :
                                         برگزار شده
                                     </p>
-                                    <p v-else class="text-danger isansFont">
+                                    <p v-else-if="getJalali(session.start_time).isBefore(jalaliNow)" class="text-danger isansFont">
                                         وضعیت جلسه :
-                                        برگزار نشده
+                                        برگزار نشده - منقضی شده
                                     </p>
+                                    <p v-else class="text-danger isansFont">برگزار نشده</p>
 
                                     <div class="cart-flex-footer mt-10">
-                                        <a class="isansFont btn btn-info btn-sm" href="#">
+                                        <a class="isansFont btn btn-info btn-sm" target="_blank" :href="session.login_url" :disabled="session.login_url == null">
                                             ورود به جلسه
                                         </a>
                                         <router-link v-if="!isConsultant" class="btn btn-info isansFont btn-sm"
@@ -139,6 +140,7 @@
         data() {
             return {
                 reservedSessions: [],
+                videoRooms: [],
                 availableRates: [],
                 starRate: '',
 
@@ -180,11 +182,18 @@
                         responseSessions.data[i]["starRate"] = null;
                     }
                     this.reservedSessions = responseSessions.data;
-
                     this.availableRates = responseRates.data;
                     console.log('reserved sessions:', this.reservedSessions);
                     console.log('rates :', this.availableRates);
-                    this.resetCartsLogic();
+
+                    console.log('done')
+                    this.getVideoRooms().then(() => {
+                        console.log(this.reservedSessions);
+                        this.resetCartsLogic();
+
+                    }).catch(() => {
+                        this.failedCartsLogic();
+                    });
                 }).catch(error => {
                     this.failedCartsLogic();
                 });
@@ -243,6 +252,63 @@
                         reject(error);
                     })
                 })
+            },
+
+            getVideoRooms: function () {
+                console.log('sending video req');
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'videochat/rooms/',
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                        }
+                    }).then(response => {
+                        console.log('video rooms data:', response.data)
+                        this.videoRooms = response.data;
+                        for (let i = 0; i < this.reservedSessions.length; i++) {
+                            let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
+                            if (resultSession) {
+                                this.reservedSessions[i].login_url = resultSession.login_url
+                            } else {
+                                this.reservedSessions[i].login_url = null;
+                            }
+                        }
+                        resolve();
+                    }).catch((error) => {
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
+                        reject(error);
+                    })
+                })
+            },
+
+            updateRooms: function () {
+                return new Promise((resolve, reject) => {
+                    this.getVideoRooms().then(videosRes => {
+                        this.videoRooms = videosRes.data;
+                        for (let i = 0; i < this.reservedSessions.length; i++) {
+                            let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
+                            if (resultSession) {
+                                this.reservedSessions[i].login_url = resultSession.login_url
+                            } else {
+                                this.reservedSessions[i].login_url = null;
+                            }
+                        }
+                        resolve();
+                    }).catch(videosErr => {
+                        reject();
+                    })
+                })
+            },
+
+            getSessionRoomWithId: function (id) {
+                for (let i = 0; i < this.videoRooms.length; i++) {
+                    if (this.videoRooms[i].sold_time_slot == id)
+                        return this.videoRooms[i];
+                }
+                return null;
             },
 
             submitRate: function (soldSlotId, rate) {

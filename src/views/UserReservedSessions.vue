@@ -75,14 +75,20 @@
                                         وضعیت جلسه :
                                         برگزار شده
                                     </p>
-                                    <p v-else-if="getJalali(session.start_time).isBefore(jalaliNow)" class="text-danger isansFont">
+                                    <p v-else-if="getJalali(session.start_time).isBefore(jalaliNow)"
+                                       class="text-danger isansFont">
                                         وضعیت جلسه :
                                         برگزار نشده - منقضی شده
                                     </p>
                                     <p v-else class="text-danger isansFont">برگزار نشده</p>
 
+                                    <p class="text-success isansFont" v-if="jalaliNow.isBetween(getJalali(session.start_time),getJalali(session.end_time))">
+                                        در حال برگزاری
+                                    </p>
+
                                     <div class="cart-flex-footer mt-10">
-                                        <a class="isansFont btn btn-info btn-sm" target="_blank" :href="session.login_url" :disabled="session.login_url == null">
+                                        <a :disabled="!session.login_url" class="isansFont btn btn-success btn-sm"
+                                           target="_blank" :href="session.login_url">
                                             ورود به جلسه
                                         </a>
                                         <router-link v-if="!isConsultant" class="btn btn-info isansFont btn-sm"
@@ -139,6 +145,7 @@
         components: {RectNotifBlock, StarRating},
         data() {
             return {
+                roomInterval: null,
                 reservedSessions: [],
                 videoRooms: [],
                 availableRates: [],
@@ -180,13 +187,14 @@
                 this.getListOfRates().then(responseRates => {
                     for (let i = 0; i < responseSessions.data.length; i++) {
                         responseSessions.data[i]["starRate"] = null;
+                        responseSessions.data[i]["login_url"] = null;
                     }
                     this.reservedSessions = responseSessions.data;
                     this.availableRates = responseRates.data;
                     console.log('reserved sessions:', this.reservedSessions);
                     console.log('rates :', this.availableRates);
 
-                    console.log('done')
+                    console.log('done');
                     this.getVideoRooms().then(() => {
                         console.log(this.reservedSessions);
                         this.resetCartsLogic();
@@ -203,6 +211,16 @@
         },
         mounted() {
             scrollTo(0, 0);
+            setTimeout(() => {
+                console.log('setting sync video interval');
+                setInterval(function(){
+                    this.getVideoRoomsSyncReq();
+                }.bind(this), 1000 * 60);
+            }, 1000 * 10);
+        },
+        destroyed() {
+            clearInterval(this.roomInterval);
+            clearTimeout();
         },
         methods: {
 
@@ -254,6 +272,27 @@
                 })
             },
 
+            getVideoRoomsSyncReq: function () {
+                console.log('calling sync video rooms');
+                axios({
+                    url: this.$store.getters.getApi + 'videochat/rooms/',
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'JWT ' + this.$store.getters.getToken
+                    }
+                }).then(response => {
+                    console.log('sync data from video rooms :', response.data)
+                    for (let i = 0; i < this.reservedSessions.length; i++) {
+                        let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
+                        if (resultSession) {
+                            this.reservedSessions[i].login_url = resultSession.login_url
+                        }
+                    }
+                }).catch(error => {
+                    console.log('sync data from video error', error);
+                })
+            },
+
             getVideoRooms: function () {
                 console.log('sending video req');
                 return new Promise((resolve, reject) => {
@@ -270,8 +309,6 @@
                             let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
                             if (resultSession) {
                                 this.reservedSessions[i].login_url = resultSession.login_url
-                            } else {
-                                this.reservedSessions[i].login_url = null;
                             }
                         }
                         resolve();

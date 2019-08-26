@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="row groupRow">
                         <div class="col-md-12 text-center">
-                            <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
+                            <ul class="nav nav-pills nav-pills-white fieldList isansFont">
                                 <li class="active"><a href="#" data-toggle="tab" aria-expanded="false">گروه مهندسی</a>
                                 </li>
                                 <li><a href="#" data-toggle="tab" aria-expanded="false">گروه تجربی</a></li>
@@ -243,7 +243,7 @@
                                             v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
                         <div class="col-sm-9 col-xs-12">
-                            <div class="row">
+                            <div class="row consultantListRow">
                                 <div class="col-sm-12" v-for="consultantPerson in consultantList">
                                     <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
                                 </div>
@@ -550,11 +550,6 @@
         background-color: #eeeeee;
     }
 
-    .row {
-        margin-right: 0;
-        margin-left: -10px;
-    }
-
     .page-header {
         min-height: 100vh;
         background-image: url('http://193.176.241.131/sneedsAssets/img/consultantsBg.jpg');
@@ -574,17 +569,13 @@
         z-index: 999;
         background-color: white;
         padding-top: 5px;
-        /*padding-right: 0;*/
-        /*padding-left: 0;*/
         border-radius: 10px;
-        margin-left: 0;
-        margin-right: 0;
     }
 
     .filterColumn {
         z-index: 999;
         position: sticky;
-        top: 100px;
+        top: 170px;
         background-color: white;
         border-radius: 10px;
         padding: 10px;
@@ -608,10 +599,6 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         border-top: 1px solid #ccc;
         overflow-y: scroll;
-    }
-
-    .fullHeightBottomFilter {
-        /*height:calc(100vh - 110px);*/
     }
 
     .bottomFilterColumnTitle {
@@ -670,4 +657,31 @@
     .bottomFilterColumn .bottomActionPanel button {
         margin-left: 20px;
     }
+
+
+    /**** University Field List *****/
+    .fieldList {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding-bottom: 5px;
+    }
+
+
+    .fieldList li {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .row.consultantListRow {
+        margin-right: 0;
+    }
+
+    @media only screen and (max-width: 767.8px) and (min-width: 0) {
+        .row.consultantListRow {
+            margin-right: -10px;
+        }
+    }
+
+
 </style>

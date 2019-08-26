@@ -6,7 +6,7 @@
                     <div class="ripple-container"></div>
                 </router-link>
 
-                <div class="consultantBlockInfo">
+                <div class="consultantBlockInfo" style="margin-top:10px;">
                     <div class="consultantBlockInfoItem">
                         <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
                             {{consultant.first_name + ' ' + consultant.last_name}}
@@ -61,7 +61,7 @@
 
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         flex-wrap: wrap;
     }
 
@@ -93,14 +93,14 @@
         display: flex;
         align-self: stretch;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-evenly;
     }
 
     .consultantBlockInfoItem {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         flex-wrap: wrap;
     }
 

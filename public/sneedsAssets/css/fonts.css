@@ -1,24 +1,35 @@
 @font-face {
     font-family: 'yekan';
-    src : url('../font/Yekan.ttf') format('truetype');
-}
-@font-face {
-    font-family: 'isans';
-    src : url('../font/isttf.ttf') format('truetype');
-}
-@font-face {
-    font-family: 'gadugi';
-    src : url('../font/gadugi.ttf') format('truetype');
+    src: url('../font/Yekan.ttf') format('truetype');
 }
 
-.yekanFont{
+@font-face {
+    font-family: 'isans';
+    src: url('../font/isttf.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'gadugi';
+    src: url('../font/gadugi.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'isansFaNum';
+    src: url('../font/isfanumttf.ttf') format('truetye');
+}
+
+.yekanFont {
     font-family: 'yekan' !important;
 }
 
-.gadugiFont{
+.gadugiFont {
     font-family: 'gadugi' !important;
 }
 
-.isansFont{
+.isansFont {
     font-family: 'isans' !important;
+}
+
+.isansFont--faNum {
+    font-family : 'isansFaNum' !important;
 }

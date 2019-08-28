@@ -15,123 +15,117 @@
 
         <div class="main profile-page">
             <div class="profile-content">
-                <div class="container-fluid">
+                <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h3 class="isansFont text-center">
+                                    <h3 class="isansFont text-right">
                                         سبد خرید شما
+                                        <span v-if="activeCart.time_slot_sales.length == 0">(سبد شما خالیست)</span>
                                     </h3>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <RectNotifBlock :message="cartsLoading.message"
-                                                    type="warning"
-                                                    borderRound="true"
-                                                    v-if="cartsLoading.value"></RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsSuccess.message"
-                                                    type="success"
-                                                    borderRound="true"
-                                                    v-else-if="cartsSuccess.value"></RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsFailed.message"
-                                                    type="danger"
-                                                    borderRound="true"
-                                                    v-else-if="cartsFailed.value"></RectNotifBlock>
-                                    <div v-if="activeCart == undefined" class="isansFont">
-                                        <p>سبد خرید شما خالیست.</p>
-                                        <router-link class="btn btn-simple btn-lg btn-info isansFont" to="/consultants">مشاهده مشاوران</router-link>
-                                    </div>
-                                    <div v-else class="row card table-responsive">
-                                        <table class="table table-shopping">
-                                            <thead>
-                                            <tr class="isansFont">
-                                                <th>مشاور</th>
-                                                <th class="th-description">تاریخ</th>
-                                                <th class="th-description">ساعت شروع</th>
-                                                <th>ساعت پایان</th>
-                                                <th>مدت ( ساعت )</th>
-                                                <th>هزینه</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            <tr v-for="slotDetail in activeCart.time_slot_sales_detail"
-                                                :data-slotId="slotDetail.id">
-                                                <td class="td-name">
-                                                    <router-link class="isansFont"
-                                                            :to="'/consultants/' + slotDetail.consultant_slug">
-                                                        مشاهده مشاور
-                                                    </router-link>
-                                                </td>
-                                                <td class="isansFont">
-                                                    {{getJalali(slotDetail.start_time).locale('fa').format('YYYY/MM/DD')}}
-                                                    <br>
-                                                    {{getJalali(slotDetail.start_time).locale('fa').format('dddd')}}
-                                                </td>
-                                                <td>
-                                                    {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
-                                                </td>
-                                                <td>
-                                                    {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
-                                                </td>
-                                                <td class="td-number">
-                                                    1
-                                                </td>
-                                                <td class="td-number">
+                            <div class="row" style="margin-bottom:30px;">
+                                <div class="col-md-9 cardsWrapper">
+                                    <div class="row" v-if="activeCart">
+                                        <div class="col-md-12" v-for="slotDetail in activeCart.time_slot_sales_detail"
+                                             :key="activeCart.id">
+                                            <div class="cardConsultBlock">
+                                                <button class="btn btn-sm btn-simple"
+                                                        @click="removeSlotFromCard(slotDetail.id)">
+                                                    <i class="material-icons">close</i>
+                                                </button>
+                                                <img class="cardConsultBlock--image"
+                                                     src="http://193.176.241.131/sneedsAssets/img/brain.png"
+                                                     alt="consultant logo">
+                                                <div class="cardConsultantBlock--info">
+                                                    <h4 class="isansFont font-weight-bold">
+                                                        <router-link :to="'/consultants/' + slotDetail.consultant_slug">
+                                                            مشاهده مشاور
+                                                        </router-link>
+                                                    </h4>
+                                                    <button class="timeTogglerBtn isansFont btn btn-simple btn-sm"
+                                                            type="button"
+                                                            data-toggle="collapse"
+                                                            :data-target="'#timesCollapse' + slotDetail.id"
+                                                            aria-expanded="true" aria-controls="timesCollapse">
+                                                        {{getJalali(slotDetail.start_time).locale('fa').format('dddd MM MMMM')}}
+                                                        <i class="material-icons">keyboard_arrow_down</i>
+                                                    </button>
+                                                    <div class="collapse timesCollapse isansFont"
+                                                         :id="'timesCollapse' + slotDetail.id">
+                                                        <p>
+                                                            ساعت
+                                                            {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
+                                                            الی
+                                                            {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
+                                                            <button class="btn btn-simple btn-sm"
+                                                                    @click="removeSlotFromCard(slotDetail.id)">
+                                                                <i class="material-icons">close</i>
+                                                            </button>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="cardConsultantBlock--price isansFont--faNum">
                                                     {{slotDetail.price}}
-                                                </td>
-                                                <td class="td-actions">
-                                                    <button type="button" rel="tooltip" data-placement="left"
-                                                            title="حذف آیتم از سبد خرید" class="btn btn-simple"
-                                                            data-original-title="Remove Item"
-                                                            @click="removeSlotFromCard(slotDetail.id)">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="td-total isansFont">
-                                                    میزان تخفیف :
-                                                    {{activeCart.time_slot_sales_discount}}
-                                                    درصد
-                                                </td>
-                                                <td class="td-total isansFont">
-                                                    جمع اولیه :
-                                                </td>
-                                                <td class="td-price isansFont">
-                                                     <del class="text-danger">{{activeCart.subtotal}}</del>
-                                                    <span style="font-size:12px;margin-right:5px">تومان</span>
-                                                </td>
-                                                <td class="td-total isansFont">
-                                                    قابل پرداخت با اعمال تخفیف :
-                                                </td>
-                                                <td class="td-price isansFont">
-                                                    <span class="text-success">{{activeCart.total}}</span>
-                                                    <span style="font-size:12px;margin-right:5px">تومان</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <button class="btn btn-info btn-round isansFont"
-                                                            @click="factorCreation()">
-                                                        <i class="material-icons">keyboard_arrow_left</i>
-                                                        ایجاد فاکتور
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    تومان
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-3 priceWrapper" v-if="activeCart">
+                                    <p class="priceWrapper--prevPrice isansFont--faNum">
+                                        <span class="d-block priceWrapper--prevPrice__number">
+                                            {{activeCart.total}}
+                                        </span>
+                                        <span class="d-block">تومان</span>
+                                    </p>
+
+                                    <p class="priceWrapper--priceInfo isansFont--faNum">
+                                        <span class="priceWrapper--priceInfo__number text-success">{{activeCart.subtotal - activeCart.total}}</span>
+                                        <span> تومان سود شما از این خرید است.</span>
+                                    </p>
+
+                                    <div class="priceWrapper--discountCodeBox">
+                                        <form action="" method="">
+                                            <input type="text" name="discountCode" class="isansFont"
+                                                   placeholder="کد تخفیف دارم...">
+                                            <button type="button" class="isansFont">اعمال کد</button>
+                                        </form>
+                                    </div>
+
+                                    <button class="btn btn-primary isansFont nextSecButton" @click="factorCreation()">
+                                        <i class="material-icons">keyboard_arrow_left</i>
+                                        مرحله بعد
+                                    </button>
+                                </div>
+                                 <!--                                <div class="row">-->
+                                <!--                                    <div class="col-md-12">-->
+                                <!--                                        <RectNotifBlock :message="cartsLoading.message"-->
+                                <!--                                                        type="warning"-->
+                                <!--                                                        borderRound="true"-->
+                                <!--                                                        v-if="cartsLoading.value"></RectNotifBlock>-->
+
+                                <!--                                        <RectNotifBlock :message="cartsSuccess.message"-->
+                                <!--                                                        type="success"-->
+                                <!--                                                        borderRound="true"-->
+                                <!--                                                        v-else-if="cartsSuccess.value"></RectNotifBlock>-->
+
+                                <!--                                        <RectNotifBlock :message="cartsFailed.message"-->
+                                <!--                                                        type="danger"-->
+                                <!--                                                        borderRound="true"-->
+                                <!--                                                        v-else-if="cartsFailed.value"></RectNotifBlock>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -177,7 +171,6 @@
             scrollTo(0, 0);
         },
         methods: {
-
             resetCartsLogic: function () {
                 window.console.log('no loading deploy');
                 this.cartsLoading.value = false;
@@ -213,7 +206,7 @@
             },
 
             removeSlotFromCard: function (slotId) {
-                if(window.confirm('برای حذف این مورد مطمئنید ؟')){
+                if (window.confirm('برای حذف این مورد مطمئنید ؟')) {
                     this.resetCartsLogic();
                     this.startCartsLogic();
                     console.log('remove slot with id', slotId);
@@ -286,8 +279,8 @@
                 }).catch(error => {
                     this.failedCartsLogic();
                     console.log(error);
-                    if (error.response){
-                        this.cartsFailed.message = 'خطایی رخ داد...'  + error.response.data.detail;
+                    if (error.response) {
+                        this.cartsFailed.message = 'خطایی رخ داد...' + error.response.data.detail;
                         console.log(error.response)
                     }
                 })
@@ -326,6 +319,7 @@
                     })
                 })
             },
+
             getJalali: function (date) {
                 return jalali(date);
             }
@@ -345,5 +339,169 @@
 </script>
 
 <style scoped>
+    .main {
+        background-color: #eee;
+    }
 
+    .cardsWrapper {
+        border-radius: 10px;
+        background-color: white;
+        border: 1px solid #999;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-right:-15px;
+    }
+
+    .priceWrapper {
+        border-radius: 10px;
+        border: 1px solid #999;
+        background-color: white;
+        margin-right:15px;
+    }
+
+    .cardConsultBlock--image {
+        height: 100px;
+        width: 100px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        margin-right: 15px;
+    }
+
+    .cardConsultBlock {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        margin-top: 20px;
+    }
+
+    .cardConsultantBlock--price {
+        margin-right: auto;
+    }
+
+    .cardConsultantBlock--info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+
+        flex-grow: 2;
+
+
+        align-self: stretch;
+    }
+
+    .cardConsultantBlock--info h4 {
+        font-weight: bold;
+        margin: 0 10px 0 0;
+    }
+
+
+    .cardConsultantBlock--info p {
+        font-size: 15px;
+        margin: 0;
+        color: #666;
+    }
+
+    .timeTogglerBtn {
+        color: #666;
+        font-size: 15px;
+        margin-right: 10px;
+        padding: 10px 5px;
+        border-radius: 10px;
+    }
+
+    .timesCollapse {
+        background-color: #F0F0F0;
+        border-radius: 10px;
+        margin-right: 10px;
+        padding-right: 10px;
+        margin-bottom: 10px;
+
+        width: calc(100% - 30px);
+    }
+
+    .timesCollapse p {
+        font-size: 12px;
+        text-align: right;
+        display: flex;
+
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .timesCollapse button {
+        margin: 0;
+        padding: 10px;
+    }
+
+    .priceWrapper--discountCodeBox {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .priceWrapper--discountCodeBox form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .priceWrapper--discountCodeBox form input[type="text"] {
+        border-radius: 30px;
+        padding: 5px 10px;
+        border: none;
+        background-color: #f0f0f0;
+        height: 40px;
+    }
+
+    .priceWrapper--discountCodeBox form button {
+        border-radius: 30px;
+        background-color: #22B473;
+        color: white;
+        border: none;
+        height: 40px;
+
+        font-size: 12px;
+        padding-right: 10px;
+        padding-left: 10px;
+
+        position: relative;
+        margin-right: -50px;
+    }
+
+    .nextSecButton {
+        border-radius: 15px;
+        margin-bottom: 20px;
+    }
+
+
+    .priceWrapper--prevPrice {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-size: 15px;
+    }
+
+    .priceWrapper--prevPrice__number {
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 40px;
+    }
+
+    .priceWrapper--priceInfo {
+        font-size: 12px;
+    }
+
+    .priceWrapper--priceInfo__number {
+        font-weight: bold;
+    }
+
+    @media only screen and (max-width:991.8px) and (min-width: 0) {
+        .priceWrapper {
+            margin-right : 0;
+            margin-top:15px;
+        }
+
+        .cardsWrapper {
+            margin-right : 0;
+        }
+    }
 </style>

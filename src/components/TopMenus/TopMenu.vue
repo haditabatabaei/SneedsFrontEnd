@@ -136,15 +136,13 @@
 </template>
 
 <script>
-    import FirstMenu from './FirstMenu';
-    import SecondMenu from './SecondMenu';
     import Logo from './LogoComponent';
 
 
     export default {
         name: "TopMenu",
         components: {
-            FirstMenu, SecondMenu, Logo
+            Logo
         },
         data: function () {
             return {
@@ -239,24 +237,6 @@
             toggleMobileMenu: function () {
                 console.log('toggle mobile menu');
                 this.mobileMenuShow = !this.mobileMenuShow;
-                // if (this.mobileMenuShow) {
-                //     let myInterval = setInterval(() => {
-                //         this.mobileMenuStyle = 'width:' + this.mobileMenuWidth + 'px;';
-                //         this.mobileMenuWidth += 5;
-                //         if (this.mobileMenuWidth === 200) {
-                //             clearInterval(myInterval);
-                //         }
-                //     }, 5);
-                //     // setTimeout(() => {clearInterval(myInterval)} , 200)
-                // } else {
-                //     let myInterval = setInterval(() => {
-                //         this.mobileMenuStyle = 'width:' + this.mobileMenuWidth + 'px;';
-                //         this.mobileMenuWidth -= 5;
-                //         if (this.mobileMenuWidth === 0) {
-                //             clearInterval(myInterval);
-                //         }
-                //     }, 5);
-                // }
             }
         }
     }

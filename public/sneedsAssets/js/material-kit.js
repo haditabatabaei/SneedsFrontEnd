@@ -90,13 +90,13 @@ var big_image;
          $('#bodyClick').remove();
           setTimeout(function(){
              $toggle.removeClass('toggled');
-          }, 550);
+          }, 0);
 
          $('html').removeClass('nav-open-absolute');
      } else {
          setTimeout(function(){
              $toggle.addClass('toggled');
-         }, 580);
+         }, 0);
 
 
          div = '<div id="bodyClick"></div>';
@@ -110,7 +110,7 @@ var big_image;
              $('#bodyClick').remove();
               setTimeout(function(){
                  $toggle.removeClass('toggled');
-              }, 550);
+              }, 0);
          });
 
          if($('nav').hasClass('navbar-absolute')){

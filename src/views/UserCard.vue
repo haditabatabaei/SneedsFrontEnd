@@ -22,17 +22,34 @@
                                 <div class="col-md-12">
                                     <h3 class="isansFont text-right">
                                         سبد خرید شما
-                                        <span v-if="activeCart.time_slot_sales.length == 0">(سبد شما خالیست)</span>
+                                        <span v-if="!activeCart || activeCart.time_slot_sales.length == 0">( سبد شما خالیست )</span>
                                     </h3>
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <RectNotifBlock :message="cartsLoading.message"
+                                                    type="warning"
+                                                    borderRound="true"
+                                                    v-if="cartsLoading.value"></RectNotifBlock>
 
+                                    <RectNotifBlock :message="cartsSuccess.message"
+                                                    type="success"
+                                                    borderRound="true"
+                                                    v-else-if="cartsSuccess.value"></RectNotifBlock>
+
+                                    <RectNotifBlock :message="cartsFailed.message"
+                                                    type="danger"
+                                                    borderRound="true"
+                                                    v-else-if="cartsFailed.value"></RectNotifBlock>
+                                </div>
+                            </div>
                             <div class="row" style="margin-bottom:30px;">
-                                <div class="col-md-9 cardsWrapper">
-                                    <div class="row" v-if="activeCart">
+                                <div class="col-md-9 cardsWrapper" v-if="activeCart">
+                                    <div class="row">
                                         <div class="col-md-12" v-for="slotDetail in activeCart.time_slot_sales_detail"
-                                             :key="activeCart.id">
+                                             :key="slotDetail.id">
                                             <div class="cardConsultBlock">
                                                 <button class="btn btn-sm btn-simple"
                                                         @click="removeSlotFromCard(slotDetail.id)">
@@ -103,22 +120,7 @@
                                         مرحله بعد
                                     </button>
                                 </div>
-                                 <!--                                <div class="row">-->
-                                <!--                                    <div class="col-md-12">-->
-                                <!--                                        <RectNotifBlock :message="cartsLoading.message"-->
-                                <!--                                                        type="warning"-->
-                                <!--                                                        borderRound="true"-->
-                                <!--                                                        v-if="cartsLoading.value"></RectNotifBlock>-->
 
-                                <!--                                        <RectNotifBlock :message="cartsSuccess.message"-->
-                                <!--                                                        type="success"-->
-                                <!--                                                        borderRound="true"-->
-                                <!--                                                        v-else-if="cartsSuccess.value"></RectNotifBlock>-->
-
-                                <!--                                        <RectNotifBlock :message="cartsFailed.message"-->
-                                <!--                                                        type="danger"-->
-                                <!--                                                        borderRound="true"-->
-                                <!--                                                        v-else-if="cartsFailed.value"></RectNotifBlock>-->
                             </div>
                         </div>
                     </div>
@@ -282,6 +284,10 @@
                     if (error.response) {
                         this.cartsFailed.message = 'خطایی رخ داد...' + error.response.data.detail;
                         console.log(error.response)
+
+                        if(error.response.data.detail[0] == 'User has an active order.'){
+                            this.$router.push('/user/order');
+                        }
                     }
                 })
             },

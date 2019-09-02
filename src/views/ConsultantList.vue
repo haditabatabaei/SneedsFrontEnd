@@ -546,7 +546,6 @@
 <style scoped>
 
     .section {
-        margin-top: 100px;
         background-color: #eeeeee;
     }
 
@@ -565,17 +564,18 @@
     .groupRow {
         margin-bottom: 15px;
         position: sticky;
-        top: 110px;
+        top: 70px;
         z-index: 999;
         background-color: white;
         padding-top: 5px;
         border-radius: 10px;
+        margin-top:20px;
     }
 
     .filterColumn {
         z-index: 999;
         position: sticky;
-        top: 170px;
+        top: 140px;
         background-color: white;
         border-radius: 10px;
         padding: 10px;

@@ -22,11 +22,11 @@
                         </p>
                     </div>
                     <div class="consultantBlockInfoItem">
-                <span class="rate noRate isansFont" style="font-size:12px;top:-2px;"
+                <span class="rate noRate isansFont--faNum" style="font-size:12px;top:-2px;"
                       v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
-                        <span class="rate goodRate" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
-                        <span class="rate badRate" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
-                        <span class="isansFont comments"> {{consultant.comment_number}} نظر ثبت شده</span>
+                        <span class="rate goodRate isansFont--faNum" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
+                        <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
+                        <span class="isansFont--faNum comments"> {{consultant.comment_number}} نظر ثبت شده</span>
                     </div>
                 </div>
         </div>
@@ -93,7 +93,7 @@
         display: flex;
         align-self: stretch;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-evenly;
     }
 
@@ -130,6 +130,7 @@
         font-size: 15px;
         position: relative;
         z-index: 2;
+        top:-2px;
     }
 
     .comments {
@@ -177,15 +178,5 @@
     .consultantBlockAction{
         display:block;
     }
-
-    /*@media only screen and (max-width: 767.8px ) and (min-width: 0) {*/
-    /*    .consultantBlock {*/
-    /*        justify-content: center;*/
-    /*    }*/
-
-    /*    .consultantBlockInfoItem {*/
-    /*        margin-top: 10px;*/
-    /*    }*/
-    /*}*/
 
 </style>

@@ -16,7 +16,8 @@
                 </h4>
 
                 <p class="refId isansFont">شماره پیگیری پرداخت ( لطفا این شماره را در محلی ثبت کنید ) :
-                    {{this.refId}}</p>
+                    {{this.refId}}
+                </p>
                 <p class="detail isansFont">توضیحات نتیجه : {{this.detail}}</p>
             </div>
         </div>
@@ -79,8 +80,10 @@
                         resolve(response);
                     }).catch(error => {
                         console.log(error);
-                        if (error.response)
+                        if (error.response){
                             console.log(error.response);
+                            this.payFailed.message += error.response.data.detail;
+                        }
                         reject(error);
                     })
                 });

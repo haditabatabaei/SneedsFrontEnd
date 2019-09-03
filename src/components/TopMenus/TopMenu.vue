@@ -97,7 +97,7 @@
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret"></b>
                     </button>
-                    <router-link to="/user/cart" class="btn btn-rose btn-fab btn-fab-mini isansFont">
+                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont" :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
                         <i class="material-icons">shopping_cart</i>
                     </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
@@ -228,6 +228,9 @@
             },
             showConsultantsManagerLink: function () {
                 return this.$store.getters.getUserInfo.is_consultant;
+            },
+            activeCart : function(){
+                return this.$store.getters.getCart;
             }
         }, methods: {
             logout: function () {

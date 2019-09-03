@@ -43,27 +43,32 @@
                             <div class="row" style="margin-bottom:30px;">
                                 <div class="col-md-9 cardsWrapper" v-if="activeOrder">
                                     <div class="row">
-                                        <div class="col-md-12" v-for="slotDetail in activeOrder.cart.time_slot_sales_detail"
+                                        <div class="col-md-12"
+                                             v-for="slotDetail in activeOrder.cart.time_slot_sales_detail"
                                              :key="slotDetail.id">
                                             <div class="cardConsultBlock">
                                                 <img class="cardConsultBlock--image"
-                                                     src="http://193.176.241.131/sneedsAssets/img/brain.png"
+                                                     :src="slotDetail.consultant.profile_picture"
                                                      alt="consultant logo">
                                                 <div class="cardConsultantBlock--info">
                                                     <h4 class="isansFont font-weight-bold">
-                                                        <router-link :to="'/consultants/' + slotDetail.consultant_slug">
-                                                            مشاهده مشاور
+                                                        <router-link
+                                                                :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                            مشاور :
+                                                            {{
+                                                            slotDetail.consultant.first_name + ' ' +
+                                                            slotDetail.consultant.last_name
+                                                            }}
                                                         </router-link>
                                                     </h4>
                                                     <button class="timeTogglerBtn isansFont btn btn-simple btn-sm"
                                                             type="button"
-                                                            data-toggle="collapse"
-                                                            :data-target="'#timesCollapse' + slotDetail.id"
                                                             aria-expanded="true" aria-controls="timesCollapse">
-                                                        {{getJalali(slotDetail.start_time).locale('fa').format('dddd MM MMMM')}}
+                                                        {{getJalali(slotDetail.start_time).locale('fa')
+                                                        .format('dddd MM MMMM')}}
                                                         <i class="material-icons">keyboard_arrow_down</i>
                                                     </button>
-                                                    <div class="collapse timesCollapse isansFont"
+                                                    <div class="timesCollapse isansFont"
                                                          :id="'timesCollapse' + slotDetail.id">
                                                         <p>
                                                             ساعت
@@ -106,92 +111,6 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-<!--                                <div class="col-md-12">-->
-<!--                                    <div v-if="activeOrder == undefined" class="isansFont">فاکتوری جدیدی موجود نمی-->
-<!--                                        باشد-->
-<!--                                    </div>-->
-<!--                                    <div v-else class="table-responsive">-->
-<!--                                        <table class="table table-shopping">-->
-<!--                                            <thead>-->
-<!--                                            <tr class="isansFont">-->
-<!--                                                <th>مشاور</th>-->
-<!--                                                <th class="th-description">تاریخ</th>-->
-<!--                                                <th class="th-description">ساعت شروع</th>-->
-<!--                                                <th class="text-center">ساعت پایان</th>-->
-<!--                                                <th class="text-center">مدت ( ساعت )</th>-->
-<!--                                                <th class="text-center">هزینه</th>-->
-<!--                                                <th>وضعیت</th>-->
-<!--                                            </tr>-->
-<!--                                            </thead>-->
-<!--                                            <tbody>-->
-<!--                                            <tr v-for="slotDetail in activeOrder.cart.time_slot_sales_detail">-->
-<!--                                                <td class="td-name">-->
-<!--                                                    <router-link class="isansFont"-->
-<!--                                                            :to="'/consultants/' + slotDetail.consultant_slug">-->
-<!--                                                        مشاهده مشاور-->
-<!--                                                    </router-link>-->
-<!--                                                </td>-->
-<!--                                                <td class="isansFont">-->
-<!--                                                    {{getJalali(slotDetail.start_time).locale('fa').format('YYYY/MM/DD')}}-->
-<!--                                                    <br>-->
-<!--                                                    {{getJalali(slotDetail.start_time).locale('fa').format('dddd')}}-->
-<!--                                                </td>-->
-<!--                                                <td>-->
-<!--                                                    {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}-->
-<!--                                                </td>-->
-<!--                                                <td>-->
-<!--                                                    {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}-->
-<!--                                                </td>-->
-<!--                                                <td class="td-number">-->
-<!--                                                    1-->
-<!--                                                </td>-->
-<!--                                                <td class="td-number">-->
-<!--                                                    {{slotDetail.price}}-->
-<!--                                                </td>-->
-<!--                                                <td class="td-actions isansFont" v-if="activeOrder.status == 'created'">-->
-<!--                                                    منتظر پرداخت کاربر-->
-<!--                                                </td>-->
-<!--                                                <td class="td-actions isansFont"-->
-<!--                                                    v-else-if="activeOrder.status == 'paid'">-->
-<!--                                                    پرداخت موفق-->
-<!--                                                </td>-->
-<!--                                            </tr>-->
-<!--                                            <tr>-->
-<!--                                                <td class="td-total isansFont">-->
-<!--                                                    میزان تخفیف :-->
-<!--                                                    {{activeOrder.cart.time_slot_sales_discount}}-->
-<!--                                                    درصد-->
-<!--                                                </td>-->
-<!--                                                <td class="td-total isansFont">-->
-<!--                                                    جمع اولیه :-->
-<!--                                                </td>-->
-<!--                                                <td class="td-price isansFont">-->
-<!--                                                    <del class="text-danger">{{activeOrder.cart.subtotal}}</del>-->
-<!--                                                    <span style="font-size:15px;margin-right:5px">تومان</span>-->
-<!--                                                </td>-->
-<!--                                                <td class="td-total isansFont">-->
-<!--                                                    قابل پرداخت با اعمال تخفیف :-->
-<!--                                                </td>-->
-<!--                                                <td class="td-price isansFont">-->
-<!--                                                    <p>-->
-<!--                                                        <span class="text-success">{{activeOrder.total}}</span>-->
-<!--                                                        <span style="font-size:12px;margin-right:5px">تومان</span>-->
-<!--                                                    </p>-->
-<!--                                                </td>-->
-<!--                                                <td colspan="3" class="text-right">-->
-<!--                                                    <button class="btn btn-info btn-round isansFont"-->
-<!--                                                            @click="factorPayment()">-->
-<!--                                                        <i class="material-icons">keyboard_arrow_left</i>-->
-<!--                                                        پرداخت فاکتور-->
-<!--                                                    </button>-->
-<!--                                                </td>-->
-<!--                                            </tr>-->
-<!--                                            </tbody>-->
-<!--                                        </table>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                            </div>
                             <hr>
 
                             <div class="row">
@@ -217,8 +136,7 @@
                                                 <td>{{order.order_id}}</td>
                                                 <td class="isansFont">
                                                     {{
-                                                    getJalali(order.updated).locale('fa').
-                                                    format('YYYY/MM/DD HH:mm:ss')
+                                                    getJalali(order.updated).locale('fa').format('YYYY/MM/DD HH:mm:ss')
                                                     }}
                                                 </td>
                                                 <td class="td-actions isansFont" v-if="order.status == 'created'">
@@ -257,7 +175,7 @@
                                         :data-slotId="slotDetail.id">
                                         <td class="td-name">
                                             <router-link class="isansFont"
-                                                    :to="'/consultants/' + slotDetail.consultant_slug">
+                                                         :to="'/consultants/' + slotDetail.consultant_slug">
                                                 مشاهده مشاور
                                             </router-link>
                                         </td>
@@ -284,16 +202,16 @@
                                             تاریخ ایجاد فاکتور :
                                             <br>
                                             {{
-                                            getJalali(orderDescToShow.created).locale('fa').
-                                            format('YYYY/MM/DD HH:mm:ss')
+                                            getJalali(orderDescToShow.created).locale('fa')
+                                            .format('YYYY/MM/DD HH:mm:ss')
                                             }}
                                         </td>
                                         <td>
                                             تاریخ آخرین آپدیت فاکتور :
                                             <br>
                                             {{
-                                            getJalali(orderDescToShow.updated).locale('fa').
-                                            format('YYYY/MM/DD HH:mm:ss')
+                                            getJalali(orderDescToShow.updated).locale('fa')
+                                            .format('YYYY/MM/DD HH:mm:ss')
                                             }}
                                         </td>
                                         <td>
@@ -427,19 +345,6 @@
                 paymentAcceptPromise.then(response => {
                     console.log('response for factor payment : ', response);
                     window.open(response.data.redirect, '_blank');
-                    // this.getOrders().then((orders) => {
-                    //     this.getPaidOrders().then((paidOrders) => {
-                    //         this.successCartsLogic();
-                    //         this.orders = orders;
-                    //         this.completedOrders = paidOrders;
-                    //         this.$store.commit('setCart', null);
-                    //         this.resetCartsLogic();
-                    //     }).catch(() => {
-                    //         this.failedCartsLogic();
-                    //     });
-                    // }).catch(() => {
-                    //     this.failedCartsLogic();
-                    // });
 
                 }).catch(error => {
                     console.log(error);
@@ -536,6 +441,11 @@
                 })
 
             },
+
+            getConsultantSlugFromUrl: function (url) {
+                return url.replace(this.$store.getters.getApi + 'account/consultant-profiles/', '').replace('/', '');
+            },
+
             getJalali: function (date) {
                 return jalali(date);
             }
@@ -565,14 +475,14 @@
         border: 1px solid #999;
         padding-bottom: 10px;
         padding-top: 10px;
-        margin-right:-15px;
+        margin-right: -15px;
     }
 
     .priceWrapper {
         border-radius: 10px;
         border: 1px solid #999;
         background-color: white;
-        margin-right:15px;
+        margin-right: 15px;
     }
 
     .cardConsultBlock--image {
@@ -642,6 +552,8 @@
         text-align: right;
         display: flex;
 
+        padding: 5px 5px 5px 0;
+
         align-items: center;
         justify-content: flex-start;
     }
@@ -710,25 +622,28 @@
         font-weight: bold;
     }
 
-    .priceWrapper--code{
-        margin-top:20px;
-        margin-bottom:20px;
+    .priceWrapper--code {
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .priceWrapper--code code {
-        margin-top:5px;
-        display:block;
-        font-size:13px;
+        margin-top: 5px;
+        display: block;
+        font-size: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-family: monospace !important;
     }
 
-    @media only screen and (max-width:991.8px) and (min-width: 0) {
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .priceWrapper {
-            margin-right : 0;
-            margin-top:15px;
+            margin-right: 0;
+            margin-top: 15px;
         }
 
         .cardsWrapper {
-            margin-right : 0;
+            margin-right: 0;
         }
     }
 </style>

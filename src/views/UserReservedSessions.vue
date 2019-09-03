@@ -82,7 +82,8 @@
                                     </p>
                                     <p v-else class="text-danger isansFont">برگزار نشده</p>
 
-                                    <p class="text-success isansFont" v-if="jalaliNow.isBetween(getJalali(session.start_time),getJalali(session.end_time))">
+                                    <p class="text-success isansFont"
+                                       v-if="jalaliNow.isBetween(getJalali(session.start_time),getJalali(session.end_time))">
                                         در حال برگزاری
                                     </p>
 
@@ -213,10 +214,13 @@
             scrollTo(0, 0);
             setTimeout(() => {
                 console.log('setting sync video interval');
-                setInterval(function(){
+                setInterval(function () {
                     this.getVideoRoomsSyncReq();
                 }.bind(this), 1000 * 60);
             }, 1000 * 10);
+        },
+        beforeDestroy() {
+            clearInterval(this.roomInterval);
         },
         destroyed() {
             clearInterval(this.roomInterval);

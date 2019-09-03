@@ -15,20 +15,6 @@
                 <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
                 <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
             </div>
-
-            <!--            <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"-->
-            <!--                    v-if="isLoggedIn && config.usersConfig">-->
-            <!--                <i class="material-icons" v-if="reserveSuccess.value">done</i>-->
-            <!--                <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon"-->
-            <!--                     v-if="reserveLoading.value">-->
-            <!--                <i class="material-icons" v-if="reserveFailed.value">block</i>-->
-            <!--                <i class="material-icons">add_shopping_cart</i>-->
-            <!--                افزودن زمان های انتخاب شده به سبد خرید-->
-            <!--            </button>-->
-            <!--            <router-link to="/login" class="btn btn-sm btn-warning isansFont"-->
-            <!--                         v-else-if="!isLoggedIn && config.usersConfig">-->
-            <!--                برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید-->
-            <!--            </router-link>-->
         </div>
         <div v-if="config.usersConfig" class="myTable isansFont">
             <div class="myTableRow firstRow">
@@ -40,8 +26,8 @@
                 <div class="myTableCell">روز / ساعت</div>
             </div>
             <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">{{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) +
-                    ":00"}}
+                <div class="myTableCell firstCellInRow">
+                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
@@ -178,7 +164,10 @@
 
         <div class="selectedDateBox">
             <div class="selectedDateBlockHeader">
-                <p class="isansFont">جلسات انتخاب شده :</p>
+                <p class="isansFont">
+                    جلسات انتخاب شده :
+                    <span v-if="selectedDates.length == 0">(جلسه ای انتخاب نشده است.)</span>
+                </p>
             </div>
             <div class="selectedDateBlockContent">
                 <div class="selectedDateBlock" v-for="selectedDate in selectedDates">
@@ -206,7 +195,7 @@
 
                 </p>
                 <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
-                        v-if="isLoggedIn && config.usersConfig">
+                        v-if="isLoggedIn && config.usersConfig" :disabled="selectedDates.length == 0">
                     <i class="material-icons" v-if="reserveSuccess.value">done</i>
                     <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
                          class="loadingIcon"
@@ -970,10 +959,6 @@
         flex-wrap:wrap;
     }
 
-    .selectedDateBlockFooter p{
-        /*float:right;*/
-    }
-
     .btn-sample {
         cursor: default !important;
     }
@@ -1023,7 +1008,7 @@
         align-items: center;
         margin-bottom: 20px;
         position: sticky;
-        top: 110px;
+        top: 70px;
         background-color: white;
         width: 100%;
     }
@@ -1096,7 +1081,7 @@
     .firstRow {
         background-color: white;
         position: sticky;
-        top: 156px;
+        top: 115px;
     }
 
     .firstCellInRow {

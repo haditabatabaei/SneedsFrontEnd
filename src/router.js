@@ -18,6 +18,7 @@ import UserOrder from "@/views/UserOrder";
 
 import store from './store';
 import Payment from "@/views/Payment";
+import Messages from "@/views/Messages";
 
 Vue.use(Router);
 
@@ -68,6 +69,11 @@ let router = new Router({
             component: ResetPassword
         },
         {
+          path : '/user/messages',
+          name : 'Messages',
+          component : Messages
+        },
+        {
             path: '/consultants',
             name: 'ConsultantList',
             component: ConsultantList,
@@ -96,7 +102,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
 
-    const requiredAuthRoutes = ['/user/profile', '/user/consultantmanager', '/user/cart', '/user/order', '/user/reserved', '/payment/accept'];
+    const requiredAuthRoutes = ['/user/profile', '/user/consultantmanager', '/user/cart', '/user/order', '/user/reserved', '/user/messages' ,'/payment/accept'];
     const requiredNotAuth = ['/login', '/register'];
 
     window.console.log(to.path);

@@ -111,7 +111,7 @@
                             <router-link to="/user/order">فاکتور ها</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/tickets">پیام ها FIXME</router-link>
+                            <router-link to="/user/messages">پیام ها FIXME</router-link>
                         </li>
                         <li class="divider" v-if="showConsultantsManagerLink"></li>
                         <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>

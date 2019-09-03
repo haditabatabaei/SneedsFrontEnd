@@ -29,20 +29,26 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <RectNotifBlock :message="cartsLoading.message"
-                                                    type="warning"
-                                                    borderRound="true"
-                                                    v-if="cartsLoading.value"></RectNotifBlock>
+                                    <RectNotifBlock
+                                            :message="cartsLoading.message"
+                                            type="warning"
+                                            borderRound="true"
+                                            v-if="cartsLoading.value">
+                                    </RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsSuccess.message"
-                                                    type="success"
-                                                    borderRound="true"
-                                                    v-else-if="cartsSuccess.value"></RectNotifBlock>
+                                    <RectNotifBlock
+                                            :message="cartsSuccess.message"
+                                            type="success"
+                                            borderRound="true"
+                                            v-else-if="cartsSuccess.value">
+                                    </RectNotifBlock>
 
-                                    <RectNotifBlock :message="cartsFailed.message"
-                                                    type="danger"
-                                                    borderRound="true"
-                                                    v-else-if="cartsFailed.value"></RectNotifBlock>
+                                    <RectNotifBlock
+                                            :message="cartsFailed.message"
+                                            type="danger"
+                                            borderRound="true"
+                                            v-else-if="cartsFailed.value">
+                                    </RectNotifBlock>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:30px;">
@@ -56,23 +62,23 @@
                                                     <i class="material-icons">close</i>
                                                 </button>
                                                 <img class="cardConsultBlock--image"
-                                                     src="http://193.176.241.131/sneedsAssets/img/brain.png"
+                                                     :src="slotDetail.consultant.profile_picture"
                                                      alt="consultant logo">
                                                 <div class="cardConsultantBlock--info">
                                                     <h4 class="isansFont font-weight-bold">
-                                                        <router-link :to="'/consultants/' + slotDetail.consultant_slug">
-                                                            مشاهده مشاور
+                                                        <router-link
+                                                                :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                            مشاور :
+                                                            {{slotDetail.consultant.first_name + ' ' + slotDetail.consultant.last_name}}
                                                         </router-link>
                                                     </h4>
                                                     <button class="timeTogglerBtn isansFont btn btn-simple btn-sm"
                                                             type="button"
-                                                            data-toggle="collapse"
-                                                            :data-target="'#timesCollapse' + slotDetail.id"
                                                             aria-expanded="true" aria-controls="timesCollapse">
                                                         {{getJalali(slotDetail.start_time).locale('fa').format('dddd MM MMMM')}}
                                                         <i class="material-icons">keyboard_arrow_down</i>
                                                     </button>
-                                                    <div class="collapse timesCollapse isansFont"
+                                                    <div class="timesCollapse isansFont"
                                                          :id="'timesCollapse' + slotDetail.id">
                                                         <p>
                                                             ساعت
@@ -107,11 +113,21 @@
                                         <span> تومان سود شما از این خرید است.</span>
                                     </p>
 
+                                    <p class="text-info isansFont--faNum" v-for="message in discount.messages">
+                                        {{message}}
+                                    </p>
+
                                     <div class="priceWrapper--discountCodeBox">
-                                        <form action="" method="">
-                                            <input type="text" name="discountCode" class="isansFont"
-                                                   placeholder="کد تخفیف دارم...">
-                                            <button type="button" class="isansFont">اعمال کد</button>
+                                        <form action="" method="" v-if="discount.isValid">
+                                            <input
+                                                    type="text"
+                                                    name="discountCode"
+                                                    class="isansFont"
+                                                    placeholder="کد تخفیف دارم..."
+                                                    v-model="discount.code">
+                                            <button type="button" class="isansFont" @click="sendDiscountPostReq()">اعمال
+                                                کد
+                                            </button>
                                         </form>
                                     </div>
 
@@ -120,7 +136,6 @@
                                         مرحله بعد
                                     </button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -158,6 +173,12 @@
                     value: false,
                     message: 'مشکلی رخ داد...'
                 },
+
+                discount: {
+                    messages: [],
+                    code: '',
+                    isValid: true,
+                }
             }
         }, created() {
             this.startCartsLogic();
@@ -285,7 +306,7 @@
                         this.cartsFailed.message = 'خطایی رخ داد...' + error.response.data.detail;
                         console.log(error.response)
 
-                        if(error.response.data.detail[0] == 'User has an active order.'){
+                        if (error.response.data.detail[0] == 'User has an active order.') {
                             this.$router.push('/user/order');
                         }
                     }
@@ -309,6 +330,49 @@
                 })
             },
 
+            sendDiscountPostReq: function () {
+                console.log('discount in :', this.discount.code);
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'discount/cart-consultant-discounts/',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json',
+                        },
+                        data: {'code': this.discount.code}
+                    }).then(response => {
+                        console.log('response from post req :', response);
+                        this.startCartsLogic();
+                        let promise = this.$store.dispatch('getCart');
+                        promise.then((res) => {
+                            this.resetCartsLogic();
+                            console.log(res);
+                            this.discount.messages = [];
+                            this.discount.messages[0] = 'کد تخفیف اعمال شد.';
+                            this.discount.isValid = false;
+                        }).catch((err) => {
+                            this.failedCartsLogic();
+                        });
+
+                        resolve(response);
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response) {
+                            console.log(error.response);
+                            if(error.response.data.code) {
+                            this.discount.messages = error.response.data.code;
+
+                            }else {
+                                this.discount.messages = error.response.data.detail;
+                            }
+                        }
+                        reject(error);
+
+                    })
+                })
+            },
+
             sendGetCartRequest: function () {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -324,6 +388,10 @@
                         reject(error);
                     })
                 })
+            },
+
+            getConsultantSlugFromUrl: function (url) {
+                return url.replace(this.$store.getters.getApi + 'account/consultant-profiles/', '').replace('/', '');
             },
 
             getJalali: function (date) {
@@ -355,14 +423,14 @@
         border: 1px solid #999;
         padding-bottom: 10px;
         padding-top: 10px;
-        margin-right:-15px;
+        margin-right: -15px;
     }
 
     .priceWrapper {
         border-radius: 10px;
         border: 1px solid #999;
         background-color: white;
-        margin-right:15px;
+        margin-right: 15px;
     }
 
     .cardConsultBlock--image {
@@ -500,14 +568,14 @@
         font-weight: bold;
     }
 
-    @media only screen and (max-width:991.8px) and (min-width: 0) {
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .priceWrapper {
-            margin-right : 0;
-            margin-top:15px;
+            margin-right: 0;
+            margin-top: 15px;
         }
 
         .cardsWrapper {
-            margin-right : 0;
+            margin-right: 0;
         }
     }
 </style>

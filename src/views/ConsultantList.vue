@@ -44,11 +44,9 @@
                                     <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
                                          aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
                                         <div class="panel-body" style="background-color:#f7f7f7">
-                                            <div class="checkbox isansFont" v-for="country in countriesList">
+                                            <div class="filterCheckWrapper isansFont" v-for="country in countriesList">
                                                 <label>
-                                                    <input type="checkbox" name="country" :value="country.name"
-                                                           v-model="country.select" @change="doFilter()">
-                                                    <span class="check"></span>
+                                                    <input type="checkbox" name="country" :value="country.name" v-model="country.select" @change="doFilter()">
                                                     {{country.name}}
                                                 </label>
                                             </div>
@@ -75,11 +73,11 @@
                                          aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
                                         <div class="panel-body" style="background-color:#f7f7f7">
 
-                                            <div class="checkbox isansFont" v-for="university in universitiesList">
+                                            <div class="filterCheckWrapper isansFont"
+                                                 v-for="university in universitiesList">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="university.name"
                                                            v-model="university.select" @change="doFilter()">
-                                                    <span class="check"></span>
                                                     {{university.name}}
                                                 </label>
                                             </div>
@@ -105,11 +103,11 @@
                                     <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
                                          aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
                                         <div class="panel-body" style="background-color:#f7f7f7">
-                                            <div class="checkbox isansFont" v-for="field in fieldOfStudiesList">
+                                            <div class="isansFont filterCheckWrapper"
+                                                 v-for="field in fieldOfStudiesList">
                                                 <label :title="field.description">
                                                     <input type="checkbox" name="country" :value="field.name"
                                                            v-model="field.select" @change="doFilter()">
-                                                    <span class="check"></span>
                                                     {{field.name}}
                                                 </label>
                                             </div>
@@ -137,104 +135,102 @@
                                 </button>
                             </div>
 
-                            <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist"
-                                 aria-multiselectable="true">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="countryFilter">
-                                        <a
-                                                role="button"
-                                                data-toggle="collapse"
-                                                data-parent="#filterPanel"
-                                                href="#countryFilterCollapse"
-                                                aria-expanded="false"
-                                                aria-controls="collapseOne"
-                                                class="collapsed">
-                                            <p class="panel-title isansFont"
-                                               style="display:flex;align-items:center;justify-content:space-between">
+                            <transition name="slide-fade">
+                                <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist"
+                                     aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="countryFilter">
+                                            <a
+                                                    role="button"
+                                                    data-toggle="collapse"
+                                                    data-parent="#filterPanel"
+                                                    href="#countryFilterCollapse"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseOne"
+                                                    class="collapsed">
+                                                <p class="panel-title isansFont"
+                                                   style="display:flex;align-items:center;justify-content:space-between">
                                                 <span class="float-right">
                                                     کشور
                                                 </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </p>
-                                        </a>
-                                    </div>
-                                    <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
-                                            <div class="checkbox isansFont" v-for="country in countriesList">
-                                                <label>
-                                                    <input type="checkbox" name="country" :value="country.name"
-                                                           v-model="country.select">
-                                                    <span class="check"></span>
-                                                    {{country.name}}
-                                                </label>
+                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
+                                             aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
+                                            <div class="panel-body" style="background-color:#f7f7f7">
+                                                <div class="filterCheckWrapper isansFont" v-for="country in countriesList">
+                                                    <label>
+                                                        <input type="checkbox" name="country" :value="country.name"
+                                                               v-model="country.select">
+                                                        {{country.name}}
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="panel-heading" role="tab" id="universityFilter"
-                                         style="margin-top:25px;">
-                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                           href="#universityFilterCollapse" aria-expanded="false"
-                                           aria-controls="collapseOne" class="collapsed">
-                                            <p class="panel-title isansFont"
-                                               style="display:flex;align-items:center;justify-content:space-between">
+                                        <div class="panel-heading" role="tab" id="universityFilter"
+                                             style="margin-top:25px;">
+                                            <a role="button" data-toggle="collapse" data-parent="#filterPanel"
+                                               href="#universityFilterCollapse" aria-expanded="false"
+                                               aria-controls="collapseOne" class="collapsed">
+                                                <p class="panel-title isansFont"
+                                                   style="display:flex;align-items:center;justify-content:space-between">
                                                 <span class="float-right">
                                                     دانشگاه
                                                 </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </p>
-                                        </a>
-                                    </div>
-                                    <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
+                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
+                                             aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
+                                            <div class="panel-body" style="background-color:#f7f7f7">
 
-                                            <div class="checkbox isansFont" v-for="university in universitiesList">
-                                                <label>
-                                                    <input type="checkbox" name="country" :value="university.name"
-                                                           v-model="university.select">
-                                                    <span class="check"></span>
-                                                    {{university.name}}
-                                                </label>
+                                                <div class="filterCheckWrapper isansFont" v-for="university in universitiesList">
+                                                    <label>
+                                                        <input type="checkbox" name="university" :value="university.name"
+                                                               v-model="university.select">
+                                                        {{university.name}}
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
-                                         style="margin-top:25px;">
-                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                           href="#fieldOfStudiesCollapse" aria-expanded="false"
-                                           aria-controls="collapseOne" class="collapsed">
-                                            <p class="panel-title isansFont"
-                                               style="display:flex;align-items:center;justify-content:space-between">
+                                        <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
+                                             style="margin-top:25px;">
+                                            <a role="button" data-toggle="collapse" data-parent="#filterPanel"
+                                               href="#fieldOfStudiesCollapse" aria-expanded="false"
+                                               aria-controls="collapseOne" class="collapsed">
+                                                <p class="panel-title isansFont"
+                                                   style="display:flex;align-items:center;justify-content:space-between">
                                                 <span class="float-right">
                                                     رشته
                                                 </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </p>
-                                        </a>
-                                    </div>
-                                    <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
-                                            <div class="checkbox isansFont" v-for="field in fieldOfStudiesList">
-                                                <label :title="field.description">
-                                                    <input type="checkbox" name="country" :value="field.name"
-                                                           v-model="field.select">
-                                                    <span class="check"></span>
-                                                    {{field.name}}
-                                                </label>
+                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
+                                             aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
+                                            <div class="panel-body" style="background-color:#f7f7f7">
+                                                <div class="filterCheckWrapper isansFont" v-for="field in fieldOfStudiesList">
+                                                    <label>
+                                                        <input type="checkbox" name="field" :value="field.name" v-model="field.select">
+                                                        {{field.name}}
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="bottomActionPanel">
+                                        <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">
+                                            پاکسازی فیلتر ها
+                                        </button>
+                                        <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="bottomActionPanel">
-                                    <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">
-                                        پاکسازی فیلتر ها
-                                    </button>
-                                    <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها
-                                    </button>
-                                </div>
-                            </div>
+                            </transition>
                             <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
                                             v-if="fetchLoading.value"></RectNotifBlock>
                             <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
@@ -549,6 +545,22 @@
         background-color: #eeeeee;
     }
 
+    .filterCheckWrapper {
+        cursor: pointer;
+    }
+
+    .filterCheckWrapper label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .filterCheckWrapper input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        margin: 5px;
+    }
+
     .page-header {
         min-height: 100vh;
         background-image: url('http://193.176.241.131/sneedsAssets/img/consultantsBg.jpg');
@@ -569,7 +581,7 @@
         background-color: white;
         padding-top: 5px;
         border-radius: 10px;
-        margin-top:20px;
+        margin-top: 20px;
     }
 
     .filterColumn {
@@ -678,6 +690,22 @@
     }
 
     @media only screen and (max-width: 767.8px) and (min-width: 0) {
+        /* Enter and leave animations can use different */
+        /* durations and timing functions.              */
+        .slide-fade-enter-active {
+            transition: all 1s ease;
+        }
+
+        .slide-fade-leave-active {
+            transition: all 1s ease;
+        }
+
+        .slide-fade-enter, .slide-fade-leave-to /* .slide-fade-leave-active below version 2.1.8 */
+        {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+
         .row.consultantListRow {
             margin-right: -10px;
         }

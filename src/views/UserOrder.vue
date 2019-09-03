@@ -118,7 +118,6 @@
                                     فاکتور های قبلی شما
                                 </h3>
                                 <div class="col-md-12">
-
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead class="isansFont">
@@ -157,86 +156,92 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="orderDescShown" class="row card table-responsive">
-                                <table class="table table-shopping">
-                                    <thead>
-                                    <tr class="isansFont">
-                                        <th>مشاور</th>
-                                        <th class="th-description">تاریخ جلسه</th>
-                                        <th class="th-description">ساعت شروع</th>
-                                        <th>ساعت پایان</th>
-                                        <th>مدت ( ساعت )</th>
-                                        <th>هزینه</th>
-                                    </tr>
-                                    </thead>
 
-                                    <tbody>
-                                    <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail"
-                                        :data-slotId="slotDetail.id">
-                                        <td class="td-name">
-                                            <router-link class="isansFont"
-                                                         :to="'/consultants/' + slotDetail.consultant_slug">
-                                                مشاهده مشاور
-                                            </router-link>
-                                        </td>
-                                        <td class="isansFont">
-                                            {{getJalali(slotDetail.start_time).locale('fa').format('YYYY/MM/DD')}}
-                                            <br>
-                                            {{getJalali(slotDetail.start_time).locale('fa').format('dddd')}}
-                                        </td>
-                                        <td>
-                                            {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
-                                        </td>
-                                        <td>
-                                            {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
-                                        </td>
-                                        <td class="td-number">
-                                            1
-                                        </td>
-                                        <td class="td-number">
-                                            {{slotDetail.price}}
-                                        </td>
-                                    </tr>
-                                    <tr class="isansFont">
-                                        <td>
-                                            تاریخ ایجاد فاکتور :
-                                            <br>
-                                            {{
-                                            getJalali(orderDescToShow.created).locale('fa')
-                                            .format('YYYY/MM/DD HH:mm:ss')
-                                            }}
-                                        </td>
-                                        <td>
-                                            تاریخ آخرین آپدیت فاکتور :
-                                            <br>
-                                            {{
-                                            getJalali(orderDescToShow.updated).locale('fa')
-                                            .format('YYYY/MM/DD HH:mm:ss')
-                                            }}
-                                        </td>
-                                        <td>
-                                            شماره پیگیری فاکتور :
-                                            <br>
-                                            {{orderDescToShow.order_id}}
-                                        </td>
-                                        <td class="td-total isansFont">
-                                            جمع:
-                                        </td>
-                                        <td class="td-price isansFont">
-                                            {{orderDescToShow.total}}
-                                            <span style="font-size:15px">تومان</span>
-                                        </td>
-                                        <td colspan="3" class="text-right">
-                                            <button class="btn btn-danger btn-sm btn-round isansFont"
-                                                    @click="hideOrderDesc()">
-                                                <i class="material-icons">close</i>
-                                                بستن
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <transition name="slide-fade">
+                                <div v-if="orderDescShown" class="modalOrder">
+                                    <button class="btn btn-danger btn-just-icon isansFont modalCloseButton" @click="hideOrderDesc()">
+                                        <i class="material-icons">close</i>
+                                    </button>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-shopping">
+                                            <thead>
+                                            <tr class="isansFont--faNum">
+                                                <th class="text-center">مشاور</th>
+                                                <th class="th-description text-center">تاریخ جلسه</th>
+                                                <th class="th-description text-center">ساعت شروع</th>
+                                                <th class="text-center" >ساعت پایان</th>
+                                                <th class="text-center" >مدت ( ساعت )</th>
+                                                <th class="text-center" >هزینه</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr v-for="slotDetail in orderDescToShow.cart.sold_time_slot_sales_detail"
+                                                :data-slotId="slotDetail.id" class="isansFont--faNum">
+                                                <td class="td-name">
+                                                    <router-link
+                                                                 :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                        {{slotDetail.consultant.first_name + " " + slotDetail.consultant.last_name}}
+                                                    </router-link>
+                                                </td>
+                                                <td>
+                                                    {{getJalali(slotDetail.start_time).locale('fa').format('YYYY/MM/DD')}}
+                                                    <br>
+                                                    {{getJalali(slotDetail.start_time).locale('fa').format('dddd')}}
+                                                </td>
+                                                <td>
+                                                    {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
+                                                </td>
+                                                <td>
+                                                    {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
+                                                </td>
+                                                <td class="td-number isansFont--faNum">
+                                                    1
+                                                </td>
+                                                <td class="td-number">
+                                                    {{slotDetail.price}}
+                                                </td>
+                                            </tr>
+                                            <tr class="isansFont--faNum">
+                                                <td>
+                                                    تاریخ ایجاد فاکتور :
+                                                    <br>
+                                                    {{
+                                                    getJalali(orderDescToShow.created).locale('fa')
+                                                    .format('YYYY/MM/DD HH:mm:ss')
+                                                    }}
+                                                </td>
+                                                <td>
+                                                    تاریخ آخرین آپدیت فاکتور :
+                                                    <br>
+                                                    {{
+                                                    getJalali(orderDescToShow.updated).locale('fa')
+                                                    .format('YYYY/MM/DD HH:mm:ss')
+                                                    }}
+                                                </td>
+                                                <td>
+                                                    شماره   پیگیری فاکتور :
+                                                    <br>
+                                                    {{orderDescToShow.order_id}}
+                                                </td>
+                                                <td class="td-total">
+                                                    جمع:
+                                                </td>
+                                                <td class="td-price">
+                                                    {{orderDescToShow.total}}
+                                                    <span style="font-size:15px">تومان</span>
+                                                </td>
+                                                <td colspan="3" class="text-right">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </transition>
+
+
                             <div v-html="paymentError"></div>
                         </div>
                     </div>
@@ -465,8 +470,25 @@
 </script>
 
 <style scoped>
+    /* Enter and leave animations can use different */
+    /* durations and timing functions.              */
+    .slide-fade-enter-active {
+        transition: all .5s ease;
+    }
+
+    .slide-fade-leave-active {
+        transition: all .5s ease;
+    }
+
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active below version 2.1.8 */
+    {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+
     .main {
-        background-color: #eee;
+        background-color: #f5f5f5;
     }
 
     .cardsWrapper {
@@ -634,6 +656,31 @@
         padding-top: 10px;
         padding-bottom: 10px;
         font-family: monospace !important;
+    }
+
+    .modalOrder {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: auto;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        border:1px solid #777;
+    }
+
+    .modalOrder .table-responsive {
+        margin-top:50px;
+    }
+
+    .modalCloseButton {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        padding:5px;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

@@ -12,7 +12,11 @@ export default new Vuex.Store({
 
         userIsLoggedIn: false,
 
-        userInfo: JSON.parse(localStorage.getItem('userInfo')) || {"user_pk": '', "is_consultant": '', 'consultant': ''},
+        userInfo: JSON.parse(localStorage.getItem('userInfo')) || {
+            "user_pk": '',
+            "is_consultant": '',
+            'consultant': ''
+        },
 
         inputUser: {},
 
@@ -137,7 +141,7 @@ export default new Vuex.Store({
                         commit('setExpires', response.data.expires);
                         commit('setLoggedInStatus', true);
                         this.dispatch('getCart').then(cartResponse => {
-                            commit('setCart', cartResponse.data[0]);
+                            // commit('setCart', cartResponse.data[0]);
                             resolve(response);
                         }).catch(cartError => {
                             console.log(cartError);
@@ -220,6 +224,7 @@ export default new Vuex.Store({
                     }
                 }).then(response => {
                     commit('setCart', response.data[0]);
+                    console.log('response from getCart in :', response);
                     resolve(response);
                 }).catch(error => {
                     reject(error);

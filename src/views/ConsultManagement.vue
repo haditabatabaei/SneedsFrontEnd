@@ -49,10 +49,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <Calendar
-                                        :consultantId="$store.getters.getUserInfo.consultant"
-                                        :config="calendarConfig"
-                                ></Calendar>
+                                <ConsultantCalendar :consultantId="$store.getters.getUserInfo.consultant"></ConsultantCalendar>
                             </div>
                         </div>
                     </div>
@@ -63,17 +60,14 @@
 </template>
 
 <script>
-    import Calendar from '@/components/Consultant/Calendar'
+    import ConsultantCalendar from '@/components/Consultant/ConsultantCalendar'
 
     export default {
         name: "ConsultManagement",
-        components: {Calendar},
+        components: {ConsultantCalendar},
         data() {
             return {
-                calendarConfig: {
-                    usersConfig: false,
-                    managerConfig: true,
-                },
+
             }
         },
         mounted() {
@@ -106,10 +100,6 @@
         position: sticky;
         top: 150px;
         margin-top: 60px;
-    }
-
-    table {
-
     }
 
     @media only screen and (min-width: 767px) and (max-width: 992px) {

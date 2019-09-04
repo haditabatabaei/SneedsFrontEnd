@@ -33,9 +33,12 @@
                     <div class="row">
                         <div class="col-md-12 text-center" v-if="!profileLoading.value">
                             <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">
-                                <li :class="{'active' :  activeDesc}"><a href="#description" data-toggle="tab" aria-expanded="true">مشخصات</a></li>
-                                <li :class="{'active' :  activeCalendar}"><a href="#calendar" data-toggle="tab" aria-expanded="false">تقویم</a></li>
-                                <li :class="{'active' :  activeComments}"><a href="#comments" data-toggle="tab" aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
+                                <li :class="{'active' :  activeDesc}"><a href="#description" data-toggle="tab"
+                                                                         aria-expanded="true">مشخصات</a></li>
+                                <li :class="{'active' :  activeCalendar}"><a href="#calendar" data-toggle="tab"
+                                                                             aria-expanded="false">تقویم</a></li>
+                                <li :class="{'active' :  activeComments}"><a href="#comments" data-toggle="tab"
+                                                                             aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>
                                 </li>
                             </ul>
                         </div>
@@ -59,11 +62,7 @@
 
                                 <div class="tab-pane" id="calendar" :class="{'active' :  activeCalendar}">
                                     <div class="row">
-                                        <Calendar
-                                                :consultantId="consultant.id"
-                                                :config="calendarConfig"
-                                                v-if="consultant.id">
-                                        </Calendar>
+                                        <UserCalendar :consultantId="consultant.id" v-if="consultant.id"></UserCalendar>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="comments" :class="{'active' :  activeComments}">
@@ -106,7 +105,9 @@
                                                           :config="{'showEdit':true,'showRemove':true,'deleted': false}"
                                                           :consultant="consultant"
                                                           @update-comments="getConsultantComments(consultant.id)"
-                                                          :comment="comment"></CommentBlock>
+                                                          :comment="comment"
+                                                          :key="comments.indexOf(comment)"
+                                            ></CommentBlock>
                                         </div>
                                     </div>
                                 </div>
@@ -126,12 +127,12 @@
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock';
     import ConsultantInfoBlock from '@/components/Consultant/ConsultantInfoBlock'
     import ConsultantTitle from '@/components/Consultant/ConsultantTitle'
-    import Calendar from '@/components/Consultant/Calendar'
+    import UserCalendar from '@/components/Consultant/UserCalendar'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentBlock, RectNotifBlock, ConsultantInfoBlock, ConsultantTitle, Calendar
+            CommentBlock, RectNotifBlock, ConsultantInfoBlock, ConsultantTitle, UserCalendar
         },
         data() {
             return {
@@ -188,13 +189,13 @@
             activeCart: function () {
                 return this.$store.getters.getCart;
             },
-            activeCalendar: function() {
+            activeCalendar: function () {
                 return this.$route.query.as === 'calendar'
             },
-            activeDesc: function() {
-                return this.$route.query.as === 'desc'  || this.$route.query.as == undefined;;
+            activeDesc: function () {
+                return this.$route.query.as === 'desc' || this.$route.query.as == undefined;
             },
-            activeComments : function(){
+            activeComments: function () {
                 return this.$route.query.as === 'comments';
             }
         },
@@ -287,12 +288,10 @@
                         'message': this.inputComment,
                     };
 
-                    let commitPromise = this.sendSubmitCommentRequest(payload);
-
-                    commitPromise.then((response) => {
+                    this.sendSubmitCommentRequest(payload).then((response) => {
                         this.successSubmitCommentLogic();
-                        let commentsPromise = this.getConsultantComments(this.consultant.id);
-                        commentsPromise.then(response => {
+
+                        this.getConsultantComments(this.consultant.id).then(response => {
                             console.log(response.data);
                             this.comments = response.data;
                             this.inputComment = '';

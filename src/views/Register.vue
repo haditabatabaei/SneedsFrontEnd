@@ -164,10 +164,9 @@
                                         </div>
                                         <div class="row actionRows">
                                             <div class="col-sm-6">
-                                                <div class="checkbox">
-                                                    <label class="isansFont">
-                                                        <input type="checkbox" name="optionsCheckboxes"
-                                                               v-model="$v.applyWithRules.$model">
+                                                <div class="filterCheckWrapper isansFont--faNum">
+                                                    <label>
+                                                        <input type="checkbox" name="optionsCheckboxes" v-model="$v.applyWithRules.$model">
                                                         با
                                                         <router-link to="/services/terms" class="isansFont text-info">
                                                             قوانین و
@@ -349,6 +348,18 @@
 
     .card-signup .card-content {
         padding: 0 10px;
+    }
+
+    .filterCheckWrapper label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .filterCheckWrapper input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        margin: 5px;
     }
 
     input[type=number]::-webkit-inner-spin-button,

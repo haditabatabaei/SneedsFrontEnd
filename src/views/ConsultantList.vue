@@ -22,16 +22,12 @@
                                  aria-multiselectable="true">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="countryFilter">
-                                        <a
-                                                role="button"
-                                                data-toggle="collapse"
-                                                data-parent="#filterPanel"
-                                                href="#countryFilterCollapse"
-                                                aria-expanded="false"
-                                                aria-controls="collapseOne"
-                                                class="collapsed">
-                                            <h4 class="panel-title isansFont"
-                                                style="display:flex;align-items:center;justify-content:space-between">
+                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
+                                           href="#countryFilterCollapse"
+                                           aria-expanded="false"
+                                           aria-controls="collapseOne"
+                                           class="collapsed">
+                                            <h4 class="panel-title isansFont">
                                                 <span class="float-right">
                                                     <i class="material-icons">flag</i>
                                                     کشور
@@ -42,24 +38,23 @@
                                     </div>
 
                                     <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
+                                         aria-labelledby="countryFilter" aria-expanded="true" style="height: 0;">
+                                        <div class="panel-body">
                                             <div class="filterCheckWrapper isansFont" v-for="country in countriesList">
                                                 <label>
-                                                    <input type="checkbox" name="country" :value="country.name" v-model="country.select" @change="doFilter()">
+                                                    <input type="checkbox" name="country" :value="country.name"
+                                                           v-model="country.select" @change="doFilter()">
                                                     {{country.name}}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="panel-heading" role="tab" id="universityFilter"
-                                         style="margin-top:25px;">
+                                    <div class="panel-heading" role="tab" id="universityFilter">
                                         <a role="button" data-toggle="collapse" data-parent="#filterPanel"
                                            href="#universityFilterCollapse" aria-expanded="false"
                                            aria-controls="collapseOne" class="collapsed">
-                                            <h4 class="panel-title isansFont"
-                                                style="display:flex;align-items:center;justify-content:space-between">
+                                            <h4 class="panel-title isansFont">
                                                 <span class="float-right">
                                                     <i class="material-icons">account_balance</i>
                                                     دانشگاه
@@ -70,9 +65,8 @@
                                     </div>
 
                                     <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
-
+                                         aria-labelledby="universityFilter" aria-expanded="true" style="height: 0;">
+                                        <div class="panel-body">
                                             <div class="filterCheckWrapper isansFont"
                                                  v-for="university in universitiesList">
                                                 <label>
@@ -84,13 +78,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
-                                         style="margin-top:25px;">
+                                    <div class="panel-heading" role="tab" id="fieldOfStudyFilter">
                                         <a role="button" data-toggle="collapse" data-parent="#filterPanel"
                                            href="#fieldOfStudiesCollapse" aria-expanded="false"
                                            aria-controls="collapseOne" class="collapsed">
-                                            <h4 class="panel-title isansFont"
-                                                style="display:flex;align-items:center;justify-content:space-between">
+                                            <h4 class="panel-title isansFont">
                                                 <span class="float-right">
                                                     <i class="material-icons">build</i>
                                                     رشته
@@ -102,7 +94,7 @@
 
                                     <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
                                          aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
-                                        <div class="panel-body" style="background-color:#f7f7f7">
+                                        <div class="panel-body">
                                             <div class="isansFont filterCheckWrapper"
                                                  v-for="field in fieldOfStudiesList">
                                                 <label :title="field.description">
@@ -136,7 +128,8 @@
                             </div>
 
                             <transition name="slide-fade">
-                                <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel" role="tablist"
+                                <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel"
+                                     role="tablist"
                                      aria-multiselectable="true">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" role="tab" id="countryFilter">
@@ -160,7 +153,8 @@
                                         <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
                                              aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
                                             <div class="panel-body" style="background-color:#f7f7f7">
-                                                <div class="filterCheckWrapper isansFont" v-for="country in countriesList">
+                                                <div class="filterCheckWrapper isansFont"
+                                                     v-for="country in countriesList">
                                                     <label>
                                                         <input type="checkbox" name="country" :value="country.name"
                                                                v-model="country.select">
@@ -183,13 +177,17 @@
                                                 </p>
                                             </a>
                                         </div>
-                                        <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                             aria-labelledby="universityFilter" aria-expanded="true" style="height: 0px;">
+                                        <div id="universityFilterCollapse" class="panel-collapse collapse"
+                                             role="tabpanel"
+                                             aria-labelledby="universityFilter" aria-expanded="true"
+                                             style="height: 0px;">
                                             <div class="panel-body" style="background-color:#f7f7f7">
 
-                                                <div class="filterCheckWrapper isansFont" v-for="university in universitiesList">
+                                                <div class="filterCheckWrapper isansFont"
+                                                     v-for="university in universitiesList">
                                                     <label>
-                                                        <input type="checkbox" name="university" :value="university.name"
+                                                        <input type="checkbox" name="university"
+                                                               :value="university.name"
                                                                v-model="university.select">
                                                         {{university.name}}
                                                     </label>
@@ -211,11 +209,14 @@
                                             </a>
                                         </div>
                                         <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
-                                             aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
+                                             aria-labelledby="fieldOfStudyFilter" aria-expanded="true"
+                                             style="height: 0;">
                                             <div class="panel-body" style="background-color:#f7f7f7">
-                                                <div class="filterCheckWrapper isansFont" v-for="field in fieldOfStudiesList">
+                                                <div class="filterCheckWrapper isansFont"
+                                                     v-for="field in fieldOfStudiesList">
                                                     <label>
-                                                        <input type="checkbox" name="field" :value="field.name" v-model="field.select">
+                                                        <input type="checkbox" name="field" :value="field.name"
+                                                               v-model="field.select">
                                                         {{field.name}}
                                                     </label>
                                                 </div>
@@ -547,6 +548,7 @@
 
     .filterCheckWrapper {
         cursor: pointer;
+        padding-right: 10px;
     }
 
     .filterCheckWrapper label {
@@ -591,6 +593,35 @@
         background-color: white;
         border-radius: 10px;
         padding: 10px;
+    }
+
+    .filterColumn > h3 {
+        font-weight: bold;
+        font-size: 17px;
+        margin: 10px 5px 5px 5px;
+    }
+
+    .filterColumn .filterPanel {
+        padding: 10px;
+    }
+
+    .filterColumn .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+    }
+
+    .filterColumn .panel-body {
+        background-color: #f7f7f7;
+    }
+
+    .filterColumn .panel-heading {
+        margin-top: 20px;
+        padding: 15px 0 10px 0;
+    }
+
+    .filterColumn .panel-heading:first-child {
+        margin-top: 0;
     }
 
     .card .card-content {

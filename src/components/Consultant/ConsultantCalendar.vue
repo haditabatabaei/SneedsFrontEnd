@@ -8,54 +8,8 @@
             هفته بعدی
             <i class="fas fa-chevron-circle-left"></i>
         </button>
-        <div v-if="config.usersConfig" class="calendarTopWrapper">
-            <div class="calendarGuideWrapper">
-                <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
-                <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
-                <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
-            </div>
-        </div>
-        <div v-if="config.usersConfig" class="myTable isansFont">
-            <div class="myTableRow firstRow">
-                <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
-                    <p>{{day.date.format('dddd')}}</p>
-                    <p class="monthSmallText">{{day.date.format('DD MMMM')}}</p>
-                </div>
-                <div class="myTableCell">روز / ساعت</div>
-            </div>
-            <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">
-                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
-                </div>
-                <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
-                    <div
-                            v-if="days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).isBefore(justNowDate)"
-                            class="myTableSemiCell timeNotAvailable"
-                    ></div>
 
-                    <div
-                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
-                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())"
-                            :class="[
-                            {'timeOpen' : !isDatePresentOnSelectedList(selectedDates, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
-                            {'timeSelected' : isDatePresentOnSelectedList(selectedDates, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
-                            ]"
-                    ></div>
-
-                    <div
-                            v-else="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
-                            class="myTableSemiCell timeNotAvailable"
-                    ></div>
-                </div>
-                <div class="myTableCell lastCellInRow">
-                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
-                </div>
-            </div>
-        </div>
-
-        <div v-else class="myTable isansFont">
+        <div class="myTable isansFont">
             <div class="calendarTopWrapper">
                 <div class="calendarGuideWrapper">
                     <span class="isansFont text-sm">راهنمایی تقویم :</span>
@@ -69,8 +23,8 @@
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
                 <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
-                    <p>{{day.date.format('dddd')}}</p>
-                    <p class="monthSmallText">{{day.date.format('DD MMMM')}}</p>
+                    <p>{{day.format('dddd')}}</p>
+                    <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
                 </div>
                 <div class="myTableCell">روز / ساعت</div>
             </div>
@@ -112,7 +66,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="config.managerConfig">
+        <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <form action="" class="form row">
                     <div class="col-md-6">
@@ -161,55 +115,6 @@
                                 v-else-if="alertFailed.value"></RectNotifBlock>
             </div>
         </div>
-
-        <div class="selectedDateBox">
-            <div class="selectedDateBlockHeader">
-                <p class="isansFont">
-                    جلسات انتخاب شده :
-                    <span v-if="selectedDates.length == 0">(جلسه ای انتخاب نشده است.)</span>
-                </p>
-            </div>
-            <div class="selectedDateBlockContent">
-                <div class="selectedDateBlock" v-for="selectedDate in selectedDates">
-                    <button class="btn btn-just-icon btn-simple" @click="removeElementFromSelectedDates({
-                        'datestart': selectedDate.datestart,
-                        'dateend': selectedDate.dateend
-                    })">
-                        <i class="material-icons">close</i>
-                    </button>
-                    <p class="isansFont">
-                        {{getJalali(selectedDate.datestart).locale('fa').format('dddd DD MMMM')}}
-                        <br>
-                        ساعت :
-                        {{getJalali(selectedDate.datestart).locale('fa').format('HH:mm') + " تا " +
-                        getJalali(selectedDate.dateend).locale('fa').format('HH:mm')}}
-                    </p>
-                </div>
-            </div>
-            <div class="selectedDateBlockFooter isansFont">
-                <p>تخفیفات : </p>
-                <p v-for="discount in listOfDiscounts">
-                    {{discount.number}}
-                    جلسه :
-                    <mark>  {{discount.discount}} درصد </mark>
-
-                </p>
-                <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
-                        v-if="isLoggedIn && config.usersConfig" :disabled="selectedDates.length == 0">
-                    <i class="material-icons" v-if="reserveSuccess.value">done</i>
-                    <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
-                         class="loadingIcon"
-                         v-if="reserveLoading.value">
-                    <i class="material-icons" v-if="reserveFailed.value">block</i>
-                    <i class="material-icons">add_shopping_cart</i>
-                    افزودن زمان های انتخاب شده به سبد خرید
-                </button>
-                <router-link to="/login" class="btn btn-sm btn-warning isansFont"
-                             v-else-if="!isLoggedIn && config.usersConfig">
-                    برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
-                </router-link>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -227,7 +132,6 @@
         components: {RectNotifBlock},
         props: {
             consultantId: '',
-            config: {usersConfig: true, managerConfig: false}
         },
         data() {
             return {
@@ -235,22 +139,11 @@
                 slots: [],
                 soldSlots: [],
                 days: [],
-                tableData: '',
-                selectedDates: [],
                 selectedDatesToOpen: [],
                 selectedDatesToRemove: [],
-                listOfDiscounts: [],
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
-                tableDataArray: [
-                    {date: {}},
-                    {date: {}},
-                    {date: {}},
-                    {date: {}},
-                    {date: {}},
-                    {date: {}},
-                    {date: {}}
-                ],
+                tableDataArray: [],
 
                 reserveSuccess: {
                     value: false,
@@ -307,23 +200,17 @@
                 this.getListOfTimesById(this.consultantId).then(timeRes => {
                     window.console.log('slot times:', timeRes.data);
                     this.slots = timeRes.data;
-                    if (this.config.managerConfig) {
-                        this.getListOfSoldTimes().then(response => {
-                            console.log('sold slot times:', response.data);
-                            this.soldSlots = response.data;
-                            this.resetLoadingLogic();
-                        }).catch(error => {
-                            console.log(error);
-                            if (error.response)
-                                console.log(error.response);
-                            this.failedLoadingLogic();
-                        })
-                    }
-                    this.getListOfNumberDiscounts().then(discountRes => {
-                        this.listOfDiscounts = discountRes;
+                    this.getListOfSoldTimes().then(response => {
+                        console.log('sold slot times:', response.data);
+                        this.soldSlots = response.data;
+                        this.resetLoadingLogic();
                     }).catch(error => {
-
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
+                        this.failedLoadingLogic();
                     });
+
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
                     this.resetLoadingLogic();
@@ -391,26 +278,6 @@
 
             },
 
-            getListOfNumberDiscounts: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'discount/time-slot-sale-number-discounts/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        console.log('number response : ',response.data);
-                        resolve(response.data)
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response)
-                            console.log(error.response);
-                        reject(error);
-                    })
-                })
-            },
-
             sendAddTimesRequest(timePayload) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -437,23 +304,6 @@
                 } else {
                     return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).minute(0).second(0).millisecond(0).locale('en').utc();
                 }
-            },
-
-            itemClickHandler(datestart, dateend) {
-                //check see if this time is not added to the list
-                if (!this.isDatePresentOnSelectedList(this.selectedDates, datestart, dateend)) {
-                    this.selectedDates.push({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }// else means that element is present in the list, so we will remove it from the list
-                else {
-                    this.removeElementFromSelectedDates({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }
-                console.log(this.selectedDates);
             },
 
             itemClickHandlerToRemove(datestart, dateend) {
@@ -531,65 +381,6 @@
                 this.reserveSuccess.value = true;
             },
 
-            addSelectedTimesToCart: function () {
-                this.resetReserveLogic();
-                this.startReserveLogic();
-                console.log(this.selectedDates);
-
-                let payload = {"time_slot_sales": []};
-
-                for (let i = 0; i < this.selectedDates.length; i++) {
-                    payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
-                }
-
-                console.log("active card is :", this.activeCart);
-                if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
-                    //put new items in it
-                    console.log('put new items in cart');
-                    console.log(this.activeCart);
-                    for (let i = 0; i < payload.time_slot_sales.length; i++) {
-                        this.activeCart.time_slot_sales.push(payload.time_slot_sales[i]);
-                    }
-
-
-                    let config = {
-                        "payload": {"time_slot_sales": Array.from(new Set(this.activeCart.time_slot_sales))},
-                        "cartId": this.activeCart.id,
-                    };
-
-                    console.log(config);
-                    this.$store.dispatch('putCartRequest', config).then(response => {
-                        console.log(response);
-                        this.resetReserveLogic();
-                        this.$router.push('/user/cart');
-                    }).catch(error => {
-                        this.failedReserveLogic();
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                    });
-                } else {
-                    //card doesnt exits
-                    //post new items;
-                    console.log('post new items in cart');
-                    this.$store.dispatch('postCart', payload).then(response => {
-                        console.log(response);
-                        this.successReserveLogic();
-                        setTimeout(() => {
-                            this.resetReserveLogic();
-                            this.$router.push('/user/cart');
-                        }, 1000)
-                    }).catch(error => {
-                        this.failedReserveLogic();
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response.data.detail);
-                        }
-                    })
-                }
-
-            },
             startDeleteItems() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     this.resetLoadingLogic();
@@ -718,7 +509,6 @@
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    // this.days.push(date.clone().subtract(toStart - i, 'd'));
                     let newDate = date.clone().subtract(toStart - i, 'd');
                     if (newDate.weekday() == 1) {
                         return newDate;
@@ -858,15 +648,9 @@
                 this.days.push(this.generateThursday(now));
                 this.days.push(this.generateFriday(now));
                 for (let i = 0; i < this.days.length; i++) {
-                    this.tableDataArray[i].date = this.days[i];
+                    this.tableDataArray[i] = this.days[i];
                 }
                 console.log(this.tableDataArray);
-            },
-
-            removeElementFromSelectedDates(value) {
-                this.selectedDates = this.selectedDates.filter(function (val) {
-                    return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
-                })
             },
 
             removeElementFromToOpenDates(value) {
@@ -905,40 +689,8 @@
 
 <style scoped>
 
-    .selectedDateBox {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #f9f9f9;
-        border-top: 1px solid #e2e2e2;
-        min-height: 60px;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .selectedDateBlockContent {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .selectedDateBlock {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-left: 1px solid #a8a8a8;
-    }
-
     .selectedDateBlock button {
         margin-right: 5px;
-    }
-
-    .selectedDateBlock:last-child {
-        border-left: none;
     }
 
     .selectedDateBlock p {
@@ -951,13 +703,6 @@
         margin-top: 20px;
     }
 
-    .selectedDateBlockFooter {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        align-self: stretch;
-        flex-wrap:wrap;
-    }
 
     .btn-sample {
         cursor: default !important;

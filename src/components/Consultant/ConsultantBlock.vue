@@ -1,34 +1,38 @@
 <template>
     <div class="consultantBlock row">
         <div class="consultantBlockData col-md-8">
-                <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
-                             :style="'background-image: url(' + consultant.profile_picture + ')'">
-                    <div class="ripple-container"></div>
-                </router-link>
+            <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
+                         :style="'background-image: url(' + consultant.profile_picture + ')'">
+                <div class="ripple-container"></div>
+            </router-link>
 
-                <div class="consultantBlockInfo" style="margin-top:10px;">
-                    <div class="consultantBlockInfoItem">
-                        <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
-                            {{consultant.first_name + ' ' + consultant.last_name}}
-                        </router-link>
-                        <router-link class="isansFont consultantCalendarLink" :to="'/consultants/' + consultant.slug + '?as=calendar'">
-                            <i class="material-icons">assignment</i>
-                            مشاهده تقویم مشاور
-                        </router-link>
-                    </div>
-                    <div class="consultantBlockInfoItem">
-                        <p class="isansFont consultantBio">
-                            دانشجوی معماری دانشگاه بریتیش کلمبیا
-                        </p>
-                    </div>
-                    <div class="consultantBlockInfoItem">
-                <span class="rate noRate isansFont--faNum" style="font-size:12px;top:-2px;"
-                      v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
-                        <span class="rate goodRate isansFont--faNum" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
-                        <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
-                        <span class="isansFont--faNum comments"> {{consultant.comment_number}} نظر ثبت شده</span>
-                    </div>
+            <div class="consultantBlockInfo" style="margin-top:10px;">
+                <div class="consultantBlockInfoItem">
+                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
+                        {{consultant.first_name + ' ' + consultant.last_name}}
+                    </router-link>
+                    <router-link class="isansFont consultantCalendarLink"
+                                 :to="'/consultants/' + consultant.slug + '?as=calendar'">
+                        <i class="material-icons">assignment</i>
+                        مشاهده تقویم مشاور
+                    </router-link>
                 </div>
+                <div class="consultantBlockInfoItem">
+                    <p class="isansFont consultantBio">
+                        دانشجوی معماری دانشگاه بریتیش کلمبیا
+                    </p>
+                </div>
+                <div class="consultantBlockInfoItem">
+                <span class="rate noRate isansFont--faNum"
+                      v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
+                    <span class="rate goodRate isansFont--faNum" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
+                    <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
+                    <router-link class="isansFont--faNum comments"
+                                 :to="'/consultants/' + consultant.slug + '?as=comments'">{{consultant.comment_number}}
+                        نظر ثبت شده
+                    </router-link>
+                </div>
+            </div>
         </div>
 
         <div class="consultantBlockAction col-md-4">
@@ -66,11 +70,11 @@
     }
 
     .consultantBlockData {
-        display:flex;
-        align-items:center;
-        justify-content:space-around;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
 
-        flex-wrap:wrap;
+        flex-wrap: wrap;
     }
 
     .consultantBlock:hover {
@@ -127,22 +131,26 @@
         padding: 5px 15px;
         border-radius: 50px;
         color: white;
-        font-size: 15px;
+        font-size: 12px;
         position: relative;
         z-index: 2;
-        top:-2px;
+        top: -2px;
     }
 
     .comments {
         font-size: 12px;
         background-color: #f2f2f2;
         color: #808080;
-        padding: 5px 15px;
+        padding: 5px 20px;
         border-radius: 50px 0 0 50px;
         position: relative;
         top: -2px;
         margin-right: -12px;
         z-index: 1;
+    }
+
+    .comments:hover {
+        background-color: #e9e9e9;
     }
 
     .goodRate {
@@ -167,7 +175,7 @@
         padding: 10px 20px;
         border-radius: 10px;
         transition: all 0.2s ease;
-        background-color:white;
+        background-color: white;
     }
 
     .consultantShowButton:hover {
@@ -175,8 +183,8 @@
         color: white;
     }
 
-    .consultantBlockAction{
-        display:block;
+    .consultantBlockAction {
+        display: block;
     }
 
 </style>

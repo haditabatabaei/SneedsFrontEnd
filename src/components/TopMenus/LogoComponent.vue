@@ -28,4 +28,10 @@
         margin: 0 0 0 5px;
     }
 
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
+        .navbar-brand {
+            order: 1;
+        }
+    }
+
 </style>

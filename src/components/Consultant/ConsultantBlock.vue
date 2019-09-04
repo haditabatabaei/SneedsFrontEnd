@@ -19,7 +19,10 @@
                 </div>
                 <div class="consultantBlockInfoItem">
                     <p class="isansFont consultantBio">
-                        دانشجوی معماری دانشگاه بریتیش کلمبیا
+                        دانشجوی
+                        {{consultant.field_of_studies[0].name}}
+                        در
+                        {{consultant.countries[0].name}}
                     </p>
                 </div>
                 <div class="consultantBlockInfoItem">
@@ -35,9 +38,9 @@
             </div>
         </div>
 
-        <div class="consultantBlockAction col-md-4">
+        <div class="consultantBlockAction col-md-4 text-center">
             <router-link :to="'/consultants/' + consultant.slug" class="btn consultantShowButton isansFont">
-                مشاهده مشاور
+                مشـاهده مشاور
             </router-link>
         </div>
 
@@ -72,9 +75,11 @@
     .consultantBlockData {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
 
         flex-wrap: wrap;
+
+        padding-right: 0;
     }
 
     .consultantBlock:hover {
@@ -92,7 +97,10 @@
     }
 
     .consultantBlockInfo {
-        margin-right: 15px;
+        /*margin-right: 15px;*/
+
+        margin-left:auto;
+        margin-right:40px;
 
         display: flex;
         align-self: stretch;
@@ -172,10 +180,15 @@
     .consultantShowButton {
         border: 1px solid #333333;
         color: #333;
-        padding: 10px 20px;
+        padding: 10px 35px;
         border-radius: 10px;
         transition: all 0.2s ease;
         background-color: white;
+    }
+
+    .consultantCalendarLink i {
+        color : #bd79c9bf;
+        font-size:18px;
     }
 
     .consultantShowButton:hover {
@@ -185,6 +198,47 @@
 
     .consultantBlockAction {
         display: block;
+    }
+
+    @media only screen and (max-width: 576.8px) and (min-width: 0) {
+        .consultantBlockImage {
+            width: 100px;
+            height: 100px;
+        }
+
+
+        .consultantCalendarLink {
+            display: none;
+        }
+
+        .consultantShowButton {
+            display: none;
+        }
+
+        .consultantBlockData {
+            padding-right: 0;
+            padding-left: 0;
+            flex-wrap: nowrap;
+            margin-left: auto;
+        }
+
+        .consultantName {
+            font-size: 15px;
+        }
+
+        .consultantBio {
+            font-size: 12px;
+        }
+
+        .comments {
+            font-size: 10px;
+        }
+
+        .rate {
+            font-size: 10px;
+            padding: 5px 10px;
+        }
+
     }
 
 </style>

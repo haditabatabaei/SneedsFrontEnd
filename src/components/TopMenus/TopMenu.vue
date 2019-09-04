@@ -9,6 +9,52 @@
 
             <transition name="slide-fade">
                 <div id="dropdownTogglerTarget" class="mobileMenu" v-if="mobileMenuShow">
+                    <button @click="toggleMobileMenu()" class="closeButton">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <Logo class="mobileLogo"></Logo>
+                    <div class="profileWrapper">
+                        <div class="dropdown authButton" v-if="showProfileLink">
+                            <button href="#" style="margin-left:5px;"
+                                    class="dropdown-toggle btn btn-white btn-round gadugiFont isansFont"
+                                    data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <i class="material-icons">account_circle</i>
+                                <span style="margin-right:5px;">پروفایل</span>
+                                <b style="margin-right:5px;" class="caret"></b>
+                            </button>
+                            <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
+                                         :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
+                                <i class="material-icons">shopping_cart</i>
+                            </router-link>
+                            <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
+                                <li class="text-right">
+                                    <router-link to="/user/profile">ناحیه کاربری</router-link>
+                                </li>
+                                <li class="text-right">
+                                    <router-link to="/user/reserved">جلسات رزرو شده</router-link>
+                                </li>
+                                <li class="text-right">
+                                    <router-link to="/user/order">فاکتور ها</router-link>
+                                </li>
+                                <li class="text-right">
+                                    <router-link to="/user/messages">پیام ها FIXME</router-link>
+                                </li>
+                                <li class="divider" v-if="showConsultantsManagerLink"></li>
+                                <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
+                                <li class="text-right" v-if="showConsultantsManagerLink">
+                                    <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a @click.prevent="logout()" class="btn btn-danger">خروج</a></li>
+                            </ul>
+                        </div>
+
+                        <router-link to="/login" class="btn btn-rose isansFont authButton navbar-left" v-else>
+                            <i class="material-icons">person</i>
+                            ورود | ثبت نام
+                        </router-link>
+                    </div>
                     <ul class="menuList isansFont">
                         <li class="text-right" v-for="item in this.topMenuListItems"
                             v-bind:class="[{'dropdown':item.hasDropdown}]">
@@ -97,7 +143,8 @@
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret"></b>
                     </button>
-                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont" :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
+                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
+                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
                         <i class="material-icons">shopping_cart</i>
                     </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
@@ -162,7 +209,7 @@
                         hasDropdown: false,
                         dropdownItems: []
                     },
-                    // {itemName: 'مشاوره کسب و کار' , target : '/consultant/business', type : 'router', hasDropdown: false, dropdownItems: []},
+                    // {itemName: 'مشاوره کسب و کار' , target : '/consultant /business', type : 'router', hasDropdown: false, dropdownItems: []},
                     {
                         itemName: 'بلاگ',
                         target: 'http://sneeds.ir/%d8%a8%d9%84%d8%a7%da%af/',
@@ -229,7 +276,7 @@
             showConsultantsManagerLink: function () {
                 return this.$store.getters.getUserInfo.is_consultant;
             },
-            activeCart : function(){
+            activeCart: function () {
                 return this.$store.getters.getCart;
             }
         }, methods: {
@@ -271,6 +318,7 @@
         float: none;
         margin: 0;
         padding-right: 0;
+        padding-left: 0;
     }
 
     #dropdownTogglerTarget {
@@ -339,10 +387,6 @@
             opacity: 0;
         }
 
-        .navbar-toggle {
-            display: block;
-        }
-
         #dropdownTogglerTarget {
             display: none;
         }
@@ -355,14 +399,31 @@
             top: 0;
             right: 0;
             height: 100vh;
-            width: 200px;
+            width: 100%;
             background-color: white;
             z-index: 999;
             transition: all 0.3s ease-in;
         }
 
+        #dropdownTogglerTarget.mobileMenu .closeButton {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            background-color: white;
+            color: #8a8a8a;
+            border: none;
+            text-align: center;
+        }
+
+        #dropdownTogglerTarget.mobileMenu .mobileLogo {
+            left: 0;
+            top: 10px;
+            position: absolute;
+        }
+
         #dropdownTogglerTarget.mobileMenu > ul {
             flex-direction: column;
+            margin-top: 30px;
         }
 
         #dropdownTogglerTarget.mobileMenu > ul li {
@@ -380,19 +441,27 @@
             margin-bottom: 5px;
         }
 
+        #dropdownTogglerTarget.mobileMenu .profileWrapper {
+            display: block;
+            margin-right: 0;
+            margin-top:30px;
+        }
+
         ul.dropdown-menu {
             margin-right: -40px;
         }
 
         .navbar-toggle {
-            order: 2;
+            order: 0;
             margin-right: 10px;
-            margin-left: 10px;
+            margin-left: auto;
+            display: block;
         }
 
         .profileWrapper {
             margin-right: auto;
             order: 1;
+            display: none;
         }
     }
 </style>

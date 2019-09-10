@@ -2,8 +2,7 @@
     <div class="col-md-3 reservedCard text-center">
         <img class="reservedCard--image" :src="session.consultant.profile_picture"
              :alt="session.consultant.first_name +' '+ session.consultant.last_name" v-if="!isConsultant">
-        <h5 class="reservedCard--detail-name isansFont--faNum text-center noImageTitle" v-if="isConsultant"
-            :class="[{'noImageTitle' : isConsultant}]">
+        <h5 class="reservedCard--detail-name isansFont--faNum text-center noImageTitle" v-if="isConsultant">
             توسط :
             {{session.sold_to.first_name + " " + session.sold_to.last_name}}
         </h5>

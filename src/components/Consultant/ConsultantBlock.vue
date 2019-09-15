@@ -1,5 +1,5 @@
 <template>
-    <div class="consultantBlock row">
+    <div class="consultantBlock row" @click="$router.push('/consultants/' + consultant.slug)">
         <div class="consultantBlockData col-md-8">
             <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
                          :style="'background-image: url(' + consultant.profile_picture + ')'">
@@ -70,6 +70,9 @@
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
+
+        cursor: pointer;
+
     }
 
     .consultantBlockData {
@@ -97,10 +100,8 @@
     }
 
     .consultantBlockInfo {
-        /*margin-right: 15px;*/
-
-        margin-left:auto;
-        margin-right:40px;
+        margin-left: auto;
+        margin-right: 40px;
 
         display: flex;
         align-self: stretch;
@@ -187,8 +188,8 @@
     }
 
     .consultantCalendarLink i {
-        color : #bd79c9bf;
-        font-size:18px;
+        color: #bd79c9bf;
+        font-size: 18px;
     }
 
     .consultantShowButton:hover {

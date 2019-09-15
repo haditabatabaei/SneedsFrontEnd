@@ -168,6 +168,7 @@
         color: #9e9e9e;
         text-align: justify;
         align-self: flex-start;
+        word-break: break-all;
     }
 
     .consultantDescBlock--main_video {

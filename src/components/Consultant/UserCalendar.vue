@@ -49,9 +49,9 @@
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
                 </div>
-                <div class="myTableCell lastCellInRow">
-                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
-                </div>
+<!--                <div class="myTableCell lastCellInRow">-->
+<!--                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}-->
+<!--                </div>-->
             </div>
         </div>
 

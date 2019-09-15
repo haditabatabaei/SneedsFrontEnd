@@ -67,15 +67,19 @@
                                                 <div class="cardConsultantBlock--info">
                                                     <h4 class="isansFont font-weight-bold">
                                                         <router-link
-                                                                :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                            :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
                                                             مشاور :
-                                                            {{slotDetail.consultant.first_name + ' ' + slotDetail.consultant.last_name}}
+                                                            {{slotDetail.consultant.first_name + ' ' +
+                                                            slotDetail.consultant.last_name}}
                                                         </router-link>
                                                     </h4>
                                                     <button class="timeTogglerBtn isansFont btn btn-simple btn-sm"
                                                             type="button"
                                                             aria-expanded="true" aria-controls="timesCollapse">
-                                                        {{getJalali(slotDetail.start_time).locale('fa').format('dddd MM MMMM')}}
+                                                        {{
+                                                        getJalali(slotDetail.start_time).locale('fa')
+                                                        .format('dddd MM MMMM')
+                                                        }}
                                                         <i class="material-icons">keyboard_arrow_down</i>
                                                     </button>
                                                     <div class="timesCollapse isansFont"
@@ -115,6 +119,14 @@
 
                                     <p class="text-info isansFont--faNum" v-for="message in discount.messages">
                                         {{message}}
+                                    </p>
+
+                                    <p class="text-info isansFont--faNum" v-for="appliedCode in appliedCodes">
+                                        <span>{{appliedCode.code}}</span>
+                                        <button @click="removeDiscount(appliedCode.id)"
+                                                class="btn btn-simple btn-fab btn-fab-mini">
+                                            <i class="material-icons">close</i>
+                                        </button>
                                     </p>
 
                                     <div class="priceWrapper--discountCodeBox">
@@ -178,22 +190,32 @@
                     messages: [],
                     code: '',
                     isValid: true,
-                }
+                },
+
+                appliedCodes: []
             }
         }, created() {
-            this.startCartsLogic();
-            let promise = this.$store.dispatch('getCart');
-            promise.then((res) => {
-                this.resetCartsLogic();
-                console.log(res);
-            }).catch((err) => {
-                this.failedCartsLogic();
-            })
+            this.init();
         },
         mounted() {
             scrollTo(0, 0);
         },
         methods: {
+
+            init: function () {
+                this.startCartsLogic();
+                this.$store.dispatch('getCart').then(res => {
+                    this.getAllDiscounts().then(disRes => {
+                        this.appliedCodes = disRes.data;
+                        this.resetCartsLogic();
+                    }).catch(disErr => {
+                        this.failedCartsLogic();
+                    })
+                }).catch(err => {
+                    this.failedCartsLogic();
+                })
+            },
+
             resetCartsLogic: function () {
                 window.console.log('no loading deploy');
                 this.cartsLoading.value = false;
@@ -291,6 +313,38 @@
 
             },
 
+            removeDiscount: function (discountId) {
+                this.startCartsLogic();
+                this.sendRemoveDiscountCodeReq(discountId).then(response => {
+                    this.discount.messages = [];
+                    this.discount.messages[0] = 'کد تخفیف اعمالی حذف شد.';
+                    this.init();
+                }).catch(error => {
+                    this.failedCartsLogic();
+                })
+            },
+
+            sendRemoveDiscountCodeReq: function (discountId) {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'discount/cart-consultant-discounts/' + discountId + '/',
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        console.log('remove response:', response);
+                        resolve(response);
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response)
+                        reject(error);
+                    })
+                })
+            },
+
             factorCreation: function () {
                 this.resetCartsLogic();
                 this.startCartsLogic();
@@ -330,6 +384,27 @@
                 })
             },
 
+            getAllDiscounts: function () {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'discount/cart-consultant-discounts/',
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json'
+                        }
+                    }).then((response) => {
+                        console.log('list of discounts :', response)
+                        resolve(response);
+                    }).catch(error => {
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
+                        reject(error);
+                    })
+                })
+            },
+
             sendDiscountPostReq: function () {
                 console.log('discount in :', this.discount.code);
                 return new Promise((resolve, reject) => {
@@ -346,11 +421,14 @@
                         this.startCartsLogic();
                         let promise = this.$store.dispatch('getCart');
                         promise.then((res) => {
+                            this.getAllDiscounts().then(disRes => {
+                                this.appliedCodes = disRes.data;
+                            });
                             this.resetCartsLogic();
                             console.log(res);
                             this.discount.messages = [];
                             this.discount.messages[0] = 'کد تخفیف اعمال شد.';
-                            this.discount.isValid = false;
+                            // this.discount.isValid = false;
                         }).catch((err) => {
                             this.failedCartsLogic();
                         });
@@ -360,32 +438,15 @@
                         console.log(error);
                         if (error.response) {
                             console.log(error.response);
-                            if(error.response.data.code) {
-                            this.discount.messages = error.response.data.code;
+                            if (error.response.data.code) {
+                                this.discount.messages = error.response.data.code;
 
-                            }else {
+                            } else {
                                 this.discount.messages = error.response.data.detail;
                             }
                         }
                         reject(error);
 
-                    })
-                })
-            },
-
-            sendGetCartRequest: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'cart/carts/',
-                        method: 'GET',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
                     })
                 })
             },

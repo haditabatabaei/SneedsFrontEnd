@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 reservedCard text-center">
+    <div class="col-md-4 reservedCard text-center">
         <img class="reservedCard--image" :src="session.consultant.profile_picture"
              :alt="session.consultant.first_name +' '+ session.consultant.last_name" v-if="!isConsultant">
         <h5 class="reservedCard--detail-name isansFont--faNum text-center noImageTitle" v-if="isConsultant">
@@ -9,7 +9,8 @@
         <h5 class="reservedCard--detail-name isansFont--faNum text-center" v-else>
             {{session.consultant.first_name + " " + session.consultant.last_name}}
         </h5>
-        <p class="reservedCard--detail-remain isansFont--faNum" :class="[{'deactiveRemain': currentTimeAfterSession}]">
+        <p class="reservedCard--detail-remain isansFont--faNum"
+           :class="[{'deactiveRemain': currentTimeAfterSession},{'nearBeforeTime' : nearBeforeTime}, {'farBeforeTime' : farBeforeTime}]">
             {{getJalali(session.start_time).locale('fa').fromNow()}}
         </p>
         <p class="reservedCard--detail-date isansFont--faNum">
@@ -28,20 +29,25 @@
         </p>
 
         <div class="reservedCard--actions">
-            <a :href="session.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success" v-if="currentTimeBetweenSession">ورود به جلسه</a>
-            <button disabled class="isansFont--faNum reservedCard--enterButton btn btn-default" v-else-if="currentTimeBeforeSession">ورود به جلسه
+            <a :href="session.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success"
+               v-if="currentTimeBetweenSession">ورود به جلسه</a>
+            <button disabled class="isansFont--faNum reservedCard--enterButton btn btn-default"
+                    v-else-if="currentTimeBeforeSession">ورود به جلسه
             </button>
         </div>
 
         <div class="isansFont--faNum reservedCard--rate text-center" v-if="currentTimeAfterSession">
             <div class="col-md-12" v-if="canRate && !isConsultant">
-                <StarRating v-model="session.starRate"
-                            :rtl="true"
-                            :star-size="25"
-                            :rounded-corners="true"
+                <StarRating
+                        v-model="session.starRate"
+                        :rtl="true"
+                        :star-size="25"
+                        :rounded-corners="true"
                 ></StarRating>
-                <button @click="submitRate(session.id,session.starRate)"
-                        class="isansFont btn btn-rose btn-sm btn-round">ثبت امتیاز
+                <button
+                        @click="submitRate(session.id,session.starRate)"
+                        class="isansFont btn btn-rose btn-sm btn-round">
+                    ثبت امتیاز
                 </button>
             </div>
             <p v-else-if="canRate && isConsultant">
@@ -55,7 +61,6 @@
                 {{rate}}
             </p>
         </div>
-
 
     </div>
 </template>
@@ -75,6 +80,8 @@
         },
         data: function () {
             return {}
+        },
+        created() {
         },
         methods: {
             getJalali: function (date) {
@@ -118,39 +125,34 @@
             currentTimeBetweenSession: function () {
                 return this.getJalali().isBetween(this.getJalali(this.session.start_time), this.getJalali(this.session.end_time));
             },
-
             canRate: function () {
                 return this.rate === false;
             },
-
             currentTimeBeforeSession: function () {
                 return this.getJalali().isBefore(this.getJalali(this.session.start_time));
             },
             currentTimeAfterSession: function () {
                 return this.getJalali().isAfter(this.getJalali(this.session.end_time));
             },
-
-            nearTime: function () {
-
+            nearBeforeTime: function () {
+                let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
+                return diff >= 0 && diff <= 12;
             },
-
-            mediumTime: function () {
-
-            },
-            farTime: function () {
-
-            },
+            farBeforeTime: function () {
+                let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
+                return diff > 12;
+            }
         }
     }
 </script>
 
 <style scoped>
     .reservedCard {
-        background-color: white;
         border-radius: 5px;
-        border: 1px solid #969696;
 
-        margin-top: 30px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+
+        margin-top: 50px;
 
         width: calc(25% - 30px);
 
@@ -191,6 +193,16 @@
     .deactiveRemain {
         background-color: #f1f1f1;
         color: #bebebe;
+    }
+
+    .nearBeforeTime {
+        background-color: #EAA5B0;
+        color: #A25252;
+    }
+
+    .farBeforeTime {
+        background-color: #FCFAB1;
+        color: #A3871B;
     }
 
     .reservedCard--detail-date time {

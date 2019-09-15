@@ -17,6 +17,21 @@
             <div class="profile-content">
                 <div class="container">
                     <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="filterButtons isansFont--faNum">
+                                <button @click="filterBy('all')" :class="[{'active' : activeFilter === 'all'}]">
+                                    همه
+                                </button>
+                                <button @click="filterBy('finished')"
+                                        :class="[{'active' : activeFilter === 'finished'}]">
+                                    برگزار شده
+                                </button>
+                                <button @click="filterBy('nostart')" :class="[{'active' : activeFilter === 'nostart'}]">
+                                    برگزار نشده
+                                </button>
+
+                            </div>
+                        </div>
                         <div class="col-md-12 text-center" style="margin-top:10px;"
                              v-if="reservedSessions.length === 0">
 
@@ -41,14 +56,15 @@
                             </router-link>
                         </div>
 
-                        <ReservedSessionBlock v-for="session in reservedSessions"
-                                              :isConsultant="isConsultant"
-                                              :session="session"
-                                              :rate="slotHasRate(session.id)"
-                                              @update-list="updateList()"
-                                              :key="session.id"
-                        ></ReservedSessionBlock>
-
+                        <div class="col-md-12">
+                            <ReservedSessionBlock v-for="session in shownReservedSessions"
+                                                  :isConsultant="isConsultant"
+                                                  :session="session"
+                                                  :rate="slotHasRate(session.id)"
+                                                  @update-list="updateList()"
+                                                  :key="session.id"
+                            ></ReservedSessionBlock>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,6 +86,8 @@
             return {
                 roomInterval: null,
                 reservedSessions: [],
+                shownReservedSessions: [],
+                activeFilter: 'all',
                 videoRooms: [],
                 availableRates: [],
                 starRate: '',
@@ -123,7 +141,31 @@
         },
         methods: {
 
-            updateList: function(){
+            filterBy: function (param) {
+                this.activeFilter = param;
+                this.shownReservedSessions = [];
+                switch (param) {
+                    case 'all' :
+                        this.shownReservedSessions = this.reservedSessions;
+                        break;
+                    case 'nostart' :
+                        for (let i = 0; i < this.reservedSessions.length; i++) {
+                            if (!this.reservedSessions[i].used) {
+                                this.shownReservedSessions.push(this.reservedSessions[i]);
+                            }
+                        }
+                        break;
+                    case 'finished' :
+                        for (let i = 0; i < this.reservedSessions.length; i++) {
+                            if (this.reservedSessions[i].used) {
+                                this.shownReservedSessions.push(this.reservedSessions[i]);
+                            }
+                        }
+                        break;
+                }
+            },
+
+            updateList: function () {
                 this.resetCartsLogic();
                 this.startCartsLogic();
                 this.getReservedTimes().then((responseSessions) => {
@@ -138,10 +180,18 @@
                         console.log('rates :', this.availableRates);
 
                         console.log('done');
-                        this.getVideoRooms().then(() => {
+                        this.getVideoRooms().then((videoRes) => {
                             console.log(this.reservedSessions);
+                            console.log('video rooms data:', videoRes.data)
+                            this.videoRooms = videoRes.data;
+                            for (let i = 0; i < this.reservedSessions.length; i++) {
+                                let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
+                                if (resultSession) {
+                                    this.reservedSessions[i].login_url = resultSession.login_url
+                                }
+                            }
                             this.resetCartsLogic();
-
+                            this.filterBy('all');
                         }).catch(() => {
                             this.failedCartsLogic();
                         });
@@ -217,6 +267,8 @@
                             this.reservedSessions[i].login_url = resultSession.login_url
                         }
                     }
+                    this.filterBy('all');
+                    this.filterBy(this.activeFilter)
                 }).catch(error => {
                     console.log('sync data from video error', error);
                 })
@@ -232,15 +284,7 @@
                             'Authorization': 'JWT ' + this.$store.getters.getToken,
                         }
                     }).then(response => {
-                        console.log('video rooms data:', response.data)
-                        this.videoRooms = response.data;
-                        for (let i = 0; i < this.reservedSessions.length; i++) {
-                            let resultSession = this.getSessionRoomWithId(this.reservedSessions[i].id);
-                            if (resultSession) {
-                                this.reservedSessions[i].login_url = resultSession.login_url
-                            }
-                        }
-                        resolve();
+                        resolve(response);
                     }).catch((error) => {
                         console.log(error);
                         if (error.response)
@@ -334,7 +378,40 @@
 <style scoped>
 
     .main {
-        background-color: #f1f1f1;
-        padding-bottom:30px;
+        background-color: white;
+        padding-bottom: 30px;
+    }
+
+    .filterButtons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        list-style: none;
+
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+    }
+
+    .filterButtons button {
+        margin-right: 10px;
+        margin-left: 10px;
+
+        border-radius: 30px;
+        border: none;
+        padding: 10px 20px;
+        color: #666;
+        background: none;
+
+        transition: all .1s ease-in;
+    }
+
+    .filterButtons button:hover {
+        background-color: #f3f3f3;
+    }
+
+    .filterButtons button.active {
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 </style>

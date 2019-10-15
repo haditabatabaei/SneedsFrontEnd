@@ -317,12 +317,12 @@
                 })
             }).catch(err => {
                 this.$loading(false);
-                    this.$notify({
-                        group: 'notif',
-                        type: "error",
-                        text: 'خطایی هنگام ارتباط با سرور رخ داد',
-                        duration: 3000
-                    })
+                this.$notify({
+                    group: 'notif',
+                    type: "error",
+                    text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                    duration: 3000
+                })
                 // }
             })
         },
@@ -355,25 +355,37 @@
                 this.$loading(true);
                 console.log(this.generateQueryParameters());
                 this.sendUpdateRequestFilter(this.generateQueryParameters()).then(newList => {
-                    this.resetLoadingLogic();
-                    this.$loading(false);
                     this.consultantList = newList;
                     if (this.consultantList.length === 0) {
                         this.$notify({
-                            type: "warn",
                             group: 'notif',
-                            title: 'اخطار',
+                            type: 'warn',
+                            title: 'لیست مشاوران : اخطار',
                             text: 'متاسفانه مشاوری با این اطلاعات یافت نشد',
                             duration: 3000
                         });
-                        // this.fetchFailed.message = 'مشاوری با این اطلاعات یافت نشد.'
-                    }
-                    if (toggleIndicator) {
-                        this.toggleFilterPanel();
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'لیست مشاوران : موفق',
+                            text: 'لیست مشاوران با توجه به تنظیمات شما به روز رسانی شد.',
+                            duration: 3000
+                        });
+                        if (toggleIndicator) {
+                            this.toggleFilterPanel();
+                        }
                     }
                 }).catch(err => {
-                    this.failedLoadingLogic();
-                    this.fetchFailed.message = err.response;
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'لیست مشاوران : خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        duration: 3000
+                    });
+                }).finally(() => {
+                    this.$loading(false)
                 })
             },
 
@@ -394,20 +406,32 @@
             },
 
             resetFilter: function (toggleIndicator) {
-
+                this.$loading(true);
                 this.addSelectPropertyToList(this.countriesList);
                 this.addSelectPropertyToList(this.universitiesList);
                 this.addSelectPropertyToList(this.fieldOfStudiesList);
-                let promise = this.getListOfConsultants();
-                promise.then(response => {
-                    this.resetLoadingLogic();
+                this.getListOfConsultants().then(response => {
                     this.consultantList = response;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
+                    this.$notify({
+                        group: 'notif',
+                        type: 'success',
+                        title: 'لیست مشاوران : موفق',
+                        text: 'لیست مشاوران با تنظیمات شما به روز رسانی شد.',
+                        duration: 3000
+                    });
                 }).catch(error => {
-                    this.failedLoadingLogic();
-                    this.fetchFailed.message = 'خطایی رخ داد. ' + error.response;
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'لیست مشاوران : خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        duration: 3000
+                    });
+                }).finally(() => {
+                    this.$loading(false);
                 })
             },
 

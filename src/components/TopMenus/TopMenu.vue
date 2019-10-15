@@ -20,7 +20,7 @@
                                     data-toggle="dropdown"
                                     aria-expanded="false">
                                 <i class="material-icons">account_circle</i>
-                                <span style="margin-right:5px;">پروفایل</span>
+<!--                                <span style="margin-right:5px;">پروفایل</span>-->
                                 <b style="margin-right:5px;" class="caret"></b>
                             </button>
                             <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
@@ -95,8 +95,6 @@
 
             <div id="dropdownTogglerTarget" v-if="!mobileMenuShow">
                 <ul class="menuList isansFont">
-
-
                     <li class="text-right" v-for="item in this.topMenuListItems"
                         v-bind:class="[{'dropdown':item.hasDropdown}]">
                         <a href="#" v-if="item.hasDropdown && item.type == 'router'" class="dropdown-toggle"
@@ -202,14 +200,6 @@
                         hasDropDown: false,
                         dropdownItems: []
                     },
-                    {
-                        itemName: 'مشاوره اپلای',
-                        target: '/consultant/apply',
-                        type: 'router',
-                        hasDropdown: false,
-                        dropdownItems: []
-                    },
-                    // {itemName: 'مشاوره کسب و کار' , target : '/consultant /business', type : 'router', hasDropdown: false, dropdownItems: []},
                     {
                         itemName: 'بلاگ',
                         target: 'http://sneeds.ir/%d8%a8%d9%84%d8%a7%da%af/',

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-filter header-small" data-parallax="true"
-             style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+             style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -18,20 +18,6 @@
                 <div class="container">
                     <div class="row5">
                         <div class="col-md-12 text-center" style="margin-top:20px;">
-                            <RectNotifBlock :message="cartsLoading.message"
-                                            type="warning"
-                                            borderRound="true"
-                                            v-if="cartsLoading.value"></RectNotifBlock>
-
-                            <RectNotifBlock :message="cartsSuccess.message"
-                                            type="success"
-                                            borderRound="true"
-                                            v-else-if="cartsSuccess.value"></RectNotifBlock>
-
-                            <RectNotifBlock :message="cartsFailed.message"
-                                            type="danger"
-                                            borderRound="true"
-                                            v-else-if="cartsFailed.value"></RectNotifBlock>
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3 class="isansFont text-right" v-if="activeOrder">
@@ -159,7 +145,8 @@
 
                             <transition name="slide-fade">
                                 <div v-if="orderDescShown" class="modalOrder">
-                                    <button class="btn btn-danger btn-just-icon isansFont modalCloseButton" @click="hideOrderDesc()">
+                                    <button class="btn btn-danger btn-just-icon isansFont modalCloseButton"
+                                            @click="hideOrderDesc()">
                                         <i class="material-icons">close</i>
                                     </button>
 
@@ -170,9 +157,9 @@
                                                 <th class="text-center">مشاور</th>
                                                 <th class="th-description text-center">تاریخ جلسه</th>
                                                 <th class="th-description text-center">ساعت شروع</th>
-                                                <th class="text-center" >ساعت پایان</th>
-                                                <th class="text-center" >مدت ( ساعت )</th>
-                                                <th class="text-center" >هزینه</th>
+                                                <th class="text-center">ساعت پایان</th>
+                                                <th class="text-center">مدت ( ساعت )</th>
+                                                <th class="text-center">هزینه</th>
                                             </tr>
                                             </thead>
 
@@ -181,8 +168,9 @@
                                                 :data-slotId="slotDetail.id" class="isansFont--faNum">
                                                 <td class="td-name">
                                                     <router-link
-                                                                 :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
-                                                        {{slotDetail.consultant.first_name + " " + slotDetail.consultant.last_name}}
+                                                            :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                        {{slotDetail.consultant.first_name + " " +
+                                                        slotDetail.consultant.last_name}}
                                                     </router-link>
                                                 </td>
                                                 <td>
@@ -221,7 +209,7 @@
                                                     }}
                                                 </td>
                                                 <td>
-                                                    شماره   پیگیری فاکتور :
+                                                    شماره پیگیری فاکتور :
                                                     <br>
                                                     {{orderDescToShow.order_id}}
                                                 </td>
@@ -267,36 +255,36 @@
                 orderDescToShow: {},
                 orders: [],
                 completedOrders: [],
-                cartsSuccess: {
-                    value: false,
-                    message: 'عملیات موفق آمیز بود'
-                },
-
-                cartsLoading: {
-                    value: false,
-                    message:
-                        'چند لحظه صبر کنید...'
-                },
-
-                cartsFailed: {
-                    value: false,
-                    message: 'مشکلی رخ داد...'
-                },
                 paymentError: '',
             }
         }, created() {
-            this.startCartsLogic();
+            this.$loading(true);
             this.getOrders().then((orders) => {
                 this.getPaidOrders().then((paidOrders) => {
                     this.orders = orders;
                     this.completedOrders = paidOrders;
-                    this.resetCartsLogic();
                 }).catch(() => {
-                    this.failedCartsLogic();
+                    this.$notify({
+                        type : 'error',
+                        group : 'notif',
+                        duration:3000,
+                        text : 'خطایی هنگام ارتباط با سرور رخ داد',
+                        title : 'خطا'
+                    })
+                }).finally(() => {
+                    this.$loading(false);
                 });
             }).catch(() => {
-                this.failedCartsLogic();
-            });
+                this.$loading(false);
+                this.$notify({
+                    type : 'error',
+                    group : 'notif',
+                    duration:3000,
+                    text : 'خطایی هنگام ارتباط با سرور رخ داد',
+                    title : 'خطا'
+                })
+
+            })
         },
         mounted() {
             scrollTo(0, 0);
@@ -313,35 +301,6 @@
                 this.orderDescShown = true;
                 this.orderDescToShow = order;
             },
-
-            resetCartsLogic: function () {
-                window.console.log('no loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = false;
-            },
-
-            startCartsLogic: function () {
-                window.console.log('start loading deploy');
-                this.cartsLoading.value = true;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = false;
-            },
-
-            failedCartsLogic: function () {
-                window.console.log('failed loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = true;
-                this.cartsSuccess.value = false;
-            },
-
-            successCartsLogic: function () {
-                window.console.log('success loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = true;
-            },
-
             factorPayment: function () {
                 this.resetCartsLogic();
                 this.startCartsLogic();
@@ -669,18 +628,18 @@
         background-color: white;
         box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
         z-index: 9999;
-        border:1px solid #777;
+        border: 1px solid #777;
     }
 
     .modalOrder .table-responsive {
-        margin-top:50px;
+        margin-top: 50px;
     }
 
     .modalCloseButton {
         position: absolute;
         right: 10px;
         top: 0;
-        padding:5px;
+        padding: 5px;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

@@ -1,6 +1,6 @@
 <template>
     <div class="page-header"
-         style="background-image: url('//http:193.176.241.131/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
+         style="background-image: url('sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -13,29 +13,17 @@
                                 <div class="social-line mt-0 mb-10"></div>
                             </div>
                             <div class="card-content">
-                                <RectNotifBlock :message="loginLoading.message" type="warning" borderRound="true"
-                                                v-if="loginLoading.value"   ></RectNotifBlock>
-
-                                <RectNotifBlock :message="loginSuccess.message" type="success" borderRound="true"
-                                                v-else-if="loginSuccess.value"></RectNotifBlock>
-
-                                <RectNotifBlock :message="loginFailed.message" type="danger" borderRound="true"
-                                                v-else-if="loginFailed.value"></RectNotifBlock>
-
-                                <div v-if="!loginSuccess.value" class="input-group">
+                                <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="material-icons">lock</i>
                                     </span>
                                     <div class="form-group form-rose gadugiFont isansFont">
                                         <input required
-                                               v-model="inputNewPassword"
+                                               v-model="$v.inputNewPassword.$model"
                                                :type="passType"
                                                class="form-control"
                                                placeholder="رمز عبور جدید خود را وارد کنید...">
                                         <span class="material-input"></span>
-                                        <span class="text-center isansFont text-danger" v-if="inputNewPasswordError">
-                                                لطفا یک رمز عبور معتبر وارد کنید
-                                        </span>
                                     </div>
                                     <span class="input-group-addon" style="border-left:0;">
                                     <button type="button" class="btn btn-xs btn-simple btn-fab btn-fab-mini btn-round"
@@ -47,9 +35,9 @@
                                     </span>
                                 </div>
 
-                                <div v-if="!loginSuccess.value" class="row">
+                                <div class="row">
                                     <div class="col-sm-6 col-sm-offset-3 text-center">
-                                        <input type="submit" class="btn btn-rose isansFont" value="ثبت رمز عبور">
+                                        <input type="submit" class="btn btn-rose isansFont" value="ثبت رمز عبور جدید">
                                     </div>
                                 </div>
 
@@ -67,32 +55,19 @@
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
     import axios from 'axios'
+    import {required, minLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "ResetPassword",
         components: {RectNotifBlock},
+        validations: {
+            inputNewPassword: {required, minLength: minLength(6)}
+        },
         data() {
             return {
                 passType: 'password',
 
                 inputNewPassword: '',
-                inputNewPasswordError: false,
-
-                loginSuccess: {
-                    value: false,
-                    message: 'رمز عبور جدید شما با موفقیت ثبت شد.به صفحه ورود ارجاع داده می شوید'
-                },
-
-                loginLoading: {
-                    value: false,
-                    message:
-                        'چند لحظه صبر کنید...'
-                },
-
-                loginFailed: {
-                    value: false,
-                    message: 'مشکلی رخ داد...'
-                },
 
 
             }
@@ -100,12 +75,11 @@
         created() {
             console.log("token query parameter :", this.$route.query.token);
         },
-        mounted(){
+        mounted() {
             scrollTo(0, 0);
         },
         methods: {
             togglePassType: function () {
-
                 if (this.passType == 'password') {
                     this.passType = 'text'
                 } else {
@@ -114,10 +88,10 @@
             },
 
             setNewPassword: function () {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
-                this.inputNewPasswordError = false;
-                if (this.inputNewPassword) {
+                // this.resetLoadingLogic();
+                // this.startLoadingLogic();
+                this.$loading(true);
+                if (!this.$v.inputNewPassword.$invalid) {
                     let payload = {
                         "password": this.inputNewPassword,
                         "token": this.$route.query.token
@@ -125,20 +99,39 @@
                     console.log('payload : ', payload);
                     this.sendResetPassRequest(payload).then(response => {
                         console.log(response);
-                        this.successLoadingLogic();
-                        setTimeout(() => {
-                            this.$router.push('/login')
-                        }, 1500)
+
+                        this.$notify({
+                            group: 'notif',
+                            duration: 5000,
+                            type: 'success',
+                            title: 'ثبت رمز عبور جدید : موفق',
+                            text: 'رمز عبور جدید با موفقیت ثبت شد. به صفحه ورود فرستاده می شوید.'
+                        });
+                        this.$router.push('/login')
                     }).catch(error => {
                         console.log(error);
-                        this.failedLoadingLogic();
                         if (error.response) {
                             console.log(error.response);
                         }
+                        this.$notify({
+                            group: 'notif',
+                            duration: 3000,
+                            type: 'error',
+                            title: 'ثبت رمز عبور جدید : خطا',
+                            text: 'خطایی در ارتباط با سرور رخ داد.'
+                        });
+                    }).finally(() => {
+                        this.$loading(false)
                     })
                 } else {
-                    this.failedLoadingLogic();
-                    this.inputNewPasswordError = true;
+                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        duration: 3000,
+                        type: 'warn',
+                        title: 'ثبت رمز عبور جدید : اخطار',
+                        text: 'لطفا اطلاعات خود را به درستی پر کنید.'
+                    });
                 }
 
             },
@@ -158,33 +151,6 @@
                         reject(error);
                     })
                 })
-            },
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = false;
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.loginLoading.value = true;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = false;
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = true;
-                this.loginSuccess.value = false;
-            },
-
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = true;
             },
 
         }

@@ -1,254 +1,133 @@
 <template>
-    <div class="profile-page">
-
-        <div class="main">
-            <div class="profile-content">
-                <div class="container">
-                    <div class="row" style="margin-top:20px;">
-                        <RectNotifBlock :message="profileLoading.message"
-                                        type="warning"
-                                        borderRound="true"
-                                        v-if="profileLoading.value"></RectNotifBlock>
-
-                        <RectNotifBlock :message="profileSuccess.message"
-                                        type="success"
-                                        borderRound="true"
-                                        v-else-if="profileSuccess.value"></RectNotifBlock>
-
-                        <RectNotifBlock :message="profileFailed.message"
-                                        type="danger"
-                                        borderRound="true"
-                                        v-else-if="profileFailed.value"></RectNotifBlock>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="consultantSidebarBlock">
-                                <div class="consultantSidebarBlock--info">
-                                    <img :src="consultant.profile_picture" alt="">
-                                    <div class="consultantSidebarBlock--info_detail">
-                                        <h1 class="isansFont--faNum">
-                                            {{consultant.first_name + " " + consultant.last_name}}
-                                        </h1>
-                                        <span class="isansFont--faNum"> امتیاز {{consultant.rate}}</span>
-                                    </div>
-                                </div>
-                                <div class="consultantSidebarBlock--links isansFont--faNum">
-                                    <ul>
-                                        <li :class="[{'active' : activeSection === 'desc'}]">
-                                            <button @click="toggleSection('desc')">مشخصات</button>
-                                            <span class="line"></span>
-                                        </li>
-                                        <li :class="[{'active' : activeSection === 'calendar'}]">
-                                            <button @click="toggleSection('calendar')"> تقویم مشاور و رزرو</button>
-                                            <span class="line"></span>
-                                        </li>
-                                        <li :class="[{'active' : activeSection === 'comments'}]">
-                                            <button @click="toggleSection('comments')">
-                                                نظرات
-                                                <sub>{{consultant.comment_number}}</sub>
-                                                <span class="line"></span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+    <main class="main">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-3 sideBarBlockSticky">
+                    <div class="consultantSidebarBlock">
+                        <div class="consultantSidebarBlock--info">
+                            <img :src="consultant.profile_picture" alt="">
+                            <div class="consultantSidebarBlock--info_detail">
+                                <h1 class="isansFont--faNum">
+                                    {{consultant.first_name + " " + consultant.last_name}}
+                                </h1>
+                                <span class="isansFont--faNum" v-if="consultant.rate != null"> امتیاز {{consultant.rate}}</span>
+                                <span class="isansFont--faNum" v-else>بدون امتیاز</span>
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <div class="row" v-if="activeSection === 'desc'">
-                                <div class="col-md-12">
-                                    <ConsultantDescBlock :consultant="consultant"></ConsultantDescBlock>
-                                </div>
-                            </div>
+                        <div class="consultantSidebarBlock--links isansFont--faNum">
+                            <ul>
+                                <li :class="[{'active' : activeSection === 'desc'}]">
+                                    <button @click="smoothScrollToPos(getElementOffsetTop('descBlock'))">مشخصات</button>
+                                    <span class="line"></span>
+                                </li>
+                                <li :class="[{'active' : activeSection === 'calendar'}]">
+                                    <button @click="smoothScrollToPos(getElementOffsetTop('calendarBlock'))">تقویم
+                                        مشاور و رزرو
+                                    </button>
+                                    <span class="line"></span>
+                                </li>
+                                <li :class="[{'active' : activeSection === 'comments'}]">
+                                    <button @click="smoothScrollToPos(getElementOffsetTop('commentsBlock'))">
+                                        نظرات
+                                        <sub>{{consultant.comment_number}}</sub>
+                                        <span class="line"></span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="consultantSidebarBlock--selectedItems isansFont--faNum">
+                            <ul class="consultantSidebarBlock--selectedItems_list">
+                                <li v-if="stash.length === 0">
+                                    زمانی برای اضافه کردن به سبد خرید انتخاب نشده است. حداقل یک زمان از تقویم باید
+                                    انتخاب شود.
+                                </li>
+                                <li v-for="item in stash">
+                                    <i class="material-icons" role="button"
+                                       @click="$store.commit('removeItemFromStash',item)">close</i>
+                                    <span>{{getJalali(item.datestart).locale('fa').format('dddd') + " - " + getJalali(item.datestart).locale('fa').format('HH:mm') + " تا " + getJalali(item.dateend).locale('fa').format('HH:mm') }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="consultantSidebarBlock--numberDiscounts isansFont--faNum">
+                            <ul class="consultantSidebarBlock--numberDiscounts_list">
+                                <li v-for="item in listOfDiscounts">
+                                    <i class="material-icons">info</i>
+                                    <span>
+                                        به ازای هر
+                                        <mark>
+                                            {{item.number}}
+                                            جلسه ،
+                                        </mark>
+                                        <mark>
+                                            {{item.discount}}
+                                            درصد تخفیف
+                                        </mark>
+                                        اتوماتیک محاسبه خواهد شد.
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <div class="row" v-else-if="activeSection === 'calendar'">
-                                <UserCalendar :consultantId="consultant.id" v-if="consultant.id"></UserCalendar>
-                            </div>
-
-                            <div v-else-if="activeSection === 'comments'" class="row">
-                                <div class="col-md-12" v-if="isLoggedIn">
-                                    <div class="media media-post">
-                                        <div class="media-body">
-                                            <div class="form-group form-rose is-empty">
-                                                        <textarea id="comment" class="form-control isansFont"
-                                                                  placeholder="نظرتون رو بنویسید" rows="6"
-                                                                  v-model="inputComment"></textarea>
-                                                <span class="material-input"></span>
-                                            </div>
-                                            <div class="media-footer">
-                                                <button @click.prevet="submitComment()"
-                                                        class="btn btn-rose  isansFont pull-left">
-                                                    <i class="material-icons" v-if="submitCommentFailed.value">block</i>
-                                                    <i class="material-icons" v-if="submitCommentSuccess.value">done</i>
-                                                    <img src="http://193.176.241.131/sneedsAssets/img/loading.svg"
-                                                         alt="loading icon"
-                                                         class="loadingIcon"
-                                                         v-if="submitCommentLoading.value"
-                                                         style="width:15px;height:15px">
-                                                    ثبت نظر
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12    text-center sticky-top" v-else>
-                                    <router-link to="/login" class="btn btn-sm btn-warning isansFont">
-                                        برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
-                                    </router-link>
-                                </div>
-
-                                <div class="col-md-8">
-                                    <CommentBlock v-for="comment in comments"
-                                                  :config="{'showEdit':true,'showRemove':true,'deleted': false}"
-                                                  :consultant="consultant"
-                                                  @update-comments="getConsultantComments(consultant.id)"
-                                                  :comment="comment"
-                                                  :key="comments.indexOf(comment)"
-                                    ></CommentBlock>
-                                </div>
-                            </div>
+                        <button class="btn btn-round btn-bg btn-rose isansFont--faNum"
+                                @click="addSelectedTimesToCart()">اضافه کردن به سبد خرید
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row" id="descBlock">
+                        <div class="col-md-12">
+                            <ConsultantDescBlock :consultant="consultant" v-if="consultant.id"></ConsultantDescBlock>
                         </div>
                     </div>
 
-                    <!--                    <div class="row">-->
-                    <!--                        <div class="col-md-12 text-center" v-if="!profileLoading.value">-->
-                    <!--                            <ul class="nav nav-pills nav-pills-white d-inline-block isansFont">-->
-                    <!--                                <li :class="{'active' :  activeDesc}"><a href="#description" data-toggle="tab"-->
-                    <!--                                                                         aria-expanded="true">مشخصات</a></li>-->
-                    <!--                                <li :class="{'active' :  activeCalendar}"><a href="#calendar" data-toggle="tab"-->
-                    <!--                                                                             aria-expanded="false">تقویم</a></li>-->
-                    <!--                                <li :class="{'active' :  activeComments}"><a href="#comments" data-toggle="tab"-->
-                    <!--                                                                             aria-expanded="false"> نظرات <sup>{{comments.length}}</sup></a>-->
-                    <!--                                </li>-->
-                    <!--                            </ul>-->
-                    <!--                        </div>-->
+                    <div class="row" id="calendarBlock">
+                        <div class="col-md-12">
+                            <UserCalendar :consultantId="consultant.id" v-if="consultant.id"
+                                          @get-slots="setSlot"></UserCalendar>
+                        </div>
+                    </div>
 
-                    <!--                        <div class="col-md-12" v-if="!profileLoading.value">-->
-                    <!--                            <div class="tab-content tab-space">-->
-                    <!--                                <div class="tab-pane" :class="{'active' :  activeDesc}" id="description">-->
-
-                    <!--                                </div>-->
-
-                    <!--                                <div class="tab-pane" id="calendar" :class="{'active' :  activeCalendar}">-->
-
-                    <!--                                </div>-->
-                    <!--                                <div class="tab-pane" id="comments" :class="{'active' :  activeComments}">-->
-                    <!--                                    <div class="row">-->
-                    <!--                                        <div class="col-md-4 sticky-top" v-if="isLoggedIn">-->
-                    <!--                                            <div class="media media-post">-->
-                    <!--                                                <div class="media-body">-->
-                    <!--                                                    <div class="form-group form-rose is-empty">-->
-                    <!--                                                        <textarea id="comment" class="form-control isansFont"-->
-                    <!--                                                                  placeholder="نظرتون رو بنویسید" rows="6"-->
-                    <!--                                                                  v-model="inputComment"></textarea>-->
-                    <!--                                                        <span class="material-input"></span>-->
-                    <!--                                                    </div>-->
-                    <!--                                                    <div class="media-footer">-->
-                    <!--                                                        <button @click.prevet="submitComment()"-->
-                    <!--                                                                class="btn btn-rose  isansFont pull-left">-->
-                    <!--                                                            <i class="material-icons" v-if="submitCommentFailed.value">block</i>-->
-                    <!--                                                            <i class="material-icons" v-if="submitCommentSuccess.value">done</i>-->
-                    <!--                                                            <img src="http://193.176.241.131/sneedsAssets/img/loading.svg"-->
-                    <!--                                                                 alt="loading icon"-->
-                    <!--                                                                 class="loadingIcon"-->
-                    <!--                                                                 v-if="submitCommentLoading.value"-->
-                    <!--                                                                 style="width:15px;height:15px">-->
-                    <!--                                                            ثبت نظر-->
-                    <!--                                                        </button>-->
-                    <!--                                                    </div>-->
-
-                    <!--                                                </div>-->
-                    <!--                                            </div>-->
-                    <!--                                        </div>-->
-
-                    <!--                                        <div class="col-md-4 text-center sticky-top" v-else>-->
-                    <!--                                            <router-link to="/login" class="btn btn-sm btn-warning isansFont">-->
-                    <!--                                                برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید-->
-                    <!--                                            </router-link>-->
-                    <!--                                        </div>-->
-
-                    <!--                                        <div class="col-md-8">-->
-                    <!--                                            <CommentBlock v-for="comment in comments"-->
-                    <!--                                                          :config="{'showEdit':true,'showRemove':true,'deleted': false}"-->
-                    <!--                                                          :consultant="consultant"-->
-                    <!--                                                          @update-comments="getConsultantComments(consultant.id)"-->
-                    <!--                                                          :comment="comment"-->
-                    <!--                                                          :key="comments.indexOf(comment)"-->
-                    <!--                                            ></CommentBlock>-->
-                    <!--                                        </div>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
+                    <div class="row" id="commentsBlock">
+                        <div class="col-md-12">
+                            <CommentSection :consultant="consultant" v-if="consultant.id"></CommentSection>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
 </template>
 
 <script>
     import axios from 'axios';
-    import CommentBlock from '@/components/StandAlone/CommentBlock';
+    import CommentSection from '@/components/StandAlone/CommentSection'
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock';
     import ConsultantInfoBlock from '@/components/Consultant/ConsultantInfoBlock'
     import ConsultantTitle from '@/components/Consultant/ConsultantTitle'
     import UserCalendar from '@/components/Consultant/UserCalendar'
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
+    import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentBlock, RectNotifBlock, ConsultantDescBlock, ConsultantInfoBlock, ConsultantTitle, UserCalendar
+            CommentSection, RectNotifBlock, ConsultantDescBlock, ConsultantInfoBlock, ConsultantTitle, UserCalendar
         },
         data() {
             return {
                 consultant: {},
-                inputComment: '',
-                comments: [],
                 activeSection: 'desc',
-
+                listOfDiscounts: [],
+                slots: [],
                 calendarConfig: {
                     usersConfig: true,
                     managerConfig: false
                 },
-
-                submitCommentSuccess: {
-                    value: false,
-                    message: 'نظر شما با موفقیت ثبت شد،چند لحظه صبر کنید...'
-                },
-
-                submitCommentLoading: {
-                    value: false,
-                    message:
-                        'چند لحظه صبر کنید...'
-                },
-
-                submitCommentFailed: {
-                    value: false,
-                    message: 'مشکلی در ثبت نظر رخ داد...'
-                },
-
-                profileSuccess: {
-                    value: false,
-                    message: 'عملیات موفقیت آمیز بود'
-                },
-
-                profileLoading: {
-                    value: false,
-                    message:
-                        'چند لحظه صبر کنید...'
-                },
-
-                profileFailed: {
-                    value: false,
-                    message: 'مشکلی رخ داد...'
-                },
-
-
+                descPos: 0,
+                calendarPos: 0,
+                commentsPos: 0,
+                scrollListener: null
             }
         },
         computed: {
@@ -258,22 +137,33 @@
             activeCart: function () {
                 return this.$store.getters.getCart;
             },
+            stash: function () {
+                return this.$store.getters.getStash;
+            }
         },
         created() {
-            this.resetprofileLogic();
-            this.startprofileLogic();
+            document.addEventListener('scroll', this.handleScroll, false);
+
+            console.log(this.scrollListener);
+            console.log('consultant profile created hook called');
+            this.$loading(true);
             this.getConsultantBySlug(this.$route.params.consultantSlug).then(response => {
                 this.consultant = response.data;
-                this.getConsultantComments(this.consultant.id).then(() => {
-                    this.resetprofileLogic();
+                console.log('calling number discounts:');
+                this.getListOfNumberDiscounts().then(numberDis => {
+                    console.log('resolved from number discount :', numberDis);
+                    this.listOfDiscounts = numberDis;
+                    this.$loading(false);
                 }).catch(error => {
-                    this.failedprofileLogic();
-                });
+                    console.log(error);
+                })
             }).catch(error => {
                 window.console.log(error.response);
-                this.failedprofileLogic();
             });
 
+        },
+        beforeDestroy() {
+            document.removeEventListener('scroll', this.handleScroll, false);
         },
         mounted() {
             scrollTo(0, 0);
@@ -281,146 +171,179 @@
 
         methods: {
 
-            toggleSection: function (newSec) {
-                this.activeSection = newSec;
+            setSlot: function (slots) {
+                console.log('emiited event:', slots);
+                this.slots = slots;
             },
 
-            resetprofileLogic: function () {
-                window.console.log('no loading deploy');
-                this.profileLoading.value = false;
-                this.profileFailed.value = false;
-                this.profileSuccess.value = false;
-            },
+            addSelectedTimesToCart: function () {
+                console.log(this.stash);
 
-            startprofileLogic: function () {
-                window.console.log('start loading deploy');
-                this.profileLoading.value = true;
-                this.profileFailed.value = false;
-                this.profileSuccess.value = false;
-            },
+                let payload = {"time_slot_sales": []};
 
-            failedprofileLogic: function () {
-                window.console.log('failed loading deploy');
-                this.profileLoading.value = false;
-                this.profileFailed.value = true;
-                this.profileSuccess.value = false;
-            },
+                for (let i = 0; i < this.stash.length; i++) {
+                    payload.time_slot_sales.push(this.getSlotIdByDate(this.stash[i].datestart, this.stash[i].dateend));
+                }
 
-            successprofileLogic: function () {
-                window.console.log('success loading deploy');
-                this.profileLoading.value = false;
-                this.profileFailed.value = false;
-                this.profileSuccess.value = true;
-            },
+                console.log("active card is :", this.activeCart);
 
-            resetSubmitCommentLogic: function () {
-                window.console.log('no loading deploy');
-                this.submitCommentLoading.value = false;
-                this.submitCommentFailed.value = false;
-                this.submitCommentSuccess.value = false;
-            },
+                if (this.isLoggedIn) {
+                    if (this.stash.length > 0) {
+                        this.$loading(true);
+                        if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
+                            //put new items in it
+                            console.log('put new items in cart');
+                            console.log(this.activeCart);
+                            for (let i = 0; i < payload.time_slot_sales.length; i++) {
+                                this.activeCart.time_slot_sales.push(payload.time_slot_sales[i]);
+                            }
 
-            startSubmitCommentLogic: function () {
-                window.console.log('start loading deploy');
-                this.submitCommentLoading.value = true;
-                this.submitCommentFailed.value = false;
-                this.submitCommentSuccess.value = false;
-            },
 
-            failedSubmitCommentLogic: function () {
-                window.console.log('failed loading deploy');
-                this.submitCommentLoading.value = false;
-                this.submitCommentFailed.value = true;
-                this.submitCommentSuccess.value = false;
-            },
+                            let config = {
+                                "payload": {"time_slot_sales": Array.from(new Set(this.activeCart.time_slot_sales))},
+                                "cartId": this.activeCart.id,
+                            };
 
-            successSubmitCommentLogic: function () {
-                window.console.log('success loading deploy');
-                this.submitCommentLoading.value = false;
-                this.submitCommentFailed.value = false;
-                this.submitCommentSuccess.value = true;
-            },
+                            console.log(config);
+                            this.$store.dispatch('putCartRequest', config).then(response => {
+                                this.$store.commit('setStash', []);
+                                console.log(response);
+                                this.$loading(false);
+                                this.$router.push('/user/cart');
+                            }).catch(error => {
+                                this.$loading(false);
+                                console.log(error);
+                                if (error.response) {
+                                    console.log(error.response);
+                                }
 
-            submitComment: function () {
-                this.resetSubmitCommentLogic();
-                this.startSubmitCommentLogic();
-                if (this.inputComment != null && this.inputComment.length != 0) {
-                    console.log('sending request');
-                    let payload = {
-                        'consultant': this.consultant.id,
-                        'message': this.inputComment,
-                    };
-
-                    this.sendSubmitCommentRequest(payload).then((response) => {
-                        this.successSubmitCommentLogic();
-
-                        this.getConsultantComments(this.consultant.id).then(response => {
-                            console.log(response.data);
-                            this.comments = response.data;
-                            this.inputComment = '';
-                            this.resetSubmitCommentLogic();
-                        }).catch(error => {
-                            console.log(error.response);
-                        });
-
-                        console.log('response:', response.data);
-                    }).catch((error) => {
-                        if (error.response) {
-                            this.submitCommentFailed.message = 'خطایی هنگام ثبت نظر رخ داد. ' + error.response;
+                                this.$notify({
+                                    group: 'notif',
+                                    title: 'خطا',
+                                    type: 'error',
+                                    text: error.response.data,
+                                    closeOnClick: true
+                                });
+                            });
                         } else {
-                            this.submitCommentFailed.message = 'خطایی هنگام ثبت نظر رخ داد. ';
+                            //card doesnt exits
+                            //post new items;
+                            console.log('post new items in cart');
+                            this.$store.dispatch('postCart', payload).then(response => {
+                                console.log(response);
+                                this.$store.commit('setStash', []);
+                                this.$loading(false);
+                                this.$router.push('/user/cart');
+                            }).catch(error => {
+                                console.log(error);
+                                this.$loading(false);
+                                if (error.response) {
+                                    console.log(error.response);
+                                }
+                                this.$notify({
+                                    group: 'notif',
+                                    title: 'خطا',
+                                    type: 'error',
+                                    text: error.response.data,
+                                    closeOnClick: true
+                                });
+                            })
                         }
-                        this.failedSubmitCommentLogic();
-                        console.log('error:', error.response);
-                    })
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            title: 'خطا',
+                            type: 'error',
+                            text: 'باید حداقل یک زمان از تقویم را انتخاب کنید.',
+                            closeOnClick: true,
+                            duration: 2500
+                        });
+                        console.log('stash is empty');
+                    }
                 } else {
-                    this.submitCommentFailed.message = 'لطفا فیلد نظر را بنویسید.';
-                    this.failedSubmitCommentLogic();
-                    console.log('comment was empty');
+                    this.$notify({
+                        group: 'notif',
+                        title: 'خطا',
+                        type: 'error',
+                        text: 'برای اضافه کردن زمان ها به سبد خرید باید در حساب خود وارد شوید.',
+                        closeOnClick: true,
+                        duration: 2500
+                    });
                 }
 
 
             },
 
-            sendSubmitCommentRequest: function (payload) {
-                console.log('request method with payload : ', payload);
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'comment/comments/',
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json',
-                        },
-                        data: payload,
-                    }).then(response => {
-                        console.log('response axios :', response.data);
-                        resolve(response);
-                    }).catch(error => {
-                        console.log('error axios :', error);
-                        reject(error);
-                    })
-                });
+
+            getJalali: function (date) {
+                return jalali(date);
             },
 
-            getConsultantComments: function (consultantId) {
+            getSlotIdByDate(startDate, endDate) {
+                for (let i = 0; i < this.slots.length; i++) {
+                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
+                        return this.slots[i].id;
+                }
+            },
+
+            getElementOffsetTop: function (elemId) {
+                return document.getElementById(elemId).offsetTop + 20;
+            },
+
+            getListOfNumberDiscounts: function () {
+                console.log('axios is going to call before promise')
                 return new Promise((resolve, reject) => {
                     axios({
-                        url: this.$store.getters.getApi + 'comment/comments/?consultant=' + consultantId,
+                        url: this.$store.getters.getApi + 'discount/time-slot-sale-number-discounts/',
                         method: 'GET',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         }
                     }).then(response => {
-                        console.log('axios response:', response);
-                        console.log(response.data);
-                        this.comments = response.data;
-                        resolve(response);
+                        console.log('number response : ', response.data);
+                        resolve(response.data)
                     }).catch(error => {
-                        console.log('axios error:', error);
+                        console.log(error);
+                        if (error.response)
+                            console.log(error.response);
                         reject(error);
                     })
                 })
+            },
+
+
+            handleScroll: function (event) {
+                this.descPos = document.getElementById('descBlock').offsetTop;
+                this.calendarPos = document.getElementById('calendarBlock').offsetTop;
+                this.commentsPos = document.getElementById('commentsBlock').offsetTop;
+                if (scrollY >= 0 && scrollY < this.calendarPos) {
+                    //desc block insight
+                    this.toggleSection('desc')
+                } else if (scrollY >= this.calendarPos && scrollY < this.commentsPos) {
+                    //calendar block insight
+                    this.toggleSection('calendar')
+                } else {
+                    //comments block insight
+                    this.toggleSection('comments')
+                }
+            },
+
+            smoothScrollToPos(yPos) {
+                let step = 10;
+                if (scrollY >= yPos)
+                    step *= -1;
+
+                let scrollInterval = setInterval(() => {
+                    scrollTo(0, scrollY + step);
+                    if (Math.abs(yPos - scrollY) <= Math.abs(step)) {
+                        clearInterval(scrollInterval);
+                    }
+                }, 0.5);
+
+            },
+
+            toggleSection: function (newSec) {
+                this.activeSection = newSec;
             },
 
             getConsultantBySlug(consultantSlug) {
@@ -449,34 +372,14 @@
     .main {
         padding-top: 100px;
         min-height: 100vh;
+        padding-bottom: 40px;
         background-color: #f2f2f2;
-    }
-
-    .description {
-        padding: 15px;
-        line-height: 25px;
-        word-break: break-all;
-    }
-
-    .videoTitle {
-        margin-top: 15px;
-        margin-bottom: 30px;
-    }
-
-    .aparatFrame {
-        min-height: 400px;
-        border: none;
     }
 
     .nav-pills.nav-pills-white > li.active > a {
         background-color: white;
         color: #555555;
         box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .sticky-top {
-        top: 120px;
-        position: sticky;
     }
 
     .consultantSidebarBlock {
@@ -492,6 +395,11 @@
 
         margin-top: 30px;
         padding-bottom: 10px;
+    }
+
+    .sideBarBlockSticky {
+        position: sticky;
+        top: 50px;
     }
 
     .consultantSidebarBlock--info {
@@ -568,10 +476,88 @@
         padding-right: 15px;
     }
 
+    .consultantSidebarBlock--selectedItems_list {
+        list-style: none;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+
+        padding-right: 0;
+
+        font-size: 13px;
+
+        margin-top: 5px;
+    }
+
+    .consultantSidebarBlock--selectedItems_list li {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-right: 10px;
+        margin-top: 15px;
+        color: #333;
+    }
+
+    .consultantSidebarBlock--selectedItems_list li span {
+        margin-right: 5px;
+    }
+
+    .consultantSidebarBlock--links_list li i {
+        font-size: 20px;
+    }
+
+    .consultantSidebarBlock--numberDiscounts_list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+
+        padding-right: 0;
+        margin-right: 10px;
+        margin-top: 20px;
+        list-style: none;
+    }
+
+    .consultantSidebarBlock--numberDiscounts_list li {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        font-size: 12px;
+        font-weight: bold;
+
+        color: #b8b8b8;
+    }
+
+    .consultantSidebarBlock--numberDiscounts_list li i {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
+    .consultantSidebarBlock--numberDiscounts_list mark {
+        color: #3faf54;
+        background: none;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+    .consultantSidebarBlock > button {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
         .sticky-top {
             position: static;
             top: initial;
+        }
+
+        .sideBarBlockSticky {
+            position: static;
         }
 
         .consultantSidebarBlock {

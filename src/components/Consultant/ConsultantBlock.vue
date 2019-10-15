@@ -12,7 +12,7 @@
                         {{consultant.first_name + ' ' + consultant.last_name}}
                     </router-link>
                     <router-link class="isansFont consultantCalendarLink"
-                                 :to="'/consultants/' + consultant.slug + '?as=calendar'">
+                                 :to="'/consultants/' + consultant.slug ">
                         <i class="material-icons">assignment</i>
                         مشاهده تقویم مشاور
                     </router-link>
@@ -31,7 +31,7 @@
                     <span class="rate goodRate isansFont--faNum" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
                     <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
                     <router-link class="isansFont--faNum comments"
-                                 :to="'/consultants/' + consultant.slug + '?as=comments'">{{consultant.comment_number}}
+                                 :to="'/consultants/' + consultant.slug">{{consultant.comment_number}}
                         نظر ثبت شده
                     </router-link>
                 </div>

@@ -39,6 +39,6 @@
 
     .page-header {
         height: 100vh;
-        background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg');
+        background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg');
     }
 </style>

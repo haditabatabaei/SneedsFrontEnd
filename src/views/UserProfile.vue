@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-filter header-small" data-parallax="false"
-             style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+             style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -57,9 +57,11 @@
                         </div>
                         <div class="tab-pane" v-bind:class="{active: activeCommentsSection}" id="commentSection">
                             <div class="row">
-                                <p v-if="comments.length === 0" class="isansFont text-center">نظری برای نمایش وجود ندارد.</p>
+                                <p v-if="comments.length === 0" class="isansFont text-center">نظری برای نمایش وجود
+                                    ندارد.</p>
                                 <div class="col-md-8 col-md-offset-2" v-for="comment in comments">
-                                    <CommentBlock :config="{'showEdit':false,'showRemove':true}" :comment="comment" @update-comments="getAccountComments()"></CommentBlock>
+                                    <CommentBlock :config="{'showEdit':false,'showRemove':true}" :comment="comment"
+                                                  @update-comments="getAccountComments()"></CommentBlock>
                                 </div>
                             </div>
                         </div>
@@ -89,10 +91,6 @@
                 activeChangeSection: true,
                 activeChangePassSection: false,
                 activeCommentsSection: false,
-
-                changePassLoading: false,
-                changePassFailed: false,
-                changePassSuccess: false,
 
                 inputNewPassword: '',
                 confirmInputNewPassword: '',
@@ -127,19 +125,38 @@
         mounted() {
             scrollTo(0, 0);
         }, created() {
-            let promise = this.$store.dispatch('getUserKey');
-            promise.then(() => {
-                let promise = this.$store.dispatch('getUserWithKey', this.$store.getters.getUserInfo.user_pk)
-                promise.then(() => {
+            this.$loading(true);
+            this.$store.dispatch('getUserKey').then(() => {
+                this.$store.dispatch('getUserWithKey', this.$store.getters.getUserInfo.user_pk).then(() => {
                     let commentPromise = this.getAccountComments();
                     commentPromise.then(response => {
                     }).catch(error => {
                         console.log(error.response);
+                        this.$notify({
+                            group: 'notif',
+                            type: "error",
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                            duration: 3000
+                        })
+                    }).finally(() => {
+                        this.$loading(false);
                     })
                 }).catch(() => {
-
+                    this.$notify({
+                        group: 'notif',
+                        type: "error",
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                        duration: 3000
+                    })
+                }).finally(() => {this.$loading(false)})
+            }).catch(error => {
+                this.$notify({
+                    group: 'notif',
+                    type: "error",
+                    text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                    duration: 3000
                 })
-            });
+            }).finally(() => {this.$loading(false)});
         },
     }
 </script>

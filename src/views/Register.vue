@@ -1,6 +1,6 @@
 <template>
     <div class="page-header"
-         style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
+         style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
@@ -11,20 +11,7 @@
                                 حساب کاربری دارید؟ برای ورود کلیک کنید
                             </router-link>
                         </h6>
-                        <div class="row">
-                            <div class="col-md-12">
 
-                                <RectNotifBlock :message="registerLoading.message" type="warning" borderRound="true"
-                                                v-if="registerLoading.value"></RectNotifBlock>
-
-                                <RectNotifBlock :message="registerSuccess.message" type="success" borderRound="true"
-                                                v-else-if="registerSuccess.value"></RectNotifBlock>
-
-                                <RectNotifBlock :message="registerFailed.message" type="danger" borderRound="true"
-                                                v-else-if="registerFailed.value"></RectNotifBlock>
-
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-sm-12">
                                 <form class="form" @submit.prevent="register()">
@@ -166,7 +153,8 @@
                                             <div class="col-sm-6">
                                                 <div class="filterCheckWrapper isansFont--faNum">
                                                     <label>
-                                                        <input type="checkbox" name="optionsCheckboxes" v-model="$v.applyWithRules.$model">
+                                                        <input type="checkbox" name="optionsCheckboxes"
+                                                               v-model="$v.applyWithRules.$model">
                                                         با
                                                         <router-link to="/services/terms" class="isansFont text-info">
                                                             قوانین و
@@ -182,7 +170,8 @@
                                             </div>
 
                                             <div class="col-sm-6 text-center">
-                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام" :disabled="$v.userToRegister.$anyError || $v.applyWithRules.$error || !$v.applyWithRules.$dirty || !$v.userToRegister.$anyDirty">
+                                                <input type="submit" class="btn btn-rose isansFont" value="ثبت نام"
+                                                       :disabled="$v.userToRegister.$anyError || $v.applyWithRules.$error || !$v.applyWithRules.$dirty || !$v.userToRegister.$anyDirty">
                                             </div>
                                         </div>
                                     </div>
@@ -239,21 +228,6 @@
 
                 applyWithRules: false,
 
-                registerSuccess: {
-                    value: false,
-                    message: 'ثبت نام شما با موفقیت انجام شد،چند لحظه صبر کنید...'
-                },
-
-                registerLoading: {
-                    value: false,
-                    message:
-                        'در حال ثبت نام، چند لحظه صبر کنید...'
-                },
-
-                registerFailed: {
-                    value: false,
-                    message: 'مشکلی در ثبت نام رخ داد...'
-                },
             }
         },
         components: {RectNotifBlock},
@@ -266,64 +240,48 @@
                     this.passType = 'password'
                 }
             },
-
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.registerLoading.value = false;
-                this.registerFailed.value = false;
-                this.registerSuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.registerLoading.value = true;
-                this.registerFailed.value = false;
-                this.registerSuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.registerLoading.value = false;
-                this.registerFailed.value = true;
-                this.registerSuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.registerLoading.value = false;
-                this.registerFailed.value = false;
-                this.registerSuccess.value = true;
-            },
-
             register: function () {
                 window.console.log('register pressed');
 
-                //loading logic updated
-                this.startLoadingLogic();
+                this.$loading(true);
 
                 window.console.log('user input data : ', this.userToRegister);
                 window.console.log('apply With rules : ', this.applyWithRules);
 
                 if (!(this.$v.userToRegister.$anyError || this.$v.applyWithRules.$error || !this.$v.applyWithRules.$dirty || !this.$v.userToRegister.$anyDirty)) {
                     window.console.log("dispatching register with payload");
-                    let registerPromise = this.$store.dispatch('register', this.userToRegister);
-
-                    registerPromise.then((response) => {
+                    this.$store.dispatch('register', this.userToRegister).then((response) => {
                         console.log(response);
-                        this.resetLoadingLogic();
+                        this.$loading(false);
+                        this.$notify({
+                            group: 'notif',
+                            duration: 3000,
+                            type: 'success',
+                            title : 'ثبت نام : موفق',
+                            text: 'شما با موفقیت ثبت نام کردید ، به پروفایل خود منتقل خواهید شد.'
+                        });
                         this.$router.push('/user/profile');
                     }).catch((err) => {
                         console.log(err);
                         console.log(err.response);
-                        this.registerFailed.message = 'خطایی در ارتباط با سرور رخ داد.' + ' ' + err.response.data.email[0];
-                        this.failedLoadingLogic();
+                        this.$loading(false);
+                        this.$notify({
+                            group: 'notif',
+                            duration: 3000,
+                            type: 'error',
+                            title : 'ثبت نام : خطا',
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد.'
+                        });
                     })
                 } else {
-                    this.registerFailed.message = 'لطفا اطلاعات خود را به درستی پر کنید...';
-                    this.failedLoadingLogic();
+                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        duration: 3000,
+                        type: 'warn',
+                        title : 'ثبت نام : اخطار',
+                        text: 'لطفا اطلاعات خود را به درستی پر کنید..'
+                    });
                 }
             }
         },
@@ -400,8 +358,8 @@
         margin-bottom: 20px;
     }
 
-    .englishInput{
-        direction:ltr !important;
-        text-align:right !important;
+    .englishInput {
+        direction: ltr !important;
+        text-align: right !important;
     }
 </style>

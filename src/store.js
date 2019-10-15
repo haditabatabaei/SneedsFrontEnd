@@ -22,11 +22,13 @@ export default new Vuex.Store({
 
         user: {},
 
-        api: 'http://193.176.241.131:8000/',
+        api: 'http://195.248.243.68:9000/',
 
-        authApi: 'http://193.176.241.131:8000/',
+        authApi: 'http://195.248.243.68:9000/',
 
         cart: null,
+
+        stash: [],
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
@@ -51,7 +53,6 @@ export default new Vuex.Store({
         setInputUser(state, inputUser) {
             state.inputUser = inputUser;
         },
-
         setToken(state, newToken) {
             state.token = newToken;
             localStorage.setItem('token', newToken);
@@ -79,6 +80,20 @@ export default new Vuex.Store({
 
         setCart(state, cart) {
             state.cart = cart;
+        },
+
+        setStash(state, newStash) {
+            state.stash = newStash;
+        },
+
+        addItemToStash(state, newItem) {
+            state.stash.push(newItem);
+        },
+
+        removeItemFromStash(state, itemToRemoved) {
+            state.stash = state.stash.filter(function (val) {
+                return val.datestart != itemToRemoved.datestart && val.dateend != itemToRemoved.dateend;
+            })
         }
     },
     actions: {
@@ -292,5 +307,7 @@ export default new Vuex.Store({
 
         getAuthApi:
             state => state.authApi,
+
+        getStash: state => state.stash,
     }
 })

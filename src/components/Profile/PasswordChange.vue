@@ -5,14 +5,6 @@
                 پنل تغییر رمز عبور فعلی شما
             </h4>
             <hr>
-            <RectNotifBlock :message="editLoading.message" type="warning" borderRound="true"
-                            v-if="editLoading.value"></RectNotifBlock>
-
-            <RectNotifBlock :message="editSuccess.message" type="success" borderRound="true"
-                            v-else-if="editSuccess.value"></RectNotifBlock>
-
-            <RectNotifBlock :message="editFailed.message" type="danger" borderRound="true"
-                            v-else-if="editFailed.value"></RectNotifBlock>
 
             <div class="card card-contact">
                 <form action="" id="changepass-form" method="post"
@@ -64,7 +56,8 @@
                         <div class="row mt-10">
                             <div class="col-md-6"></div>
                             <div class="col-md-6">
-                                <input type="submit" value="تغییر رمز عبور" class="btn btn-success isansFont pull-left" :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
+                                <input type="submit" value="تغییر رمز عبور" class="btn btn-success isansFont pull-left"
+                                       :disabled="$v.inputUser.$anyError || !$v.inputUser.$anyDirty">
                             </div>
                         </div>
                     </div>
@@ -76,7 +69,7 @@
 
 <script>
     import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
-    import {required, sameAs, minLength } from 'vuelidate/lib/validators'
+    import {required, sameAs, minLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "PasswordChange",
@@ -86,7 +79,7 @@
         validations: {
             inputUser: {
                 password: {required, minLength: minLength(6)},
-                password2 : {required, sameAs : sameAs('password')},
+                password2: {required, sameAs: sameAs('password')},
             },
         },
         data() {
@@ -130,66 +123,50 @@
                 }
             },
 
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.editLoading.value = false;
-                this.editFailed.value = false;
-                this.editSuccess.value = false;
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.editLoading.value = true;
-                this.editFailed.value = false;
-                this.editSuccess.value = false;
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.editLoading.value = false;
-                this.editFailed.value = true;
-                this.editSuccess.value = false;
-            },
-
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.editLoading.value = false;
-                this.editFailed.value = false;
-                this.editSuccess.value = true;
-            },
-
             edit: function () {
                 window.console.log('edit pressed');
 
-                //loading logic updated
-                this.startLoadingLogic();
-
+                this.$loading(true);
                 window.console.log('user input data : ', this.inputUser);
-                // window.console.log('apply With rules : ', this.applyWithRules);
 
                 if (!(this.$v.inputUser.$anyError || !this.$v.inputUser.$anyDirty)) {
                     window.console.log("dispatching edit with payload");
 
                     delete this.inputUser.email;
 
-                    let editPromise = this.$store.dispatch('edit', this.inputUser);
-
-                    editPromise.then((response) => {
-                        this.successLoadingLogic();
+                    this.$store.dispatch('edit', this.inputUser).then((response) => {
                         console.log(response);
-                        setTimeout(() => {
-                            this.resetLoadingLogic();
-                            this.$store.dispatch('logout');
-                            this.$router.push('/login');
-                        }, 2000)
+                        this.$store.dispatch('logout');
+                        this.$notify({
+                            group: 'notif',
+                            duration: 4000,
+                            type: 'success',
+                            title: 'ویرایش رمز عبور : موفق',
+                            text: 'رمز عبور شما با موفقیت تغییر کرد، به صفحه ورود فرستاده می شوید.'
+                        });
+                        this.$router.push('/login');
                     }).catch((err) => {
                         console.log(err);
-                        this.editFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
-                        this.failedLoadingLogic();
+                        this.$notify({
+                            group: 'notif',
+                            duration: 3000,
+                            type: 'error',
+                            title: 'ویرایش رمز عبور : خطا',
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد.'
+                        });
+
+                    }).finally(() => {
+                        this.$loading(false)
                     })
                 } else {
-                    this.editFailed.message = 'لطفا اطلاعات خود را به درستی پر کنید...';
-                    this.failedLoadingLogic();
+                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        duration: 3000,
+                        type: 'warn',
+                        title: 'ویرایش رمز عبور : اخطار',
+                        text: 'لطفا اطلاعات خود را به درستی پر کنید.'
+                    });
                 }
             },
         }

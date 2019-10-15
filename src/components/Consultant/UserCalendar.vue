@@ -1,13 +1,16 @@
 <template>
-    <div v-if="consultantId" class="col-md-12 text-center">
-        <button class="btn btn-simple btn-week isansFont" @click.prevent="showPrevWeek()">
-            <i class="fas fa-chevron-circle-right"></i>
-            هفته قبلی
-        </button>
-        <button class="btn btn-simple btn-week isansFont" @click.prevent="showNextWeek()">
-            هفته بعدی
-            <i class="fas fa-chevron-circle-left"></i>
-        </button>
+    <div v-if="consultantId" class="userCalendarWrapper">
+        <div class="userCalendarWeekWrapper isansFont--faNum">
+            <button @click.prevent="showPrevWeek()">
+                <i class="material-icons">keyboard_arrow_right</i>
+                هفته قبلی
+            </button>
+            <button @click.prevent="showNextWeek()">
+                هفته بعدی
+                <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+        </div>
+
         <div class="calendarTopWrapper">
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
@@ -23,7 +26,6 @@
                     <p>{{day.format('dddd')}}</p>
                     <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
                 </div>
-                <div class="myTableCell">روز / ساعت</div>
             </div>
             <div v-for="index in 16" :key="index" class="myTableRow">
                 <div class="myTableCell firstCellInRow">
@@ -39,8 +41,8 @@
                             v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
                             @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())"
                             :class="[
-                            {'timeOpen' : !isDatePresentOnSelectedList(selectedDates, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
-                            {'timeSelected' : isDatePresentOnSelectedList(selectedDates, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
+                            {'timeOpen' : !isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
+                            {'timeSelected' : isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
                             ]"
                     ></div>
 
@@ -49,57 +51,6 @@
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
                 </div>
-<!--                <div class="myTableCell lastCellInRow">-->
-<!--                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}-->
-<!--                </div>-->
-            </div>
-        </div>
-
-        <div class="selectedDateBox">
-            <div class="selectedDateBlockHeader">
-                <p class="isansFont">
-                    جلسات انتخاب شده :
-                    <span v-if="selectedDates.length == 0">(جلسه ای انتخاب نشده است.)</span>
-                </p>
-            </div>
-            <div class="selectedDateBlockContent">
-                <div class="selectedDateBlock" v-for="selectedDate in selectedDates">
-                    <button class="btn btn-just-icon btn-simple" @click="removeElementFromSelectedDates({
-                        'datestart': selectedDate.datestart,
-                        'dateend': selectedDate.dateend
-                    })">
-                        <i class="material-icons">close</i>
-                    </button>
-                    <p class="isansFont">
-                        {{getJalali(selectedDate.datestart).locale('fa').format('dddd DD MMMM')}}
-                        <br>
-                        ساعت :
-                        {{getJalali(selectedDate.datestart).locale('fa').format('HH:mm') + " تا " + getJalali(selectedDate.dateend).locale('fa').format('HH:mm')}}
-                    </p>
-                </div>
-            </div>
-            <div class="selectedDateBlockFooter isansFont">
-                <p>تخفیفات : </p>
-                <p v-for="discount in listOfDiscounts">
-                    {{discount.number}}
-                    جلسه :
-                    <mark> {{discount.discount}} درصد</mark>
-
-                </p>
-                <button class="btn btn-sm btn-rose isansFont" @click="addSelectedTimesToCart()"
-                        v-if="isLoggedIn" :disabled="selectedDates.length == 0">
-                    <i class="material-icons" v-if="reserveSuccess.value">done</i>
-                    <img src="http://193.176.241.131/sneedsAssets/img/loading.svg" alt="loading icon"
-                         class="loadingIcon"
-                         v-if="reserveLoading.value">
-                    <i class="material-icons" v-if="reserveFailed.value">block</i>
-                    <i class="material-icons">add_shopping_cart</i>
-                    افزودن زمان های انتخاب شده به سبد خرید
-                </button>
-                <router-link to="/login" class="btn btn-sm btn-warning isansFont"
-                             v-else>
-                    برای رزرو جلسات باید وارد حساب خود شوید. برای ورود کلیک کنید
-                </router-link>
             </div>
         </div>
     </div>
@@ -125,7 +76,6 @@
                 slots: [],
                 days: [],
                 selectedDates: [],
-                listOfDiscounts: [],
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [],
@@ -175,18 +125,16 @@
                 return jalali(date);
             },
             initComp: function () {
-                this.startLoadingLogic();
+                // this.startLoadingLogic();
+                this.$loading(true);
                 this.getListOfTimesById(this.consultantId).then(timeRes => {
                     window.console.log('slot times:', timeRes.data);
                     this.slots = timeRes.data;
-                    this.getListOfNumberDiscounts().then(discountRes => {
-                        this.listOfDiscounts = discountRes;
-                    }).catch(error => {
-
-                    });
+                    this.$emit('get-slots', this.slots);
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
-                    this.resetLoadingLogic();
+                    // this.resetLoadingLogic();
+                    this.$loading(false);
                 }).catch(timesErr => {
                     console.log(timesErr)
                     if (timesErr.response)
@@ -254,26 +202,6 @@
 
             },
 
-            getListOfNumberDiscounts: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'discount/time-slot-sale-number-discounts/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        console.log('number response : ', response.data);
-                        resolve(response.data)
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response)
-                            console.log(error.response);
-                        reject(error);
-                    })
-                })
-            },
-
             sendAddTimesRequest(timePayload) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -304,19 +232,13 @@
 
             itemClickHandler(datestart, dateend) {
                 //check see if this time is not added to the list
-                if (!this.isDatePresentOnSelectedList(this.selectedDates, datestart, dateend)) {
-                    this.selectedDates.push({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
+                if (!this.isDatePresentOnSelectedList(this.$store.getters.getStash, datestart, dateend)) {
+                    this.$store.commit('addItemToStash', {'datestart': datestart, 'dateend': dateend})
                 }// else means that element is present in the list, so we will remove it from the list
                 else {
-                    this.removeElementFromSelectedDates({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
+                    this.$store.commit('removeItemFromStash', {'datestart': datestart, 'dateend': dateend});
                 }
-                console.log(this.selectedDates);
+                console.log(this.$store.getters.getStash);
             },
 
             isDatePresentOnSelectedList(listToCheck, datestart, dateend) {
@@ -631,12 +553,6 @@
                 console.log(this.tableDataArray);
             },
 
-            removeElementFromSelectedDates(value) {
-                this.selectedDates = this.selectedDates.filter(function (val) {
-                    return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
-                })
-            },
-
             isInConsultantTime(cellStartDate, cellEndDate) {
                 for (let i = 0; i < this.slots.length; i++) {
                     if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'second') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'second')) {
@@ -651,6 +567,51 @@
 </script>
 
 <style scoped>
+
+    .userCalendarWrapper {
+        width: 100%;
+        background-color: white;
+        border: 1.5px solid #ccc;
+        min-height: 300px;
+
+        border-radius: 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .userCalendarWeekWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .userCalendarWeekWrapper button {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        background-color: #f3f3f3;
+        border-radius: 10px;
+        border: none;
+        padding: 5px 15px;
+        font-size: 13px;
+
+        color: #666;
+    }
+
+    .userCalendarWeekWrapper button:hover {
+        background-color: #e1e1e1;
+    }
+
+    .userCalendarWeekWrapper button:first-child {
+        margin-left: 10px;
+    }
 
     .selectedDateBox {
         width: 100%;
@@ -741,6 +702,7 @@
         justify-content: space-evenly;
         align-items: center;
         margin-bottom: 20px;
+        margin-top: 20px;
         position: sticky;
         top: 70px;
         background-color: white;
@@ -754,6 +716,7 @@
         align-items: center;
         font-size: 12px;
         font-weight: bold;
+        width: 100%;
     }
 
     .myTableRow {
@@ -761,6 +724,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        min-height: 50px;
         width: 100%;
     }
 
@@ -768,22 +732,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 5px;
-        margin-right: 5px;
     }
 
     .myTableRow > div {
         width: calc(100% / 8);
         min-height: 50px;
-    }
-
-    .firstRow .myTableCell {
-        margin-right: 8px;
-    }
-
-    .myTableRow {
-        min-height: 50px;
-        background-color: #eee;
     }
 
     .myTableCell, .myTableLargerCell div {

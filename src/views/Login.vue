@@ -1,6 +1,6 @@
 <template>
     <div class="page-header"
-         style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
+         style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -19,16 +19,8 @@
                                 </div>
                             </div>
                             <div class="card-content">
-                                <RectNotifBlock :message="loginLoading.message" type="warning" borderRound="true"
-                                                v-if="loginLoading.value"></RectNotifBlock>
 
-                                <RectNotifBlock :message="loginSuccess.message" type="success" borderRound="true"
-                                                v-else-if="loginSuccess.value"></RectNotifBlock>
-
-                                <RectNotifBlock :message="loginFailed.message" type="danger" borderRound="true"
-                                                v-else-if="loginFailed.value"></RectNotifBlock>
-
-                                <div v-if="!loginSuccess.value" class="input-group">
+                                <div class="input-group">
                   <span class="input-group-addon">
                     <i class="material-icons">email</i>
                   </span>
@@ -46,8 +38,7 @@
                                     </div>
                                 </div>
 
-                                <div v-if="!loginSuccess.value"
-                                     class="input-group d-flex flex-row justify-content-between">
+                                <div class="input-group d-flex flex-row justify-content-between">
 									<span class="input-group-addon">
 										<i class="material-icons">lock_outline</i>
                                     </span>
@@ -79,7 +70,7 @@
 
                                 </div>
 
-                                <div v-if="!loginSuccess.value" class="row">
+                                <div class="row">
 
                                     <div class="col-sm-6 text-center">
                                         <input type="submit" class="btn btn-rose isansFont" value="ورود"
@@ -104,16 +95,8 @@
                                 <div class="social-line mt-0 mb-10"></div>
                             </div>
                             <div class="card-content">
-                                <RectNotifBlock :message="loginLoading.message" type="warning" borderRound="true"
-                                                v-if="loginLoading.value"></RectNotifBlock>
 
-                                <RectNotifBlock :message="loginSuccess.message" type="success" borderRound="true"
-                                                v-else-if="loginSuccess.value"></RectNotifBlock>
-
-                                <RectNotifBlock :message="loginFailed.message" type="danger" borderRound="true"
-                                                v-else-if="loginFailed.value"></RectNotifBlock>
-
-                                <div v-if="!loginSuccess.value" class="input-group">
+                                <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="material-icons">email</i>
                                     </span>
@@ -132,10 +115,10 @@
                                 </div>
 
                                 <div class="row">
-                                    <div v-if="!loginSuccess.value" class="col-sm-6 text-center">
+                                    <di class="col-sm-6 text-center">
                                             <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی"
                                                    :disabled="$v.userToLogin.email.$error || !$v.userToLogin.email.$dirty">
-                                    </div>
+                                    </di>
                                     <div class="col-sm-6 text-center">
                                         <button @click.prevent="toggleResetPassword()"
                                                 class="forgetPassButton btn btn-rose isansFont btn-simple btn-sm">
@@ -188,22 +171,6 @@
                 },
 
                 loginOrReset: true,
-
-                loginSuccess: {
-                    value: false,
-                    message: 'با موفقیت وارد شدید،چند لحظه صبر کنید...'
-                },
-
-                loginLoading: {
-                    value: false,
-                    message:
-                        'در حال ورود، چند لحظه صبر کنید...'
-                },
-
-                loginFailed: {
-                    value: false,
-                    message: 'مشکلی در ورود رخ داد...'
-                },
             }
         },
         components: {RectNotifBlock},
@@ -217,57 +184,28 @@
 
             resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = false;
-                this.loginSuccess.message = 'با موفقیت وارد شدید،چند لحظه صبر کنید...'
-                this.loginFailed.message = 'مشکلی در ورود رخ داد...'
-                this.loginLoading.message = 'در حال ورود، چند لحظه صبر کنید...'
                 scrollTo(0, 0);
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.loginLoading.value = true;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = true;
-                this.loginSuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.loginLoading.value = false;
-                this.loginFailed.value = false;
-                this.loginSuccess.value = true;
             },
 
 
             login: function () {
                 window.console.log('login pressed');
 
-                //loading logic updated
-                this.startLoadingLogic();
+                this.$loading(true);
                 window.console.log('user input data : ', this.userToLogin);
                 if (!this.$v.userToLogin.$anyError) {
                     window.console.log("dispatching login with payload");
-                    let loginPromise = this.$store.dispatch('login', this.userToLogin);
-
-                    loginPromise.then((response) => {
+                    this.$store.dispatch('login', this.userToLogin).then((response) => {
                         console.log(response);
-
-                        let userInfoPromise = this.$store.dispatch('getUserKey');
-
-                        userInfoPromise.then((infoResponse) => {
+                        this.$store.dispatch('getUserKey').then((infoResponse) => {
                             console.log(infoResponse);
-                            this.resetLoadingLogic();
+                            this.$notify({
+                                group: 'notif',
+                                duration: 3000,
+                                type: 'success',
+                                title : 'ورود : موفق',
+                                text: 'شما با موفقیت وارد شدید.'
+                            });
                             this.$router.push('/user/profile');
                         }).catch((infoError) => {
                             console.log(infoError);
@@ -278,8 +216,16 @@
                                 this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
                             }
 
-                            this.failedLoadingLogic();
-                        });
+
+                            this.$notify({
+                                group : 'notif',
+                                duration: 3000,
+                                type : 'error',
+                                title: 'ورود : خطا',
+                                text : 'خطایی در ارتباط با سرور رخ داد.' + infoError.response.data.detail
+                            });
+
+                        }).finally(() => {this.$loading(false);});
 
                     }).catch((err) => {
                         console.log(err);
@@ -289,12 +235,24 @@
                             this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
                         }
                         console.log(err.response);
-
-                        this.failedLoadingLogic();
+                        this.$notify({
+                            group : 'notif',
+                            duration: 3000,
+                            type : 'error',
+                            title: 'ورود : خطا',
+                            text : 'خطایی در ارتباط با سرور رخ داد.' + err.response.data.detail
+                        });
+                        this.$loading(false);
                     })
                 } else {
-                    this.loginFailed.message = 'لطفا اطلاعات خود را به درستی پر کنید...';
-                    this.failedLoadingLogic();
+                    this.$loading(false);
+                    this.$notify({
+                        group : 'notif',
+                        duration: 3000,
+                        type : 'warn',
+                        title : 'ورود : اخطار',
+                        text : 'لطفا اطلاعات خود را به درستی پر کنید..'
+                    });
                 }
             },
 
@@ -313,11 +271,8 @@
             },
 
             resetPassword: function () {
-                this.resetLoadingLogic();
-                this.loginLoading.message = 'چند لحظه صبر کنید...'
-                this.startLoadingLogic();
+                this.$loading(true);
                 if (!this.$v.userToLogin.email.$error) {
-
                     let payload = {
                         "email": this.userToLogin.email,
                     };
@@ -326,21 +281,35 @@
                     this.sendResetPassRequest(payload).then(response => {
                         console.log(response);
                         this.loginSuccess.message = 'ایمیل فراموشی رمز برای شما ارسال شد. لطفا ایمیل خود را چک کنید'
-                        this.successLoadingLogic();
+                        this.$notify({
+                            group : 'notif',
+                            duration: 5000,
+                            type : 'success',
+                            title : 'بازیابی رمز عبور : موفق',
+                            text : 'تا لحظات آینده یک ایمیل حاوی مراحل دریافت رمز جدید برایتان ارسال می شود. لطفا پوشه اسپم را نیز چک کنید.'
+                        });
                     }).catch(error => {
-                        this.failedLoadingLogic();
                         console.log(error);
-                        this.loginFailed.message = 'خطایی رخ داد'
-                        if (error.response) {
-                            console.log(error.response);
-                            this.loginFailed.message += error.response.data
-                        }
-                    });
+
+                        this.$notify({
+                            group : 'notif',
+                            duration: 3000,
+                            type : 'error',
+                            title : 'بازیابی رمز عبور : خطا',
+                            text : 'خطایی هنگام ارتباط با سرور رخ داد'
+                        });
+
+                    }).finally(() => {this.$loading(false)});
 
                 } else {
-                    this.failedLoadingLogic();
-                    this.inputForgetEmailError = true;
-                    this.loginFailed.message = 'لطفا یک ایمیل معتبر وارد کنید'
+                    this.$loading(false);
+                    this.$notify({
+                        group : 'notif',
+                        duration: 3000,
+                        type : 'warn',
+                        title : 'بازیابی رمز عبور : اخطار',
+                        text : 'لطفا اطلاعات خود را به درستی پر کنید.'
+                    });
                 }
             },
             sendResetPassRequest: function (payload) {

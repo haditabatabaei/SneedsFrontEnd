@@ -3,19 +3,7 @@
         <div class="main">
             <div class="section">
                 <div class="container">
-                    <div class="row groupRow">
-                        <div class="col-md-12 text-center">
-                            <ul class="nav nav-pills nav-pills-white fieldList isansFont">
-                                <li class="active"><a href="#" data-toggle="tab" aria-expanded="false">گروه مهندسی</a>
-                                </li>
-                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه تجربی</a></li>
-                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه انسانی</a>
-                                <li><a href="#" data-toggle="tab" aria-expanded="false">گروه هنر</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row" style="margin-top:30px;">
                         <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering" :class="[]">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group filterPanel" id="filterPanel" role="tablist"
@@ -107,12 +95,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
-                                            v-if="fetchLoading.value"></RectNotifBlock>
-                            <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
-                                            v-else-if="fetchSuccess.value"></RectNotifBlock>
-                            <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
-                                            v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
                         <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-else>
                             <div class="bottomFilterColumnTitle" @click="toggleFilterPanel()">
@@ -232,12 +214,6 @@
                                     </div>
                                 </div>
                             </transition>
-                            <RectNotifBlock :message="fetchLoading.message" type="warning" borderRound="true"
-                                            v-if="fetchLoading.value"></RectNotifBlock>
-                            <RectNotifBlock :message="fetchSuccess.message" type="success" borderRound="true"
-                                            v-else-if="fetchSuccess.value"></RectNotifBlock>
-                            <RectNotifBlock :message="fetchFailed.message" type="danger" borderRound="true"
-                                            v-else-if="fetchFailed.value"></RectNotifBlock>
                         </div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row consultantListRow">
@@ -274,20 +250,6 @@
                 universitiesList: [],
                 fieldOfStudiesList: [],
 
-                fetchSuccess: {
-                    value: false,
-                    message: 'اطلاعات شما با موفقیت ویرایش شد،چند لحظه صبر کنید...'
-                },
-
-                fetchLoading: {
-                    value: false,
-                    message: 'چند لحظه صبر کنید...'
-                },
-
-                fetchFailed: {
-                    value: false,
-                    message: 'مشکلی در دریافت اطلاعات رخ داد...'
-                },
                 tempScroll: window.scrollY,
             }
         },
@@ -305,53 +267,63 @@
             },
         },
         created() {
-            this.resetLoadingLogic();
-            this.startLoadingLogic();
 
-            let listPromise = this.getListOfConsultants();
-            listPromise.then(response => {
+            this.$loading(true);
+
+            this.getListOfConsultants().then(response => {
                 window.console.log(response);
-                let countriesPromise = this.getListOfCountries();
-
-                countriesPromise.then(countriesRes => {
+                this.getListOfCountries().then(countriesRes => {
                     window.console.log(countriesRes);
-                    let universityPromise = this.getListOfUniversities();
-
-                    universityPromise.then(uniResponse => {
+                    this.getListOfUniversities().then(uniResponse => {
                         window.console.log(uniResponse);
-                        let fieldPromise = this.getListOfFields();
-
-
-                        fieldPromise.then(fieldResponse => {
+                        this.getListOfFields().then(fieldResponse => {
 
                             this.consultantList = response;
                             this.countriesList = countriesRes;
                             this.universitiesList = uniResponse;
                             this.fieldOfStudiesList = fieldResponse;
 
-                            this.resetLoadingLogic();
-
-
                         }).catch(fieldErr => {
-                            this.failedLoadingLogic();
-                            this.fetchFailed.message = (fieldErr.response);
+
+                            this.$notify({
+                                group: 'notif',
+                                type: "error",
+                                text: fieldErr.response,
+                                duration: 3000
+                            })
+                        }).finally(() => {
+                            this.$loading(false);
                         })
 
 
                     }).catch(uniError => {
-                        this.failedLoadingLogic();
-                        this.fetchFailed.message = (uniError.response);
+                        this.$loading(false);
+                        this.$notify({
+                            group: 'notif',
+                            type: "error",
+                            text: uniError.response,
+                            duration: 3000
+                        })
                     });
 
                 }).catch(countriesErr => {
-                    this.failedLoadingLogic();
-                    this.fetchFailed.message = (countriesErr.response);
+                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        type: "error",
+                        text: countriesErr.response,
+                        duration: 3000
+                    })
                 })
             }).catch(err => {
-                this.failedLoadingLogic();
-                if (err.response) {
-                    this.fetchFailed.message = err.response;
-                }
+                this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        type: "error",
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                        duration: 3000
+                    })
+                // }
             })
         },
         methods: {
@@ -379,17 +351,22 @@
             },
 
             doFilter(toggleIndicator) {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
-                console.log(this.generateQueryParameters());
-                let promise = this.sendUpdateRequestFilter(this.generateQueryParameters());
 
-                promise.then(newList => {
+                this.$loading(true);
+                console.log(this.generateQueryParameters());
+                this.sendUpdateRequestFilter(this.generateQueryParameters()).then(newList => {
                     this.resetLoadingLogic();
+                    this.$loading(false);
                     this.consultantList = newList;
-                    if (this.consultantList.length == 0) {
-                        this.failedLoadingLogic();
-                        this.fetchFailed.message = 'مشاوری با این اطلاعات یافت نشد.'
+                    if (this.consultantList.length === 0) {
+                        this.$notify({
+                            type: "warn",
+                            group: 'notif',
+                            title: 'اخطار',
+                            text: 'متاسفانه مشاوری با این اطلاعات یافت نشد',
+                            duration: 3000
+                        });
+                        // this.fetchFailed.message = 'مشاوری با این اطلاعات یافت نشد.'
                     }
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
@@ -401,7 +378,6 @@
             },
 
             sendUpdateRequestFilter: function (query) {
-
                 return new Promise((resolve, reject) => {
                     axios({
                         url: this.$store.getters.getApi + 'account/consultant-profiles/?' + query,
@@ -418,8 +394,6 @@
             },
 
             resetFilter: function (toggleIndicator) {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
 
                 this.addSelectPropertyToList(this.countriesList);
                 this.addSelectPropertyToList(this.universitiesList);
@@ -441,26 +415,6 @@
                 for (let i = 0; i < list.length; i++) {
                     list[i].select = false;
                 }
-            },
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.fetchLoading.value = false;
-                this.fetchFailed.value = false;
-                this.fetchSuccess.value = false;
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.fetchLoading.value = true;
-                this.fetchFailed.value = false;
-                this.fetchSuccess.value = false;
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.fetchLoading.value = false;
-                this.fetchFailed.value = true;
-                this.fetchSuccess.value = false;
             },
             getListOfConsultants: function () {
                 return new Promise((resolve, reject) => {
@@ -544,6 +498,7 @@
 
     .section {
         background-color: #eeeeee;
+        min-height: 100vh;
     }
 
     .filterCheckWrapper {
@@ -565,7 +520,7 @@
 
     .page-header {
         min-height: 100vh;
-        background-image: url('http://193.176.241.131/sneedsAssets/img/consultantsBg.jpg');
+        background-image: url('http://195.248.243.68/sneedsAssets/img/consultantsBg.jpg');
         background-size: cover;
     }
 
@@ -593,6 +548,11 @@
         background-color: white;
         border-radius: 10px;
         padding: 10px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .filterColumn:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
     .filterColumn > h3 {

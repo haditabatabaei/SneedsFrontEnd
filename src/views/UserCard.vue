@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-filter header-small" data-parallax="true"
-             style="background-image: url('http://193.176.241.131/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+             style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -27,30 +27,6 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <RectNotifBlock
-                                            :message="cartsLoading.message"
-                                            type="warning"
-                                            borderRound="true"
-                                            v-if="cartsLoading.value">
-                                    </RectNotifBlock>
-
-                                    <RectNotifBlock
-                                            :message="cartsSuccess.message"
-                                            type="success"
-                                            borderRound="true"
-                                            v-else-if="cartsSuccess.value">
-                                    </RectNotifBlock>
-
-                                    <RectNotifBlock
-                                            :message="cartsFailed.message"
-                                            type="danger"
-                                            borderRound="true"
-                                            v-else-if="cartsFailed.value">
-                                    </RectNotifBlock>
-                                </div>
-                            </div>
                             <div class="row" style="margin-bottom:30px;">
                                 <div class="col-md-9 cardsWrapper" v-if="activeCart">
                                     <div class="row">
@@ -67,7 +43,7 @@
                                                 <div class="cardConsultantBlock--info">
                                                     <h4 class="isansFont font-weight-bold">
                                                         <router-link
-                                                            :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
+                                                                :to="'/consultants/' + getConsultantSlugFromUrl(slotDetail.consultant.url)">
                                                             مشاور :
                                                             {{slotDetail.consultant.first_name + ' ' +
                                                             slotDetail.consultant.last_name}}
@@ -170,21 +146,6 @@
         },
         data: function () {
             return {
-                cartsSuccess: {
-                    value: false,
-                    message: 'عملیات موفق آمیز بود'
-                },
-
-                cartsLoading: {
-                    value: false,
-                    message:
-                        'چند لحظه صبر کنید...'
-                },
-
-                cartsFailed: {
-                    value: false,
-                    message: 'مشکلی رخ داد...'
-                },
 
                 discount: {
                     messages: [],
@@ -203,45 +164,30 @@
         methods: {
 
             init: function () {
-                this.startCartsLogic();
+                this.$loading(true);
                 this.$store.dispatch('getCart').then(res => {
                     this.getAllDiscounts().then(disRes => {
                         this.appliedCodes = disRes.data;
-                        this.resetCartsLogic();
                     }).catch(disErr => {
-                        this.failedCartsLogic();
+                        this.$notify({
+                            type: "error",
+                            group: 'notif',
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                            duration: 3000
+                        })
+                    }).finally(() => {
+                        this.$loading(false);
                     })
                 }).catch(err => {
-                    this.failedCartsLogic();
+                    // this.failedCartsLogic();
+                    this.$loading(false);
+                    this.$notify({
+                        type: "error",
+                        group: 'notif',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد',
+                        duration: 3000
+                    })
                 })
-            },
-
-            resetCartsLogic: function () {
-                window.console.log('no loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = false;
-            },
-
-            startCartsLogic: function () {
-                window.console.log('start loading deploy');
-                this.cartsLoading.value = true;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = false;
-            },
-
-            failedCartsLogic: function () {
-                window.console.log('failed loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = true;
-                this.cartsSuccess.value = false;
-            },
-
-            successCartsLogic: function () {
-                window.console.log('success loading deploy');
-                this.cartsLoading.value = false;
-                this.cartsFailed.value = false;
-                this.cartsSuccess.value = true;
             },
 
             removeElementFromArray(arr, value) {
@@ -252,8 +198,7 @@
 
             removeSlotFromCard: function (slotId) {
                 if (window.confirm('برای حذف این مورد مطمئنید ؟')) {
-                    this.resetCartsLogic();
-                    this.startCartsLogic();
+                    this.$loading(true);
                     console.log('remove slot with id', slotId);
                     this.activeCart.time_slot_sales = this.removeElementFromArray(this.activeCart.time_slot_sales, slotId);
 
@@ -264,23 +209,42 @@
                             console.log(response);
                             this.$store.dispatch('getCart').then(getResponse => {
                                 console.log(getResponse);
-                                this.successCartsLogic();
-                                setTimeout(() => {
-                                    this.resetCartsLogic();
-                                }, 1000)
+                                this.$notify({
+                                    type: 'success',
+                                    group: 'notif',
+                                    duration: 3000,
+                                    text: 'آیتم از سبد خرید شما با موفقیت حذف شد',
+                                    title: 'حذف از سبد خرید : موفق'
+                                })
+
                             }).catch(getError => {
                                 console.log(getError);
                                 if (getError.response) {
                                     console.log(getError.response.data);
                                 }
-                                this.failedCartsLogic();
+                                this.$notify({
+                                    type: 'error',
+                                    group: 'notif',
+                                    duration: 3000,
+                                    text: 'خطایی هنگام حذف آیتم از سبد خرید رخ داد',
+                                    title: 'حذف از سبد خرید : خطا'
+                                })
+                            }).finally(() => {
+                                this.$loading(false)
                             })
                         }).catch(error => {
                             console.log(error);
                             if (error.response) {
                                 console.log(error.response.data);
                             }
-                            this.failedCartsLogic();
+                            this.$loading(false)
+                            this.$notify({
+                                type: 'error',
+                                group: 'notif',
+                                duration: 3000,
+                                text: 'خطایی هنگام حذف آیتم از سبد خرید رخ داد',
+                                title: 'حذف از سبد خرید : خطا'
+                            })
                         });
 
                     } else {
@@ -292,20 +256,38 @@
                         }).then(response => {
                             console.log('response from put req:', response);
                             this.$store.dispatch('getCart').then(getCartsRes => {
-                                this.successCartsLogic();
-                                setTimeout(() => {
-                                    this.resetCartsLogic();
-                                }, 1000)
+                                this.$notify({
+                                    type: 'success',
+                                    group: 'notif',
+                                    duration: 3000,
+                                    text: 'آیتم از سبد خرید شما با موفقیت حذف شد',
+                                    title: 'حذف از سبد خرید : موفق'
+                                })
                             }).catch(getCartsError => {
-                                this.failedCartsLogic();
-
+                                this.$notify({
+                                    type: 'error',
+                                    group: 'notif',
+                                    duration: 3000,
+                                    text: 'خطایی هنگام حذف آیتم از سبد خرید رخ داد',
+                                    title: 'حذف از سبد خرید : خطا'
+                                })
+                            }).finally(() => {
+                                this.$loading(false);
                             });
                         }).catch(error => {
                             console.log(error);
                             if (error.response) {
                                 console.log(error.response);
                             }
-                            this.failedCartsLogic();
+                            this.$loading(false);
+
+                            this.$notify({
+                                type: 'error',
+                                group: 'notif',
+                                duration: 3000,
+                                text: 'خطایی هنگام حذف آیتم از سبد خرید رخ داد',
+                                title: 'حذف از سبد خرید : خطا',
+                            })
                         })
                     }
 
@@ -346,15 +328,12 @@
             },
 
             factorCreation: function () {
-                this.resetCartsLogic();
-                this.startCartsLogic();
                 console.log('factor creation');
-                let factorCreatePromise = this.sendFactorCreationRequest();
-                factorCreatePromise.then(response => {
+                this.$loading(true);
+                this.sendFactorCreationRequest().then(response => {
                     window.console.log(response.data);
                     this.$router.push('/user/order');
                 }).catch(error => {
-                    this.failedCartsLogic();
                     console.log(error);
                     if (error.response) {
                         this.cartsFailed.message = 'خطایی رخ داد...' + error.response.data.detail;
@@ -362,8 +341,26 @@
 
                         if (error.response.data.detail[0] == 'User has an active order.') {
                             this.$router.push('/user/order');
+                        } else {
+                            this.$notify({
+                                type: 'error',
+                                group: 'notif',
+                                duration: 3000,
+                                text: 'خطایی هنگام اضافه کردن به سبد خرید رخ داد',
+                                title: 'خطا'
+                            })
                         }
+                    } else {
+                        this.$notify({
+                            type: 'error',
+                            group: 'notif',
+                            duration: 3000,
+                            text: 'خطایی هنگام اضافه کردن به سبد خرید رخ داد',
+                            title: 'خطا'
+                        })
                     }
+                }).finally(() => {
+                    this.$loading(false)
                 })
             },
 

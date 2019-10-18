@@ -13,10 +13,10 @@
                 <i class="material-icons text-green">class</i>
                 <span>{{consultant.field_of_studies[0].name}}</span>
             </div>
-            <div class="consultantDescBlock--head_item">
-                <i class="material-icons text-purple">house</i>
-                <span>{{consultant.field_of_studies[0].name}}</span>
-            </div>
+<!--            <div class="consultantDescBlock&#45;&#45;head_item">-->
+<!--                <i class="material-icons text-purple">house</i>-->
+<!--                <span>{{consultant.field_of_studies[0].name}}</span>-->
+<!--            </div>-->
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video">
@@ -261,6 +261,11 @@
 
         .consultantDescBlock--main_bio p {
             padding-right: 0;
+        }
+
+        .consultantDescBlock--head {
+            padding:10px;
+            font-size:10px;
         }
 
     }

@@ -4,7 +4,7 @@
             <div class="section">
                 <div class="container">
                     <div class="row" style="margin-top:30px;">
-                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering" :class="[]">
+                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group filterPanel" id="filterPanel" role="tablist"
                                  aria-multiselectable="true">
@@ -573,9 +573,6 @@
         border-radius: 10px;
         padding: 10px;
         transition: all 0.2s ease-in-out;
-    }
-
-    .filterColumn:hover {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -623,9 +620,10 @@
         background-color: white;
         width: 100%;
         z-index: 9999;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
         border-top: 1px solid #ccc;
         overflow-y: scroll;
+        border-radius:10px 10px 0 0;
     }
 
     .bottomFilterColumnTitle {

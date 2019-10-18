@@ -10,8 +10,8 @@
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
         </div>
-
         <div class="calendarTopWrapper">
+
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
                 <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
@@ -752,6 +752,7 @@
     .dayTitleCell p {
         margin: 0;
         color: #4D4D4D;
+        font-size:12px;
     }
 
     .dayTitleCell .monthSmallText {
@@ -789,6 +790,12 @@
 
     p.text-danger {
         font-size: 12px;
+    }
+
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
+        .myTableCell {
+            font-size:10px;
+        }
     }
 
 </style>

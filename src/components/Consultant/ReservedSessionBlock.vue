@@ -30,13 +30,13 @@
 
         <div class="reservedCard--actions">
             <a :href="session.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success"
-               v-if="currentTimeBetweenSession">ورود به جلسه</a>
+               v-if="session.login_url != null">ورود به جلسه</a>
             <button disabled class="isansFont--faNum reservedCard--enterButton btn btn-default"
-                    v-else-if="currentTimeBeforeSession">ورود به جلسه
+                    v-else>ورود به جلسه
             </button>
         </div>
 
-        <div class="isansFont--faNum reservedCard--rate text-center" v-if="currentTimeAfterSession">
+        <div class="isansFont--faNum reservedCard--rate text-center" v-if="session.used">
             <div class="col-md-12" v-if="canRate && !isConsultant">
                 <StarRating
                         v-model="session.starRate"

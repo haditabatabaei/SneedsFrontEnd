@@ -1,19 +1,8 @@
 <template>
-    <div class="page-header header-filter header-small" data-parallax="false" id="top"
-         style="transform: translate3d(0px, 0px, 0px);">
+    <div class="page-header header-filter header-small" data-parallax="false" id="top">
         <div class="container">
             <div class="brand text-center">
                 <h1 class="title isansFont text-center">تاییدیه پرداخت</h1>
-                <h4 class="isansFont text-center">
-                    <RectNotifBlock :message="payLoading.message" type="warning" borderRound="true"
-                                    v-if="payLoading.value"></RectNotifBlock>
-
-                    <RectNotifBlock :message="paySuccess.message" type="success" borderRound="true"
-                                    v-else-if="paySuccess.value"></RectNotifBlock>
-
-                    <RectNotifBlock :message="payFailed.message" type="danger" borderRound="true"
-                                    v-else-if="payFailed.value"></RectNotifBlock>
-                </h4>
 
                 <p class="refId isansFont">شماره پیگیری پرداخت ( لطفا این شماره را در محلی ثبت کنید ) :
                     {{this.refId}}
@@ -35,12 +24,27 @@
         },
         mounted() {
             scrollTo(0, 0);
-            this.startLoadingLogic();
+            // this.startLoadingLogic();
+            this.$loading(true);
             this.acceptPayment().then(response => {
-                this.successLoadingLogic();
+                this.refId = response.data.ReflD;
+                this.detail = response.data.detail;
+                this.$notify({
+                    group : 'notif',
+                    type : 'success',
+                    title : 'پرداخت : موفق',
+                    duration:10000,
+                    text : 'پرداخت و رزرو شما با موفقیت انجام شد. برای مشاهده و ورود به جلسه به صفحه جلسات رزرو شده مراجعه کنید. با تشکر'
+                })
             }).catch(error => {
-                this.failedLoadingLogic();
-            })
+                this.$notify({
+                    group : 'notif',
+                    type : 'error',
+                    title : 'پرداخت : نا موفق',
+                    duration:10000,
+                    text : 'خطایی هنگام پرداخت و رزرو شما رخ داد و یا پرداخت توسط شما لغو شد.'
+                })
+            }).finally(() => {this.$loading(false)})
         },
         data() {
             return {
@@ -48,21 +52,6 @@
                 status: this.$route.query.Status,
                 refId: '',
                 detail: '',
-
-                paySuccess: {
-                    value: false,
-                    message: 'پرداخت موفقیت آمیز بود. با تشکر از انتخاب شما. برای مشاهده جلسه به "جلسات رزرو شده" مراجعه کنید'
-                },
-
-                payLoading: {
-                    value: false,
-                    message: 'چند لحظه صبر کنید...'
-                },
-
-                payFailed: {
-                    value: false,
-                    message: 'مشکلی در تایید پرداخت رخ داد...'
-                },
             }
         },
         created() {
@@ -71,25 +60,6 @@
         },
         methods: {
             acceptPayment: function () {
-                return new Promise((resolve, reject) => {
-                    console.log('accept payment called.');
-                    this.sendAcceptRequest().then(response => {
-                        console.log(response);
-                        this.refId = response.data.ReflD;
-                        this.detail = response.data.detail;
-                        resolve(response);
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response){
-                            console.log(error.response);
-                            this.payFailed.message += error.response.data.detail;
-                        }
-                        reject(error);
-                    })
-                });
-            },
-
-            sendAcceptRequest: function () {
                 return new Promise((resolve, reject) => {
                     axios({
                         url: this.$store.getters.getApi + 'payment/verify/',
@@ -105,43 +75,12 @@
                     }).then(response => {
                         resolve(response);
                     }).catch(error => {
+                        if(error.response){
+                            console.log(error.response);
+                        }
                         reject(error);
                     })
                 })
-            },
-
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.payLoading.value = false;
-                this.payFailed.value = false;
-                this.paySuccess.value = false;
-                this.paySuccess.message = 'با موفقیت وارد شدید،چند لحظه صبر کنید...'
-                this.payFailed.message = 'مشکلی در ورود رخ داد...'
-                this.payLoading.message = 'در حال ورود، چند لحظه صبر کنید...'
-                scrollTo(0, 0);
-            },
-
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.payLoading.value = true;
-                this.payFailed.value = false;
-                this.paySuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.payLoading.value = false;
-                this.payFailed.value = true;
-                this.paySuccess.value = false;
-                scrollTo(0, 0);
-            },
-
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.payLoading.value = false;
-                this.payFailed.value = false;
-                this.paySuccess.value = true;
             },
         }
     }

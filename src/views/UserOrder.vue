@@ -302,22 +302,28 @@
                 this.orderDescToShow = order;
             },
             factorPayment: function () {
-                this.resetCartsLogic();
-                this.startCartsLogic();
                 console.log('factor payment method');
-                let paymentAcceptPromise = this.sendPaymentAcceptRequest();
-                paymentAcceptPromise.then(response => {
+                this.$loading(true);
+                this.sendPaymentAcceptRequest().then(response => {
                     console.log('response for factor payment : ', response);
-                    window.open(response.data.redirect, '_blank');
-
+                    this.$notify({
+                        group : 'notif',
+                        type : 'success',
+                        title : 'ورود به درگاه : موفق',
+                        text : 'تا لحظاتی دیگر به درگاه پرداخت فرستاده می شوید.',
+                        duration: 4000,
+                    });
+                    setTimeout(() => {window.open(response.data.redirect, '_blank');}, 4000)
                 }).catch(error => {
                     console.log(error);
-                    if (error.response) {
-                        console.log(error.response);
-                        this.paymentError = error.response.data;
-                    }
-                    this.failedCartsLogic();
-                })
+                    this.$notify({
+                        group : 'notif',
+                        type : 'error',
+                        title : 'ورود به درگاه : خطا',
+                        text : 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        duration: 3000,
+                    });
+                }).finally(() => {this.$loading(false)})
             },
 
             sendPaymentAcceptRequest: function () {
@@ -357,7 +363,7 @@
                 return new Promise((resolve, reject) => {
                     let paidReqPromise = this.sendGetPaidOrderesRequest();
                     paidReqPromise.then(response => {
-                        console.log('paid orderes response :', response.data);
+                        console.log('paid orders response :', response.data);
                         // this.completedOrders = response.data;
                         resolve(response.data);
                     }).catch(error => {

@@ -49,28 +49,14 @@
                                                             slotDetail.consultant.last_name}}
                                                         </router-link>
                                                     </h4>
-                                                    <button class="timeTogglerBtn isansFont btn btn-simple btn-sm"
-                                                            type="button"
-                                                            aria-expanded="true" aria-controls="timesCollapse">
-                                                        {{
-                                                        getJalali(slotDetail.start_time).locale('fa')
-                                                        .format('dddd MM MMMM')
-                                                        }}
-                                                        <i class="material-icons">keyboard_arrow_down</i>
-                                                    </button>
-                                                    <div class="timesCollapse isansFont"
-                                                         :id="'timesCollapse' + slotDetail.id">
-                                                        <p>
-                                                            ساعت
-                                                            {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
-                                                            الی
-                                                            {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
-                                                            <button class="btn btn-simple btn-sm"
-                                                                    @click="removeSlotFromCard(slotDetail.id)">
-                                                                <i class="material-icons">close</i>
-                                                            </button>
-                                                        </p>
-                                                    </div>
+                                                    <p class="timeTogglerBtn isansFont--faNum">
+                                                        {{getJalali(slotDetail.start_time).locale('fa').format('dddd MM MMMM') }}
+                                                        |
+                                                        ساعت
+                                                        {{getJalali(slotDetail.start_time).locale('fa').format('HH:mm')}}
+                                                        الی
+                                                        {{getJalali(slotDetail.end_time).locale('fa').format('HH:mm')}}
+                                                    </p>
                                                 </div>
                                                 <div class="cardConsultantBlock--price isansFont--faNum">
                                                     {{slotDetail.price}}
@@ -296,13 +282,11 @@
             },
 
             removeDiscount: function (discountId) {
-                this.startCartsLogic();
                 this.sendRemoveDiscountCodeReq(discountId).then(response => {
                     this.discount.messages = [];
                     this.discount.messages[0] = 'کد تخفیف اعمالی حذف شد.';
                     this.init();
                 }).catch(error => {
-                    this.failedCartsLogic();
                 })
             },
 
@@ -336,7 +320,6 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response) {
-                        this.cartsFailed.message = 'خطایی رخ داد...' + error.response.data.detail;
                         console.log(error.response)
 
                         if (error.response.data.detail[0] == 'User has an active order.') {
@@ -531,26 +514,8 @@
 
     .cardConsultantBlock--info p {
         font-size: 15px;
-        margin: 0;
+        margin:10px 20px;
         color: #666;
-    }
-
-    .timeTogglerBtn {
-        color: #666;
-        font-size: 15px;
-        margin-right: 10px;
-        padding: 10px 5px;
-        border-radius: 10px;
-    }
-
-    .timesCollapse {
-        background-color: #F0F0F0;
-        border-radius: 10px;
-        margin-right: 10px;
-        padding-right: 10px;
-        margin-bottom: 10px;
-
-        width: calc(100% - 30px);
     }
 
     .timesCollapse p {

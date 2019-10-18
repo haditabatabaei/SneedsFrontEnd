@@ -25,9 +25,9 @@
                             می‌باشد.
                         </p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <router-link to="/">
-                            <h5 class="isansFont text-right">قوانین اسنیدز</h5>
+                            <h5 class="isansFont text-right">خدمات مشتریان</h5>
                         </router-link>
                         <ul class="links-vertical text-right isansFont">
                             <li v-for="serviceItem in customerServiceMenuItems">
@@ -35,7 +35,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <router-link to="/">
                             <h5 class="isansFont text-right">همراه با اسنیدز</h5>
                         </router-link>
@@ -45,19 +45,9 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-2">
-                        <router-link to="/">
-                            <h5 class="isansFont text-right">دوره های آموزشی</h5>
-                        </router-link>
-                        <ul class="links-vertical text-right isansFont">
-                            <li v-for="courseItem in courseMenuItems">
-                                <router-link :to="courseItem.target">{{courseItem.itemName}}</router-link>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="col-md-3">
                         <router-link to="/">
-                            <h5 class="isansFont text-right">آموزش بخش های اسنیدز</h5>
+                            <h5 class="isansFont text-right">راهنمای استفاده از اسنیدز</h5>
                         </router-link>
                         <ul class="links-vertical text-right isansFont">
                             <li v-for="guideItem in guideMenuItems">
@@ -120,27 +110,17 @@
         name: "Footer",
         data: function () {
             return {
-                courseMenuItems: [
-                    {itemName: 'متخصص فوتوشاپ', target: '/courses/photoshop', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'متخصص طراحی سایت', target: '/courses/web', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'متخصص اندروید', target: '/courses/android', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'متخصص متلب', target: '/courses/matlab', hasDropdown: false, dropdownItems: []},
-                ],
                 customerServiceMenuItems: [
                     {itemName: 'پرسش های متداول', target: '/services/faq', hasDropdown: false, dropdownItems: []},
                     {itemName: 'شرایط استفاده', target: '/services/terms', hasDropdown: false, dropdownItems: []},
                     {itemName: 'حریم خصوصی', target: '/services/privacy', hasDropdown: false, dropdownItems: []},
                 ], withSneedsMenuItems: [
                     {itemName: 'تماس با اسنیدز', target: '/in-touch/contact', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'همکاری شرکتی', target: '/in-touch/osm', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'همکاری مدرس خصوص', target: '/courses/private/asTeacher', hasDropdown: false, dropdownItems: []},
                     {itemName: 'فرصت های شغلی', target: '/in-touch/jobs', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'درباره اسنیدز', target: '/in-touch/about', hasDropdown: false, dropdownItems: []},
                 ], guideMenuItems: [
-                    {itemName: 'جزوات', target: '/guide/booklet', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'دوره های آموزشی', target: '/guide/courses', hasDropdown: false, dropdownItems: []},
-                    // {itemName: 'تخفیفات کافه ها', target: '/guide/discounts', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'مصاحبه ها', target: '/guide/interviews', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'کلاس های خصوصی', target: '/guide/interviews', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'رزرو مشاور', target: '/guide/reservation', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'سامانه تیکتینگ', target: '/guide/ticketing', hasDropdown: false, dropdownItems: []},
                 ]
             }
         },

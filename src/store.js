@@ -29,10 +29,20 @@ export default new Vuex.Store({
         cart: null,
 
         stash: [],
+
+        mobileMenuShow : true,
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
             state.userIsLoggedIn = loggedInStatus;
+        },
+
+        setMobileMenuShow(state, mobileMenuShowStatus) {
+            state.mobileMenuShow = mobileMenuShowStatus;
+        },
+
+        toggleMobileMenuShow(state) {
+          state.mobileMenuShow = !state.mobileMenuShow;
         },
 
         logout(state) {
@@ -309,5 +319,7 @@ export default new Vuex.Store({
             state => state.authApi,
 
         getStash: state => state.stash,
+
+        getMobileMenuShow : state => state.mobileMenuShow
     }
 })

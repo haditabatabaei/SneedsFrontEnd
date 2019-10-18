@@ -1,128 +1,49 @@
 <template>
-    <nav id="topNavbar" class="navbar navbar-light navbar-fixed-top">
+    <nav class="topNavWrapper" :class="">
         <div class="container navbarContainer">
-            <Logo></Logo>
-            <button type="button" class="navbar-toggle" @click="toggleMobileMenu()">
-                <span class="sr-only">Toggle navigation</span>
-                <i class="material-icons">menu</i>
-            </button>
-
-            <transition name="slide-fade">
-                <div id="dropdownTogglerTarget" class="mobileMenu" v-if="mobileMenuShow">
-                    <button @click="toggleMobileMenu()" class="closeButton">
-                        <i class="material-icons">close</i>
-                    </button>
-                    <Logo class="mobileLogo"></Logo>
-                    <div class="profileWrapper">
-                        <div class="dropdown authButton" v-if="showProfileLink">
-                            <button href="#" style="margin-left:5px;"
-                                    class="dropdown-toggle btn btn-white btn-round gadugiFont isansFont"
-                                    data-toggle="dropdown"
-                                    aria-expanded="false">
-                                <i class="material-icons">account_circle</i>
-<!--                                <span style="margin-right:5px;">پروفایل</span>-->
-                                <b style="margin-right:5px;" class="caret"></b>
-                            </button>
-                            <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
-                                         :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
-                                <i class="material-icons">shopping_cart</i>
-                            </router-link>
-                            <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
-                                <li class="text-right">
-                                    <router-link to="/user/profile">ناحیه کاربری</router-link>
-                                </li>
-                                <li class="text-right">
-                                    <router-link to="/user/reserved">جلسات رزرو شده</router-link>
-                                </li>
-                                <li class="text-right">
-                                    <router-link to="/user/order">فاکتور ها</router-link>
-                                </li>
-                                <li class="text-right">
-                                    <router-link to="/user/messages">پیام ها FIXME</router-link>
-                                </li>
-                                <li class="divider" v-if="showConsultantsManagerLink"></li>
-                                <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
-                                <li class="text-right" v-if="showConsultantsManagerLink">
-                                    <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a @click.prevent="logout()" class="btn btn-danger">خروج</a></li>
-                            </ul>
-                        </div>
-
-                        <router-link to="/login" class="btn btn-rose isansFont authButton navbar-left" v-else>
-                            <i class="material-icons">person</i>
-                            ورود | ثبت نام
-                        </router-link>
-                    </div>
-                    <ul class="menuList isansFont">
-                        <li class="text-right" v-for="item in this.topMenuListItems"
-                            v-bind:class="[{'dropdown':item.hasDropdown}]">
-                            <a href="#" v-if="item.hasDropdown && item.type == 'router'" class="dropdown-toggle"
-                               data-toggle="dropdown">
-                                <span>{{item.itemName}}</span>
-                                <b class="caret"></b>
-                            </a>
-
-                            <a :href="item.target" v-else-if="item.hasDropdown && item.type == 'hyper'"
-                               class="dropdown-toggle" target="_blank" data-toggle="dropdown">
-                                <span>{{item.itemName}}</span>
-                                <b class="caret"></b>
-                            </a>
-
-                            <router-link v-else-if="!item.hasDropdown && item.type == 'router'" :to="item.target">
-                                {{item.itemName}}
-                            </router-link>
-
-                            <a :href="item.target" v-else-if="!item.hasDropdown && item.type == 'hyper'"
-                               target="_blank">{{item.itemName}}</a>
-
-                            <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
-                                <li v-for="dropdownItem in item.dropdownItems"
-                                    v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
-                                    <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type == 'router'">
-                                        {{dropdownItem.itemName}}
-                                    </router-link>
-                                    <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type == 'hyper'"
-                                       target="_blank">{{dropdownItem.itemName}}</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
-            </transition>
-
-            <div id="dropdownTogglerTarget" v-if="!mobileMenuShow">
+            <div class="mobileNavbarToggleWrapper">
+                <transition name="fade" mode="out-in">
+                    <i class="material-icons closeMenuButton" v-if="mobileMenuShow"
+                       @click="$store.commit('toggleMobileMenuShow')">close</i>
+                    <i class="material-icons openMenuButton" v-if="!mobileMenuShow"
+                       @click="$store.commit('toggleMobileMenuShow')">menu</i>
+                </transition>
+            </div>
+            <div class="LogoWrapper">
+                <Logo></Logo>
+            </div>
+            <div class="menuWrapper">
                 <ul class="menuList isansFont">
-                    <li class="text-right" v-for="item in this.topMenuListItems"
+                    <li class="menuList--item" v-for="item in this.topMenuListItems"
                         v-bind:class="[{'dropdown':item.hasDropdown}]">
-                        <a href="#" v-if="item.hasDropdown && item.type == 'router'" class="dropdown-toggle"
-                           data-toggle="dropdown">
+                        <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
+                           data-toggle="dropdown menuList--linkItem">
                             <span>{{item.itemName}}</span>
                             <b class="caret"></b>
                         </a>
 
-                        <a :href="item.target" v-else-if="item.hasDropdown && item.type == 'hyper'"
-                           class="dropdown-toggle" target="_blank" data-toggle="dropdown">
+                        <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
+                           class="dropdown-toggle menuList--linkItem" target="_blank" data-toggle="dropdown">
                             <span>{{item.itemName}}</span>
                             <b class="caret"></b>
                         </a>
 
-                        <router-link v-else-if="!item.hasDropdown && item.type == 'router'" :to="item.target">
+                        <router-link v-else-if="!item.hasDropdown && item.type === 'router'" :to="item.target"
+                                     class="menuList--linkItem">
                             {{item.itemName}}
                         </router-link>
 
-                        <a :href="item.target" v-else-if="!item.hasDropdown && item.type == 'hyper'"
+                        <a class="menuList--linkItem" :href="item.target"
+                           v-else-if="!item.hasDropdown && item.type === 'hyper'"
                            target="_blank">{{item.itemName}}</a>
 
                         <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
                             <li v-for="dropdownItem in item.dropdownItems"
                                 v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
-                                <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type == 'router'">
+                                <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type === 'router'">
                                     {{dropdownItem.itemName}}
                                 </router-link>
-                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type == 'hyper'"
+                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
                                    target="_blank">{{dropdownItem.itemName}}</a>
                             </li>
                         </ul>
@@ -130,19 +51,23 @@
 
                 </ul>
             </div>
-
-
             <div class="profileWrapper">
-                <div class="dropdown authButton" v-if="showProfileLink">
+                <router-link to="/login" class="btn btn-rose isansFont authButton navbar-left" v-if="!isLoggedIn">
+                    <i class="material-icons">person</i>
+                    ورود | ثبت نام
+                </router-link>
+
+                <div class="dropdown authButton" v-else>
                     <button href="#" style="margin-left:5px;"
-                            class="dropdown-toggle btn btn-white btn-round gadugiFont isansFont" data-toggle="dropdown"
+                            class="dropdown-toggle btn btn-white btn-round gadugiFont isansFont"
+                            data-toggle="dropdown"
                             aria-expanded="false">
                         <i class="material-icons">account_circle</i>
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret"></b>
                     </button>
                     <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
-                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length == 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
+                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length === 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
                         <i class="material-icons">shopping_cart</i>
                     </router-link>
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
@@ -158,24 +83,123 @@
                         <li class="text-right">
                             <router-link to="/user/messages">پیام ها FIXME</router-link>
                         </li>
-                        <li class="divider" v-if="showConsultantsManagerLink"></li>
-                        <li class="dropdown-header" v-if="showConsultantsManagerLink">پنل مشاور :</li>
-                        <li class="text-right" v-if="showConsultantsManagerLink">
+                        <li class="divider" v-if="isConsultant"></li>
+                        <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
+                        <li class="text-right" v-if="isConsultant">
                             <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
                         </li>
                         <li class="divider"></li>
-                        <li><a @click.prevent="logout()" class="btn btn-danger">خروج</a></li>
+                        <li><a @click.prevent="logout()" role="button" class="btn btn-danger">خروج</a></li>
                     </ul>
                 </div>
 
-                <router-link to="/login" class="btn btn-rose isansFont authButton navbar-left" v-else>
-                    <i class="material-icons">person</i>
-                    ورود | ثبت نام
-                </router-link>
             </div>
+
+
+            <transition name="slide-fade">
+                <div class="mobileMenu" v-if="mobileMenuShow">
+                    <div class="mobileMenuListWrapper">
+                        <ul class="mobileMenuList isansFont--faNum">
+                            <li class="mobileMenuList--item" v-for="item in this.topMenuListItems"
+                                v-bind:class="[{'dropdown':item.hasDropdown}]">
+                                <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
+                                   data-toggle="dropdown mobileMenuList--linkItem">
+                                    <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
+                                    <span>{{item.itemName}}</span>
+                                    <b class="caret"></b>
+                                </a>
+
+                                <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
+                                   class="dropdown-toggle mobileMenuList--linkItem" target="_blank"
+                                   data-toggle="dropdown">
+                                    <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
+                                    <span>{{item.itemName}}</span>
+                                    <b class="caret"></b>
+                                </a>
+
+                                <router-link v-else-if="!item.hasDropdown && item.type === 'router'" :to="item.target"
+                                             class="mobileMenuList--linkItem">
+                                    <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
+                                    {{item.itemName}}
+                                </router-link>
+
+                                <a class="mobileMenuList--linkItem" :href="item.target"
+                                   v-else-if="!item.hasDropdown && item.type === 'hyper'" target="_blank">
+                                    <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
+                                    {{item.itemName}}
+                                </a>
+
+                                <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
+                                    <li v-for="dropdownItem in item.dropdownItems"
+                                        v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
+                                        <router-link v-bind:to="dropdownItem.target"
+                                                     v-if="dropdownItem.type === 'router'">
+                                            {{dropdownItem.itemName}}
+                                        </router-link>
+                                        <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
+                                           target="_blank">{{dropdownItem.itemName}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="mobileMenuList--item" v-if="!isLoggedIn">
+                                <router-link class="mobileMenuList--linkItem special" to="/login">
+                                    <i class="material-icons">person</i>
+                                    ورود | ثبت نام
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mobileMenuActionWrapper" v-if="isLoggedIn">
+                        <ul class="mobileMenuList isansFont--faNum">
+                            <li class="mobileMenuList--item">
+                                <router-link to="/user/profile" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    ناحیه کاربری
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item">
+                                <router-link to="/user/reserved" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    جلسات رزرو شده
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item">
+                                <router-link to="/user/order" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    رسید ها
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item">
+                                <router-link to="/user/cart" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    سبد خرید
+                                    <mark class="cartTooltip" v-if="activeCart != null && activeCart.time_slot_sales.length != 0" >شامل {{activeCart.time_slot_sales.length}} آیتم</mark>
+                                    <mark class="cartTooltip" v-else>خالی</mark>
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item">
+                                <router-link to="/user/messages" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    پیام ها - به زودی
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item" v-if="isConsultant">
+                                <router-link to="/user/consultantmanager" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    مدیریت جلسات
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item">
+                                <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    خروج
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </transition>
         </div>
-
-
     </nav>
 
 </template>
@@ -192,20 +216,29 @@
         data: function () {
             return {
                 topMenuListItems: [
-                    {itemName: 'صفحه اصلی', target: '/', type: 'router', hasDropdown: false, dropdownItems: []},
+                    {
+                        itemName: 'صفحه اصلی',
+                        target: '/',
+                        type: 'router',
+                        hasDropdown: false,
+                        dropdownItems: [],
+                        icon: 'home'
+                    },
                     {
                         itemName: 'مشاوران',
                         target: '/consultants',
                         type: 'router',
                         hasDropDown: false,
-                        dropdownItems: []
+                        dropdownItems: [],
+                        icon: 'supervisor_account'
                     },
                     {
                         itemName: 'بلاگ',
                         target: 'http://sneeds.ir/%d8%a8%d9%84%d8%a7%da%af/',
                         type: 'hyper',
                         hasDropdown: false,
-                        dropdownItems: []
+                        dropdownItems: [],
+                        icon: 'table_chart'
                     },
                     {
                         itemName: 'مصاحبه',
@@ -218,74 +251,88 @@
                                 target: 'http://sneeds.ir/category/conversation/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87-%d8%a7%d9%be%d9%84%d8%a7%db%8c/',
                                 type: 'hyper',
                                 hasDropdown: false,
-                                dropdownItems: []
+                                dropdownItems: [],
+                                icon: null
                             },
                             {
                                 itemName: 'مصاحبه ویژه',
                                 target: 'http://sneeds.ir/category/conversation/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87-%d9%88%db%8c%da%98%d9%87/',
                                 type: 'hyper',
                                 hasDropdown: false,
-                                dropdownItems: []
+                                dropdownItems: [],
+                                icon: null
                             },
                             {
                                 itemName: 'لایو اینستاگرامی',
                                 target: 'http://sneeds.ir/category/conversation/%d9%84%d8%a7%db%8c%d9%88-%d8%a7%db%8c%d9%86%d8%b3%d8%aa%d8%a7%da%af%d8%b1%d8%a7%d9%85%db%8c/',
                                 type: 'hyper',
                                 hasDropdown: false,
-                                dropdownItems: []
+                                dropdownItems: [],
+                                icon: null,
                             },
-                        ]
+                        ],
+                        icon: 'record_voice_over',
                     },
                     {
                         itemName: 'درباره ما',
                         target: '/in-touch/aboutus',
                         type: 'router',
                         hasDropdown: false,
-                        dropdownItems: []
+                        dropdownItems: [],
+                        icon: 'info'
                     },
                     {
                         itemName: 'تماس با ما',
                         target: '/in-touch/contact',
                         type: 'router',
                         hasDropdown: false,
-                        dropdownItems: []
+                        dropdownItems: [],
+                        icon: 'phone'
                     },
                 ],
-                mobileMenuShow: false,
-                mobileMenuStyle: '',
-                mobileMenuWidth: 0,
             }
         },
         watch: {},
         mounted() {
         },
         computed: {
-            showProfileLink: function () {
+            isLoggedIn: function () {
                 return this.$store.getters.isLoggedIn;
             },
-            showConsultantsManagerLink: function () {
+            isConsultant: function () {
                 return this.$store.getters.getUserInfo.is_consultant;
             },
             activeCart: function () {
                 return this.$store.getters.getCart;
+            },
+            mobileMenuShow: function () {
+                return this.$store.getters.getMobileMenuShow;
             }
+
         }, methods: {
             logout: function () {
                 this.$store.dispatch('logout');
                 this.$router.push('/login');
             },
-            toggleMobileMenu: function () {
-                console.log('toggle mobile menu');
-                this.mobileMenuShow = !this.mobileMenuShow;
-            }
         }
     }
 </script>
 
 <style scoped>
 
-    .navbar {
-        margin-bottom: 0;
+
+    .topNavWrapper {
+        width: 100%;
+        position: fixed;
+        min-height: 70px;
+        top: 0;
+        left: 0;
+        background-color: white;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .navbarContainer {
@@ -296,39 +343,36 @@
 
         padding-right: 0;
         padding-left: 0;
+        height: 100%;
     }
 
-    .authButton {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+    .mobileNavbarToggleWrapper {
+        display: none;
     }
 
-    .navbar-toggle {
-        float: none;
-        margin: 0;
-        padding-right: 0;
-        padding-left: 0;
-    }
-
-    #dropdownTogglerTarget {
+    .menuWrapper {
         margin: auto;
     }
 
-    #dropdownTogglerTarget > ul {
-        margin-bottom: 0;
-        list-style: none;
+    .menuList {
         display: flex;
         align-items: center;
-        padding: 0;
+        justify-content: space-between;
+
+        margin-bottom: 0;
+        padding-right: 0;
+
+        list-style: none;
     }
 
-    #dropdownTogglerTarget ul li {
+    .menuList--item {
         margin-left: 5px;
         margin-right: 5px;
     }
 
-    #dropdownTogglerTarget > ul li a {
+
+    .menuList--linkItem {
         color: #333;
         padding: 10px 15px;
         border-radius: 5px;
@@ -336,38 +380,28 @@
         font-size: 13px;
     }
 
-    #dropdownTogglerTarget > ul li a.router-link-exact-active {
+    .menuList--linkItem.router-link-exact-active {
         background-color: #eee;
     }
 
-    #dropdownTogglerTarget > ul li > a[aria-expanded="true"] {
+    .menuList--linkItem[aria-expanded="true"] {
         background-color: #eee;
     }
 
-    #dropdownTogglerTarget ul.dropdown-menu li:hover > a {
-        color: white;
+    .mobileMenu {
+        display: none;
     }
 
-    #dropdownTogglerTarget ul.dropdown-menu {
-        flex-direction: column;
-        margin-top: 10px;
-    }
-
-    #dropdownTogglerTarget ul.dropdown-menu li {
-        margin-right: 0;
-        margin-left: 0;
-    }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
-
         /* Enter and leave animations can use different */
         /* durations and timing functions.              */
         .slide-fade-enter-active {
-            transition: all 1s ease;
+            transition: all 0.2s ease;
         }
 
         .slide-fade-leave-active {
-            transition: all 1s ease;
+            transition: all 0.2s ease;
         }
 
         .slide-fade-enter, .slide-fade-leave-to
@@ -377,81 +411,121 @@
             opacity: 0;
         }
 
-        #dropdownTogglerTarget {
-            display: none;
-        }
 
-        #dropdownTogglerTarget.mobileMenu {
-            padding-top: 20px;
-            display: flex;
-            position: fixed;
-            justify-content: center;
-            top: 0;
-            right: 0;
-            height: 100vh;
-            width: 100%;
-            background-color: white;
-            z-index: 999;
-            transition: all 0.3s ease-in;
-        }
-
-        #dropdownTogglerTarget.mobileMenu .closeButton {
-            position: absolute;
-            right: 10px;
-            top: 20px;
-            background-color: white;
-            color: #8a8a8a;
-            border: none;
-            text-align: center;
-        }
-
-        #dropdownTogglerTarget.mobileMenu .mobileLogo {
-            left: 0;
-            top: 10px;
-            position: absolute;
-        }
-
-        #dropdownTogglerTarget.mobileMenu > ul {
-            flex-direction: column;
-            margin-top: 30px;
-        }
-
-        #dropdownTogglerTarget.mobileMenu > ul li {
-            margin-top: 20px;
-            margin-right: 0;
-            margin-left: 0;
-        }
-
-        #dropdownTogglerTarget.mobileMenu > ul li span {
-            margin-right: 0;
-        }
-
-        #dropdownTogglerTarget.mobileMenu ul.dropdown-menu li {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-        #dropdownTogglerTarget.mobileMenu .profileWrapper {
+        .mobileNavbarToggleWrapper {
             display: block;
-            margin-right: 0;
-            margin-top:30px;
+            margin-right: 20px;
         }
 
-        ul.dropdown-menu {
-            margin-right: -40px;
-        }
-
-        .navbar-toggle {
-            order: 0;
-            margin-right: 10px;
-            margin-left: auto;
-            display: block;
+        .mobileNavbarToggleWrapper i.material-icons {
+            cursor: pointer;
         }
 
         .profileWrapper {
-            margin-right: auto;
-            order: 1;
             display: none;
         }
+
+        .menuWrapper {
+            display: none;
+        }
+
+        .LogoWrapper {
+            /*display: none;*/
+            order: 1;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+
+        .navbarContainer {
+            width: 100%;
+            /*justify-content: space-around;*/
+        }
+
+
+        .mobileMenu {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: calc(100vh - 70px);
+            margin-top: 70px;
+            background-color: rgba(255, 255, 255, 1);
+            width: 100%;
+        }
+
+        .mobileMenuListWrapper {
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        .mobileMenuList {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+
+            padding-right: 0;
+            list-style: none;
+        }
+
+        .mobileMenuList--item {
+            align-self: stretch;
+            /*border-bottom: 1px solid #333;*/
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .mobileMenuList--linkItem {
+            /*padding: 5px 10px;*/
+            color: #333;
+            padding: 10px;
+            width: 100%;
+            font-size: 13px;
+        }
+
+        .mobileMenuList--linkItem:hover {
+            background-color: #eee;
+        }
+
+        .mobileMenuList--linkItem span {
+            margin-right: 0;
+        }
+
+        .mobileMenuList--linkItem i.material-icons {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .mobileMenuList--linkItem.special {
+            background-color: #e91e63;
+            color: white;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .mobileMenuList--linkItem.router-link-exact-active {
+            background-color: #eee;
+        }
+
+        .mobileMenuActionWrapper {
+            display: flex;
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        .cartTooltip {
+            background-color: #d9534f;
+            color:white;
+            border-radius:5px;
+            font-size:10px;
+            padding-right:5px;
+            padding-left:5px;
+        }
+
+
     }
 </style>

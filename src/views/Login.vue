@@ -192,13 +192,10 @@
                 window.console.log('login pressed');
 
                 this.$loading(true);
-                window.console.log('user input data : ', this.userToLogin);
                 if (!this.$v.userToLogin.$anyError) {
                     window.console.log("dispatching login with payload");
                     this.$store.dispatch('login', this.userToLogin).then((response) => {
-                        console.log(response);
                         this.$store.dispatch('getUserKey').then((infoResponse) => {
-                            console.log(infoResponse);
                             this.$notify({
                                 group: 'notif',
                                 duration: 3000,
@@ -210,11 +207,6 @@
                         }).catch((infoError) => {
                             console.log(infoError);
                             console.log(infoError.response);
-                            if (infoError.response !== undefined) {
-                                this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.' + '\n' + infoError.response.data.detail;
-                            } else {
-                                this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
-                            }
 
 
                             this.$notify({
@@ -228,13 +220,6 @@
                         }).finally(() => {this.$loading(false);});
 
                     }).catch((err) => {
-                        console.log(err);
-                        if (err.response) {
-                            this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.' + err.response.data.detail;
-                        } else {
-                            this.loginFailed.message = 'خطایی در ارتباط با سرور رخ داد.';
-                        }
-                        console.log(err.response);
                         this.$notify({
                             group : 'notif',
                             duration: 3000,
@@ -266,7 +251,6 @@
             },
 
             toggleResetPassword: function () {
-                this.resetLoadingLogic();
                 this.loginOrReset = !this.loginOrReset;
             },
 
@@ -280,7 +264,6 @@
 
                     this.sendResetPassRequest(payload).then(response => {
                         console.log(response);
-                        this.loginSuccess.message = 'ایمیل فراموشی رمز برای شما ارسال شد. لطفا ایمیل خود را چک کنید'
                         this.$notify({
                             group : 'notif',
                             duration: 5000,
@@ -343,7 +326,6 @@
 
     .card-signup .header {
         padding: 15px 0 !important;
-
     }
 
     .page-header {

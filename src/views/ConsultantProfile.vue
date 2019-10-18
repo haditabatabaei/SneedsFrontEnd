@@ -1,6 +1,33 @@
 <template>
     <main class="main">
         <section class="container">
+            <div class="mobileConsultantMenu">
+                <div class="mobileConsultantMenu--links">
+                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'desc'}]"
+                            @click="smoothScrollToPos(getElementOffsetTop('descBlock'))">
+                        <i class="material-icons">info</i>
+                        <!--                        <span v-if="activeSection === 'desc'">مشخصات</span>-->
+                    </button>
+                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'calendar'}]"
+                            @click="smoothScrollToPos(getElementOffsetTop('calendarBlock'))">
+                        <i class="material-icons">date_range</i>
+                        <!--                        <span v-if="activeSection === 'calendar'">تقویم و رزرو</span>-->
+                    </button>
+                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'comments'}]"
+                            @click="smoothScrollToPos(getElementOffsetTop('commentsBlock'))">
+                        <i class="material-icons">comment</i>
+                        <!--                        <span v-if="activeSection === 'comments'">نظرات</span>-->
+                    </button>
+                </div>
+                <div class="mobileConsultantMenu--shop" v-if="stash.length !== 0">
+                    <button class="btn btn-round btn-sm btn-rose isansFont--faNum"
+                            @click="addSelectedTimesToCart()">
+                        اضافه کردن
+                        {{stash.length}}
+                        زمان انتخاب شده به سبد خرید
+                    </button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3 sideBarBlockSticky">
                     <div class="consultantSidebarBlock">
@@ -68,7 +95,7 @@
                             </ul>
                         </div>
 
-                        <button class="btn btn-round btn-bg btn-rose isansFont--faNum"
+                        <button class="btn btn-round btn-bg btn-rose isansFont--faNum addToCartButton"
                                 @click="addSelectedTimesToCart()">اضافه کردن به سبد خرید
                         </button>
                     </div>
@@ -338,7 +365,7 @@
                     if (Math.abs(yPos - scrollY) <= Math.abs(step)) {
                         clearInterval(scrollInterval);
                     }
-                }, 0.5);
+                }, 0.1);
 
             },
 
@@ -400,6 +427,7 @@
     .sideBarBlockSticky {
         position: sticky;
         top: 50px;
+        padding-right: 0;
     }
 
     .consultantSidebarBlock--info {
@@ -550,6 +578,10 @@
         margin-left: auto;
     }
 
+    .mobileConsultantMenu {
+        display: none;
+    }
+
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
         .sticky-top {
             position: static;
@@ -562,30 +594,69 @@
 
         .consultantSidebarBlock {
             margin-bottom: 30px;
+            margin-top: 0;
         }
 
-        .consultantSidebarBlock--links ul {
-            flex-direction: row;
-            justify-content: space-around;
+        .consultantSidebarBlock--links {
+            display: none;
         }
 
-        .consultantSidebarBlock--links ul li button:hover {
-            border-right: 0;
-            border-bottom: inset 3px #B73EB3;
-            font-weight: bold;
-            color: #4c4c4c;
-            padding-bottom: 15px;
-            padding-right: 5px;
+        .consultantSidebarBlock--numberDiscounts {
+            display: none;
         }
 
-        .consultantSidebarBlock--links ul li.active button {
-            border-right: 0;
-            border-bottom: inset 3px #B73EB3;
-            font-weight: bold;
-            color: #4c4c4c;
-            padding-bottom: 15px;
-            padding-right: 5px;
+        .consultantSidebarBlock--selectedItems {
+            display: none;
         }
+
+        .addToCartButton {
+            display: none;
+        }
+
+
+        .mobileConsultantMenu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: fixed;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px 20px 0 0;
+            z-index: 999;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobileConsultantMenu--links {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 100%;
+            height: 70px;
+        }
+
+        .mobileConsultantMenu--button {
+            background: none;
+            border: none;
+            padding: 10px;
+            margin: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobileConsultantMenu--button.active {
+            background-color: #e91e63;
+            color: white;
+            box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
+
+            flex-direction: column;
+            align-items: center;
+        }
+
 
     }
 </style>

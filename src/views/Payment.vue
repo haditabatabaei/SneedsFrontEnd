@@ -98,7 +98,7 @@
 
     .page-header {
         height: 100vh;
-        background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg');
+        background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg');
     }
 
     .refId {

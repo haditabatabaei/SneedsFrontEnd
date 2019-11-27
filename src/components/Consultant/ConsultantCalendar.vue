@@ -20,14 +20,23 @@
                     <span class="btn btn-round btn-sm btn-sample timeReserved isansFont">رزرو شده</span>
                 </div>
             </div>
+<!--        <div class="myTableRow firstRow">-->
+<!--                <div class="myTableCell">ساعت / روز</div>-->
+<!--                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">-->
+<!--                    <p>{{day.format('dddd')}}</p>-->
+<!--                    <p class="monthSmallText">{{day.format('DD MMMM')}}</p>-->
+<!--                </div>-->
+<!--                <div class="myTableCell">روز / ساعت</div>-->
+<!--        </div>-->
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
-                    <p>{{day.format('dddd')}}</p>
-                    <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
+                <div class="myTableCell dayTitleCell" v-for="(dayArray, index) in calendarDataset">
+                    <p>{{getJalali(dayArray[0].datestart).locale('fa').format('dddd')}}</p>
+                    <p class="monthSmallText">{{getJalali(dayArray[0].datestart).locale('fa').format('DD MMMM')}}</p>
                 </div>
                 <div class="myTableCell">روز / ساعت</div>
             </div>
+
 
 
             <div v-for="index in 16" :key="index" class="myTableRow">
@@ -35,29 +44,43 @@
                     {{ (index + 7) + ":00" + " تا " + (index + 8) + ":00"}}
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
-                    <div
-                            v-if="getTimeStampByIndex(rowIndex,index,7,false).isBefore(justNowDate)"
-                            class="myTableSemiCell timeNotAvailable"
-                    ></div>
+                    <!-- current timestamp object -->
+                    <!-- calendarDataset[rowIndex][index] -->
+                    <!--  -->
+<!--                    <span></span>-->
+                    <div v-if="getJalali(calendarDataset[rowIndex - 1][index - 1].datestart).isBefore(justNowDate)" class="myTableSemiCell timeNotAvailable"></div>
+<!--                    <div v-else class="myTableSemiCell timeOpen"></div>-->
+
 
                     <div
-                            v-else-if="!isInReservedTimes(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false)) && !isInConsultantTime(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false)) "
-                            @click="itemClickHandlerToOpen(getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex , index, 8, true))"
+                            v-else-if="!isInReservedTimes(getJalali(calendarDataset[rowIndex - 1][index - 1].datestart),getJalali(calendarDataset[rowIndex - 1][index - 1].dateend)) && !isInConsultantTime(getJalali(calendarDataset[rowIndex - 1][index - 1].datestart),getJalali(calendarDataset[rowIndex - 1][index - 1].dateend))"
+                            :class="[{'timeSelected': isDatePresentOnSelectedList(selectedDatesToOpen,calendarDataset[rowIndex - 1][index - 1].datestart,calendarDataset[rowIndex - 1][index - 1].dateend)}]"
+                            @click="itemClickHandlerToOpen(calendarDataset[rowIndex - 1][index - 1].datestart,calendarDataset[rowIndex - 1][index - 1].dateend)"
                             class="myTableSemiCell timeOpenForManagerToSet"
-                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen,getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex, index, 8,true))}]"
                     ></div>
+                    <!--                    <div-->
+<!--                            v-if="getTimeStampByIndex(rowIndex,index,7,false).isBefore(justNowDate)"-->
+<!--                            class="myTableSemiCell timeNotAvailable"-->
+<!--                    ></div>-->
 
-                    <div
-                            v-else-if="isInConsultantTime(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false))"
-                            @click="itemClickHandlerToRemove(getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex , index, 8, true))"
-                            class="myTableSemiCell timeOpen"
-                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove,getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex, index, 8,true))}]"
-                    ></div>
+<!--                    <div-->
+<!--                            v-else-if="!isInReservedTimes(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false)) && !isInConsultantTime(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false)) "-->
+<!--                            @click="itemClickHandlerToOpen(getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex , index, 8, true))"-->
+<!--                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen,getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex, index, 8,true))}]"-->
+<!--                            class="myTableSemiCell timeOpenForManagerToSet"-->
+<!--                    ></div>-->
 
-                    <div
-                            v-else-if="isInReservedTimes(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false))"
-                            class="myTableSemiCell timeReserved"
-                    ></div>
+<!--                    <div-->
+<!--                            v-else-if="isInConsultantTime(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false))"-->
+<!--                            @click="itemClickHandlerToRemove(getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex , index, 8, true))"-->
+<!--                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove,getTimeStampByIndex(rowIndex , index, 7, true),getTimeStampByIndex(rowIndex, index, 8,true))}]"-->
+<!--                            class="myTableSemiCell timeOpen"-->
+<!--                    ></div>-->
+
+<!--                    <div-->
+<!--                            v-else-if="isInReservedTimes(getTimeStampByIndex(rowIndex,index,7,false),getTimeStampByIndex(rowIndex,index,8,false))"-->
+<!--                            class="myTableSemiCell timeReserved"-->
+<!--                    ></div>-->
 
                 </div>
                 <div class="myTableCell lastCellInRow">
@@ -144,7 +167,7 @@
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [],
-
+                calendarDataset: [],
                 reserveSuccess: {
                     value: false,
                 },
@@ -300,9 +323,9 @@
 
             getTimeStampByIndex(dayIndexInArr, timeIndex, hourToAdd, getIsoString) {
                 if (getIsoString) {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).minute(0).second(0).millisecond(0).locale('en').utc().toISOString();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).locale('en').utc().toISOString();
                 } else {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).minute(0).second(0).millisecond(0).locale('en').utc();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).locale('en').utc();
                 }
             },
 
@@ -462,9 +485,9 @@
             },
 
             showWeek: function (numOfWeek, siblingStatus) {
-                if (siblingStatus == 'prev') {
+                if (siblingStatus === 'prev') {
                     this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale('fa'));
-                } else if (siblingStatus == 'next') {
+                } else if (siblingStatus === 'next') {
                     this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale('fa'));
                 }
             },
@@ -478,161 +501,161 @@
             },
 
             generateSaturday(date) {
-                if (date.weekday() == 0) {
-                    return date.clone();
+                if (date.weekday() === 0) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 0) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 0) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 0) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 0) {
                         return newDate;
                     }
                 }
             },
 
             generateSunday(date) {
-                if (date.weekday() == 1) {
-                    return date.clone();
+                if (date.weekday() === 1) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 1) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 1) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 1) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 1) {
                         return newDate;
                     }
                 }
             },
 
             generateMonday(date) {
-                if (date.weekday() == 2) {
-                    return date.clone();
+                if (date.weekday() === 2) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 2) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 2) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 2) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 2) {
                         return newDate;
                     }
                 }
             },
 
             generateTuesday(date) {
-                if (date.weekday() == 3) {
-                    return date.clone();
+                if (date.weekday() === 3) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 3) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 3) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 3) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 3) {
                         return newDate;
                     }
                 }
             },
 
             generateWednesday(date) {
-                if (date.weekday() == 4) {
-                    return date.clone();
+                if (date.weekday() === 4) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 4) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 4) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 4) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 4) {
                         return newDate;
                     }
                 }
             },
 
             generateThursday(date) {
-                if (date.weekday() == 5) {
-                    return date.clone();
+                if (date.weekday() === 5) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 5) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 5) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 5) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 5) {
                         return newDate;
                     }
                 }
             },
 
             generateFriday(date) {
-                if (date.weekday() == 6) {
-                    return date.clone();
+                if (date.weekday() === 6) {
+                    return date.clone().hour(8).minute(0).second(0).millisecond(0);
                 }
 
                 let toEnd = 7 - date.weekday();
                 let toStart = date.weekday();
 
                 for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 6) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).subtract(toStart - i, 'd');
+                    if (newDate.weekday() === 6) {
                         return newDate;
                     }
                 }
 
                 for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 6) {
+                    let newDate = date.clone().hour(8).minute(0).second(0).millisecond(0).add((i + 1), 'd');
+                    if (newDate.weekday() === 6) {
                         return newDate;
                     }
                 }
@@ -640,6 +663,7 @@
 
             handleWeek(now) {
                 this.days = [];
+                this.calendarDataset = [];
                 this.days.push(this.generateSaturday(now));
                 this.days.push(this.generateSunday(now));
                 this.days.push(this.generateMonday(now));
@@ -650,7 +674,23 @@
                 for (let i = 0; i < this.days.length; i++) {
                     this.tableDataArray[i] = this.days[i];
                 }
-                console.log(this.tableDataArray);
+
+                //calendarDataset
+                for (let i = 0; i < this.days.length; i++) {
+                    let tempDayArray = [];
+                    for (let j = 1; j <= 16; j++) {
+                        let tempDateObject = {'datestart' : this.days[i].clone().add(j - 1, 'hour').utc().toISOString()};
+                        if (j !== 16) {
+                            tempDateObject["dateend"] = this.days[i].clone().add(j, 'hour').utc().toISOString();
+                        }
+                        if (j === 16) {
+                            tempDateObject["dateend"] = this.days[i].clone().add(j, 'hour').utc().toISOString();
+                        }
+                        tempDayArray.push(tempDateObject);
+                    }
+                    this.calendarDataset.push(tempDayArray);
+                }
+                console.log('calendar dataset multi array:', this.calendarDataset);
             },
 
             removeElementFromToOpenDates(value) {

@@ -33,21 +33,21 @@
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
-                            v-if="days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).isBefore(justNowDate)"
+                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
 
                     <div
-                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
-                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())"
+                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
                             :class="[
-                            {'timeOpen' : !isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
-                            {'timeSelected' : isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc().toISOString(),days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc().toISOString())},
-                            ]"
+                        {'timeOpen' : !isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},
+                        {'timeSelected' : isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},
+                        ]"
                     ></div>
 
                     <div
-                            v-else="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7).minute(0).second(0).millisecond(0).locale('en').utc(), days[rowIndex - 1].clone().hour(index + 8).minute(0).second(0).millisecond(0).locale('en').utc())"
+                            v-else="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
                 </div>
@@ -79,32 +79,6 @@
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [],
-
-                reserveSuccess: {
-                    value: false,
-                },
-
-                reserveLoading: {
-                    value: false,
-                },
-                reserveFailed: {
-                    value: false,
-                },
-                alertSuccess: {
-                    value: false,
-                    message: 'جلسات با موفقیت برای رزرو کاربران باز شدند.'
-                },
-
-                alertLoading: {
-                    value: false,
-                    message: 'چند لحظه صبر کنید..'
-                },
-
-                alertFailed: {
-                    value: false,
-                    message: 'مشکلی در اضافه کرد جلسات رخ داد...'
-                },
-
             }
         },
         computed: {
@@ -125,7 +99,6 @@
                 return jalali(date);
             },
             initComp: function () {
-                // this.startLoadingLogic();
                 this.$loading(true);
                 this.getListOfTimesById(this.consultantId).then(timeRes => {
                     window.console.log('slot times:', timeRes.data);
@@ -133,100 +106,20 @@
                     this.$emit('get-slots', this.slots);
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
-                    // this.resetLoadingLogic();
-                    this.$loading(false);
                 }).catch(timesErr => {
-                    console.log(timesErr)
+                    console.log(timesErr);
                     if (timesErr.response)
                         console.log(timesErr.response);
-                    this.failedLoadingLogic();
-                })
-            },
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-                this.alertLoading.value = false;
-                this.alertFailed.value = false;
-                this.alertSuccess.value = false;
-            },
-            startLoadingLogic: function () {
-                window.console.log('start loading deploy');
-                this.alertLoading.value = true;
-                this.alertFailed.value = false;
-                this.alertSuccess.value = false;
-            },
-            failedLoadingLogic: function () {
-                window.console.log('failed loading deploy');
-                this.alertLoading.value = false;
-                this.alertFailed.value = true;
-                this.alertSuccess.value = false;
-            },
-            successLoadingLogic: function () {
-                window.console.log('success loading deploy');
-                this.alertLoading.value = false;
-                this.alertFailed.value = false;
-                this.alertSuccess.value = true;
-            },
-
-            addTimes() {
-                this.resetLoadingLogic();
-                this.startLoadingLogic();
-                if (!this.$v.selectedPrice.$error && this.canAddOpenTimes) {
-                    console.log('selected dates to add open:', this.selectedDatesToOpen);
-                    console.log('selected price:', this.selectedPrice);
-                    let promises = [];
-                    for (let i = 0; i < this.selectedDatesToOpen.length; i++) {
-                        let payload = {
-                            "start_time": this.selectedDatesToOpen[i].datestart,
-                            "end_time": this.selectedDatesToOpen[i].dateend,
-                            "price": this.selectedPrice
-                        };
-                        let promise = this.sendAddTimesRequest(payload);
-                        promises.push(promise);
-                    }
-
-                    Promise.all(promises).then(() => {
-                        console.log('all promises done');
-                        this.selectedDatesToOpen = [];
-                        this.initComp();
-                    }).catch((error) => {
-                        console.log('all promises catch');
-                        console.log(error);
-                        if (error.response)
-                            console.log(error.response);
-                        this.failedLoadingLogic();
-                    })
-                } else {
-                    this.failedLoadingLogic();
-                    this.alertFailed.message = "لطفا هزینه شرکت در جلسه را مشخص نمایید حداقل 1000. ( معادل 1000 تومان )"
-                }
-
-            },
-
-            sendAddTimesRequest(timePayload) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'store/time-slot-sales/',
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json',
-                        },
-                        data: timePayload
-                    }).then(response => {
-                        console.log('axios response :', response);
-                        resolve(response);
-                    }).catch(error => {
-                        console.log('axios error :', error, error.response);
-                        reject(error);
-                    })
+                }).finally(() => {
+                    this.$loading(false);
                 })
             },
 
             getTimeStampByIndex(dayIndexInArr, timeIndex, hourToAdd, getIsoString) {
                 if (getIsoString) {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).minute(0).second(0).millisecond(0).locale('en').utc().toISOString();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).toISOString();
                 } else {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).minute(0).second(0).millisecond(0).locale('en').utc();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd));
                 }
             },
 
@@ -249,95 +142,6 @@
                 return false;
             },
 
-
-            resetReserveLogic: function () {
-                window.console.log('no loading deploy');
-                this.reserveLoading.value = false;
-                this.reserveFailed.value = false;
-                this.reserveSuccess.value = false;
-            },
-
-            startReserveLogic: function () {
-                window.console.log('start loading deploy');
-                this.reserveLoading.value = true;
-                this.reserveFailed.value = false;
-                this.reserveSuccess.value = false;
-            },
-
-            failedReserveLogic: function () {
-                window.console.log('failed loading deploy');
-                this.reserveLoading.value = false;
-                this.reserveFailed.value = true;
-                this.reserveSuccess.value = false;
-            },
-
-            successReserveLogic: function () {
-                window.console.log('success loading deploy');
-                this.reserveLoading.value = false;
-                this.reserveFailed.value = false;
-                this.reserveSuccess.value = true;
-            },
-
-            addSelectedTimesToCart: function () {
-                this.resetReserveLogic();
-                this.startReserveLogic();
-                console.log(this.selectedDates);
-
-                let payload = {"time_slot_sales": []};
-
-                for (let i = 0; i < this.selectedDates.length; i++) {
-                    payload.time_slot_sales.push(this.getSlotIdByDate(this.selectedDates[i].datestart, this.selectedDates[i].dateend));
-                }
-
-                console.log("active card is :", this.activeCart);
-                if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
-                    //put new items in it
-                    console.log('put new items in cart');
-                    console.log(this.activeCart);
-                    for (let i = 0; i < payload.time_slot_sales.length; i++) {
-                        this.activeCart.time_slot_sales.push(payload.time_slot_sales[i]);
-                    }
-
-
-                    let config = {
-                        "payload": {"time_slot_sales": Array.from(new Set(this.activeCart.time_slot_sales))},
-                        "cartId": this.activeCart.id,
-                    };
-
-                    console.log(config);
-                    this.$store.dispatch('putCartRequest', config).then(response => {
-                        console.log(response);
-                        this.resetReserveLogic();
-                        this.$router.push('/user/cart');
-                    }).catch(error => {
-                        this.failedReserveLogic();
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                    });
-                } else {
-                    //card doesnt exits
-                    //post new items;
-                    console.log('post new items in cart');
-                    this.$store.dispatch('postCart', payload).then(response => {
-                        console.log(response);
-                        this.successReserveLogic();
-                        setTimeout(() => {
-                            this.resetReserveLogic();
-                            this.$router.push('/user/cart');
-                        }, 1000)
-                    }).catch(error => {
-                        this.failedReserveLogic();
-                        console.log(error);
-                        if (error.response) {
-                            console.log(error.response.data.detail);
-                        }
-                    })
-                }
-
-            },
-
             getListOfTimesById(id) {
                 return new Promise((resolve, reject) => {
                     axios({
@@ -354,17 +158,10 @@
                 })
             },
 
-            getSlotIdByDate(startDate, endDate) {
-                for (let i = 0; i < this.slots.length; i++) {
-                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
-                        return this.slots[i].id;
-                }
-            },
-
             showWeek: function (numOfWeek, siblingStatus) {
-                if (siblingStatus == 'prev') {
+                if (siblingStatus === 'prev') {
                     this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale('fa'));
-                } else if (siblingStatus == 'next') {
+                } else if (siblingStatus === 'next') {
                     this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale('fa'));
                 }
             },
@@ -377,185 +174,54 @@
                 this.showWeek(1, 'next');
             },
 
-            generateSaturday(date) {
-                if (date.weekday() == 0) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 0) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 0) {
-                        return newDate;
-                    }
-                }
+            generateSaturdayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(0 - date.weekday(), 'd');
             },
 
-            generateSunday(date) {
-                if (date.weekday() == 1) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 1) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 1) {
-                        return newDate;
-                    }
-                }
+            generateSundayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(1 - date.weekday(), 'd');
             },
 
-            generateMonday(date) {
-                if (date.weekday() == 2) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 2) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 2) {
-                        return newDate;
-                    }
-                }
+            generateMondayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(2 - date.weekday(), 'd');
             },
 
-            generateTuesday(date) {
-                if (date.weekday() == 3) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 3) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 3) {
-                        return newDate;
-                    }
-                }
+            generateTuesdayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(3 - date.weekday(), 'd');
             },
 
-            generateWednesday(date) {
-                if (date.weekday() == 4) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 4) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 4) {
-                        return newDate;
-                    }
-                }
+            generateWednesdayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(4 - date.weekday(), 'd');
             },
 
-            generateThursday(date) {
-                if (date.weekday() == 5) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 5) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 5) {
-                        return newDate;
-                    }
-                }
+            generateThursdayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(5 - date.weekday(), 'd');
             },
 
-            generateFriday(date) {
-                if (date.weekday() == 6) {
-                    return date.clone();
-                }
-
-                let toEnd = 7 - date.weekday();
-                let toStart = date.weekday();
-
-                for (let i = toStart - 1; i >= 0; i--) {
-                    let newDate = date.clone().subtract(toStart - i, 'd');
-                    if (newDate.weekday() == 6) {
-                        return newDate;
-                    }
-                }
-
-                for (let i = 0; i < toEnd - 1; i++) {
-                    let newDate = date.clone().add((i + 1), 'd');
-                    if (newDate.weekday() == 6) {
-                        return newDate;
-                    }
-                }
+            generateFridayNew(date) {
+                return date.minute(0).second(0).millisecond(0).clone().add(6 - date.weekday(), 'd');
             },
 
             handleWeek(now) {
+                console.log(now.locale('fa').weekday());
                 this.days = [];
-                this.days.push(this.generateSaturday(now));
-                this.days.push(this.generateSunday(now));
-                this.days.push(this.generateMonday(now));
-                this.days.push(this.generateTuesday(now));
-                this.days.push(this.generateWednesday(now));
-                this.days.push(this.generateThursday(now));
-                this.days.push(this.generateFriday(now));
+                this.days.push(this.generateSaturdayNew(now));
+                this.days.push(this.generateSundayNew(now));
+                this.days.push(this.generateMondayNew(now));
+                this.days.push(this.generateTuesdayNew(now));
+                this.days.push(this.generateWednesdayNew(now));
+                this.days.push(this.generateThursdayNew(now));
+                this.days.push(this.generateFridayNew(now));
+                console.log(this.days);
                 for (let i = 0; i < this.days.length; i++) {
+                    console.log(this.days[i].format('dddd'));
                     this.tableDataArray[i] = this.days[i];
                 }
-                console.log(this.tableDataArray);
             },
 
             isInConsultantTime(cellStartDate, cellEndDate) {
                 for (let i = 0; i < this.slots.length; i++) {
-                    if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'second') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'second')) {
+                    if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'minute') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'minute')) {
                         return true;
                     }
                 }
@@ -752,7 +418,7 @@
     .dayTitleCell p {
         margin: 0;
         color: #4D4D4D;
-        font-size:12px;
+        font-size: 12px;
     }
 
     .dayTitleCell .monthSmallText {
@@ -794,7 +460,7 @@
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .myTableCell {
-            font-size:10px;
+            font-size: 10px;
         }
     }
 

@@ -109,8 +109,11 @@
 
                     <div class="row" id="calendarBlock">
                         <div class="col-md-12">
-                            <UserCalendar :consultantId="consultant.id" v-if="consultant.id"
-                                          @get-slots="setSlot"></UserCalendar>
+                            <UserCalendar
+                                 v-if="consultant.id"
+                                 :consultantId="consultant.id"
+                                 @get-slots="setSlot">
+                            </UserCalendar>
                         </div>
                     </div>
 
@@ -170,7 +173,6 @@
         },
         created() {
             document.addEventListener('scroll', this.handleScroll, false);
-
             console.log(this.scrollListener);
             console.log('consultant profile created hook called');
             this.$loading(true);
@@ -180,12 +182,14 @@
                 this.getListOfNumberDiscounts().then(numberDis => {
                     console.log('resolved from number discount :', numberDis);
                     this.listOfDiscounts = numberDis;
-                    this.$loading(false);
                 }).catch(error => {
                     console.log(error);
+                }).finally(() => {
+                    this.$loading(false);
                 })
             }).catch(error => {
                 window.console.log(error.response);
+                this.$loading(false);
             });
 
         },
@@ -199,7 +203,7 @@
         methods: {
 
             setSlot: function (slots) {
-                console.log('emiited event:', slots);
+                // console.log('emiited event:', slots);
                 this.slots = slots;
             },
 
@@ -300,7 +304,6 @@
 
 
             },
-
 
             getJalali: function (date) {
                 return jalali(date);
@@ -590,6 +593,7 @@
 
         .sideBarBlockSticky {
             position: static;
+            padding-right: 15px;
         }
 
         .consultantSidebarBlock {

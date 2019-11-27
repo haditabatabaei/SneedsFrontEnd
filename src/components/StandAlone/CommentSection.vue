@@ -16,7 +16,7 @@
             </router-link>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 commentsWrapper">
             <h3 class="text-right commentsMiniTitle isansFont--faNum">
                 نظرات ( {{comments.length}} )
             </h3>
@@ -187,5 +187,14 @@
     button:disabled {
         background-color: rgba(232,30,99,0.5);
         cursor: not-allowed;
+    }
+
+    @media only screen and (max-width : 991.2px) and (min-width: 0) {
+        .commentsWrapper {
+            margin-top: 15px;
+            width: 100%;
+            padding-right: 0;
+            padding-left: 0;
+        }
     }
 </style>

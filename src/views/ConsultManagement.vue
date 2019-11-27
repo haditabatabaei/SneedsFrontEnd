@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-filter header-small" data-parallax="false"
-             style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+             style="background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -20,7 +20,7 @@
                         <div class="col-xs-6 col-xs-offset-3">
                             <div class="profile">
                                 <div class="avatar">
-                                    <img src="http://195.248.243.68/sneedsAssets/img/marc.jpg" alt="Circle Image"
+                                    <img src="http://185.209.243.97/sneedsAssets/img/marc.jpg" alt="Circle Image"
                                          class="img-circle img-responsive img-raised">
                                 </div>
                                 <div class="name">

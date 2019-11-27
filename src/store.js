@@ -22,9 +22,9 @@ export default new Vuex.Store({
 
         user: {},
 
-        api: 'http://195.248.243.68:9000/',
+        api: 'http://185.209.243.97:8000/',
 
-        authApi: 'http://195.248.243.68:9000/',
+        authApi: 'http://185.209.243.97:8000/',
 
         cart: null,
 

@@ -1,6 +1,6 @@
 <template>
     <div class="page-header"
-         style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
+         style="background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">

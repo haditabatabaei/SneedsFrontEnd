@@ -544,7 +544,7 @@
 
     .page-header {
         min-height: 100vh;
-        background-image: url('http://195.248.243.68/sneedsAssets/img/consultantsBg.jpg');
+        background-image: url('http://185.209.243.97/sneedsAssets/img/consultantsBg.jpg');
         background-size: cover;
     }
 
@@ -568,7 +568,7 @@
     .filterColumn {
         z-index: 999;
         position: sticky;
-        top: 140px;
+        top: 85px;
         background-color: white;
         border-radius: 10px;
         padding: 10px;

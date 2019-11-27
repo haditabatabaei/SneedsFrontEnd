@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-filter header-small" data-parallax="false"
-             style="background-image: url('http://195.248.243.68/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
+             style="background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 text-center">
@@ -14,17 +14,19 @@
         </div>
         <div class="main section">
             <div class="container">
-
-                <div class="row">
+                <div class="row desktopTickets">
                     <div class="col-md-4 messagesWrapper">
                         <div class="ticketTitleSearchWrapper isansFont--faNum">
                             <input placeholder="جستجو در تیکت ها..." type="text">
                             <i class="material-icons">search</i>
                         </div>
 
+                        <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
+
                         <div class="ticketTitleBlock isansFont--faNum"
                              @click="setSelectedTicketByIndex(tickets.indexOf(ticket))"
-                             :class="{'active' : isSelectedTicket(ticket.id)}" v-for="ticket in tickets">
+                             :class="{'active' : isSelectedTicket(ticket.id)}"
+                             v-for="ticket in tickets">
                             <div class="ticketTitleBlock--info">
                                 <img :src="ticket.consultant.profile_picture"
                                      :alt="ticket.consultant.first_name+' ' + ticket.consultant.last_name ">
@@ -43,14 +45,15 @@
                             </p>
                         </div>
 
-                        <button @click="toggleShowNewTicket()"
+                        <button @click="toggleShowNewTicket($event)" v-if="!isConsultant"
                                 class="addTicketButton btn btn-round btn-just-icon btn-primary">
                             <i class="material-icons">add</i>
                         </button>
                     </div>
                     <div class="col-md-8 contentWrapper">
                         <div class="content--title">
-                            <h5 class="isansFont--faNum">{{selectedTicket.title}}</h5>
+                            <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
+                            <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
                         </div>
                         <div class="content--texts">
                             <div class="content-text"
@@ -67,40 +70,135 @@
                             <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
                             <i class="material-icons" role="button"
                                :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
-                               @click="sendNewMessageToSelectedTicket">send</i>
+                               @click="sendNewMessageToSelectedTicket()">send</i>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="mobileTickets">
+                    <div class="ticketTitleSearchWrapper isansFont--faNum">
+                        <input placeholder="جستجو در تیکت ها..." type="text">
+                        <i class="material-icons">search</i>
+                    </div>
 
+                    <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
 
-            <!--- show / hide new ticket modal --->
-            <div class="newTicketWrapper" v-if="showNewTicketModal" @click="toggleShowNewTicket($event)">
-                <div class="newTicketModal" @click="">
-                    <button class="closeModalButton btn btn-sm btn-fab btn-fab-mini btn-round btn-sample"
-                            @click="toggleShowNewTicket()">
-                        <i class="material-icons">close</i>
-                    </button>
+                    <div class="ticketTitleBlock isansFont--faNum"
+                         @click="showMobileMessagesByTicket(tickets.indexOf(ticket))"
+                         :class="{'active' : isSelectedTicket(ticket.id)}"
+                         v-for="ticket in tickets">
+                        <div class="ticketTitleBlock--info">
+                            <img :src="ticket.consultant.profile_picture"
+                                 :alt="ticket.consultant.first_name+' ' + ticket.consultant.last_name ">
+                            <div class="ticketTitleBlock--info__text">
+                                <h5 class="isansFont--faNum" v-if="isConsultant">
+                                    {{ticket.user.first_name + " " + ticket.user.last_name}}
+                                </h5>
+                                <h5 class="isansFont--faNum" v-else>
+                                    {{ticket.consultant.first_name + " " + ticket.consultant.last_name}}
+                                </h5>
+                                <p>{{ticket.title}}</p>
+                            </div>
+                        </div>
+                        <p class="ticketTitleBlock--date">
+                            {{getJalali(ticket.created).locale('fa').format('DD MMMM')}}
+                        </p>
+                    </div>
 
-                    <h5 class="isansFont--faNum">ایجاد تیکت جدید</h5>
-                    <form @submit="createFullTicketMessage($event)" class="isansFont--faNum">
-                        <label for="ticketTitle">عنوان تیکت :</label>
-                        <input id="ticketTitle" v-model="$v.newTicketInfo.title.$model" type="text">
-
-                        <label for="ticketConsultant">برای :</label>
-                        <select name="consultant" v-model="$v.newTicketInfo.consultant.$model" id="ticketConsultant">
-                            <option value="1">هادی طباطبایی</option>
-                            <option value="-1">پشتیبانی</option>
-                        </select>
-
-                        <label for="newTicketMessage">اولین پیام تیکت :</label>
-                        <textarea name="message" v-model="$v.newTicketInfo.newMessage.$model" id="newTicketMessage"
-                                  cols="30" rows="10"></textarea>
-
-                        <input type="submit" :disabled="$v.newTicketInfo.$anyError || !$v.newTicketInfo.$anyDirty" class="btn btn-block btn-success" value="ایجاد تیکت جدید">
-                    </form>
                 </div>
+                <transition name="slide-fade">
+                    <div class="mobileMessages" v-if="mobileMessagesShow">
+                        <button @click="setMobileMessageShow(false)" class="closeMobileMessagesButton isansFont--faNum">
+                            <span>تیکت ها</span>
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </button>
+                        <div class="mobileMessagesContent">
+                            <div class="content--texts">
+                                <div class="content-text"
+                                     :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
+                                     v-for="message in messagesForSelectedTicket">
+                                    <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
+                                         :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
+                                    <p class="isansFont--faNum">
+                                        {{message.text}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="newMessageWrapper isansFont--faNum">
+                                <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
+                                <i class="material-icons" role="button"
+                                   :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
+                                   @click="sendNewMessageToSelectedTicket()">send</i>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
             </div>
+
+            <div class="mobileNewTicketWrapper">
+                <button class="mobileTicketButton isansFont--faNum"
+                        @click="toggleShowNewTicket()">
+                    <i class="material-icons">add</i>
+                    <span>ایجاد تیکت جدید</span>
+                </button>
+
+                <div class="mobileMessagesWrapper" v-if="mobileMessagesShow">
+                    <div class="content--title">
+                        <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
+                        <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
+                    </div>
+                    <div class="content--texts">
+                        <div class="content-text"
+                             :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
+                             v-for="message in messagesForSelectedTicket">
+                            <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
+                                 :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
+                            <p class="isansFont--faNum">
+                                {{message.text}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="newMessageWrapper isansFont--faNum">
+                        <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
+                        <i class="material-icons" role="button"
+                           :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
+                           @click="sendNewMessageToSelectedTicket()">send</i>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--- show / hide new ticket modal --->
+            <transition name="slide-fade">
+                <div class="newTicketWrapper" v-if="showNewTicketModal" @click="toggleShowNewTicket($event)">
+                    <div class="newTicketModal" @click="">
+                        <button class="closeModalButton btn btn-sm btn-fab btn-fab-mini btn-round btn-simple">
+                            <i class="material-icons">close</i>
+                        </button>
+
+                        <h5 class="isansFont--faNum">ایجاد تیکت جدید</h5>
+                        <form @submit="createFullTicketMessage($event)" class="isansFont--faNum">
+                            <label for="ticketTitle">عنوان تیکت :</label>
+                            <input id="ticketTitle" v-model="$v.newTicketInfo.title.$model" type="text">
+
+                            <label for="ticketConsultant">برای :</label>
+                            <select name="consultant" v-model="$v.newTicketInfo.consultant.$model"
+                                    id="ticketConsultant">
+                                <option :value="consultant.id" v-for="consultant in availableConsultants">
+                                    {{consultant.first_name + " " + consultant.last_name}}
+                                </option>
+                            </select>
+
+                            <label for="newTicketMessage">اولین پیام تیکت :</label>
+                            <textarea name="message" v-model="$v.newTicketInfo.newMessage.$model" id="newTicketMessage"
+                                      cols="30" rows="10"></textarea>
+
+                            <input type="submit" :disabled="$v.newTicketInfo.$invalid"
+                                   class="btn btn-block btn-success" value="ایجاد تیکت جدید">
+                        </form>
+                    </div>
+                </div>
+            </transition>
         </div>
     </div>
 
@@ -126,12 +224,13 @@
                 tickets: [],
                 messages: [],
                 selectedTicket: {},
+                availableConsultants: [],
                 messagesForSelectedTicket: [],
                 newTicketInfo: {
                     title: '',
-                    consultant: '-1',
+                    consultant: '',
                     newMessage: '',
-                    file : null
+                    file: null
                 },
                 ticketNewMessageText: '',
 
@@ -142,7 +241,9 @@
                     messageText: '',
                     consultantId: '',
                     file: null,
-                }
+                },
+
+                mobileMessagesShow: false,
             }
         },
         computed: {
@@ -156,11 +257,7 @@
         created() {
             // console.log(this.$route.query);
             if (this.$route.query.newmessage != 'true') {
-                this.sendTicketsGet().then(response => {
-                    this.tickets = response.data;
-                    this.setSelectedTicketByIndex(0);
-                });
-                this.sendMessagesGet('', 'created');
+                this.initComp();
             } else {
                 console.log(this.$route.query);
                 this.fullMessageData.ticketTitle = this.$route.query.consultant + 'تیکت اتوماتیک برای مشاور با آیدی ';
@@ -175,23 +272,98 @@
             getJalali: function (date) {
                 return jalali(date);
             },
+
+            initComp: function () {
+                this.$loading(true);
+                this.sendTicketsGet().then(response => {
+                    this.tickets = response.data;
+                    if (this.tickets.length > 0) {
+                        this.setSelectedTicketByIndex(0);
+                    }
+                    this.getAvailableConsultants().then(consultantResponse => {
+                        console.log(consultantResponse);
+                        this.availableConsultants = consultantResponse.data;
+                    }).catch(consultantError => {
+                        console.log(consultantError.response);
+                    }).finally(() => {
+                        this.$loading(false);
+                    })
+                }).catch(error => {
+                    console.log(error);
+                    this.$loading(false);
+                });
+            },
+
             toggleShowNewTicket: function ($event) {
                 console.log($event);
                 if (this.showNewTicketModal) {
-                    if ($event.target.className === 'newTicketWrapper' || $event.target.innerText === 'close') {
+                    if ($event.target.innerText === 'close' || $event.target.className === 'newTicketWrapper') {
                         this.showNewTicketModal = !this.showNewTicketModal;
                     }
                 } else {
                     this.showNewTicketModal = !this.showNewTicketModal;
                 }
             },
+
+            closeNewTicketModal: function () {
+                this.showNewTicketModal = false;
+            },
+
+            openNewTicketModal: function () {
+                this.showNewTicketModal = true;
+            },
+
+            toggleMobileMessagesShow: function () {
+                this.mobileMessagesShow = !this.mobileMessagesShow;
+            },
+
+            setMobileMessageShow: function (mobileMessageShowStatus) {
+                this.mobileMessagesShow = mobileMessageShowStatus;
+            },
+
+            showMobileMessagesByTicket: function (ticketIndex) {
+                this.selectedTicket = this.tickets[ticketIndex];
+                console.log('mobile selected ticket : ', this.selectedTicket);
+                this.$loading(true);
+                this.sendMessagesGet(this.selectedTicket.id, 'created').then(response => {
+                    this.messagesForSelectedTicket = response.data;
+                    this.setMobileMessageShow(true);
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() => {
+                    this.$loading(false);
+                });
+            },
+
+            getAvailableConsultants: function () {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        url: this.$store.getters.getApi + 'ticket/consultants/',
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'JWT ' + this.$store.getters.getToken,
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        console.log('available consultants response:', response);
+                        resolve(response);
+                    }).catch(error => {
+                        console.log(error.response);
+                        reject(error);
+                    })
+                })
+            },
+
             setSelectedTicketByIndex: function (ticketIndex) {
                 this.selectedTicket = this.tickets[ticketIndex];
                 console.log('selected ticket : ', this.selectedTicket);
+                this.$loading(true);
                 this.sendMessagesGet(this.selectedTicket.id, 'created').then(response => {
                     this.messagesForSelectedTicket = response.data;
                 }).catch(error => {
                     console.log(error);
+                }).finally(() => {
+                    this.$loading(false);
                 })
             },
             sendNewMessageToSelectedTicket: function () {
@@ -201,6 +373,7 @@
                         this.sendMessagesGet(this.selectedTicket.id, 'created').then(response2 => {
                             // console.log('inside getting after posting a new message')
                             this.messagesForSelectedTicket = response2.data;
+                            this.ticketNewMessageText = '';
                         }).catch(error => {
                             console.log(error);
                         })
@@ -211,19 +384,25 @@
             },
             createFullTicketMessage: function ($event) {
                 $event.preventDefault();
-                if (!this.$v.newTicketInfo.$anyError && this.$v.newTicketInfo.$dirty) {
+                if (!this.$v.newTicketInfo.$invalid) {
+                    this.$loading(true);
                     this.sendPostTicketReq(this.newTicketInfo.title, this.newTicketInfo.consultant).then(response => {
                         this.sendPostMessageReq(response.data.id, this.newTicketInfo.file, this.newTicketInfo.newMessage).then(response2 => {
-                            this.$router.push('/user/messages');
+                            this.closeNewTicketModal();
+                            this.initComp();
+                            // this.$router.push('/user/messages');
                         }).catch(error2 => {
                             console.log(error2);
-                            console.log(error2.response)
+                            // console.log(error2.response)
+                        }).finally(() => {
+                            this.$loading(false);
                         });
                     }).catch(error => {
                         console.log(error);
-                        console.log(error.response);
+                        // console.log(error.response);
+                        this.$loading(false);
                     })
-                }else {
+                } else {
                     console.log('form is not valid');
                 }
             },
@@ -344,6 +523,23 @@
 
 <style scoped>
 
+    /* Enter and leave animations can use different */
+    /* durations and timing functions.              */
+    .slide-fade-enter-active {
+        transition: all 0.2s ease;
+    }
+
+    .slide-fade-leave-active {
+        transition: all 0.2s ease;
+    }
+
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active below version 2.1.8 */
+    {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+
     .messagesWrapper {
         background-color: white;
         border: 1.5px solid #ccc;
@@ -351,7 +547,7 @@
         padding-right: 0;
         padding-left: 0;
 
-        height: 624.5px;
+        height: 600px;
         overflow: auto;
 
         display: flex;
@@ -464,6 +660,8 @@
 
     .addTicketButton {
         justify-self: flex-end;
+        position: sticky;
+        bottom: 20px;
     }
 
     .contentWrapper {
@@ -472,6 +670,7 @@
         border-right: 0;
         padding-right: 0;
         padding-left: 0;
+        height: 600px;
     }
 
     .content--title {
@@ -521,7 +720,7 @@
 
     .content--texts {
         overflow: auto;
-        height: 500px;
+        height: calc(100% - 107px);
     }
 
     .consultant-text {
@@ -599,7 +798,8 @@
         background-color: white;
         border-radius: 10px;
 
-        min-width: 400px;
+        max-width: 400px;
+        width:80%;
 
         display: flex;
         align-items: center;
@@ -616,6 +816,8 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
+
+        width: 100%;
     }
 
     .newTicketModal input {
@@ -638,6 +840,8 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         padding: 5px;
+
+        width: 100%;
     }
 
     .closeModalButton {
@@ -646,5 +850,112 @@
         top: 5px;
     }
 
+    .mobileNewTicketWrapper {
+        display: none;
+    }
+
+    .mobileMessagesWrapper {
+        display: none;
+    }
+
+    .mobileTickets {
+        display: none;
+    }
+
+    .mobileMessages {
+        display: none;
+    }
+
+
+    @media only screen and (min-width: 0) and (max-width: 991.8px) {
+        .messagesWrapper {
+            overflow: hidden;
+            height: auto;
+            border-radius: 0;
+            border: none;
+        }
+
+        .mobileNewTicketWrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            height: 60px;
+            width: 100%;
+        }
+
+        .mobileTicketButton {
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+        }
+
+        .addTicketButton {
+            display: none;
+        }
+
+        .contentWrapper {
+            display: none;
+        }
+
+        .desktopTickets {
+            display: none;
+        }
+
+        .mobileTickets {
+            display: block;
+        }
+
+        .mobileTickets .ticketTitleSearchWrapper {
+            width: 100%;
+        }
+
+        .mobileMessages {
+            background-color: white;
+            position: fixed;
+            z-index: 9999;
+            display: flex;
+            height: calc(100% - 70px);
+            width: 100%;
+            left: 0;
+            top: 70px;
+        }
+
+        .closeMobileMessagesButton {
+            position: absolute;
+            left: 20px;
+            padding-left: 5px;
+            top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            background: #ea2c6d;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .mobileMessagesContent {
+            width: 100%;
+        }
+
+        .mobileMessagesContent .content--texts {
+            height: calc(100% - 60px);
+        }
+
+        .mobileMessagesContent .newMessageWrapper {
+            border-radius: 0;
+        }
+    }
 
 </style>

@@ -13,8 +13,8 @@ export default new Vuex.Store({
         userIsLoggedIn: false,
 
         userInfo: JSON.parse(localStorage.getItem('userInfo')) || {
-            "user_pk": '',
-            "is_consultant": '',
+            "id": '',
+            "user_type": '',
             'consultant': ''
         },
 
@@ -51,7 +51,7 @@ export default new Vuex.Store({
             state.userIsLoggedIn = false;
             state.user = {};
             state.inputUser = {};
-            state.userInfo = {"user_pk": '', "is_consultant": '', 'consultant': ''};
+            state.userInfo = {"id": '', "user_type": '', 'consultant': ''};
 
             localStorage.clear();
         },
@@ -73,18 +73,18 @@ export default new Vuex.Store({
             localStorage.setItem('expires', newExpires);
         },
 
-        setUserPk(state, pk) {
-            state.userInfo.user_pk = pk;
+        setUserId(state, id) {
+            state.userInfo.id = id;
             localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
-        setUserConsultantStatus(state, cs) {
-            state.userInfo.is_consultant = cs;
+        setUserType(state, userType) {
+            state.userInfo.user_type = userType;
             localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
-        setUserConsultantId(state, uci) {
-            state.userInfo.consultant = uci;
+        setUserConsultant(state, consultant) {
+            state.userInfo.consultant = consultant;
             localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
@@ -107,51 +107,32 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getUserKey({commit}) {
+        async getUserMeta({commit}) {
             console.log("Getting user key");
-            return new Promise((resolve, reject) => {
-                //performing get request
-                axios({
-                    url: this.getters.getApi + 'account/my-account/',
-                    method: 'GET',
-                    headers: {
-                        "Authorization": "JWT " + this.getters.getToken,
-                        "Content-Type": "application/json",
-                    }
-                })
-                    .then((response) => {
-                        console.log(response);
-                        commit('setUserPk', response.data.user_pk);
-                        commit('setUserConsultantStatus', response.data.is_consultant);
-                        commit('setUserConsultantId', response.data.consultant);
-                        resolve(response);
-                    }).catch((error) => {
-                    reject(error);
-                })
-            })
+
+            let result = await axios.get(`${this.getters.getApi}/auth/my-account/`, {
+                headers : {
+                    "Authorization" : `JWT ${this.getters.getToken}`
+                },
+                timeout : 5000
+            });
+            console.log(result);
+            commit('setUserId', result.data.id);
+            commit('setUserType', result.data.user_type);
+            commit('setUserConsultant', result.data.consultant);
         },
 
-        getUserWithKey({commit}, userKey) {
-            console.log("Getting user with key", userKey);
-            return new Promise((resolve, reject) => {
-                //performing get request
-                axios({
-                    url: this.getters.getApi + 'auth/accounts/' + userKey + '/',
-                    method: 'GET',
-                    headers: {
-                        "Authorization": "JWT " + this.getters.getToken,
-                        "Content-Type": "application/json",
-                    }
-                })
-                    .then((response) => {
-                        console.log(response);
-                        commit('setUser', response.data);
-                        commit('setInputUser', JSON.parse(JSON.stringify(response.data)));
-                        resolve(response);
-                    }).catch((error) => {
-                    reject(error);
-                })
-            })
+        async getUserWithId({commit}, userId) {
+            console.log("Getting user with key", userId);
+            let result = await axios.get(`${this.getters.getApi}/auth/accounts/${userId}/`, {
+                headers : {
+                    "Authorization" : `JWT ${this.getters.getToken}`
+                },
+                timeout: 5000
+            });
+            console.log(result);
+            commit('setUser', result.data);
+            commit('setInputUser', JSON.parse(JSON.stringify(result.data)));
         },
 
         async login({commit}, user) {

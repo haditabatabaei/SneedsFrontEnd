@@ -217,8 +217,8 @@
                         </div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row consultantListRow">
-                                <div class="col-sm-12" v-for="consultantPerson in consultantList">
-                                    <ConsultantBlock :consultant="consultantPerson"></ConsultantBlock>
+                                <div class="col-sm-12" v-for="(consultantPerson, index) in consultantList" :key="index">
+                                    <consultant-block :consultant="consultantPerson"></consultant-block>
                                 </div>
                             </div>
                         </div>
@@ -232,15 +232,11 @@
 <script>
     import axios from 'axios'
     import ConsultantBlock from '@/components/Consultant/ConsultantBlock';
-    import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
-    import CircleLoading from '@/components/NotifBlocks/CirlceLoading';
 
     export default {
         name: "ConsultantList",
         components: {
             ConsultantBlock,
-            RectNotifBlock,
-            CircleLoading
         },
         data() {
             return {
@@ -267,64 +263,9 @@
             },
         },
         created() {
-
-            this.$loading(true);
-
-            this.getListOfConsultants().then(response => {
-                window.console.log(response);
-                this.getListOfCountries().then(countriesRes => {
-                    window.console.log(countriesRes);
-                    this.getListOfUniversities().then(uniResponse => {
-                        window.console.log(uniResponse);
-                        this.getListOfFields().then(fieldResponse => {
-
-                            this.consultantList = response;
-                            this.countriesList = countriesRes;
-                            this.universitiesList = uniResponse;
-                            this.fieldOfStudiesList = fieldResponse;
-
-                        }).catch(fieldErr => {
-
-                            this.$notify({
-                                group: 'notif',
-                                type: "error",
-                                text: fieldErr.response,
-                                duration: 3000
-                            })
-                        }).finally(() => {
-                            this.$loading(false);
-                        })
-
-
-                    }).catch(uniError => {
-                        this.$loading(false);
-                        this.$notify({
-                            group: 'notif',
-                            type: "error",
-                            text: uniError.response,
-                            duration: 3000
-                        })
-                    });
-
-                }).catch(countriesErr => {
-                    this.$loading(false);
-                    this.$notify({
-                        group: 'notif',
-                        type: "error",
-                        text: countriesErr.response,
-                        duration: 3000
-                    })
-                })
-            }).catch(err => {
-                this.$loading(false);
-                this.$notify({
-                    group: 'notif',
-                    type: "error",
-                    text: 'خطایی هنگام ارتباط با سرور رخ داد',
-                    duration: 3000
-                })
-                // }
-            })
+            this.getListOfCountries();
+            this.getListOfFields();
+            this.getListOfUniversities();
         },
         methods: {
             generateQueryParameters: function () {
@@ -350,89 +291,30 @@
                 return query;
             },
 
-            doFilter(toggleIndicator) {
-
+            doFilter: async function(toggleIndicator) {
                 this.$loading(true);
-                console.log(this.generateQueryParameters());
-                this.sendUpdateRequestFilter(this.generateQueryParameters()).then(newList => {
-                    this.consultantList = newList;
-                    if (this.consultantList.length === 0) {
-                        this.$notify({
-                            group: 'notif',
-                            type: 'warn',
-                            title: 'لیست مشاوران : اخطار',
-                            text: 'متاسفانه مشاوری با این اطلاعات یافت نشد',
-                            duration: 3000
-                        });
-                    } else {
-                        this.$notify({
-                            group: 'notif',
-                            type: 'success',
-                            title: 'لیست مشاوران : موفق',
-                            text: 'لیست مشاوران با توجه به تنظیمات شما به روز رسانی شد.',
-                            duration: 3000
-                        });
-                        if (toggleIndicator) {
-                            this.toggleFilterPanel();
-                        }
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/?${this.generateQueryParameters()}`);
+                    console.log(result);
+                    this.consultantList = result.data;
+                    if(this.consultantList.length === 0) {
+                        this.printMessage("متاسفانه مشاوری با این اطلاعات یافت نشد.", "لیست مشاوران : اخطار", "warn", 4000, "notif");
                     }
-                }).catch(err => {
-                    this.$notify({
-                        group: 'notif',
-                        type: 'error',
-                        title: 'لیست مشاوران : خطا',
-                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
-                        duration: 3000
-                    });
-                }).finally(() => {
-                    this.$loading(false)
-                })
-            },
-
-            sendUpdateRequestFilter: function (query) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/consultant-profiles/?' + query,
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }).then(response => {
-                        resolve(response.data);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
+                } catch (e) {
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif");
+                } finally {
+                    this.$loading(false);
+                    if(toggleIndicator) {
+                        this.toggleFilterPanel();
+                    }
+                }
             },
 
             resetFilter: function (toggleIndicator) {
-                this.$loading(true);
                 this.addSelectPropertyToList(this.countriesList);
                 this.addSelectPropertyToList(this.universitiesList);
                 this.addSelectPropertyToList(this.fieldOfStudiesList);
-                this.getListOfConsultants().then(response => {
-                    this.consultantList = response;
-                    if (toggleIndicator) {
-                        this.toggleFilterPanel();
-                    }
-                    this.$notify({
-                        group: 'notif',
-                        type: 'success',
-                        title: 'لیست مشاوران : موفق',
-                        text: 'لیست مشاوران با تنظیمات شما به روز رسانی شد.',
-                        duration: 3000
-                    });
-                }).catch(error => {
-                    this.$notify({
-                        group: 'notif',
-                        type: 'error',
-                        title: 'لیست مشاوران : خطا',
-                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
-                        duration: 3000
-                    });
-                }).finally(() => {
-                    this.$loading(false);
-                })
+                this.getListOfConsultants(toggleIndicator);
             },
 
             addSelectPropertyToList(list) {
@@ -440,70 +322,73 @@
                     list[i].select = false;
                 }
             },
-            getListOfConsultants: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/consultant-profiles/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        resolve(response.data);
-                    }).catch(err => {
-                        reject(err);
-                    })
-                })
+
+            getListOfConsultants: async function (toggleIndicator) {
+                this.$loading(true);
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/`);
+                    this.consultantList = result.data;
+                    if (toggleIndicator) {
+                        this.toggleFilterPanel();
+                    }
+                } catch (e) {
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif")
+                } finally {
+                    this.$loading(false);
+                }
             },
 
-            getListOfCountries: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/countries/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        this.addSelectPropertyToList(response.data);
-                        resolve(response.data);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
+            getListOfCountries: async function () {
+                this.$loading(true);
+                try {
+                    this.$loading(true);
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/countries/`);
+                    this.addSelectPropertyToList(result.data);
+                    console.log(result);
+                    this.countriesList = result.data;
+                } catch (e) {
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
+                } finally {
+                    this.$loading(false);
+                }
             },
 
-            getListOfUniversities: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/universities/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        this.addSelectPropertyToList(response.data);
-                        resolve(response.data);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
+            getListOfUniversities: async function () {
+                this.$loading(true);
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/universities/`);
+                    this.addSelectPropertyToList(result.data);
+                    console.log(result);
+                    this.universitiesList = result.data;
+                } catch (e) {
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
+                } finally {
+                    this.$loading(false);
+
+                }
             },
 
-            getListOfFields: function () {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/field-of-studies/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        this.addSelectPropertyToList(response.data);
-                        resolve(response.data);
-                    }).catch(error => {
-                        reject(error);
-                    })
+            getListOfFields: async function () {
+                this.$loading(true);
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
+                    this.addSelectPropertyToList(result.data);
+                    console.log(result);
+                    this.fieldOfStudiesList = result.data;
+                } catch (e) {
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
                 })
             },
 

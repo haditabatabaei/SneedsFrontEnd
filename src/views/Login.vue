@@ -71,6 +71,12 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-12 text-center mt-10 mb-10">
+                                        <router-link to="/register" class="isansFont text-rose">حساب کاربری ندارید؟ برای ایجاد کلیک کنید.</router-link>
+                                    </div>
+                                </div>
+
                             </div>
                         </form>
 
@@ -101,8 +107,7 @@
                                         <input type="submit" class="btn btn-rose isansFont" value="ارسال ایمیل فراموشی">
                                     </div>
                                     <div class="col-sm-6 text-center">
-                                        <button @click.prevent="toggleResetPassword()"
-                                                class="forgetPassButton btn btn-rose isansFont btn-simple btn-sm">
+                                        <button @click.prevent="toggleResetPassword()" class="forgetPassButton btn btn-rose isansFont btn-simple btn-sm">
                                             ورود
                                         </button>
                                     </div>
@@ -165,7 +170,11 @@
                     } catch (e) {
                         console.log(e.response);
                         this.$loading(false);
-                        this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ورود: خطا", "error", 3000, "notif");
+                        if(e.response.data) {
+                            this.printMessage(e.response.data.detail, "ورود: خطا", "error", 3000, "notif");
+                        } else {
+                            this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ورود: خطا", "error", 3000, "notif");
+                        }
                     }
                 } else {
                     this.$loading(false);
@@ -203,66 +212,29 @@
                 this.loginOrReset = !this.loginOrReset;
             },
 
-            resetPassword: function () {
+            resetPassword: async function () {
                 this.$loading(true);
-                if (!this.$v.userToLogin.email.$error) {
-                    let payload = {
-                        "email": this.userToLogin.email,
-                    };
-                    console.log('payload', payload);
-
-                    this.sendResetPassRequest(payload).then(response => {
-                        console.log(response);
-                        this.$notify({
-                            group: 'notif',
-                            duration: 5000,
-                            type: 'success',
-                            title: 'بازیابی رمز عبور : موفق',
-                            text: 'تا لحظات آینده یک ایمیل حاوی مراحل دریافت رمز جدید برایتان ارسال می شود. لطفا پوشه اسپم را نیز چک کنید.'
-                        });
-                    }).catch(error => {
-                        console.log(error);
-
-                        this.$notify({
-                            group: 'notif',
-                            duration: 3000,
-                            type: 'error',
-                            title: 'بازیابی رمز عبور : خطا',
-                            text: 'خطایی هنگام ارتباط با سرور رخ داد'
-                        });
-
-                    }).finally(() => {
-                        this.$loading(false)
-                    });
-
+                this.submitted = true;
+                if (!this.emailIsInvalid) {
+                    try {
+                        let resetResult = await axios.post(`${this.$store.getters.getApi}/auth/password-reset/`, {"email" : this.userToLogin.email} ,{timeout : 5000});
+                        this.printMessage("تا لحظاتی دیگر یک ایمیل حاوی مراحب دریافت رمز جدید برایتان ارسال می شود. لطفا پوشه اسپم خود را نیز چک کنید.", "بازیابی رمز عبور: موفق", "success", 6000, "notif");
+                        this.$loading(false);
+                        console.log(resetResult);
+                    } catch(e) {
+                        this.$loading(false);
+                        console.log(e.response);
+                        if(e.response.data) {
+                            this.printMessage(this.stringifyError(e.response.data), "بازیابی رمز عبور: خطا", "error", 3000, "notif");
+                        } else {
+                            this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "بازیابی رمز عبور: خطا", "error", 3000, "notif");
+                        }
+                    }
                 } else {
                     this.$loading(false);
-                    this.$notify({
-                        group: 'notif',
-                        duration: 3000,
-                        type: 'warn',
-                        title: 'بازیابی رمز عبور : اخطار',
-                        text: 'لطفا اطلاعات خود را به درستی پر کنید.'
-                    });
+                    this.printMessage("لطفا ایمیل خود را به درستی وارد کنید.", "بازیابی رمز عبور: اخطار", "warn", 3000, "notif");
                 }
             },
-
-            sendResetPassRequest: function (payload) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'auth/password-reset/',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        data: payload,
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
-            }
         },
         computed: {
             loginFormIsInvalid() {

@@ -20,7 +20,7 @@
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video">
-                <iframe :src="getVideoFrameLink(consultant.aparat_link)"></iframe>
+                <iframe :src="getVideoFrameLink(consultant.aparat_link)" />
 
                 <router-link class="consultantDescBlock--main_videoLink" to="">
                     <!--                    <i class="material-icons">play_circle_filled</i>-->
@@ -77,7 +77,9 @@
                 this.showSummary = !this.showSummary;
             },
             getVideoFrameLink(aparatLink) {
-                return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
+                if(aparatLink != null) {
+                    return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
+                } else return "";
             },
         }
     }

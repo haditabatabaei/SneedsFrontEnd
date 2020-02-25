@@ -45,19 +45,19 @@
                             <ul>
                                 <li :class="[{'active' : activeSection === 'desc'}]">
                                     <button @click="smoothScrollToPos(getElementOffsetTop('descBlock'))">مشخصات</button>
-                                    <span class="line"></span>
+                                    <span class="line" />
                                 </li>
                                 <li :class="[{'active' : activeSection === 'calendar'}]">
                                     <button @click="smoothScrollToPos(getElementOffsetTop('calendarBlock'))">تقویم
                                         مشاور و رزرو
                                     </button>
-                                    <span class="line"></span>
+                                    <span class="line" />
                                 </li>
                                 <li :class="[{'active' : activeSection === 'comments'}]">
                                     <button @click="smoothScrollToPos(getElementOffsetTop('commentsBlock'))">
                                         نظرات
                                         <sub>{{consultant.comment_number}}</sub>
-                                        <span class="line"></span>
+                                        <span class="line" />
                                     </button>
                                 </li>
                             </ul>
@@ -103,23 +103,23 @@
                 <div class="col-md-9">
                     <div class="row" id="descBlock">
                         <div class="col-md-12">
-                            <ConsultantDescBlock :consultant="consultant" v-if="consultant.id"></ConsultantDescBlock>
+                            <consultant-desc-block :consultant="consultant" v-if="consultant.id" />
                         </div>
                     </div>
 
                     <div class="row" id="calendarBlock">
                         <div class="col-md-12">
-                            <UserCalendar
+                            <user-calendar
                                  v-if="consultant.id"
                                  :consultantId="consultant.id"
                                  @get-slots="setSlot">
-                            </UserCalendar>
+                            </user-calendar>
                         </div>
                     </div>
 
                     <div class="row" id="commentsBlock">
                         <div class="col-md-12">
-                            <CommentSection :consultant="consultant" v-if="consultant.id"></CommentSection>
+                            <comment-section :consultant="consultant" v-if="consultant.id" />
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,6 @@
 <script>
     import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
-    import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock';
     import ConsultantInfoBlock from '@/components/Consultant/ConsultantInfoBlock'
     import ConsultantTitle from '@/components/Consultant/ConsultantTitle'
     import UserCalendar from '@/components/Consultant/UserCalendar'
@@ -142,7 +141,7 @@
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, RectNotifBlock, ConsultantDescBlock, ConsultantInfoBlock, ConsultantTitle, UserCalendar
+            CommentSection, ConsultantDescBlock, ConsultantInfoBlock, ConsultantTitle, UserCalendar
         },
         data() {
             return {
@@ -175,23 +174,8 @@
             document.addEventListener('scroll', this.handleScroll, false);
             console.log(this.scrollListener);
             console.log('consultant profile created hook called');
-            this.$loading(true);
-            this.getConsultantBySlug(this.$route.params.consultantSlug).then(response => {
-                this.consultant = response.data;
-                console.log('calling number discounts:');
-                this.getListOfNumberDiscounts().then(numberDis => {
-                    console.log('resolved from number discount :', numberDis);
-                    this.listOfDiscounts = numberDis;
-                }).catch(error => {
-                    console.log(error);
-                }).finally(() => {
-                    this.$loading(false);
-                })
-            }).catch(error => {
-                window.console.log(error.response);
-                this.$loading(false);
-            });
-
+            this.getConsultantBySlug(this.$route.params.consultantSlug);
+            this.getListOfNumberDiscounts();
         },
         beforeDestroy() {
             document.removeEventListener('scroll', this.handleScroll, false);
@@ -320,25 +304,18 @@
                 return document.getElementById(elemId).offsetTop + 20;
             },
 
-            getListOfNumberDiscounts: function () {
-                console.log('axios is going to call before promise')
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'discount/time-slot-sale-number-discounts/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }).then(response => {
-                        console.log('number response : ', response.data);
-                        resolve(response.data)
-                    }).catch(error => {
-                        console.log(error);
-                        if (error.response)
-                            console.log(error.response);
-                        reject(error);
-                    })
-                })
+            getListOfNumberDiscounts: async function () {
+                this.$loading(true);
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/discount/time-slot-sale-number-discounts/`);
+                    console.log(result);
+                    this.listOfDiscounts = result.data;
+                } catch (e) {
+                    console.log(e.response);
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "تخفیفات : خطا", "error", 3000, "notif")
+                } finally {
+                    this.$loading(false);
+                }
             },
 
 
@@ -376,19 +353,27 @@
                 this.activeSection = newSec;
             },
 
-            getConsultantBySlug(consultantSlug) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'account/consultant-profiles/' + consultantSlug + '/',
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
-                    })
+            getConsultantBySlug: async function(consultantSlug) {
+                this.$loading(true);
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}`);
+                    this.consultant = result.data;
+                    console.log(result);
+                } catch(e) {
+                    console.log(e.response);
+                    this.printMessage("خطایی هنگام ارتبا با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
                 })
             },
         }

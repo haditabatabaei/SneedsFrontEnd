@@ -3,7 +3,10 @@ import Router from 'vue-router'
 import Home from "@/views/Home";
 import Login from '@/views/Login';
 import Register from '@/views/Register';
-import UserProfile from '@/views/UserProfile';
+
+import UserLayout from '@/layouts/UserLayout';
+import UserStatus from '@/views/UserStatus';
+
 import ResetPassword from "@/views/ResetPassword";
 import Error404 from '@/views/Error404';
 
@@ -41,9 +44,16 @@ let router = new Router({
             component: Register,
         },
         {
-            path: '/user/profile',
-            name: 'UserProfile',
-            component: UserProfile,
+            path : '/user',
+            redirect : '/user/status',
+            component : UserLayout,
+            children : [
+                {
+                    path : 'status',
+                    name : 'UserStatus',
+                    component : UserStatus
+                }
+            ]
         },
         {
             path: '/user/consultantmanager',

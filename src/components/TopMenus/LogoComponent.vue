@@ -1,6 +1,6 @@
 <template>
     <router-link to="/" class="logo isansFont--faNum">
-        <img class="logoImage" src="http://185.209.243.97/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
+        <img class="logoImage" src="../../../public/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
         <span class="logoName">اسنیدز</span>
     </router-link>
 </template>

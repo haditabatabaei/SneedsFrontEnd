@@ -1,5 +1,5 @@
 <template>
-    <nav class="topNavWrapper" :class="">
+    <nav class="topNavWrapper">
         <div class="container navbarContainer">
             <div class="mobileNavbarToggleWrapper">
                 <transition name="fade" mode="out-in">
@@ -10,7 +10,7 @@
                 </transition>
             </div>
             <div class="LogoWrapper">
-                <Logo></Logo>
+                <Logo />
             </div>
             <div class="menuWrapper">
                 <ul class="menuList isansFont">
@@ -19,13 +19,13 @@
                         <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
                            data-toggle="dropdown menuList--linkItem">
                             <span>{{item.itemName}}</span>
-                            <b class="caret"></b>
+                            <b class="caret" />
                         </a>
 
                         <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
                            class="dropdown-toggle menuList--linkItem" target="_blank" data-toggle="dropdown">
                             <span>{{item.itemName}}</span>
-                            <b class="caret"></b>
+                            <b class="caret" />
                         </a>
 
                         <router-link v-else-if="!item.hasDropdown && item.type === 'router'" :to="item.target"

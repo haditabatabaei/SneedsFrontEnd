@@ -22,9 +22,9 @@ export default new Vuex.Store({
 
         user: {},
 
-        api: 'http://185.209.243.97:8000/',
+        api: 'http://37.152.182.253:8000',
 
-        authApi: 'http://185.209.243.97:8000/',
+        authApi: 'http://37.152.182.253:8000',
 
         cart: null,
 
@@ -154,46 +154,21 @@ export default new Vuex.Store({
             })
         },
 
-        login({commit}, user) {
-            return new Promise((resolve, reject) => {
-                //setting payload
-                window.console.log("login payload :", user);
-
-                //performing post login request
-                axios({url: this.getters.getApi + 'auth/jwt/token/', data: user, method: 'POST'})
-                    .then((response) => {
-                        commit('setToken', response.data.token);
-                        commit('setExpires', response.data.expires);
-                        commit('setLoggedInStatus', true);
-                        this.dispatch('getCart').then(cartResponse => {
-                            // commit('setCart', cartResponse.data[0]);
-                            resolve(response);
-                        }).catch(cartError => {
-                            console.log(cartError);
-                            resolve(response);
-                        });
-                    }).catch((error) => {
-                    reject(error);
-                })
-            })
+        async login({commit}, user) {
+            console.log("login payload :", user);
+            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`, user, {timeout: 5000});
+            console.log(loginResult);
+            commit('setToken', loginResult.data.token);
+            commit('setExpires', loginResult.data.expires);
+            commit('setLoggedInStatus', true);
         },
 
-        register({commit}, user) {
-            return new Promise((resolve, reject) => {
-                //setting payload
-                window.console.log("register payload :", user);
-
-                //performing post register request
-                axios({url: this.getters.getApi + 'auth/accounts/', data: user, method: 'POST'})
-                    .then((response) => {
-                        commit('setToken', response.data.token_response.token);
-                        commit('setExpires', response.data.token_response.expires);
-                        commit('setLoggedInStatus', true);
-                        resolve(response);
-                    }).catch((error) => {
-                    reject(error);
-                })
-            })
+        async register({commit}, user) {
+            console.log("register payload", user);
+            let registerResult = await axios.post(`${this.getters.getApi}/auth/accounts/`, user, {timeout : 5000});
+            commit('setToken', registerResult.data.token_response.token);
+            commit('setExpires', registerResult.data.token_response.expires);
+            commit('setLoggedInStatus', true);
         },
 
         edit({commit}, user) {

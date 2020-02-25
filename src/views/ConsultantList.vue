@@ -218,7 +218,7 @@
                         <div class="col-sm-9 col-xs-12">
                             <div class="row consultantListRow">
                                 <div class="col-sm-12" v-for="(consultantPerson, index) in consultantList" :key="index">
-                                    <consultant-block :consultant="consultantPerson"></consultant-block>
+                                    <consultant-block :consultant="consultantPerson" />
                                 </div>
                             </div>
                         </div>
@@ -263,6 +263,7 @@
             },
         },
         created() {
+            this.getListOfConsultants();
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();

@@ -166,7 +166,7 @@
                         await this.$store.dispatch('login', this.userToLogin);
                         this.printMessage("شما با موفقیت وارد شدید.", "ورود: موفق", "success", 3000, "notif");
                         this.$loading(false);
-                        this.$router.push('/user/profile')
+                        this.$router.push('/user/status')
                     } catch (e) {
                         console.log(e.response);
                         this.$loading(false);

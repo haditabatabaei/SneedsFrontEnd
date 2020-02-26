@@ -6,6 +6,7 @@ import Register from '@/views/Register';
 
 import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
+import UserProfile from '@/views/User/UserProfile';
 
 import ResetPassword from "@/views/ResetPassword";
 import Error404 from '@/views/Error404';
@@ -45,13 +46,18 @@ let router = new Router({
         },
         {
             path : '/user',
-            redirect : '/user/status',
+            redirect : '/user/profile',
             component : UserLayout,
             children : [
                 {
                     path : 'status',
                     name : 'UserStatus',
                     component : UserStatus
+                },
+                {
+                    path : 'profile',
+                    name : 'UserProfile',
+                    component : UserProfile
                 }
             ]
         },

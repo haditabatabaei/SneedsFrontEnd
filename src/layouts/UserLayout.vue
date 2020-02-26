@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <router-view />
+                    <router-view :key="$route.fullPath" />
                 </div>
             </div>
         </div>
@@ -46,13 +46,11 @@
         data: function () {
             return {
                 sideBarItems : [
-                    {name : "آخرین وضعیت", target: '/user/stats',  icon : 'circle', tag: 0, hasSubmenu: true, submenu: [
-                            {name : 'وضعیت پروسه اپلای', target: '/user/stats/apply', icon : 'circle', tag: 0,},
-                            {name : 'وضعیت پروسه رزومه', target: '/user/stats/resume', icon : 'circle', tag : 1},
-                        ]},
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
-                    {name : "ارتباط با مشاور", target: '', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
-                    {name : "مدارک", target: '', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
+                    {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/user/payments',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
             }
         },

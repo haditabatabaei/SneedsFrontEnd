@@ -152,28 +152,18 @@ export default new Vuex.Store({
             commit('setLoggedInStatus', true);
         },
 
-        edit({commit}, user) {
-            return new Promise((resolve, reject) => {
-                //setting payload
-                window.console.log("edit payload :", user);
-
-                //performing post register request
-                axios({
-                    url: this.getters.getApi + 'auth/accounts/' + this.getters.getUserInfo.user_pk + '/',
-                    data: user,
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': 'JWT ' + this.getters.getToken,
-                        'Content-Type': 'application/json',
-                    }
-                })
-                    .then((response) => {
-
-                        resolve(response);
-                    }).catch((error) => {
-                    reject(error);
-                })
-            })
+        async edit({commit}, user) {
+            console.log('update user with ', user);
+            let editResult = await axios.put(
+                `${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}`,
+                user,
+                {
+                    headers : {
+                        "Authorization" : `JWT ${this.getters.getToken}`
+                    },timeout: 5000
+                }
+            );
+            console.log(editResult);
         },
 
         putCartRequest({commit}, config) {
@@ -268,11 +258,9 @@ export default new Vuex.Store({
 
         getCart: state => state.cart,
 
-        getApi:
-            state => state.api,
+        getApi: state => state.api,
 
-        getAuthApi:
-            state => state.authApi,
+        getAuthApi: state => state.authApi,
 
         getStash: state => state.stash,
 

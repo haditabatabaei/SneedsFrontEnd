@@ -156,25 +156,25 @@
                 window.console.log('login pressed');
                 this.$v.$touch();
                 this.submitted = true;
-                this.$loading(true);
 
                 console.log(this.loginFormIsInvalid);
 
                 if (!this.loginFormIsInvalid) {
                     window.console.log("dispatching login with payload");
                     try {
+                        this.$loading(true);
                         await this.$store.dispatch('login', this.userToLogin);
                         this.printMessage("شما با موفقیت وارد شدید.", "ورود: موفق", "success", 3000, "notif");
-                        this.$loading(false);
-                        this.$router.push('/user/status')
+                        this.$router.push('/user')
                     } catch (e) {
                         console.log(e.response);
-                        this.$loading(false);
-                        if(e.response.data) {
+                        if(e.response && e.response.data) {
                             this.printMessage(e.response.data.detail, "ورود: خطا", "error", 3000, "notif");
                         } else {
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ورود: خطا", "error", 3000, "notif");
                         }
+                    } finally {
+                        this.$loading(false);
                     }
                 } else {
                     this.$loading(false);
@@ -190,16 +190,6 @@
                 return string;
             },
 
-            printMessage(text, title, type, duration, group) {
-                this.$notify({
-                    group: group,
-                    text: text,
-                    title: title,
-                    type: type,
-                    duration: duration
-                })
-            },
-
             togglePassType: function () {
                 if (this.passType == 'password') {
                     this.passType = 'text'
@@ -210,6 +200,16 @@
 
             toggleResetPassword: function () {
                 this.loginOrReset = !this.loginOrReset;
+            },
+
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
+                })
             },
 
             resetPassword: async function () {

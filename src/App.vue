@@ -1,14 +1,14 @@
 <template>
     <div>
-        <notifications group="notif" position="bottom right" classes="notif isansFont"></notifications>
-        <TopMenu></TopMenu>
+        <notifications group="notif" position="bottom right" classes="notif isansFont" />
+        <TopMenu />
         <transition
                 name="fade"
                 mode="out-in"
         >
-            <router-view :key="$route.fullPath"/>
+            <router-view :key="$route.fullPath" />
         </transition>
-        <Footer></Footer>
+        <Footer />
     </div>
 
 </template>

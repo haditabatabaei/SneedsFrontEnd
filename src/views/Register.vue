@@ -152,23 +152,22 @@
             register: async function () {
                 this.$v.$touch();
                 this.submitted = true;
-                this.$loading(true);
-                // console.log(th)
 
                 if (!this.registerFormIsInvalid) {
                     try {
+                        this.$loading(true);
                         await this.$store.dispatch('register', this.userToRegister);
-                        this.$loading(false);
                         this.printMessage("شما با موفقیت ثبت نام کردید ، به پروفایل خود منتقل خواهید شد.", "ثبت نام :‌ موفق", "success", 3000, "notif");
-                        this.$router.push('/user/profile');
+                        this.$router.push('/user');
                     } catch (e) {
-                        this.$loading(false);
+                        console.log(e.response);
                         if(e.response.data) {
                             this.printMessage( this.stringifyError(e.response.data), "ثبت نام :‌ خطا", "error", 3000, "notif");
                         } else {
                             this.printMessage( "خطایی هنگام ارتباط با سرور رخ داد.", "ثبت نام :‌ خطا", "error", 3000, "notif");
                         }
-
+                    } finally {
+                        this.$loading(false);
                     }
                 } else {
                     this.$loading(false);

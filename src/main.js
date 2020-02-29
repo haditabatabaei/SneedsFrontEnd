@@ -5,11 +5,14 @@ import store from './store'
 import './registerServiceWorker'
 import Vuelidate from 'vuelidate'
 import Notifications from 'vue-notification'
-import VueLoading from 'vuejs-loading-plugin'
+import VueLoading from 'vuejs-loading-plugin';
+import VueWindowSize from 'vue-window-size';
+
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(Notifications);
+Vue.use(VueWindowSize);
 Vue.use(VueLoading, {
     text: 'صبر کنید...',
     classes : ['isansFont']

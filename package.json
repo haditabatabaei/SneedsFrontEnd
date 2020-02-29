@@ -21,6 +21,7 @@
     "vue-notification": "^1.3.16",
     "vue-router": "^3.0.3",
     "vue-star-rating": "^1.6.1",
+    "vue-window-size": "^0.2.5",
     "vue2-smooth-scroll": "^1.1.0",
     "vuejs-loading-plugin": "^1.0.51",
     "vuelidate": "^0.7.4",

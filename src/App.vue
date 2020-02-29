@@ -1,7 +1,7 @@
 <template>
     <div>
         <notifications group="notif" position="bottom right" classes="notif isansFont" />
-        <TopMenu />
+        <top-menu />
         <transition
                 name="fade"
                 mode="out-in"
@@ -16,12 +16,12 @@
 <script>
     import TopMenu from "@/components/TopMenus/TopMenu";
     import Footer from "@/components/StandAlone/Footer";
-    import TopMessage from '@/components/TopMenus/TopMessage';
 
     export default {
         name: 'App',
         components: {
-            TopMenu, Footer, TopMessage
+            "top-menu" : TopMenu,
+            Footer
         }
     }
 </script>

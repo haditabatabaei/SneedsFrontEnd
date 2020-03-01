@@ -1,5 +1,4 @@
 <template>
-    <div class="row">
         <div class="col-md-12 infoBlock">
             <form @submit.prevent="updateUser" class="info-form isansFont">
                 <div class="row">
@@ -52,7 +51,6 @@
                 </div>
             </form>
         </div>
-    </div>
 </template>
 
 <script>
@@ -235,5 +233,11 @@
 
     .info-input:focus {
         border-color: #9038CC
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .infoBlock {
+            box-shadow: none;
+        }
     }
 </style>

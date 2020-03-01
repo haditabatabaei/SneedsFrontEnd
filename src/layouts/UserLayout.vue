@@ -1,8 +1,8 @@
 <template>
     <section class="profileWrapper">
-        <div class="container">
+        <div class="container" v-if="windowWidth > 991.8">
             <div class="row">
-                <div class="col-md-3 sidebarWrapper">
+                <div class="col-md-3 sidebarWrapperDesktop">
                     <div class="userSidebarBlock">
                         <div class="userSidebarBlock--info">
                             <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
@@ -16,8 +16,22 @@
                             </div>
                         </div>
                         <div class="userSidebarBlock--links isansFont--faNum">
-                            <ul class="userSidebarBlock--links-menu">
-                                <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]" v-for="(item, index) in sideBarItems" :key="index">
+                            <ul class="userSidebarBlock--links-menu" v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">
+                                <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]" v-for="(item, index) in userSidebarItems" :key="index">
+                                    <span :class="item.icon" />
+                                    <router-link :to="item.target">{{item.name}}</router-link>
+                                    <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
+                                    <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
+                                        <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
+                                            <span :class="subItem.icon" />
+                                            <router-link :to="subItem.target">{{subItem.name}}</router-link>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="userSidebarBlock--links-menu" v-else-if="userInfo.user_type === 'consultant'">
+                                <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]" v-for="(item, index) in consultantSidebarItems" :key="index">
                                     <span :class="item.icon" />
                                     <router-link :to="item.target">{{item.name}}</router-link>
                                     <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
@@ -33,9 +47,49 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <router-view :key="$route.fullPath" />
+                    <div class="row">
+                        <router-view :key="$route.fullPath" class="mobile-view" />
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="mobile" v-else>
+            <div class="mobile-info">
+                <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
+                <h1 class="isansFont--faNum">
+                    {{user.first_name + " " + user.last_name}}
+                </h1>
+                <h4 class="isansFont--faNum">
+                    <router-link to="/profile/settings">تکمیل اطلاعات ></router-link>
+                </h4>
+            </div>
+            <div class="mobile-menu">
+                <ul class="userSidebarBlock--links-menu" v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">
+                    <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]" v-for="(item, index) in userSidebarItems" :key="index">
+                        <router-link :to="item.target">{{item.name}}</router-link>
+                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
+                        <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
+                            <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
+                                <router-link :to="subItem.target">{{subItem.name}}</router-link>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="userSidebarBlock--links-menu" v-else-if="userInfo.user_type === 'consultant'">
+                    <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]" v-for="(item, index) in consultantSidebarItems" :key="index">
+                        <router-link :to="item.target">{{item.name}}</router-link>
+                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
+                        <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
+                            <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
+                                <router-link :to="subItem.target">{{subItem.name}}</router-link>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <router-view class="mobile-view" :key="$route.fullPath" />
         </div>
     </section>
 </template>
@@ -45,13 +99,22 @@
         name: "UserLayout",
         data: function () {
             return {
-                sideBarItems : [
+                userSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
                     {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پرداخت های قبلی", target: '/user/payments',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
+
+                consultantSidebarItems : [
+                    {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
+                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
+                    {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/user/payments',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []}
+                ]
             }
         },
         methods: {
@@ -68,6 +131,9 @@
             user: function () {
                 return this.$store.getters.getUser;
             },
+            userInfo: function() {
+                return this.$store.getters.getUserInfo;
+            }
         },
 
         mounted() {
@@ -281,9 +347,96 @@
     }
 
     @media only screen and (max-width: 991.8px) {
-        .sidebarWrapper  {
-            /*padding-right: 0;*/
-            /*padding-left: 0;*/
+        .mobile {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background-color: white;
+        }
+
+        .mobile-info {
+            display: flex;
+            width: 100%;
+            height: 300px;
+            background-color: #9038CC;
+            flex-direction: column;
+            align-items:center;
+            justify-content: center;
+        }
+
+        .mobile-info h1 {
+            font-size: 1.7rem;
+            margin : 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .mobile-info h4 {
+            margin-top:10px;
+            font-weight: bold;
+        }
+
+        .mobile-info h4 a {
+            font-size : 1.2rem;
+            color: white;
+        }
+
+        .mobile-info span {
+            font-size: 12px;
+            background-color: #f0f0f0;
+            color: #bababa;
+            border-radius: 30px;
+            padding: 3px 20px;
+        }
+
+        .mobile-info img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mobile-menu {
+            width: 100%;
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        .mobile-menu::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        /* Track */
+        .mobile-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        .mobile-menu::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        .mobile-menu::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .userSidebarBlock--links-menu {
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .userSidebarBlock--links-menuitem {
+            padding-right: 20px;
+            padding-left:20px;
+            font-family: "IRANSansWebFaNum Medium";
+        }
+
+        .mobile-view {
+            width: 100%;
         }
     }
 </style>

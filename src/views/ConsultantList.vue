@@ -4,7 +4,7 @@
             <div class="section">
                 <div class="container">
                     <div class="row" style="margin-top:30px;">
-                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="!minimizedFiltering">
+                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="windowWidth > 767.8">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group filterPanel" id="filterPanel" role="tablist"
                                  aria-multiselectable="true">
@@ -28,7 +28,7 @@
                                     <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
                                          aria-labelledby="countryFilter" aria-expanded="true" style="height: 0;">
                                         <div class="panel-body">
-                                            <div class="filterCheckWrapper isansFont" v-for="country in countriesList">
+                                            <div class="filterCheckWrapper isansFont" v-for="(country, index) in countriesList" :key="index">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="country.name"
                                                            v-model="country.select" @change="doFilter()">
@@ -56,7 +56,7 @@
                                          aria-labelledby="universityFilter" aria-expanded="true" style="height: 0;">
                                         <div class="panel-body">
                                             <div class="filterCheckWrapper isansFont"
-                                                 v-for="university in universitiesList">
+                                                 v-for="(university, index) in universitiesList" :key="index">
                                                 <label>
                                                     <input type="checkbox" name="country" :value="university.name"
                                                            v-model="university.select" @change="doFilter()">
@@ -84,7 +84,7 @@
                                          aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
                                         <div class="panel-body">
                                             <div class="isansFont filterCheckWrapper"
-                                                 v-for="field in fieldOfStudiesList">
+                                                 v-for="(field, index) in fieldOfStudiesList" :key="index">
                                                 <label :title="field.description">
                                                     <input type="checkbox" name="country" :value="field.name"
                                                            v-model="field.select" @change="doFilter()">
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-else>
+                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-if="windowWidth < 767.8">
                             <div class="bottomFilterColumnTitle" @click="toggleFilterPanel()">
                                 <p class="isansFont filterColumnTitle">
                                     <i class="material-icons">note</i>
@@ -136,7 +136,7 @@
                                              aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
                                             <div class="panel-body" style="background-color:#f7f7f7">
                                                 <div class="filterCheckWrapper isansFont"
-                                                     v-for="country in countriesList">
+                                                     v-for="(country, index) in countriesList" :key="index">
                                                     <label>
                                                         <input type="checkbox" name="country" :value="country.name"
                                                                v-model="country.select">
@@ -166,7 +166,7 @@
                                             <div class="panel-body" style="background-color:#f7f7f7">
 
                                                 <div class="filterCheckWrapper isansFont"
-                                                     v-for="university in universitiesList">
+                                                     v-for="(university, index) in universitiesList" :key="index">
                                                     <label>
                                                         <input type="checkbox" name="university"
                                                                :value="university.name"
@@ -195,7 +195,7 @@
                                              style="height: 0;">
                                             <div class="panel-body" style="background-color:#f7f7f7">
                                                 <div class="filterCheckWrapper isansFont"
-                                                     v-for="field in fieldOfStudiesList">
+                                                     v-for="(field, index) in fieldOfStudiesList" :key="index">
                                                     <label>
                                                         <input type="checkbox" name="field" :value="field.name"
                                                                v-model="field.select">
@@ -295,7 +295,7 @@
             doFilter: async function(toggleIndicator) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/?${this.generateQueryParameters()}`);
+                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters()}`);
                     console.log(result);
                     this.consultantList = result.data;
                     if(this.consultantList.length === 0) {
@@ -327,7 +327,7 @@
             getListOfConsultants: async function (toggleIndicator) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/`);
+                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
                     this.consultantList = result.data;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();

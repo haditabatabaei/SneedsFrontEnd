@@ -19,10 +19,10 @@
                 <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
             </div>
         </div>
-        <div class="myTable isansFont">
+        <div class="myTable isansFont" v-if="days.length != 0">
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="day in tableDataArray">
+                <div class="myTableCell dayTitleCell" v-for="(day, index) in tableDataArray" :key="index">
                     <p>{{day.format('dddd')}}</p>
                     <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
                 </div>
@@ -33,22 +33,21 @@
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
-                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
-                            class="myTableSemiCell timeNotAvailable"
+                        v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
+                        class="myTableSemiCell timeNotAvailable"
                     ></div>
 
                     <div
-                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
-                            :class="[
+                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                        @click="itemClickHandler(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                        :class="[
                         {'timeOpen' : !isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},
                         {'timeSelected' : isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},
                         ]"
                     ></div>
 
                     <div
-                            v-else="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                            class="myTableSemiCell timeNotAvailable"
+                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))" class="myTableSemiCell timeNotAvailable"
                     ></div>
                 </div>
             </div>
@@ -59,7 +58,6 @@
 <script>
     import jalali from 'jalali-moment'
     import axios from 'axios'
-    import RectNotifBlock from '@/components/NotifBlocks/RectNotifBlock'
     import {required, between, numeric} from 'vuelidate/lib/validators'
 
     export default {
@@ -67,9 +65,10 @@
         validations: {
             selectedPrice: {required, between: between(1000, 100000), numeric}
         },
-        components: {RectNotifBlock},
         props: {
-            consultantId: '',
+            consultantId: {
+                type : Number || String
+            },
         },
         data() {
             return {
@@ -84,35 +83,36 @@
         computed: {
             isLoggedIn: function () {
                 return this.$store.getters.isLoggedIn;
-            }, activeCart: function () {
+            },
+            activeCart: function () {
                 return this.$store.getters.getCart;
             },
         },
         created() {
             this.initComp();
         },
-        mounted() {
 
-        },
         methods: {
             getJalali: function (date) {
                 return jalali(date);
             },
-            initComp: function () {
-                this.$loading(true);
-                this.getListOfTimesById(this.consultantId).then(timeRes => {
-                    window.console.log('slot times:', timeRes.data);
-                    this.slots = timeRes.data;
+
+            async initComp() {
+                try {
+                    this.$loading(true);
+                    let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`)
+                    console.log(result);
+                    this.slots = result.data;
                     this.$emit('get-slots', this.slots);
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
-                }).catch(timesErr => {
-                    console.log(timesErr);
-                    if (timesErr.response)
-                        console.log(timesErr.response);
-                }).finally(() => {
+                } catch (e) {
+                    console.log(e);
+                    if (e.response)
+                        console.log(e.response);
+                } finally {
                     this.$loading(false);
-                })
+                }
             },
 
             getTimeStampByIndex(dayIndexInArr, timeIndex, hourToAdd, getIsoString) {
@@ -140,22 +140,6 @@
                         return true;
                 }
                 return false;
-            },
-
-            getListOfTimesById(id) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'store/time-slot-sales/?consultant=' + id,
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
             },
 
             showWeek: function (numOfWeek, siblingStatus) {

@@ -26,6 +26,14 @@ export default new Vuex.Store({
 
         authApi: 'http://37.152.182.253:8000',
 
+        httpConfig : {
+            headers : {
+                "Authorization" : `JWT ${localStorage.getItem('token')}`,
+                "Content-Type" : "application/json"
+            },
+            timeout: 6000,
+        },
+
         cart: null,
 
         stash: [],
@@ -264,6 +272,8 @@ export default new Vuex.Store({
 
         getStash: state => state.stash,
 
-        getMobileMenuShow : state => state.mobileMenuShow
+        getMobileMenuShow : state => state.mobileMenuShow,
+
+        httpConfig : state => state.httpConfig
     }
 })

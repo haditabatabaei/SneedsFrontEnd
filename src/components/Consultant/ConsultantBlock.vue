@@ -65,23 +65,17 @@
         border: 1px solid #ccc;
         padding: 15px;
         margin-bottom: 15px;
-
         display: flex;
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-
         cursor: pointer;
-
     }
 
     .consultantBlockData {
         display: flex;
         align-items: center;
         justify-content: space-between;
-
-        flex-wrap: wrap;
-
         padding-right: 0;
     }
 

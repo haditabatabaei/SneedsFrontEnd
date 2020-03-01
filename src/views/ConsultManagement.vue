@@ -1,58 +1,9 @@
 <template>
-    <div>
-        <div class="page-header header-filter header-small" data-parallax="false"
-             style="background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
-            <div class="container">
+    <div class="main profile-page">
+        <div class="profile-content">
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2 text-center">
-                        <h2 class="title isansFont">
-                            پنل مدیریت جلسات مشاوره
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="main profile-page">
-            <div class="profile-content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-6 col-xs-offset-3">
-                            <div class="profile">
-                                <div class="avatar">
-                                    <img src="http://185.209.243.97/sneedsAssets/img/marc.jpg" alt="Circle Image"
-                                         class="img-circle img-responsive img-raised">
-                                </div>
-                                <div class="name">
-                                    <h3 class="title isansFont">
-                                        {{user.first_name}}
-
-                                        {{user.last_name}}
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2 follow">
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3 class="isansFont text-center">
-                                        تقویم شما
-                                    </h3>
-                                    <h5 class="isansFont text-center">
-                                        جلسات مورد نیاز خود را در تقویم زیر انتخاب و آن هارا به سیستم اضافه کنید
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <ConsultantCalendar :consultantId="$store.getters.getUserInfo.consultant"></ConsultantCalendar>
-                            </div>
-                        </div>
-                    </div>
+                    <consultant-calendar :consultantId="$store.getters.getUserInfo.consultant.id" />
                 </div>
             </div>
         </div>
@@ -100,6 +51,12 @@
         position: sticky;
         top: 150px;
         margin-top: 60px;
+    }
+
+    .main {
+        margin-top:30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
     }
 
     @media only screen and (min-width: 767px) and (max-width: 992px) {

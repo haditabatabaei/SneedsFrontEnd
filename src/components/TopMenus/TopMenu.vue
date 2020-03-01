@@ -64,35 +64,37 @@
                             aria-expanded="false">
                         <i class="material-icons">account_circle</i>
                         <span style="margin-right:5px;">پروفایل</span>
-                        <b style="margin-right:5px;" class="caret"></b>
+                        <b style="margin-right:5px;" class="caret" />
                     </button>
-                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"
-                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length === 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">
-                        <i class="material-icons">shopping_cart</i>
-                    </router-link>
+<!--                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"-->
+<!--                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length === 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">-->
+<!--                        <i class="material-icons">shopping_cart</i>-->
+<!--                    </router-link>-->
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
                         <li class="text-right">
-                            <router-link to="/user/profile">ناحیه کاربری</router-link>
+                            <router-link to="/user/profile">اطلاعات کاربری</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/reserved">جلسات رزرو شده</router-link>
+                            <router-link to="/user/reserved">جلسات مشاوره</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/order">فاکتور ها</router-link>
+                            <router-link to="/user/packages">پکیج ها</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/messages">پیام ها FIXME</router-link>
+                            <router-link to="/user/payments">پرداخت ها</router-link>
                         </li>
-                        <li class="divider" v-if="isConsultant"></li>
+                        <li class="text-right">
+                            <router-link to="/user/chatroom">چتروم</router-link>
+                        </li>
+                        <li class="divider" v-if="isConsultant" />
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
                         <li class="text-right" v-if="isConsultant">
-                            <router-link to="/user/consultantmanager">مدیریت جلسات</router-link>
+                            <router-link to="/user/calendar">مدیریت تقویم</router-link>
                         </li>
-                        <li class="divider"></li>
+                        <li class="divider" />
                         <li><a @click.prevent="logout()" role="button" class="btn btn-danger">خروج</a></li>
                     </ul>
                 </div>
-
             </div>
 
 
@@ -100,7 +102,7 @@
                 <div class="mobileMenu" v-if="mobileMenuShow">
                     <div class="mobileMenuListWrapper">
                         <ul class="mobileMenuList isansFont--faNum">
-                            <li class="mobileMenuList--item" v-for="item in this.topMenuListItems"
+                            <li class="mobileMenuList--item" v-for="(item, index) in this.topMenuListItems" :key="index"
                                 v-bind:class="[{'dropdown':item.hasDropdown}]">
                                 <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
                                    data-toggle="dropdown mobileMenuList--linkItem">
@@ -130,7 +132,7 @@
                                 </a>
 
                                 <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
-                                    <li v-for="dropdownItem in item.dropdownItems"
+                                    <li v-for="(dropdownItem, index) in item.dropdownItems" :key="index"
                                         v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
                                         <router-link v-bind:to="dropdownItem.target"
                                                      v-if="dropdownItem.type === 'router'">
@@ -154,39 +156,37 @@
                             <li class="mobileMenuList--item">
                                 <router-link to="/user/profile" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    ناحیه کاربری
+                                    اطلاعات کاربری
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
                                 <router-link to="/user/reserved" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    جلسات رزرو شده
+                                    جلسات مشاوره
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/order" class="mobileMenuList--linkItem">
+                                <router-link to="/user/packages" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    رسید ها
+                                    پکیج ها
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/cart" class="mobileMenuList--linkItem">
+                                <router-link to="/user/payments" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    سبد خرید
-                                    <mark class="cartTooltip" v-if="activeCart != null && activeCart.time_slot_sales.length != 0" >شامل {{activeCart.time_slot_sales.length}} آیتم</mark>
-                                    <mark class="cartTooltip" v-else>خالی</mark>
+                                    پرداخت ها
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/messages" class="mobileMenuList--linkItem">
+                                <router-link to="/user/chatroom" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    پیام ها - به زودی
+                                    چتروم
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item" v-if="isConsultant">
-                                <router-link to="/user/consultantmanager" class="mobileMenuList--linkItem">
+                                <router-link to="/user/calendar" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    مدیریت جلسات
+                                    مدیریت تقویم
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
@@ -292,15 +292,12 @@
                 ],
             }
         },
-        watch: {},
-        mounted() {
-        },
         computed: {
             isLoggedIn: function () {
                 return this.$store.getters.isLoggedIn;
             },
             isConsultant: function () {
-                return this.$store.getters.getUserInfo.is_consultant;
+                return this.$store.getters.getUserInfo.user_type == 'consultant';
             },
             activeCart: function () {
                 return this.$store.getters.getCart;

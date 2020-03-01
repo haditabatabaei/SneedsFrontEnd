@@ -7,8 +7,8 @@ import Register from '@/views/Register';
 import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
 import UserProfile from '@/views/User/UserProfile';
-
-import ResetPassword from "@/views/ResetPassword";
+import UserActiveCart from "@/views/User/UserActiveCart";
+// import ResetPassword from "@/views/ResetPassword";
 import Error404 from '@/views/Error404';
 
 import ConsultantList from "@/views/ConsultantList";
@@ -17,12 +17,12 @@ import ConsultantProfile from "@/views/ConsultantProfile";
 
 import UserReservedSessions from "@/views/UserReservedSessions";
 
-import UserCard from "@/views/UserCard";
-import UserOrder from "@/views/UserOrder";
+// import UserCard from "@/views/UserCard";
+// import UserOrder from "@/views/UserOrder";
 
 import store from './store';
-import Payment from "@/views/Payment";
-import Messages from "@/views/Messages";
+// import Payment from "@/views/Payment";
+// import Messages from "@/views/Messages";
 
 Vue.use(Router);
 
@@ -34,62 +34,101 @@ let router = new Router({
             path: '/',
             name: 'Home',
             component: Home,
-        }, {
+            meta: {
+                auth: 'optional'
+            }
+        },
+        {
             path: '/login',
             name: Login,
             component: Login,
+            meta: {
+                auth: 'noReq'
+            }
         },
         {
             path: '/register',
             name: 'Register',
             component: Register,
+            meta: {
+                auth: 'noReq'
+            }
         },
         {
-            path : '/user',
-            redirect : '/user/profile',
-            component : UserLayout,
-            children : [
+            path: '/user',
+            redirect: '/user/profile',
+            component: UserLayout,
+            children: [
                 {
-                    path : 'status',
-                    name : 'UserStatus',
-                    component : UserStatus
+                    path: 'status',
+                    name: 'user-status',
+                    component: UserStatus,
+                    meta: {
+                        auth: 'req'
+                    }
                 },
                 {
-                    path : 'profile',
-                    name : 'UserProfile',
-                    component : UserProfile
+                    path: 'profile',
+                    name: 'user-profile',
+                    component: UserProfile,
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'calendar',
+                    name: 'user-calendar',
+                    component: ConsultManagement,
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'reserved',
+                    name: 'user-reserved-sessions',
+                    component: UserReservedSessions,
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'cart/active',
+                    name: 'user-cart-active',
+                    component: UserActiveCart,
+                    meta: {
+                        auth : 'req'
+                    }
+                },
+                {
+                    path: 'payment/accept/',
+                    name: "user-payment-accept",
+                    component: null,
+                    meta: {
+                        auth: 'req'
+                    }
                 }
             ]
         },
-        {
-            path: '/user/consultantmanager',
-            name: 'ConsultManagement',
-            component: ConsultManagement,
-        },
-        {
-            path: '/user/cart',
-            name: 'UserCart',
-            component: UserCard
-        },
-        {
-            path: '/user/order',
-            name: 'UserOrder',
-            component: UserOrder,
-        },
-        {
-            path: '/user/reserved',
-            name: 'UserReservedSessions',
-            component: UserReservedSessions
-        }, {
-            path: '/user/password-reset',
-            name: 'ResetPassword',
-            component: ResetPassword
-        },
-        {
-            path: '/user/messages',
-            name: 'Messages',
-            component: Messages
-        },
+        // {
+        //     path: '/user/cart',
+        //     name: 'UserCart',
+        //     component: UserCard
+        // },
+        // {
+        //     path: '/user/order',
+        //     name: 'UserOrder',
+        //     component: UserOrder,
+        // },
+        // {
+        //     path: '/user/password-reset',
+        //     name: 'ResetPassword',
+        //     component: ResetPassword
+        // },
+        // {
+        //     path: '/user/messages',
+        //     name: 'Messages',
+        //     component: Messages
+        // },
         {
             path: '/consultants',
             name: 'ConsultantList',
@@ -100,11 +139,11 @@ let router = new Router({
             name: 'ConsultantProfile',
             component: ConsultantProfile,
         },
-        {
-            path: '/payment/accept',
-            name: 'Payment',
-            component: Payment,
-        },
+        // {
+        //     path: '/payment/accept',
+        //     name: 'Payment',
+        //     component: Payment,
+        // },
         {
             path: '/404',
             name: 'Error404',
@@ -119,32 +158,19 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     store.commit('setMobileMenuShow', false);
-
-    const requiredAuthRoutes = ['/user/profile', '/user/consultantmanager', '/user/cart', '/user/order', '/user/reserved', '/user/messages', '/payment/accept'];
-    const requiredNotAuth = ['/login', '/register'];
-
-    window.console.log(to.path);
-
-    if (requiredAuthRoutes.includes(to.path)) {
-        window.console.log(to.path + " requires auth");
+    if (to.meta.auth === 'req') {
         if (store.getters.isLoggedIn) {
-            window.console.log("auth good going in");
             next();
         } else {
-            window.console.log("auth not good going login");
             next('/login');
         }
-    } else if (requiredNotAuth.includes(to.path)) {
-        window.console.log(to.path + " requires not auth");
+    } else if (to.meta.auth === 'noReq') {
         if (!store.getters.isLoggedIn) {
-            window.console.log("is not auth good going in");
             next();
         } else {
-            window.console.log("is not auth not good do nothing");
             next('/');
         }
     } else {
-        window.console.log("not condition going in");
         next();
     }
 });

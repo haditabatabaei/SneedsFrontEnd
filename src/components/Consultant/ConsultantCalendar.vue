@@ -1,92 +1,60 @@
-<template>
-    <div class="col-md-12 text-center">
-        <button class="btn btn-simple btn-week isansFont ml-10" @click.prevent="showPrevWeek()">
-            <i class="fas fa-chevron-circle-right"/>
-            هفته قبلی
-        </button>
-        <button class="btn btn-simple btn-week isansFont mr-10" @click.prevent="showNextWeek()">
-            هفته بعدی
-            <i class="fas fa-chevron-circle-left"/>
-        </button>
+    <template>
+    <div v-if="consultantId" class="userCalendarWrapper">
+        <div class="userCalendarWeekWrapper isansFont--faNum">
+            <button @click.prevent="showPrevWeek()">
+                <i class="material-icons">keyboard_arrow_right</i>
+                هفته قبلی
+            </button>
+            <button @click.prevent="showNextWeek()">
+                هفته بعدی
+                <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+        </div>
+        <div class="calendarTopWrapper">
 
-        <div class="myTable isansFont" v-if="calendarDataset.length != 0">
-            <div class="calendarTopWrapper">
-                <div class="calendarGuideWrapper">
-                    <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                    <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
-                    <span class="btn btn-round btn-sm btn-sample timeOpenForManagerToSet isansFont text-dark">باز برای افزودن به تایم ها</span>
-                    <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز برای رزرو کاربر</span>
-                    <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
-                    <span class="btn btn-round btn-sm btn-sample timeReserved isansFont">رزرو شده</span>
-                </div>
-            </div>
-            <div class="myTableRow firstRow">
-                <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="(dayArray, index) in calendarDataset" :key="index">
-                    <p>{{getJalali(dayArray[0].datestart).locale('fa').format('dddd')}}</p>
-                    <p class="mont1hSmallText">{{getJalali(dayArray[0].datestart).locale('fa').format('DD MMMM')}}</p>
-                </div>
-            </div>
-
-
-            <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">
-                    {{ (index + 7) + ":00" + " تا " + (index + 8) + ":00"}}
-                </div>
-
-                <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
-                    <div v-if="getJalali(calendarDataset[rowIndex - 1][index - 1].datestart).isBefore(justNowDate)" class="myTableSemiCell timeNotAvailable" ></div>
-                    <div v-else-if="!isInReservedTimes(getJalali(calendarDataset[rowIndex - 1][index - 1].datestart), getJalali(calendarDataset[rowIndex - 1][index - 1].dateend)) &&
-                        !isInConsultantTime(getJalali(calendarDataset[rowIndex - 1][index - 1].datestart),getJalali(calendarDataset[rowIndex - 1][index - 1].dateend))"
-                         :class="[{'timeSelected': isDatePresentOnSelectedList(selectedDatesToOpen,calendarDataset[rowIndex - 1][index - 1].datestart,calendarDataset[rowIndex - 1][index - 1].dateend)}]"
-                         @click="itemClickHandlerToOpen(calendarDataset[rowIndex - 1][index - 1].datestart,calendarDataset[rowIndex - 1][index - 1].dateend)"
-                         class="myTableSemiCell timeOpenForManagerToSet"
-                    ></div>
-                    <div v-else class="myTableSemiCell timeOpen" :class="[{'timeSelected': isDatePresentOnSelectedList(selectedDatesToRemove,calendarDataset[rowIndex - 1][index - 1].datestart,calendarDataset[rowIndex - 1][index - 1].dateend)}]" @click="itemClickHandlerToRemove(calendarDataset[rowIndex - 1][index - 1].datestart, calendarDataset[rowIndex - 1][index - 1].dateend)"></div>
-                </div>
+            <div class="calendarGuideWrapper">
+                <span class="isansFont text-sm">راهنمایی تقویم :</span>
+                <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
+                <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
+                <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <form action="" class="form row">
-                    <div class="col-md-6">
-                        <div class="form-group form-rose gadugiFont isansFont">
-                            <p class="text-right isansFont">پنل اضافه کردن جلسه:</p>
-                            <input id="selectedPrice" class="form-control isansFont" type="number"
-                                   v-model="$v.selectedPrice.$model" placeholder="لطفا هزینه کلاس را وارد کنید">
-                            <span class="material-input"/>
-                            <p class="text-right isansFont text-danger"
-                               v-if="$v.selectedPrice.$error">
-                                لطفا هزینه شرکت در جلسه را مشخص نمایید حداقل 1000 و حداکثر 100000. ( معادل 1000 تومان و
-                                100 هزار تومان )
-                            </p>
-                            <p v-if="!canAddOpenTimes" class="text-right isansFont text-danger">
-                                باید حداقل یک جلسه را انتخاب کنید
-                            </p>
-                            <button @click.prevent="addTimes()"
-                                    :disabled="$v.selectedPrice.$error || !$v.selectedPrice.$dirty || !canAddOpenTimes"
-                                    class="btn btn-success btn-block isansFont">
-                                اضافه کردن جلسات انتخاب شده
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <p class="text-right isansFont">پنل حذف جلسه:</p>
-                            <p class="text-right isansFont text-danger" v-if="!canRemoveTimes">
-                                باید حداقل یک جلسه را انتخاب کنید
-                            </p>
-                            <button :disabled="!canRemoveTimes" class="btn btn-danger btn-block isansFont"
-                                    @click.prevent="startDeleteItems()">حذف
-                                تایم های انتخاب شده
-                            </button>
-                            <hr>
-                        </div>
-                    </div>
-                    <hr>
-                </form>
+        <div class="myTable isansFont" v-if="days.length != 0">
+            <div class="myTableRow firstRow">
+                <div class="myTableCell">ساعت / روز</div>
+                <div class="myTableCell dayTitleCell" v-for="(day, index) in tableDataArray" :key="index">
+                    <p>{{day.format('dddd')}}</p>
+                    <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
+                </div>
             </div>
+            <div v-for="index in 16" :key="index" class="myTableRow">
+                <div class="myTableCell firstCellInRow">
+                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
+                </div>
+                <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
+                    <div
+                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
+                            class="myTableSemiCell timeNotAvailable"
+                    ></div>
+
+                    <div
+                            v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8)) &&
+                             !isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                            @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                            :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},]"
+                            class="myTableSemiCell timeOpenForManagerToSet"
+                    ></div>
+
+                    <div
+                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
+                            @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                            class="myTableSemiCell timeOpen"
+                    ></div>
+                </div>
+            </div>
+            <button @click="addTimes()" class="btn btn-success">آزاد کردن زمان های انتخاب شده</button>
+            <button @click="removeTimes()" class="btn btn-danger">حذف زمان های انتخاب شده</button>
         </div>
     </div>
 </template>
@@ -103,21 +71,21 @@
         },
         props: {
             consultantId: {
-                type: Number || String
+                type : Number || String
             },
         },
         data() {
             return {
-                selectedPrice: '',
                 slots: [],
-                soldSlots: [],
+                soldSlots : [],
                 days: [],
-                selectedDatesToOpen: [],
+                selectedDates: [],
                 selectedDatesToRemove: [],
+                selectedDatesToOpen: [],
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [],
-                calendarDataset: [],
+                price : 1000,
             }
         },
         computed: {
@@ -127,71 +95,53 @@
             activeCart: function () {
                 return this.$store.getters.getCart;
             },
-            canAddOpenTimes: function () {
-                return this.selectedDatesToOpen.length !== 0;
-            },
-            canRemoveTimes: function () {
-                return this.selectedDatesToRemove.length !== 0;
-            }
         },
         created() {
             this.initComp();
         },
-        mounted() {
 
-        },
         methods: {
             getJalali: function (date) {
                 return jalali(date);
             },
 
-            initComp: async function () {
-                await this.getListOfTimesById(this.consultantId);
-                await this.getListOfSoldTimes();
-                console.log('shown date init');
-                this.shownDate = jalali().locale('fa');
-                console.log('handle week init');
-                this.handleWeek(this.shownDate);
-            },
-
-            async addTimes() {
-                if (!this.$v.selectedPrice.$error && this.canAddOpenTimes) {
-                    console.log('selected dates to add open:', this.selectedDatesToOpen);
-                    console.log('selected price:', this.selectedPrice);
-                    try {
-                        this.$loading(true);
-                        for (let selecteDate of this.selectedDatesToOpen) {
-                            let payload = {
-                                "start_time": selecteDate.datestart,
-                                "end_time": selecteDate.dateend,
-                                "price": this.selectedPrice
-                            };
-                            let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
-                            console.log(result);
-                        }
-
-                        await this.initComp();
-                        this.selectedDatesToOpen = [];
-                    } catch (e) {
-                        console.log(e);
-                        if(e.response) {
-                            console.log(e.response);
-                        }
-                    } finally {
-                        this.$loading(false);
-                    }
-                } else {
-                    // show error message
+            async initComp() {
+                try {
+                    this.$loading(true);
+                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`);
+                    let soldSlots = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                    console.log('all slots : ', slotsResult);
+                    console.log('sold slots : ', soldSlots);
+                    this.slots = slotsResult.data;
+                    this.soldSlots = slotsResult.data;
+                    this.shownDate = jalali().locale('fa');
+                    this.handleWeek(this.shownDate);
+                } catch (e) {
+                    console.log(e);
+                    if (e.response)
+                        console.log(e.response);
+                } finally {
+                    this.$loading(false);
                 }
-
             },
 
             getTimeStampByIndex(dayIndexInArr, timeIndex, hourToAdd, getIsoString) {
                 if (getIsoString) {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).locale('en').utc().toISOString();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).toISOString();
                 } else {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).locale('en').utc();
+                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd));
                 }
+            },
+
+            itemClickHandler(datestart, dateend) {
+                //check see if this time is not added to the list
+                if (!this.isDatePresentOnSelectedList(this.$store.getters.getStash, datestart, dateend)) {
+                    this.$store.commit('addItemToStash', {'datestart': datestart, 'dateend': dateend})
+                }// else means that element is present in the list, so we will remove it from the list
+                else {
+                    this.$store.commit('removeItemFromStash', {'datestart': datestart, 'dateend': dateend});
+                }
+                console.log(this.$store.getters.getStash);
             },
 
             itemClickHandlerToRemove(datestart, dateend) {
@@ -240,70 +190,6 @@
                 return false;
             },
 
-            async startDeleteItems() {
-                if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
-                    try {
-                        this.$loading(true);
-                        for (let selectedDate of this.selectedDatesToRemove) {
-                            let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
-                            let result = await axios.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
-                            console.log(result);
-                        }
-                        this.selectedDatesToRemove = [];
-                        await this.initComp();
-                    } catch (e) {
-                        console.log(e);
-                        if(e.response) {
-                            console.log(e.response);
-                        }
-                    } finally {
-                        this.$loading(false);
-                    }
-                }
-
-            },
-
-            async getListOfSoldTimes() {
-                try {
-                    this.$loading(true);
-                    console.log('getting list of sold times');
-                    let result = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
-                    console.log(result);
-                    this.soldSlots = result.data;
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
-                }
-            },
-
-            async getListOfTimesById(id) {
-                try {
-                    this.$loading(true);
-                    console.log('getting lsit of times by id ', id);
-                    let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${id}`, this.$store.getters.httpConfig);
-                    console.log(result);
-                    this.slots = result.data;
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
-                }
-            },
-
-            getSlotIdByDate(startDate, endDate) {
-                for (let i = 0; i < this.slots.length; i++) {
-                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
-                        return this.slots[i].id;
-                }
-            },
-
             showWeek: function (numOfWeek, siblingStatus) {
                 if (siblingStatus === 'prev') {
                     this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale('fa'));
@@ -349,9 +235,8 @@
             },
 
             handleWeek(now) {
-                console.log('inside handle week');
+                console.log(now.locale('fa').weekday());
                 this.days = [];
-                this.calendarDataset = [];
                 this.days.push(this.generateSaturdayNew(now));
                 this.days.push(this.generateSundayNew(now));
                 this.days.push(this.generateMondayNew(now));
@@ -359,27 +244,11 @@
                 this.days.push(this.generateWednesdayNew(now));
                 this.days.push(this.generateThursdayNew(now));
                 this.days.push(this.generateFridayNew(now));
-
+                console.log(this.days);
                 for (let i = 0; i < this.days.length; i++) {
+                    console.log(this.days[i].format('dddd'));
                     this.tableDataArray[i] = this.days[i];
                 }
-
-                //calendarDataset
-                for (let i = 0; i < this.days.length; i++) {
-                    let tempDayArray = [];
-                    for (let j = 1; j <= 16; j++) {
-                        let tempDateObject = {'datestart': this.days[i].clone().add(j - 1, 'hour').utc().toISOString()};
-                        if (j !== 16) {
-                            tempDateObject["dateend"] = this.days[i].clone().add(j, 'hour').utc().toISOString();
-                        }
-                        if (j === 16) {
-                            tempDateObject["dateend"] = this.days[i].clone().add(j, 'hour').utc().toISOString();
-                        }
-                        tempDayArray.push(tempDateObject);
-                    }
-                    this.calendarDataset.push(tempDayArray);
-                }
-                console.log('calendar dataset multi array:', this.calendarDataset);
             },
 
             removeElementFromToOpenDates(value) {
@@ -395,22 +264,79 @@
             },
 
             isInConsultantTime(cellStartDate, cellEndDate) {
-                for (let i = 0; i < this.slots.length; i++) {
-                    if (cellStartDate.isSame(jalali(this.slots[i].start_time), 'second') && cellEndDate.isSame(jalali(this.slots[i].end_time), 'second')) {
+                for (let slot of this.slots) {
+                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
                         return true;
                     }
                 }
                 return false;
             },
 
+            getSlotIdByDate(startDate, endDate) {
+                for (let i = 0; i < this.slots.length; i++) {
+                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
+                        return this.slots[i].id;
+                }
+            },
+
+            async removeTimes() {
+                if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
+                    try {
+                        this.$loading(true);
+                        for (let selectedDate of this.selectedDatesToRemove) {
+                            let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
+                            let result = await axios.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
+                            console.log(result);
+                        }
+                        this.selectedDatesToRemove = [];
+                        await this.initComp();
+                    } catch (e) {
+                        console.log(e);
+                        if(e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+                        this.$loading(false);
+                    }
+                }
+
+            },
+
             isInReservedTimes(cellStartDate, cellEndDate) {
-                for (let i = 0; i < this.soldSlots.length; i++) {
-                    if (cellStartDate.isSame(jalali(this.soldSlots[i].start_time), 'hour') && cellEndDate.isSame(jalali(this.soldSlots[i].end_time), 'hour')) {
+                for (let slot of this.soldSlots) {
+                    if (cellStartDate.isSame(jalali(slot.start_time), 'hour') && cellEndDate.isSame(jalali(slot.end_time), 'hour')) {
                         return true;
                     }
                 }
                 return false;
             },
+
+            async addTimes() {
+                console.log('selected dates to add open:', this.selectedDatesToOpen);
+                console.log('selected price:', this.price);
+                try {
+                    this.$loading(true);
+                    for (let selectedDate of this.selectedDatesToOpen) {
+                        let payload = {
+                            "start_time": selectedDate.datestart,
+                            "end_time": selectedDate.dateend,
+                            "price": this.price
+                        };
+                        let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
+                        console.log(result);
+                    }
+
+                    await this.initComp();
+                    this.selectedDatesToOpen = [];
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            }
         },
 
     }
@@ -418,8 +344,85 @@
 
 <style scoped>
 
+    .userCalendarWrapper {
+        width: 100%;
+        background-color: white;
+        border: 1.5px solid #ccc;
+        min-height: 300px;
+
+        border-radius: 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .userCalendarWeekWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .userCalendarWeekWrapper button {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        background-color: #f3f3f3;
+        border-radius: 10px;
+        border: none;
+        padding: 5px 15px;
+        font-size: 13px;
+
+        color: #666;
+    }
+
+    .userCalendarWeekWrapper button:hover {
+        background-color: #e1e1e1;
+    }
+
+    .userCalendarWeekWrapper button:first-child {
+        margin-left: 10px;
+    }
+
+    .selectedDateBox {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #f9f9f9;
+        border-top: 1px solid #e2e2e2;
+        min-height: 60px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .selectedDateBlockContent {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .selectedDateBlock {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 1px solid #a8a8a8;
+    }
+
     .selectedDateBlock button {
         margin-right: 5px;
+    }
+
+    .selectedDateBlock:last-child {
+        border-left: none;
     }
 
     .selectedDateBlock p {
@@ -432,6 +435,13 @@
         margin-top: 20px;
     }
 
+    .selectedDateBlockFooter {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        align-self: stretch;
+        flex-wrap: wrap;
+    }
 
     .btn-sample {
         cursor: default !important;
@@ -446,7 +456,7 @@
     }
 
     .timeNotAvailable {
-        background-color: #d8d8d8;
+        background-color: #9c9c9c;
     }
 
     .timeOpen {
@@ -458,8 +468,13 @@
         background-color: #57d06d;
     }
 
+    .timeSelected {
+        background-color: #ffca18 !important;
+        cursor: pointer;
+    }
+
     .timeOpenForManagerToSet {
-        background-color: #f9f9f9;
+        background-color: #dfdfdf;
         cursor: pointer;
     }
 
@@ -467,20 +482,12 @@
         background-color: #e6e6e6;
     }
 
-    .timeSelected {
-        background-color: #ffca18 !important;
-        cursor: pointer;
-    }
-
-    .timeReserved {
-        background-color: rgb(156, 39, 176);;
-    }
-
     .calendarTopWrapper {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         margin-bottom: 20px;
+        margin-top: 20px;
         position: sticky;
         top: 70px;
         background-color: white;
@@ -494,6 +501,7 @@
         align-items: center;
         font-size: 12px;
         font-weight: bold;
+        width: 100%;
     }
 
     .myTableRow {
@@ -501,6 +509,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        min-height: 50px;
         width: 100%;
     }
 
@@ -508,22 +517,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 5px;
-        margin-right: 5px;
     }
 
     .myTableRow > div {
         width: calc(100% / 8);
         min-height: 50px;
-    }
-
-    .firstRow .myTableCell {
-        margin-right: 8px;
-    }
-
-    .myTableRow {
-        min-height: 50px;
-        background-color: #eee;
     }
 
     .myTableCell, .myTableLargerCell div {
@@ -539,6 +537,7 @@
     .dayTitleCell p {
         margin: 0;
         color: #4D4D4D;
+        font-size: 12px;
     }
 
     .dayTitleCell .monthSmallText {
@@ -576,6 +575,12 @@
 
     p.text-danger {
         font-size: 12px;
+    }
+
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
+        .myTableCell {
+            font-size: 10px;
+        }
     }
 
 </style>

@@ -38,12 +38,12 @@
 
         <div class="isansFont--faNum reservedCard--rate text-center" v-if="session.used">
             <div class="col-md-12" v-if="canRate && !isConsultant">
-                <StarRating
-                        v-model="session.starRate"
-                        :rtl="true"
-                        :star-size="25"
-                        :rounded-corners="true"
-                ></StarRating>
+                <star-rating
+                    v-model="session.starRate"
+                    :rtl="true"
+                    :star-size="25"
+                    :rounded-corners="true"
+                />
                 <button
                         @click="submitRate(session.id,session.starRate)"
                         class="isansFont btn btn-rose btn-sm btn-round">
@@ -72,61 +72,53 @@
 
     export default {
         name: "ReservedSessionBlock",
-        components: {StarRating},
+        components: {"star-rating" :StarRating},
         props: {
-            session: {},
-            isConsultant: {},
-            rate: {},
+            session: {
+                type : Object
+            },
+            isConsultant: {
+                type : Boolean
+            },
+            rate: {
+                type : Number || null,
+                default: () => null
+            },
         },
         data: function () {
             return {}
-        },
-        created() {
         },
         methods: {
             getJalali: function (date) {
                 return jalali(date);
             },
-
-            sendConsultantRate: function (soldSlotId, rate) {
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'comment/sold-time-slot-rates/',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                        },
-                        data: {
-                            "sold_time_slot": soldSlotId,
-                            "rate": rate,
-                        }
-                    }).then(response => {
-                        resolve(response);
-                    }).catch(error => {
-                        reject(error);
-                    })
-                })
-            },
-
-            submitRate: function (soldSlotId, rate) {
-                console.log('submitPressed');
-                this.sendConsultantRate(soldSlotId, rate).then(response => {
-                    console.log('response is here emitting update list event', response);
+            async submitRate(soldSlotId, rate) {
+                try {
+                    this.$loading(true);
+                    let result = await axios.post(
+                        `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
+                        {"sold_time_slot" : soldSlotId, "rate" : rate},
+                        this.$store.getters.httpConfig
+                    );
+                    console.log('rate result emitting event for update :', result.data);
                     this.$emit('update-list');
-                }).catch(error => {
-                    console.log(error);
-                    if (error.response)
-                        console.log(error.response);
-                })
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
             },
         },
         computed: {
             currentTimeBetweenSession: function () {
                 return this.getJalali().isBetween(this.getJalali(this.session.start_time), this.getJalali(this.session.end_time));
             },
+
             canRate: function () {
-                return this.rate === false;
+                return this.rate == null;
             },
             currentTimeBeforeSession: function () {
                 return this.getJalali().isBefore(this.getJalali(this.session.start_time));
@@ -149,27 +141,20 @@
 <style scoped>
     .reservedCard {
         border-radius: 5px;
-
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-
         margin-top: 50px;
-
-        width: calc(25% - 30px);
-
+        width: calc(33% - 30px);
         margin-right: 15px;
         margin-left: 15px;
-
-        height: 320px;
+        min-height: 320px;
     }
 
     .reservedCard--image {
         border-radius: 20px;
         height: 110px;
         width: 110px;
-
         position: relative;
         top: -20px;
-
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
 

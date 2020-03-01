@@ -431,8 +431,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin-right: 10px;
-        margin-top: 15px;
+        margin: 15px;
         color: #333;
     }
 

@@ -8,7 +8,7 @@
         >
             <router-view :key="$route.fullPath" />
         </transition>
-        <Footer />
+<!--        <Footer />-->
     </div>
 
 </template>

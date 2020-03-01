@@ -2,10 +2,14 @@
     <div class="commentSectionWrapper">
 
         <div class="commentInputSection isansFont--faNum" v-if="isLoggedIn">
-            <textarea id="comment" placeholder="نظرتون رو بنویسید" rows="6"
-                      v-model="$v.inputComment.$model"></textarea>
+            <textarea
+                id="comment"
+                placeholder="نظرتون رو بنویسید" rows="6"
+                v-model="$v.inputComment.$model">
+            </textarea>
+
             <p class="text-danger" v-if="$v.inputComment.$error">برای ثبت نظر باید حتما فیلد نظر را بنویسید.</p>
-            <button @click.prevet="submitComment()" :disabled="$v.inputComment.$error || !$v.inputComment.$dirty">
+            <button @click.prevent="submitComment()" :disabled="$v.inputComment.$error || !$v.inputComment.$dirty">
                 ثبت نظر
             </button>
         </div>
@@ -20,13 +24,14 @@
             <h3 class="text-right commentsMiniTitle isansFont--faNum">
                 نظرات ( {{comments.length}} )
             </h3>
-            <CommentBlock v-for="comment in comments"
-                          @update-comments="getConsultantComments(consultant.id)"
-                          :config="{'showEdit':true,'showRemove':true,'deleted': false}"
-                          :consultant="consultant"
-                          :comment="comment"
-                          :key="comments.indexOf(comment)"
-            ></CommentBlock>
+            <comment-block
+                v-for="(comment, index) in comments"
+                :key="index"
+                @update-comments="getConsultantComments(consultant.id)"
+                :config="{'showEdit':true,'showRemove':true,'deleted': false}"
+                :consultant="consultant"
+                :comment="comment"
+            />
         </div>
     </div>
 </template>
@@ -43,10 +48,7 @@
         },
         created() {
             console.log('consultant id :' + this.consultant.id);
-            this.getConsultantComments(this.consultant.id).then((commentsResponse) => {
-                this.comments = commentsResponse.data;
-            }).catch(error => {
-            });
+            this.getConsultantComments(this.consultant.id);
         },
         validations: {
             inputComment: {
@@ -60,7 +62,9 @@
             }
         },
         props: {
-            consultant: {}
+            consultant: {
+                type : Object
+            }
         },
         computed: {
             isLoggedIn: function () {
@@ -68,74 +72,51 @@
             }
         },
         methods: {
-            getConsultantComments: function (consultantId) {
+            async getConsultantComments(consultantId) {
                 console.log('calling get consultant comments');
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'comment/comments/?consultant=' + consultantId,
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        console.log('axios response:', response);
-                        console.log(response.data);
-                        this.comments = response.data;
-                        resolve(response);
-                    }).catch(error => {
-                        console.log('axios error:', error);
-                        reject(error);
-                    })
-                })
+                try {
+                    this.$loading(true);
+                    let result = await axios.get(
+                        `${this.$store.getters.getApi}/comment/comments/?consultant=${consultantId}`,
+                        this.$store.getters.httpConfig
+                    );
+                    console.log('get comments result ', result);
+                    this.comments = result.data;
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
             },
 
-            sendSubmitCommentRequest: function (payload) {
-                console.log('request method with payload : ', payload);
-                return new Promise((resolve, reject) => {
-                    axios({
-                        url: this.$store.getters.getApi + 'comment/comments/',
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'JWT ' + this.$store.getters.getToken,
-                            'Content-Type': 'application/json',
-                        },
-                        data: payload,
-                    }).then(response => {
-                        console.log('response axios :', response.data);
-                        resolve(response);
-                    }).catch(error => {
-                        console.log('error axios :', error);
-                        reject(error);
-                    })
-                });
-            },
-
-            submitComment: function () {
+            async submitComment() {
                 if (!this.$v.inputComment.$invalid) {
                     console.log('sending request');
-                    let payload = {
-                        'consultant': this.consultant.id,
-                        'message': this.inputComment,
-                    };
-
-                    this.sendSubmitCommentRequest(payload).then((response) => {
-                        this.getConsultantComments(this.consultant.id).then(response => {
-                            console.log(response.data);
-                            this.comments = response.data;
-                            this.inputComment = '';
-                        }).catch(error => {
-                            console.log(error.response);
-                        });
-
-                        console.log('response:', response.data);
-                    }).catch((error) => {
-
-                    })
+                    try {
+                        this.$loading(true);
+                        let result = await axios.post(
+                            `${this.$store.getters.getApi}/comment/comments/`,
+                            {consultant: this.consultant.id, message: this.inputComment},
+                            this.$store.getters.httpConfig
+                        );
+                        console.log('create comment result :', result);
+                        await this.getConsultantComments(this.consultant.id);
+                        this.inputComment = '';
+                        this.$v.$reset();
+                    } catch (e) {
+                        console.log(e);
+                        if(e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+                        this.$loading(false);
+                    }
                 } else {
                     console.log('comment was empty');
                 }
-
-
             },
         }
     }

@@ -37,20 +37,29 @@
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
 
+                    <!-- Its not reserved ( not purple ) and its empty -->
                     <div
-                            v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8)) &&
-                             !isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                            @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
-                            :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())},]"
-                            class="myTableSemiCell timeOpenForManagerToSet"
+                        v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8)) &&
+                       !isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                        @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                        :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
+                        class="myTableSemiCell timeOpenForManagerToSet"
+                    ></div>
+
+                    <!-- Its not reserved ( not purple ) but its available for users to choose -->
+                    <div
+                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                        :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
+                        @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                        class="myTableSemiCell timeOpen"
                     ></div>
 
                     <div
-                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
-                            @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())"
-                            class="myTableSemiCell timeOpen"
+                        v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                        class="myTableSemiCell timeReserved"
                     ></div>
+
+
                 </div>
             </div>
             <button @click="addTimes()" class="btn btn-success">آزاد کردن زمان های انتخاب شده</button>
@@ -85,7 +94,6 @@
                 shownDate: {},
                 justNowDate: jalali().locale('fa'),
                 tableDataArray: [],
-                price : 1000,
             }
         },
         computed: {
@@ -246,7 +254,6 @@
                 this.days.push(this.generateFridayNew(now));
                 console.log(this.days);
                 for (let i = 0; i < this.days.length; i++) {
-                    console.log(this.days[i].format('dddd'));
                     this.tableDataArray[i] = this.days[i];
                 }
             },
@@ -304,7 +311,7 @@
 
             isInReservedTimes(cellStartDate, cellEndDate) {
                 for (let slot of this.soldSlots) {
-                    if (cellStartDate.isSame(jalali(slot.start_time), 'hour') && cellEndDate.isSame(jalali(slot.end_time), 'hour')) {
+                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
                         return true;
                     }
                 }
@@ -320,7 +327,6 @@
                         let payload = {
                             "start_time": selectedDate.datestart,
                             "end_time": selectedDate.dateend,
-                            "price": this.price
                         };
                         let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
                         console.log(result);
@@ -349,9 +355,7 @@
         background-color: white;
         border: 1.5px solid #ccc;
         min-height: 300px;
-
         border-radius: 15px;
-
         display: flex;
         align-items: center;
         justify-content: center;

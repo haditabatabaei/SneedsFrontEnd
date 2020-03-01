@@ -2,7 +2,7 @@
         <div class="profile-content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12 cartsWrapper">
+                    <div class="col-md-12 cartsWrapper" v-if="cart != undefined">
                         <h2 class="cartsWrapper-title isansFont--faNum">
                             <i class="material-icons text-primary">done</i>
                             پرداخت فاکتور
@@ -18,21 +18,30 @@
                                 ریال
                             </p>
                             <form @submit.prevent="checkDiscountCode()" class="cartsWrapper-price--discount">
-                                <input type="text" placeholder="کد تخفیف" class="isansFont--faNum">
+                                <input type="text" placeholder="کد تخفیف" class="isansFont--faNum" v-model.trim="inputCode">
                                 <button class="isansFont--faNum">اعمال کد</button>
                             </form>
                         </div>
+                        <div class="cartsWrapper-discounts isansFont--faNum" v-if="discounts.length > 0">
+                            کد تخفیف ثبت شده :
+                            <p v-for="(discount, index) in discounts" :key="index">
+                                <button class="btn btn-sm btn-simple btn-danger" @click="deleteDiscountById(discount.id)">
+                                    <i class="material-icons">close</i>
+                                </button>
+                                {{discount.code}}
+                            </p>
+                        </div>
                     </div>
+                    <div class="col-md-12 cartsWrapper" v-else>
+                        <p class="isansFont--faNum">فاکتوری برای نمایش وجود ندارد</p>
+                    </div>
+
                     <div class="col-md-12 infoWrapper">
                         <p class="text-center" style="direction:ltr">Carts history coming soon</p>
                     </div>
                 </div>
             </div>
         </div>
-    <!--    <div>-->
-<!--        <p v-for="(prop, key) in cart">{{prop + " " + key}}</p>-->
-<!--        <button @click="requestPayment()">pay</button>-->
-<!--    </div>-->
 </template>
 
 <script>
@@ -44,16 +53,22 @@
             return {
                 cart : {},
                 cartProducts : [],
+                discounts : [],
+                inputCode: ''
             }
         },
-        async created() {
-            await this.getLastCart();
-            await this.getCartProducts();
-            console.log('cart products ', this.cartProducts);
+        created() {
+            this.initComp();
         },
         methods: {
             getJalali(date) {
                 return jalali(date);
+            },
+
+            async initComp() {
+                await this.getLastCart();
+                await this.getCartProducts();
+                await this.getDiscountsOnThisCart();
             },
 
             async getLastCart() {
@@ -76,7 +91,7 @@
             async getCartProducts() {
                 try {
                     this.$loading(true);
-                                        for(let productId of this.cart.products) {
+                    for(let productId of this.cart.products) {
                         let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/${productId}/`, this.$store.getters.httpConfig);
                         console.log(result);
                         this.cartProducts.push(result.data);
@@ -91,6 +106,56 @@
                 }
             },
 
+            async checkDiscountCode() {
+                try {
+                    this.$loading(true);
+                    let result = await axios.post(`${this.$store.getters.getApi}/discount/cart-consultant-discounts/`,{"cart" : this.cart.id,"code" : this.inputCode}, this.$store.getters.httpConfig);
+                    console.log('code result : ', result);
+                    this.inputCode = '';
+                    await this.initComp();
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            async getDiscountsOnThisCart() {
+                try {
+                    this.$loading(true);
+                    let result = await axios.get(`${this.$store.getters.getApi}/discount/cart-consultant-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
+                    console.log('discounts for this cart :', result);
+                    this.discounts = result.data;
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            async deleteDiscountById(id) {
+                try {
+                    this.$loading(true);
+                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-consultant-discounts/${id}`, this.$store.getters.httpConfig);
+                    console.log('delete for this cart :', result);
+                    await this.initComp();
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+
             getConsultantSlugFromUrl(url) {
                 let splitted = url.split("/");
                 return splitted[splitted.length - 1];
@@ -101,6 +166,7 @@
                     this.$loading(true);
                     let result = await axios.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid" : this.cart.id} ,this.$store.getters.httpConfig);
                     console.log(result);
+                    window.open(result.data.redirect, '_blank');
                 } catch (e) {
                     console.log(e);
                     if(e.response) {
@@ -297,30 +363,15 @@
         margin-right: -50px;
     }
 
-    .nextSecButton {
-        border-radius: 15px;
-        margin-bottom: 20px;
+    .cartsWrapper-discounts {
+        padding-right: 20px;
     }
 
-
-    .priceWrapper--prevPrice {
-        margin-top: 30px;
-        margin-bottom: 30px;
-        font-size: 15px;
-    }
-
-    .priceWrapper--prevPrice__number {
-        margin-bottom: 10px;
-        font-weight: bold;
-        font-size: 40px;
-    }
-
-    .priceWrapper--priceInfo {
-        font-size: 12px;
-    }
-
-    .priceWrapper--priceInfo__number {
-        font-weight: bold;
+    .cartsWrapper-discounts button{
+        padding: 5px;
+        margin-left: 5px;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

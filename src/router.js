@@ -8,7 +8,6 @@ import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
 import UserProfile from '@/views/User/UserProfile';
 import UserActiveCart from "@/views/User/UserActiveCart";
-// import ResetPassword from "@/views/ResetPassword";
 import Error404 from '@/views/Error404';
 
 import ConsultantList from "@/views/ConsultantList";
@@ -17,13 +16,8 @@ import ConsultantProfile from "@/views/ConsultantProfile";
 
 import UserReservedSessions from "@/views/UserReservedSessions";
 
-// import UserCard from "@/views/UserCard";
-// import UserOrder from "@/views/UserOrder";
-
 import store from './store';
-// import Payment from "@/views/Payment";
-// import Messages from "@/views/Messages";
-
+import Payment from "@/views/Payment";
 Vue.use(Router);
 
 let router = new Router({
@@ -84,7 +78,7 @@ let router = new Router({
                     }
                 },
                 {
-                    path: 'reserved',
+                    path: 'sessions',
                     name: 'user-reserved-sessions',
                     component: UserReservedSessions,
                     meta: {
@@ -102,33 +96,13 @@ let router = new Router({
                 {
                     path: 'payment/accept/',
                     name: "user-payment-accept",
-                    component: null,
+                    component: Payment,
                     meta: {
                         auth: 'req'
                     }
-                }
+                },
             ]
         },
-        // {
-        //     path: '/user/cart',
-        //     name: 'UserCart',
-        //     component: UserCard
-        // },
-        // {
-        //     path: '/user/order',
-        //     name: 'UserOrder',
-        //     component: UserOrder,
-        // },
-        // {
-        //     path: '/user/password-reset',
-        //     name: 'ResetPassword',
-        //     component: ResetPassword
-        // },
-        // {
-        //     path: '/user/messages',
-        //     name: 'Messages',
-        //     component: Messages
-        // },
         {
             path: '/consultants',
             name: 'ConsultantList',
@@ -139,11 +113,6 @@ let router = new Router({
             name: 'ConsultantProfile',
             component: ConsultantProfile,
         },
-        // {
-        //     path: '/payment/accept',
-        //     name: 'Payment',
-        //     component: Payment,
-        // },
         {
             path: '/404',
             name: 'Error404',

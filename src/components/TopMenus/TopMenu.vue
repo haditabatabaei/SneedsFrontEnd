@@ -14,10 +14,15 @@
             </div>
             <div class="menuWrapper">
                 <ul class="menuList isansFont">
-                    <li class="menuList--item" v-for="item in this.topMenuListItems"
+                    <li class="menuList--item"
+                        v-for="(item, index) in this.topMenuListItems"
+                        :key="index"
                         v-bind:class="[{'dropdown':item.hasDropdown}]">
-                        <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
-                           data-toggle="dropdown menuList--linkItem">
+                        <a
+                            href="#"
+                            v-if="item.hasDropdown && item.type === 'router'"
+                            class="dropdown-toggle"
+                            data-toggle="dropdown menuList--linkItem">
                             <span>{{item.itemName}}</span>
                             <b class="caret" />
                         </a>
@@ -38,13 +43,13 @@
                            target="_blank">{{item.itemName}}</a>
 
                         <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
-                            <li v-for="dropdownItem in item.dropdownItems"
+                            <li v-for="(dropdownItem, index) in item.dropdownItems"
+                                :key="index"
                                 v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
                                 <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type === 'router'">
                                     {{dropdownItem.itemName}}
                                 </router-link>
-                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
-                                   target="_blank">{{dropdownItem.itemName}}</a>
+                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'" target="_blank">{{dropdownItem.itemName}}</a>
                             </li>
                         </ul>
                     </li>
@@ -66,22 +71,18 @@
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret" />
                     </button>
-<!--                    <router-link to="/user/cart" class="btn btn-fab btn-fab-mini isansFont"-->
-<!--                                 :class="[{'btn-white' : !activeCart || activeCart.time_slot_sales.length === 0},{'btn-rose' : activeCart && activeCart.time_slot_sales.length > 0}]">-->
-<!--                        <i class="material-icons">shopping_cart</i>-->
-<!--                    </router-link>-->
                     <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
                         <li class="text-right">
                             <router-link to="/user/profile">اطلاعات کاربری</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/reserved">جلسات مشاوره</router-link>
+                            <router-link to="/user/sessions">جلسات مشاوره</router-link>
                         </li>
                         <li class="text-right">
                             <router-link to="/user/packages">پکیج ها</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/payments">پرداخت ها</router-link>
+                            <router-link to="/user/cart/active">پرداخت ها</router-link>
                         </li>
                         <li class="text-right">
                             <router-link to="/user/chatroom">چتروم</router-link>
@@ -160,7 +161,7 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/reserved" class="mobileMenuList--linkItem">
+                                <router-link to="/user/sessions" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     جلسات مشاوره
                                 </router-link>
@@ -172,7 +173,7 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/payments" class="mobileMenuList--linkItem">
+                                <router-link to="/user/cart/active" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     پرداخت ها
                                 </router-link>
@@ -239,39 +240,6 @@
                         hasDropdown: false,
                         dropdownItems: [],
                         icon: 'table_chart'
-                    },
-                    {
-                        itemName: 'مصاحبه',
-                        target: 'http://sneeds.ir/category/conversation/',
-                        type: 'hyper',
-                        hasDropdown: true,
-                        dropdownItems: [
-                            {
-                                itemName: 'مصاحبه اپلای',
-                                target: 'http://sneeds.ir/category/conversation/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87-%d8%a7%d9%be%d9%84%d8%a7%db%8c/',
-                                type: 'hyper',
-                                hasDropdown: false,
-                                dropdownItems: [],
-                                icon: null
-                            },
-                            {
-                                itemName: 'مصاحبه ویژه',
-                                target: 'http://sneeds.ir/category/conversation/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87-%d9%88%db%8c%da%98%d9%87/',
-                                type: 'hyper',
-                                hasDropdown: false,
-                                dropdownItems: [],
-                                icon: null
-                            },
-                            {
-                                itemName: 'لایو اینستاگرامی',
-                                target: 'http://sneeds.ir/category/conversation/%d9%84%d8%a7%db%8c%d9%88-%d8%a7%db%8c%d9%86%d8%b3%d8%aa%d8%a7%da%af%d8%b1%d8%a7%d9%85%db%8c/',
-                                type: 'hyper',
-                                hasDropdown: false,
-                                dropdownItems: [],
-                                icon: null,
-                            },
-                        ],
-                        icon: 'record_voice_over',
                     },
                     {
                         itemName: 'درباره ما',
@@ -401,8 +369,7 @@
             transition: all 0.2s ease;
         }
 
-        .slide-fade-enter, .slide-fade-leave-to
-            /* .slide-fade-leave-active below version 2.1.8 */
+        .slide-fade-enter, .slide-fade-leave-to /*.slide-fade-leave-active below version 2.1.8 */
         {
             transform: translateX(10px);
             opacity: 0;
@@ -427,7 +394,6 @@
         }
 
         .LogoWrapper {
-            /*display: none;*/
             order: 1;
             margin-right: auto;
             margin-left: 20px;
@@ -435,7 +401,6 @@
 
         .navbarContainer {
             width: 100%;
-            /*justify-content: space-around;*/
         }
 
 
@@ -478,7 +443,6 @@
         }
 
         .mobileMenuList--linkItem {
-            /*padding: 5px 10px;*/
             color: #333;
             padding: 10px;
             width: 100%;
@@ -522,7 +486,5 @@
             padding-right:5px;
             padding-left:5px;
         }
-
-
     }
 </style>

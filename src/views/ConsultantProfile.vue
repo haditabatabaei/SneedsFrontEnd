@@ -196,7 +196,8 @@
                         try {
                             this.$loading(true);
                             let result = await axios.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                            console.log(result)
+                            console.log(result);
+                            this.$router.push('/user/cart/active');
                         } catch (e) {
                             console.log(e);
                             if(e.response) {
@@ -207,94 +208,6 @@
                         }
                     }
                 }
-
-                // console.log("active card is :", this.activeCart);
-
-                // if (this.isLoggedIn) {
-                //     if (this.stash.length > 0) {
-                //         this.$loading(true);
-                //         if (this.activeCart !== undefined && this.activeCart != null && this.activeCart !== {}) {
-                //             //put new items in it
-                //             console.log('put new items in cart');
-                //             console.log(this.activeCart);
-                //             for (let i = 0; i < payload.time_slot_sales.length; i++) {
-                //                 this.activeCart.time_slot_sales.push(payload.time_slot_sales[i]);
-                //             }
-                //
-                //
-                //             let config = {
-                //                 "payload": {"time_slot_sales": Array.from(new Set(this.activeCart.time_slot_sales))},
-                //                 "cartId": this.activeCart.id,
-                //             };
-                //
-                //             console.log(config);
-                //             this.$store.dispatch('putCartRequest', config).then(response => {
-                //                 this.$store.commit('setStash', []);
-                //                 console.log(response);
-                //                 this.$loading(false);
-                //                 this.$router.push('/user/cart');
-                //             }).catch(error => {
-                //                 this.$loading(false);
-                //                 console.log(error);
-                //                 if (error.response) {
-                //                     console.log(error.response);
-                //                 }
-                //
-                //                 this.$notify({
-                //                     group: 'notif',
-                //                     title: 'خطا',
-                //                     type: 'error',
-                //                     text: error.response.data,
-                //                     closeOnClick: true
-                //                 });
-                //             });
-                //         } else {
-                //             //card doesnt exits
-                //             //post new items;
-                //             console.log('post new items in cart');
-                //             this.$store.dispatch('postCart', payload).then(response => {
-                //                 console.log(response);
-                //                 this.$store.commit('setStash', []);
-                //                 this.$loading(false);
-                //                 this.$router.push('/user/cart');
-                //             }).catch(error => {
-                //                 console.log(error);
-                //                 this.$loading(false);
-                //                 if (error.response) {
-                //                     console.log(error.response);
-                //                 }
-                //                 this.$notify({
-                //                     group: 'notif',
-                //                     title: 'خطا',
-                //                     type: 'error',
-                //                     text: error.response.data,
-                //                     closeOnClick: true
-                //                 });
-                //             })
-                //         }
-                //     } else {
-                //         this.$notify({
-                //             group: 'notif',
-                //             title: 'خطا',
-                //             type: 'error',
-                //             text: 'باید حداقل یک زمان از تقویم را انتخاب کنید.',
-                //             closeOnClick: true,
-                //             duration: 2500
-                //         });
-                //         console.log('stash is empty');
-                //     }
-                // } else {
-                //     this.$notify({
-                //         group: 'notif',
-                //         title: 'خطا',
-                //         type: 'error',
-                //         text: 'برای اضافه کردن زمان ها به سبد خرید باید در حساب خود وارد شوید.',
-                //         closeOnClick: true,
-                //         duration: 2500
-                //     });
-                // }
-
-
             },
 
             getJalali: function (date) {

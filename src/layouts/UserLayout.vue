@@ -101,17 +101,17 @@
             return {
                 userSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
-                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
+                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "پرداخت های قبلی", target: '/user/payments',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/user/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
                 consultantSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
-                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 1, hasSubmenu: false, submenu: []},
+                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "پرداخت های قبلی", target: '/user/payments',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/user/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []}
                 ]

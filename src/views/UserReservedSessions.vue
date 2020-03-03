@@ -15,7 +15,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-md-12 text-center" style="margin-top:10px;" v-if="reservedSessions.length === 0">
+            <div class="col-md-12 text-center mt-10" v-if="reservedSessions.length === 0">
                 <p class="isansFont">جلسه ای برای نمایش وجود ندارد</p>
                 <router-link to="/consultants" class="btn btn-info btn-simple btn-lg text-center isansFont">
                     مشاهده مشاوران
@@ -27,7 +27,7 @@
                     v-for="(session, index) in shownReservedSessions"
                     :isConsultant="isConsultant"
                     :session="session"
-                    :rate="session.starRate"
+                    :rate="session.rate"
                     @update-list="updateList()"
                     :key="index"
                 />
@@ -52,35 +52,26 @@
                 activeFilter: 'all',
                 videoRooms: [],
                 availableRates: [],
-                starRate: '',
             }
         },
         computed: {
-            jalaliNow: function () {
-                return jalali();
-            },
-
-            showReserved: function () {
-                return this.reservedSessions;
-            },
-
-            isConsultant: function () {
+            isConsultant() {
                 return this.$store.getters.getUserInfo.user_type === 'consultant';
             }
         },
 
-        created() {
-            this.updateList();
+        async created() {
+            await this.updateList();
         },
 
         mounted() {
             scrollTo(0, 0);
-            setTimeout(() => {
-                console.log('setting sync video interval');
-                setInterval( async () => {
-                    await this.getVideoRoomsSyncReq();
-                }, 1000 * 60);
-            }, 1000 * 10);
+            // setTimeout(() => {
+            //     console.log('setting sync video interval');
+            //     setInterval( async () => {
+            //         await this.getVideoRoomsSyncReq();
+            //     }, 1000 * 60);
+            // }, 1000 * 10);
         },
 
         beforeDestroy() {
@@ -92,7 +83,7 @@
         },
 
         methods: {
-            filterBy: function (param) {
+            filterBy(param) {
                 this.activeFilter = param;
                 switch (param) {
                     case 'all' :
@@ -108,48 +99,60 @@
             },
 
             async updateList() {
-                try {
                     this.$loading(true);
-                    let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
-                    console.log('sold slot results ', soldSlotsResult);
-                    for(let soldSlot of soldSlotsResult.data) {
-                        console.log('getting rate of ', soldSlot.id);
-                        let ratesResult = await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                        let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                        soldSlot.rate = ratesResult.data[0];
-                        soldSlot.room = roomsResult.data[0];
-                        // if (ratesResult.data[0]) {
-                        //     console.log('setting rate to', ratesResult.data[0].rate);
-                        //     soldSlot["starRate"] = ratesResult.data[0].rate;
-                        // } else {
-                        //     soldSlot["starRate"] = null
-                        //     console.log('star rate is null');
-                        // }
+
+                    try {
+                        this.$loading(true);
+                        let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                        this.reservedSessions = soldSlotsResult.data;
+                    } catch (e) {
+                        console.log(e);
+                        if(e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+                        this.$loading(false);
                     }
 
-                    // let rooms = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/`,this.$store.getters.httpConfig);
-                    // this.videoRooms = rooms.data;
-                    // for(let soldSlot of soldSlotsResult.data) {
-                    //     soldSlot["login_url"] = this.getSessionRoomWithId(soldSlot.id);
-                    // }
-                    console.log("Check here ", soldSlotsResult.data);
-                    this.reservedSessions = soldSlotsResult.data;
-                    this.filterBy('all');
-                } catch (e) {
-                    console.log(e);
-                    if(e.response) {
-                        console.log(e.response);
+                    console.log('sold slot results ', this.reservedSessions);
+                    for(let soldSlot of this.reservedSessions) {
+                        try {
+                            this.$loading(true);
+                            console.log('getting rate of ', soldSlot.id);
+                            let ratesResult = await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
+                            soldSlot.rate = ratesResult.data;
+                        } catch (e) {
+                            soldSlot.rate = null;
+                        } finally {
+                            this.$loading(false);
+                        }
+
+                        try {
+                            this.$loading(true);
+                            console.log('getting video of ', soldSlot.id);
+                            let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
+                            soldSlot.room = roomsResult.data;
+                        } catch (e) {
+                            soldSlot.room = null;
+                        } finally {
+                            this.$loading(false);
+                        }
+
+
                     }
-                } finally {
+
+                    console.log("Check here ", this.reservedSessions);
+                    // this.reservedSessions = soldSlotsResult.data;
+                    this.filterBy('all');
                     this.$loading(false);
-                }
+
             },
 
-            getJalali: function (date) {
+            getJalali(date) {
                 return jalali(date);
             },
 
-            getVideoRoomsSyncReq: async function () {
+            async getVideoRoomsSyncReq() {
                 console.log('calling sync video rooms');
                 try {
                     let rooms = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/`,this.$store.getters.httpConfig);
@@ -169,10 +172,11 @@
                 }
             },
 
-            getSessionRoomWithId: function (id) {
+            getSessionRoomWithId(id) {
                 for (let i = 0; i < this.videoRooms.length; i++) {
-                    if (this.videoRooms[i].sold_time_slot == id)
+                    if (this.videoRooms[i].sold_time_slot == id) {
                         return this.videoRooms[i].login_url;
+                    }
                 }
                 return null;
             },

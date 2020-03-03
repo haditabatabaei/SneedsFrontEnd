@@ -7,12 +7,12 @@
                         <div class="userSidebarBlock--info">
                             <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
                             <div class="userSidebarBlock--info_detail">
-                                <h1 class="isansFont--faNum">
-                                    {{user.first_name + " " + user.last_name}}
+                                <h1 class="isansFont--faNum" v-if="showFirstName">
+                                    {{`${user.first_name} ${user.last_name}`}}
                                 </h1>
-                                <h4 class="isansFont--faNum">
-                                    <router-link to="/profile/settings">تکمیل اطلاعات ></router-link>
-                                </h4>
+                                <h1 class="isansFont--faNum text-sm" v-else>
+                                    <router-link to="/user/profile">لطفا نام و نام خانوادگی خود را تکمیل کنید.</router-link>
+                                </h1>
                             </div>
                         </div>
                         <div class="userSidebarBlock--links isansFont--faNum">
@@ -57,9 +57,13 @@
         <div class="mobile" v-else>
             <div class="mobile-info">
                 <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
-                <h1 class="isansFont--faNum">
+                <h1 class="isansFont--faNum" v-if="showFirstName">
                     {{user.first_name + " " + user.last_name}}
                 </h1>
+                <h1 class="isansFont--faNum" v-else>
+                    لطفا نام و نام خانوداگی خود را تکمیل کنید.
+                </h1>
+
                 <h4 class="isansFont--faNum">
                     <router-link to="/profile/settings">تکمیل اطلاعات ></router-link>
                 </h4>
@@ -103,17 +107,19 @@
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
                     {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "پرداخت های قبلی", target: '/user/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "ویرایش رمز عبور", target : "/user/password", icon : "circle", tag : 0, hasSubmenu: false, submenu: []}
                 ],
 
                 consultantSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
                     {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "پرداخت های قبلی", target: '/user/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name : "پرداخت های قبلی", target: '/cart/active',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []}
+                    {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
+                    {name : "ویرایش رمز عبور", target : "/user/password", icon : "circle", tag : 0, hasSubmenu: false, submenu: []}
                 ]
             }
         },
@@ -131,6 +137,11 @@
             user: function () {
                 return this.$store.getters.getUser;
             },
+
+            showFirstName() {
+                return Boolean(this.user.first_name) && Boolean(this.user.last_name);
+            },
+
             userInfo: function() {
                 return this.$store.getters.getUserInfo;
             }

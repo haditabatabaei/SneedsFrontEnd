@@ -1,53 +1,40 @@
 <template>
-        <div class="col-md-12 infoBlock">
-            <form @submit.prevent="updateUser" class="info-form isansFont">
-                <div class="row">
-                    <p style="margin-right: 15px;">نکته : موارد خالی حساب نخواهند شد.</p>
-                    <div class="col-md-6">
-                        <label for="email" class="info-label isansFont--faNum">ایمیل (غیر قابل تغییر) :
-                            <input id="email" :placeholder="`فعلی :‌ ${user.email}`" type="text" class="info-input" disabled>
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="phoneNumber" class="info-label">
-                            شماره تماس (غیر قابل تغییر) :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.phone_number}`" id="phoneNumber" class="info-input" disabled>
-                        </label>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="firstName" class="info-label">
-                            نام :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.first_name}`" v-model.trim="inputUser.first_name" id="firstName" class="info-input">
-                            <span class="text-danger isansFont--faNum" v-if="firstNameIsInvalid">نام وارد شده معتبر نیست.</span>
-                        </label>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="lastName" class="info-label">
-                            نام خانوادگی :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.last_name}`" v-model.trim="inputUser.last_name" id="lastName" class="info-input">
-                            <span class="text-danger isansFont--faNum" v-if="lastNameIsInvalid">نام خانوادگی وارد شده معتبر نیست.</span>
-
-                        </label>
-                    </div>
-
-                    <div class="col-md-6 col-md-offset-6 text-left mt-10">
-                        <button class="btn btn-success isansFont--faNum">ثبت تغییرات</button>
-                    </div>
+    <div class="col-md-12 infoBlock">
+        <form @submit.prevent="updateUser" class="info-form isansFont">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="password" class="info-label">
+                        رمز عبور جدید :
+                        <input type="password" :placeholder="user.password" v-model="inputUser.password" id="password" class="info-input">
+                        <span class="text-danger isansFont--faNum" v-if="passwordIsInvalid">رمز عبور وارد شده معتبر نیست.</span>
+                    </label>
                 </div>
-            </form>
-        </div>
+
+                <div class="col-md-6">
+                    <label for="confirmPassword" class="info-label">
+                        تکرار رمز عبور جدید :
+                        <input type="password" :placeholder="user.password2" v-model="inputUser.password2" id="confirmPassword" class="info-input">
+                        <span class="text-danger isansFont--faNum" v-if="confirmPasswordIsInvalid">تکرار رمز عبور وارد شده معتبر نیست.</span>
+                    </label>
+                </div>
+
+                <div class="col-md-6 col-md-offset-6 text-left mt-10">
+                    <button class="btn btn-success isansFont--faNum">ثبت تغییرات</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import {minLength, sameAs} from 'vuelidate/lib/validators'
     export default {
-        name: "UserProfile",
+        name: "UserPasswordChange",
         validations :{
             inputUser : {
-                first_name : {  },
-                last_name : {  },
+                password : { minLength: minLength(6) },
+                password2 :  { sameAs : sameAs('password') },
             }
         },
 
@@ -55,8 +42,8 @@
             return {
                 submitted : false,
                 inputUser : {
-                    first_name : '',
-                    last_name : '',
+                    password : '',
+                    password2 : '',
                 },
             }
         },
@@ -140,16 +127,16 @@
                 return this.$store.getters.getUser;
             },
 
-            firstNameIsInvalid() {
-                return this.inputUser.first_name.length !== 0 && this.submitted && this.$v.inputUser.first_name.$error;
+            passwordIsInvalid() {
+                return this.inputUser.password.length !== 0 && this.submitted && this.$v.inputUser.password.$error;
             },
 
-            lastNameIsInvalid() {
-                return this.inputUser.last_name.length !== 0 && this.submitted && this.$v.inputUser.last_name.$error;
+            confirmPasswordIsInvalid() {
+                return this.submitted && this.$v.inputUser.password2.$error;
             },
 
             formIsInvalid() {
-                return this.submitted && (this.firstNameIsInvalid || this.lastNameIsInvalid);
+                return this.submitted && (this.passwordIsInvalid || this.confirmPasswordIsInvalid);
             }
         }
     }

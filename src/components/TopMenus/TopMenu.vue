@@ -82,7 +82,7 @@
                             <router-link to="/user/packages">پکیج ها</router-link>
                         </li>
                         <li class="text-right">
-                            <router-link to="/user/cart/active">پرداخت ها</router-link>
+                            <router-link to="/cart/active">پرداخت ها</router-link>
                         </li>
                         <li class="text-right">
                             <router-link to="/user/chatroom">چتروم</router-link>
@@ -173,7 +173,7 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/cart/active" class="mobileMenuList--linkItem">
+                                <router-link to="/cart/active" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     پرداخت ها
                                 </router-link>

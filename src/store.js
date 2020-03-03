@@ -28,7 +28,7 @@ export default new Vuex.Store({
 
         httpConfig : {
             headers : {
-                "Authorization" : `JWT ${localStorage.getItem('token')}`,
+                "Authorization" : "JWT " + localStorage.getItem('token'),
                 "Content-Type" : "application/json"
             },
             timeout: 6000,
@@ -174,84 +174,11 @@ export default new Vuex.Store({
             console.log(editResult);
         },
 
-        putCartRequest({commit}, config) {
-            return new Promise((resolve, reject) => {
-                axios({
-                    url: this.getters.getApi + 'cart/carts/' + config.cartId + '/',
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'JWT ' + this.getters.getToken,
-                    },
-                    data: config.payload,
-                }).then(response => {
-                    resolve(response);
-                }).catch(error => {
-                    reject(error);
-                })
-            })
-        },
-
-        getCart({commit}) {
-            return new Promise((resolve, reject) => {
-                axios({
-                    url: this.getters.getApi + 'cart/carts/',
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'JWT ' + this.getters.getToken,
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    commit('setCart', response.data[0]);
-                    console.log('response from getCart in :', response);
-                    resolve(response);
-                }).catch(error => {
-                    reject(error);
-                })
-            })
-        },
-
-        postCart({commit}, payload) {
-            return new Promise((resolve, reject) => {
-                axios({
-                    url: this.getters.getApi + 'cart/carts/',
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'JWT ' + this.getters.getToken,
-                        'Content-Type': 'application/json',
-                    },
-                    data: payload,
-                }).then(response => {
-                    resolve(response);
-                }).catch(error => {
-                    reject(error);
-                })
-            })
-        },
-
-        deleteCart({commit}, cartId) {
-            return new Promise((resolve, reject) => {
-                axios({
-                    url: this.getters.getApi + 'cart/carts/' + cartId + '/',
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': 'JWT ' + this.getters.getToken,
-                        'Content-Type': 'application/json',
-                    },
-                }).then(response => {
-                    commit('setCart', {});
-                    resolve(response);
-                }).catch(error => {
-                    reject(error);
-                })
-            })
-        },
-
         logout({commit}) {
-            //reset states
             commit('logout');
         },
-    }, getters: {
+    },
+    getters: {
         isLoggedIn: state => state.userIsLoggedIn || (state.token !== ''),
 
         getToken: state => state.token,

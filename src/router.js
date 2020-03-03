@@ -18,6 +18,8 @@ import UserReservedSessions from "@/views/UserReservedSessions";
 
 import store from './store';
 import Payment from "@/views/Payment";
+import UserPasswordChange from "@/views/User/UserPasswordChange";
+
 Vue.use(Router);
 
 let router = new Router({
@@ -70,6 +72,14 @@ let router = new Router({
                     }
                 },
                 {
+                    path : 'password',
+                    name : 'user-password',
+                    component: UserPasswordChange,
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
                     path: 'calendar',
                     name: 'user-calendar',
                     component: ConsultManagement,
@@ -86,14 +96,6 @@ let router = new Router({
                     }
                 },
                 {
-                    path: 'cart/active',
-                    name: 'user-cart-active',
-                    component: UserActiveCart,
-                    meta: {
-                        auth : 'req'
-                    }
-                },
-                {
                     path: 'payment/accept/',
                     name: "user-payment-accept",
                     component: Payment,
@@ -102,6 +104,14 @@ let router = new Router({
                     }
                 },
             ]
+        },
+        {
+            path: '/cart/active',
+            name: 'cart-active',
+            component: UserActiveCart,
+            meta: {
+                auth : 'req'
+            }
         },
         {
             path: '/consultants',

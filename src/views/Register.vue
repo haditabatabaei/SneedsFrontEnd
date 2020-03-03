@@ -3,7 +3,7 @@
          style="background-image: url('../../sneedsAssets/img/bg3.jpg'); background-size: cover; background-position: top center;">
         <div class="container">
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="col-md-8 col-md-offset-2 col-sm-12">
                     <div class="card card-signup">
                         <h2 class="card-title text-center isansFont">ثبت نام</h2>
                         <h6 class="text-center">
@@ -16,7 +16,7 @@
                                 <form class="form" @submit.prevent="register()">
                                     <div class="card-content">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="material-icons">email</i>
@@ -36,7 +36,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="material-icons">phone</i>
@@ -54,44 +54,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="material-icons">lock</i>
                                                     </span>
                                                     <div class="form-group form-rose">
                                                         <input
-                                                            v-model="$v.userToRegister.password.$model"
-                                                            class="form-control gadugiFont isansFont"
-                                                            name="phoneNumber"
-                                                            type="password"
-                                                            placeholder="رمز عبور">
+                                                                v-model="$v.userToRegister.password.$model"
+                                                                class="form-control gadugiFont isansFont"
+                                                                name="phoneNumber"
+                                                                type="password"
+                                                                placeholder="رمز عبور">
                                                         <span class="material-input"/>
                                                         <span class="text-center isansFont text-danger" v-if="passwordIsInvalid">
                                                             لطفا رمز عبور خود را یک مقدار معتبر وارد کنید.
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="material-icons">lock</i>
-                                                    </span>
-                                                    <div class="form-group form-rose">
-                                                        <input
-                                                            v-model="$v.userToRegister.confirmPassword.$model"
-                                                            class="form-control gadugiFont isansFont"
-                                                            name="phoneNumber"
-                                                            type="password"
-                                                            placeholder="تکرار رمز عبور">
-                                                        <span class="material-input"/>
-                                                        <span class="text-center isansFont text-danger" v-if="confirmPasswordIsInvalid">
-                                                            لطفا تکرار رمز عبور خود را یک مقدار معتبر وارد کنید.
                                                         </span>
                                                     </div>
                                                 </div>
@@ -115,7 +93,7 @@
 </template>
 
 <script>
-    import {required, email, minLength, sameAs, helpers} from 'vuelidate/lib/validators'
+    import {required, email, minLength, helpers} from 'vuelidate/lib/validators'
     const iranianPhone = helpers.regex('phone_number', /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig);
     export default {
         name: "Register",
@@ -124,7 +102,6 @@
                 email: {required, email, minLength: minLength(1)},
                 phone_number: {required, iranianPhone, minLength: minLength(1)},
                 password: {required, minLength: minLength(6)},
-                confirmPassword: {required, sameAs: sameAs('password')},
             },
         },
         data() {
@@ -134,7 +111,6 @@
                     email: 'hadi.tabatabaei.aut@gmail.com',
                     phone_number: '09031823553',
                     password: 'hadi1234',
-                    confirmPassword: 'hadi1234',
                 },
                 submitted: false,
             }
@@ -209,10 +185,6 @@
             passwordIsInvalid() {
                 return this.submitted && this.$v.userToRegister.password.$error;
             },
-
-            confirmPasswordIsInvalid() {
-                return this.submitted && this.$v.userToRegister.confirmPassword.$error;
-            }
         },
         mounted() {
             scrollTo(0, 0)

@@ -39,26 +39,26 @@
         <div class="isansFont--faNum reservedCard--rate text-center" v-if="session.used">
             <div class="col-md-12" v-if="canRate && !isConsultant">
                 <star-rating
-                    v-model="session.starRate"
+                    v-model="inputRate"
                     :rtl="true"
                     :star-size="25"
                     :rounded-corners="true"
                 />
                 <button
-                        @click="submitRate(session.id,session.starRate)"
+                        @click="submitRate(session.id, inputRate)"
                         class="isansFont btn btn-rose btn-sm btn-round">
                     ثبت امتیاز
                 </button>
             </div>
             <p v-else-if="canRate && isConsultant">
-                کاربر امتیاز خود را ثبت کرده است
+                کاربر امتیاز خود را ثبت نکرده است
             </p>
             <p v-else-if="!canRate && isConsultant">
-                کاربر امتیاز خود را ثبت نکرده است
+                کاربر امتیاز خود را ثبت کرده است
             </p>
             <p v-else>
                 شما امتیاز خود را ثبت کردید :
-                {{rate}}
+                {{rate.rate}}
             </p>
         </div>
 
@@ -81,18 +81,21 @@
                 type : Boolean
             },
             rate: {
-                type : Number || null,
+                type : Object,
                 default: () => null
             },
         },
-        data: function () {
-            return {}
+        data() {
+            return {
+                inputRate : 0
+            }
         },
         methods: {
             getJalali: function (date) {
                 return jalali(date);
             },
             async submitRate(soldSlotId, rate) {
+                console.log('rate for ', soldSlotId, ' rate ', rate);
                 try {
                     this.$loading(true);
                     let result = await axios.post(
@@ -113,15 +116,8 @@
             },
         },
         computed: {
-            currentTimeBetweenSession: function () {
-                return this.getJalali().isBetween(this.getJalali(this.session.start_time), this.getJalali(this.session.end_time));
-            },
-
             canRate: function () {
                 return this.rate == null;
-            },
-            currentTimeBeforeSession: function () {
-                return this.getJalali().isBefore(this.getJalali(this.session.start_time));
             },
             currentTimeAfterSession: function () {
                 return this.getJalali().isAfter(this.getJalali(this.session.end_time));
@@ -142,11 +138,9 @@
     .reservedCard {
         border-radius: 5px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        margin-top: 50px;
         width: calc(33% - 30px);
-        margin-right: 15px;
-        margin-left: 15px;
-        min-height: 320px;
+        margin: 50px 15px 15px 0;
+        padding-bottom: 10px;
     }
 
     .reservedCard--image {

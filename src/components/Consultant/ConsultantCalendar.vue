@@ -17,6 +17,7 @@
                 <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
                 <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
                 <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
+                <span class="btn btn-round btn-sm btn-sample timeReserved isansFont">رزرو شده</span>
             </div>
         </div>
         <div class="myTable isansFont" v-if="days.length != 0">
@@ -36,7 +37,6 @@
                             v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
-
                     <!-- Its not reserved ( not purple ) and its empty -->
                     <div
                         v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8)) &&
@@ -58,8 +58,6 @@
                         v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
                         class="myTableSemiCell timeReserved"
                     ></div>
-
-
                 </div>
             </div>
             <button @click="addTimes()" class="btn btn-success">آزاد کردن زمان های انتخاب شده</button>
@@ -117,11 +115,11 @@
                 try {
                     this.$loading(true);
                     let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`);
-                    let soldSlots = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                    let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
                     console.log('all slots : ', slotsResult);
-                    console.log('sold slots : ', soldSlots);
+                    console.log('sold slots : ', soldSlotsResult);
                     this.slots = slotsResult.data;
-                    this.soldSlots = slotsResult.data;
+                    this.soldSlots = soldSlotsResult.data;
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);
                 } catch (e) {
@@ -155,14 +153,14 @@
             itemClickHandlerToRemove(datestart, dateend) {
                 //check see if this time is not added to the list
                 if (!this.isDatePresentOnSelectedList(this.selectedDatesToRemove, datestart, dateend)) {
-                    console.log('add elements to selected dates to remove')
+                    console.log('add elements to selected dates to remove');
                     this.selectedDatesToRemove.push({
                         'datestart': datestart,
                         'dateend': dateend
                     });
                 }// else means that element is present in the list, so we will remove it from the list
                 else {
-                    console.log('remove element from selected dates to remove')
+                    console.log('remove element from selected dates to remove');
                     this.removeElementFromToRemoveDates({
                         'datestart': datestart,
                         'dateend': dateend
@@ -174,14 +172,14 @@
             itemClickHandlerToOpen(datestart, dateend) {
                 //check see if this time is not added to the list
                 if (!this.isDatePresentOnSelectedList(this.selectedDatesToOpen, datestart, dateend)) {
-                    console.log('add elements to selected dates to open')
+                    console.log('add elements to selected dates to open');
                     this.selectedDatesToOpen.push({
                         'datestart': datestart,
                         'dateend': dateend
                     });
                 }// else means that element is present in the list, so we will remove it from the list
                 else {
-                    console.log('remove element from selected dates to open')
+                    console.log('remove element from selected dates to open');
                     this.removeElementFromToOpenDates({
                         'datestart': datestart,
                         'dateend': dateend
@@ -311,7 +309,7 @@
 
             isInReservedTimes(cellStartDate, cellEndDate) {
                 for (let slot of this.soldSlots) {
-                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
+                    if (cellStartDate.isSame(jalali(slot.start_time), 'minutes') && cellEndDate.isSame(jalali(slot.end_time), 'minutes')) {
                         return true;
                     }
                 }
@@ -414,39 +412,6 @@
         justify-content: center;
     }
 
-    .selectedDateBlock {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-left: 1px solid #a8a8a8;
-    }
-
-    .selectedDateBlock button {
-        margin-right: 5px;
-    }
-
-    .selectedDateBlock:last-child {
-        border-left: none;
-    }
-
-    .selectedDateBlock p {
-        font-size: 12px;
-        padding: 10px;
-        margin-bottom: 0;
-    }
-
-    .selectedDateBlockHeader p {
-        margin-top: 20px;
-    }
-
-    .selectedDateBlockFooter {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        align-self: stretch;
-        flex-wrap: wrap;
-    }
-
     .btn-sample {
         cursor: default !important;
     }
@@ -506,6 +471,10 @@
         font-size: 12px;
         font-weight: bold;
         width: 100%;
+    }
+
+    .timeReserved {
+        background-color: #9038CC;
     }
 
     .myTableRow {

@@ -125,7 +125,7 @@ let router = new Router({
             ]
         },
         {
-            path: '/cart/active',
+            path: '/carts/:id',
             name: 'cart-active',
             component: UserActiveCart,
             meta: {

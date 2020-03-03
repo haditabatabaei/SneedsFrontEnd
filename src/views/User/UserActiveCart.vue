@@ -138,9 +138,9 @@
             async getLastCart() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/cart/carts/`, this.$store.getters.httpConfig);
+                    let result = await axios.get(`${this.$store.getters.getApi}/cart/carts/${this.$route.params.id}/`, this.$store.getters.httpConfig);
                     console.log(result);
-                    this.cart = result.data[result.data.length - 1];
+                    this.cart = result.data;
                     console.log('current last cart ', this.cart);
                 } catch (e) {
                     console.log(e);

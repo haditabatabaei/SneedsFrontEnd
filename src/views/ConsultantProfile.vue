@@ -196,7 +196,7 @@
                             this.$loading(true);
                             let result = await axios.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                             console.log(result);
-                            this.$router.push('/cart/active');
+                            this.$router.push(`/carts/${result.data.id}`);
                         } catch (e) {
                             console.log(e);
                             if(e.response) {

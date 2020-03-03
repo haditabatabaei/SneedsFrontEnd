@@ -65,7 +65,6 @@
         },
 
         mounted() {
-            scrollTo(0, 0);
             // setTimeout(() => {
             //     console.log('setting sync video interval');
             //     setInterval( async () => {

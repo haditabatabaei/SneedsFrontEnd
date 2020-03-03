@@ -182,7 +182,6 @@
         },
         mounted() {
             //scroll to up
-            scrollTo(0, 0);
             // this.$store.dispatch('saveCurrentLocation', this.$route.path);
         }
     }

@@ -141,6 +141,7 @@
         width: calc(33% - 30px);
         margin: 50px 15px 15px 0;
         padding-bottom: 10px;
+        min-height: 320px;
     }
 
     .reservedCard--image {

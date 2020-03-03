@@ -22,7 +22,6 @@
     export default {
         name: "Error404",
         components: {}, mounted() {
-            scrollTo(0, 0);
         }
     }
 </script>

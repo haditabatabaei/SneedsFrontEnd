@@ -149,7 +149,6 @@
         methods: {
             resetLoadingLogic: function () {
                 window.console.log('no loading deploy');
-                scrollTo(0, 0);
             },
 
             login: async function () {
@@ -251,7 +250,6 @@
         },
 
         mounted() {
-            scrollTo(0, 0);
         },
     }
 

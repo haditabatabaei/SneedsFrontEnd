@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <router-link to="/">
                             <h5 class="isansFont text-right">
-                                <img class="brand-image" src="http://185.209.243.97/sneedsAssets/img/sneedsLogo.png"
+                                <img class="brand-image" src="../../../public/sneedsAssets/img/sneedsLogo.png"
                                      alt="لوگو اسنیدز">
                                 اسنیدز
                             </h5>
@@ -30,7 +30,7 @@
                             <h5 class="isansFont text-right">خدمات مشتریان</h5>
                         </router-link>
                         <ul class="links-vertical text-right isansFont">
-                            <li v-for="serviceItem in customerServiceMenuItems">
+                            <li v-for="(serviceItem, index) in customerServiceMenuItems" :key="index">
                                 <router-link :to="serviceItem.target">{{serviceItem.itemName}}</router-link>
                             </li>
                         </ul>
@@ -40,7 +40,7 @@
                             <h5 class="isansFont text-right">همراه با اسنیدز</h5>
                         </router-link>
                         <ul class="links-vertical text-right isansFont">
-                            <li v-for="inTouchItem in withSneedsMenuItems">
+                            <li v-for="(inTouchItem, index) in withSneedsMenuItems" :key="index">
                                 <router-link :to="inTouchItem.target">{{inTouchItem.itemName}}</router-link>
                             </li>
                         </ul>
@@ -50,7 +50,7 @@
                             <h5 class="isansFont text-right">راهنمای استفاده از اسنیدز</h5>
                         </router-link>
                         <ul class="links-vertical text-right isansFont">
-                            <li v-for="guideItem in guideMenuItems">
+                            <li v-for="(guideItem, index) in guideMenuItems" :key="index">
                                 <router-link :to="guideItem.target">{{guideItem.itemName}}</router-link>
                             </li>
                         </ul>
@@ -64,11 +64,11 @@
                         </h4>
                         <a href="http://instagram.com/sneeds_ir" target="_blank"
                            class="btn btn-rose isansFont instaButton">
-                            <i class="fa fa-instagram"></i>
+                            <i class="fa fa-instagram" />
                             اینستاگرام اسنیدز
                         </a>
                         <a href="https://t.me/sneeds_ir" target="_blank" class="btn btn-info isansFont">
-                            <i class="fa fa-telegram"></i>
+                            <i class="fa fa-telegram" />
                             تلگرام اسنیدز
                         </a>
                     </div>
@@ -77,14 +77,10 @@
                             نماد های اعتماد الکترونیک :
                         </h4>
                         <div class="gallery-feed">
-                            <img src="http://185.209.243.97/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
-                                 class="img img-raised">
-                            <img src="http://185.209.243.97/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
-                                 class="img img-raised">
-                            <img src="http://185.209.243.97/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
-                                 class="img img-raised">
-                            <img src="http://185.209.243.97/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی"
-                                 class="img img-raised">
+                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
+                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
+                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
+                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
                         </div>
                     </div>
                 </div>

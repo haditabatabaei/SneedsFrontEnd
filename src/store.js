@@ -54,14 +54,19 @@ export default new Vuex.Store({
         },
 
         logout(state) {
+            localStorage.clear();
             state.token = '';
             state.expires = '';
             state.userIsLoggedIn = false;
             state.user = {};
             state.inputUser = {};
+            state.httpConfig = {
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                timeout: 6000
+            };
             state.userInfo = {"id": '', "user_type": '', 'consultant': ''};
-
-            localStorage.clear();
         },
 
         setUser(state, newUser) {
@@ -71,9 +76,11 @@ export default new Vuex.Store({
         setInputUser(state, inputUser) {
             state.inputUser = inputUser;
         },
+
         setToken(state, newToken) {
-            state.token = newToken;
             localStorage.setItem('token', newToken);
+            state.token = newToken;
+            state.httpConfig.headers["Authorization"] = "JWT " + newToken;
         },
 
         setExpires(state, newExpires) {

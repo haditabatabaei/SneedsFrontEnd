@@ -250,7 +250,6 @@
             }
         },
         mounted() {
-            scrollTo(0, 0);
             this.tempScroll = window.scrollY;
             console.log(this.tempScroll);
         },

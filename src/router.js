@@ -8,6 +8,9 @@ import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
 import UserProfile from '@/views/User/UserProfile';
 import UserActiveCart from "@/views/User/UserActiveCart";
+import UserOrders from '@/views/User/UserOrders';
+import UserOrderItem from '@/views/User/UserOrderItem'
+
 import Error404 from '@/views/Error404';
 
 import ConsultantList from "@/views/ConsultantList";
@@ -72,8 +75,8 @@ let router = new Router({
                     }
                 },
                 {
-                    path : 'password',
-                    name : 'user-password',
+                    path: 'password',
+                    name: 'user-password',
                     component: UserPasswordChange,
                     meta: {
                         auth: 'req'
@@ -103,6 +106,22 @@ let router = new Router({
                         auth: 'req'
                     }
                 },
+                {
+                    path: 'orders',
+                    name: 'user-orders',
+                    component: UserOrders,
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path : 'orders/:id',
+                    name : 'users-orders-item',
+                    component : UserOrderItem,
+                    meta: {
+                        auth : 'req'
+                    }
+                }
             ]
         },
         {
@@ -110,7 +129,7 @@ let router = new Router({
             name: 'cart-active',
             component: UserActiveCart,
             meta: {
-                auth : 'req'
+                auth: 'req'
             }
         },
         {
@@ -132,7 +151,10 @@ let router = new Router({
             path: '*',
             redirect: '/404',
         }
-    ]
+    ],
+    scrollBehavior (to, from, savesPosition) {
+        return {x : 0, y: 0}
+    }
 });
 
 router.beforeEach((to, from, next) => {

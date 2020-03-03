@@ -24,7 +24,6 @@
     export default {
         name: "Payment",
         async mounted() {
-            scrollTo(0, 0);
             try {
                 this.$loading(true);
                 let result = await axios.post(

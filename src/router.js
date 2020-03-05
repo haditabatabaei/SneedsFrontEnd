@@ -23,6 +23,8 @@ import store from './store';
 import Payment from "@/views/Payment";
 import UserPasswordChange from "@/views/User/UserPasswordChange";
 
+import Chatroom from '@/views/Chatroom';
+
 Vue.use(Router);
 
 let router = new Router({
@@ -116,9 +118,17 @@ let router = new Router({
                 },
                 {
                     path : 'orders/:id',
-                    name : 'users-orders-item',
+                    name : 'user-orders-item',
                     component : UserOrderItem,
                     meta: {
+                        auth : 'req'
+                    }
+                },
+                {
+                    path : 'chatroom',
+                    name : 'user-chatroom',
+                    component : Chatroom,
+                    meta : {
                         auth : 'req'
                     }
                 }

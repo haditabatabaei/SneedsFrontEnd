@@ -1,60 +1,103 @@
 <template>
-    <div>
-        <div class="page-header header-filter header-small" data-parallax="false"
-             style="background-image: url('http://185.209.243.97/sneedsAssets/img/bg3.jpg'); transform: translate3d(0px, 0px, 0px);">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2 text-center">
-                        <h2 class="title isansFont">
-                            پیام های شما
-                        </h2>
+    <div class="chatroomWrapper">
+        <div class="container-fluid">
+            <div class="row desktopTickets">
+                <div class="col-md-4 messagesWrapper">
+                    <div class="ticketTitleSearchWrapper isansFont--faNum">
+                        <input placeholder="جستجو در تیکت ها..." type="text">
+                        <i class="material-icons">search</i>
+                    </div>
+
+                    <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
+
+                    <div class="ticketTitleBlock isansFont--faNum" v-for="(chat, index) in chats" :key="index">
+                        <!-- @click="setSelectedTicketByIndex(tickets.indexOf(ticket))"-->
+                        <!--                         :class="{'active' : isSelectedTicket(ticket.id)}"-->
+                        <div class="ticketTitleBlock--info">
+                            <img :src="chat.other_person.profile_picture"
+                                 :alt="chat.other_person.first_name+' ' + chat.other_person.last_name ">
+                            <div class="ticketTitleBlock--info__text">
+                                <h5 class="isansFont--faNum" v-if="isConsultant">
+                                    {{chat.user.first_name + " " + ticket.user.last_name}}
+                                </h5>
+                                <h5 class="isansFont--faNum" v-else>
+                                    {{ticket.consultant.first_name + " " + ticket.consultant.last_name}}
+                                </h5>
+                                <p>{{ticket.title}}</p>
+                            </div>
+                        </div>
+                        <p class="ticketTitleBlock--date">
+                            {{getJalali(ticket.created).locale('fa').format('DD MMMM')}}
+                        </p>
+                    </div>
+
+                    <button @click="toggleShowNewTicket($event)" v-if="!isConsultant"
+                            class="addTicketButton btn btn-round btn-just-icon btn-primary">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div class="col-md-8 contentWrapper">
+                    <div class="content--title">
+                        <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
+                        <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
+                    </div>
+                    <div class="content--texts">
+                        <div class="content-text"
+                             :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
+                             v-for="message in messagesForSelectedTicket">
+                            <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
+                                 :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
+                            <p class="isansFont--faNum">
+                                {{message.text}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="newMessageWrapper isansFont--faNum">
+                        <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
+                        <i class="material-icons" role="button"
+                           :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
+                           @click="sendNewMessageToSelectedTicket()">send</i>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="main section">
-            <div class="container">
-                <div class="row desktopTickets">
-                    <div class="col-md-4 messagesWrapper">
-                        <div class="ticketTitleSearchWrapper isansFont--faNum">
-                            <input placeholder="جستجو در تیکت ها..." type="text">
-                            <i class="material-icons">search</i>
+            <div class="mobileTickets">
+                <div class="ticketTitleSearchWrapper isansFont--faNum">
+                    <input placeholder="جستجو در تیکت ها..." type="text">
+                    <i class="material-icons">search</i>
+                </div>
+
+                <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
+
+                <div class="ticketTitleBlock isansFont--faNum"
+                     @click="showMobileMessagesByTicket(tickets.indexOf(ticket))"
+                     :class="{'active' : isSelectedTicket(ticket.id)}"
+                     v-for="ticket in tickets">
+                    <div class="ticketTitleBlock--info">
+                        <img :src="ticket.consultant.profile_picture"
+                             :alt="ticket.consultant.first_name+' ' + ticket.consultant.last_name ">
+                        <div class="ticketTitleBlock--info__text">
+                            <h5 class="isansFont--faNum" v-if="isConsultant">
+                                {{ticket.user.first_name + " " + ticket.user.last_name}}
+                            </h5>
+                            <h5 class="isansFont--faNum" v-else>
+                                {{ticket.consultant.first_name + " " + ticket.consultant.last_name}}
+                            </h5>
+                            <p>{{ticket.title}}</p>
                         </div>
-
-                        <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
-
-                        <div class="ticketTitleBlock isansFont--faNum"
-                             @click="setSelectedTicketByIndex(tickets.indexOf(ticket))"
-                             :class="{'active' : isSelectedTicket(ticket.id)}"
-                             v-for="ticket in tickets">
-                            <div class="ticketTitleBlock--info">
-                                <img :src="ticket.consultant.profile_picture"
-                                     :alt="ticket.consultant.first_name+' ' + ticket.consultant.last_name ">
-                                <div class="ticketTitleBlock--info__text">
-                                    <h5 class="isansFont--faNum" v-if="isConsultant">
-                                        {{ticket.user.first_name + " " + ticket.user.last_name}}
-                                    </h5>
-                                    <h5 class="isansFont--faNum" v-else>
-                                        {{ticket.consultant.first_name + " " + ticket.consultant.last_name}}
-                                    </h5>
-                                    <p>{{ticket.title}}</p>
-                                </div>
-                            </div>
-                            <p class="ticketTitleBlock--date">
-                                {{getJalali(ticket.created).locale('fa').format('DD MMMM')}}
-                            </p>
-                        </div>
-
-                        <button @click="toggleShowNewTicket($event)" v-if="!isConsultant"
-                                class="addTicketButton btn btn-round btn-just-icon btn-primary">
-                            <i class="material-icons">add</i>
-                        </button>
                     </div>
-                    <div class="col-md-8 contentWrapper">
-                        <div class="content--title">
-                            <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
-                            <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
-                        </div>
+                    <p class="ticketTitleBlock--date">
+                        {{getJalali(ticket.created).locale('fa').format('DD MMMM')}}
+                    </p>
+                </div>
+
+            </div>
+            <transition name="slide-fade">
+                <div class="mobileMessages" v-if="mobileMessagesShow">
+                    <button @click="setMobileMessageShow(false)" class="closeMobileMessagesButton isansFont--faNum">
+                        <span>تیکت ها</span>
+                        <i class="material-icons">keyboard_arrow_left</i>
+                    </button>
+                    <div class="mobileMessagesContent">
                         <div class="content--texts">
                             <div class="content-text"
                                  :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
@@ -74,134 +117,79 @@
                         </div>
                     </div>
                 </div>
-                <div class="mobileTickets">
-                    <div class="ticketTitleSearchWrapper isansFont--faNum">
-                        <input placeholder="جستجو در تیکت ها..." type="text">
-                        <i class="material-icons">search</i>
-                    </div>
-
-                    <p v-if="tickets.length === 0" class="isansFont--faNum">تیکتی برای نمایش وجود ندارد</p>
-
-                    <div class="ticketTitleBlock isansFont--faNum"
-                         @click="showMobileMessagesByTicket(tickets.indexOf(ticket))"
-                         :class="{'active' : isSelectedTicket(ticket.id)}"
-                         v-for="ticket in tickets">
-                        <div class="ticketTitleBlock--info">
-                            <img :src="ticket.consultant.profile_picture"
-                                 :alt="ticket.consultant.first_name+' ' + ticket.consultant.last_name ">
-                            <div class="ticketTitleBlock--info__text">
-                                <h5 class="isansFont--faNum" v-if="isConsultant">
-                                    {{ticket.user.first_name + " " + ticket.user.last_name}}
-                                </h5>
-                                <h5 class="isansFont--faNum" v-else>
-                                    {{ticket.consultant.first_name + " " + ticket.consultant.last_name}}
-                                </h5>
-                                <p>{{ticket.title}}</p>
-                            </div>
-                        </div>
-                        <p class="ticketTitleBlock--date">
-                            {{getJalali(ticket.created).locale('fa').format('DD MMMM')}}
-                        </p>
-                    </div>
-
-                </div>
-                <transition name="slide-fade">
-                    <div class="mobileMessages" v-if="mobileMessagesShow">
-                        <button @click="setMobileMessageShow(false)" class="closeMobileMessagesButton isansFont--faNum">
-                            <span>تیکت ها</span>
-                            <i class="material-icons">keyboard_arrow_left</i>
-                        </button>
-                        <div class="mobileMessagesContent">
-                            <div class="content--texts">
-                                <div class="content-text"
-                                     :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
-                                     v-for="message in messagesForSelectedTicket">
-                                    <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
-                                         :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
-                                    <p class="isansFont--faNum">
-                                        {{message.text}}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="newMessageWrapper isansFont--faNum">
-                                <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
-                                <i class="material-icons" role="button"
-                                   :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
-                                   @click="sendNewMessageToSelectedTicket()">send</i>
-                            </div>
-                        </div>
-                    </div>
-                </transition>
-            </div>
-
-            <div class="mobileNewTicketWrapper">
-                <button class="mobileTicketButton isansFont--faNum"
-                        @click="toggleShowNewTicket()">
-                    <i class="material-icons">add</i>
-                    <span>ایجاد تیکت جدید</span>
-                </button>
-
-                <div class="mobileMessagesWrapper" v-if="mobileMessagesShow">
-                    <div class="content--title">
-                        <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
-                        <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
-                    </div>
-                    <div class="content--texts">
-                        <div class="content-text"
-                             :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
-                             v-for="message in messagesForSelectedTicket">
-                            <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
-                                 :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
-                            <p class="isansFont--faNum">
-                                {{message.text}}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="newMessageWrapper isansFont--faNum">
-                        <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
-                        <i class="material-icons" role="button"
-                           :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
-                           @click="sendNewMessageToSelectedTicket()">send</i>
-                    </div>
-
-                </div>
-
-            </div>
-            <!--- show / hide new ticket modal --->
-            <transition name="slide-fade">
-                <div class="newTicketWrapper" v-if="showNewTicketModal" @click="toggleShowNewTicket($event)">
-                    <div class="newTicketModal" @click="">
-                        <button class="closeModalButton btn btn-sm btn-fab btn-fab-mini btn-round btn-simple">
-                            <i class="material-icons">close</i>
-                        </button>
-
-                        <h5 class="isansFont--faNum">ایجاد تیکت جدید</h5>
-                        <form @submit="createFullTicketMessage($event)" class="isansFont--faNum">
-                            <label for="ticketTitle">عنوان تیکت :</label>
-                            <input id="ticketTitle" v-model="$v.newTicketInfo.title.$model" type="text">
-
-                            <label for="ticketConsultant">برای :</label>
-                            <select name="consultant" v-model="$v.newTicketInfo.consultant.$model"
-                                    id="ticketConsultant">
-                                <option :value="consultant.id" v-for="consultant in availableConsultants">
-                                    {{consultant.first_name + " " + consultant.last_name}}
-                                </option>
-                            </select>
-
-                            <label for="newTicketMessage">اولین پیام تیکت :</label>
-                            <textarea name="message" v-model="$v.newTicketInfo.newMessage.$model" id="newTicketMessage"
-                                      cols="30" rows="10"></textarea>
-
-                            <input type="submit" :disabled="$v.newTicketInfo.$invalid"
-                                   class="btn btn-block btn-success" value="ایجاد تیکت جدید">
-                        </form>
-                    </div>
-                </div>
             </transition>
         </div>
-    </div>
+        <div class="mobileNewTicketWrapper">
+            <button class="mobileTicketButton isansFont--faNum"
+                    @click="toggleShowNewTicket()">
+                <i class="material-icons">add</i>
+                <span>ایجاد تیکت جدید</span>
+            </button>
 
+            <div class="mobileMessagesWrapper" v-if="mobileMessagesShow">
+                <div class="content--title">
+                    <h5 class="isansFont--faNum" v-if="selectedTicket.title">{{selectedTicket.title}}</h5>
+                    <h5 class="isansFont--faNum" v-else>تیکتی برای نمایش انتخاب نشده است.</h5>
+                </div>
+                <div class="content--texts">
+                    <div class="content-text"
+                         :class="[{'user-text' : !message.is_consultant}, {'consultant-text': message.is_consultant}]"
+                         v-for="message in messagesForSelectedTicket">
+                        <img :src="message.consultant.profile_picture" v-if="message.is_consultant"
+                             :alt="message.consultant.first_name+' ' + message.consultant.last_name ">
+                        <p class="isansFont--faNum">
+                            {{message.text}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="newMessageWrapper isansFont--faNum">
+                    <input type="text" v-model="$v.ticketNewMessageText.$model" placeholder="ارسال پیام...">
+                    <i class="material-icons" role="button"
+                       :disabled="$v.ticketNewMessageText.$error || !$v.ticketNewMessageText.$dirty"
+                       @click="sendNewMessageToSelectedTicket()">send</i>
+                </div>
+
+            </div>
+
+        </div>
+        <!--- show / hide new ticket modal --->
+        <transition name="slide-fade">
+            <div class="newTicketWrapper" v-if="showNewTicketModal" @click="toggleShowNewTicket($event)">
+                <div class="newTicketModal" @click="">
+                    <button class="closeModalButton btn btn-sm btn-fab btn-fab-mini btn-round btn-simple">
+                        <i class="material-icons">close</i>
+                    </button>
+
+                    <h5 class="isansFont--faNum">ایجاد تیکت جدید</h5>
+                    <form @submit="createFullTicketMessage($event)" class="isansFont--faNum">
+                        <label for="ticketTitle">عنوان تیکت :</label>
+                        <input id="ticketTitle" v-model="$v.newTicketInfo.title.$model" type="text">
+
+                        <label for="ticketConsultant">برای :</label>
+                        <select name="consultant" v-model="$v.newTicketInfo.consultant.$model"
+                                id="ticketConsultant">
+                            <option :value="consultant.id" v-for="consultant in availableConsultants">
+                                {{consultant.first_name + " " + consultant.last_name}}
+                            </option>
+                        </select>
+
+                        <label for="newTicketMessage">اولین پیام تیکت :</label>
+                        <textarea
+                                name="message"
+                                v-model="$v.newTicketInfo.newMessage.$model"
+                                id="newTicketMessage"
+                                cols="30"
+                                rows="10">
+                            </textarea>
+
+                        <input type="submit" :disabled="$v.newTicketInfo.$invalid"
+                               class="btn btn-block btn-success" value="ایجاد تیکت جدید">
+                    </form>
+                </div>
+            </div>
+        </transition>
+    </div>
 </template>
 
 <script>
@@ -210,7 +198,7 @@
     import {required} from 'vuelidate/lib/validators'
 
     export default {
-        name: "Messages",
+        name: "Chatroom",
         validations: {
             ticketNewMessageText: {required},
             newTicketInfo: {
@@ -221,6 +209,12 @@
         },
         data: function () {
             return {
+
+                chats: [],
+                selectedChat: {},
+                selectedChatMessages: [],
+
+
                 tickets: [],
                 messages: [],
                 selectedTicket: {},
@@ -273,7 +267,41 @@
                 return jalali(date);
             },
 
-            initComp: function () {
+            async getChats() {
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
+                    console.log('chats result ', result);
+                    this.chats = result.data;
+                    this.selectedChat = this.chats[this.chats.length - 1];
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+
+                }
+            },
+
+            async getMessagesForSelectedChat() {
+                try {
+                    let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}`, this.$store.getters.httpConfig);
+                    console.log('selected chats messages result ', result);
+                    this.selectedChatMessages = result.data;
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+
+                }
+            },
+
+            initComp: async function () {
+                await this.getChats();
+                await this.getMessagesForSelectedChat();
+
                 this.$loading(true);
                 this.sendTicketsGet().then(response => {
                     this.tickets = response.data;
@@ -523,6 +551,12 @@
 
 <style scoped>
 
+    .chatroomWrapper {
+        margin-top: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+    }
+
     /* Enter and leave animations can use different */
     /* durations and timing functions.              */
     .slide-fade-enter-active {
@@ -542,14 +576,11 @@
 
     .messagesWrapper {
         background-color: white;
-        border: 1.5px solid #ccc;
         border-radius: 0 15px 15px 0;
         padding-right: 0;
         padding-left: 0;
-
         height: 600px;
         overflow: auto;
-
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -559,14 +590,11 @@
     .ticketTitleBlock {
         width: 100%;
         min-height: 80px;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
-
         padding-right: 10px;
         padding-left: 10px;
-
         transition: all 0.1s ease-in-out;
     }
 
@@ -612,7 +640,6 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-
         margin-right: 5px;
     }
 
@@ -639,7 +666,6 @@
         min-height: 35px;
         margin-top: 10px;
         margin-bottom: 10px;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -797,15 +823,12 @@
         margin: auto;
         background-color: white;
         border-radius: 10px;
-
         max-width: 400px;
-        width:80%;
-
+        width: 80%;
         display: flex;
         align-items: center;
         justify-content: flex-start;
         flex-direction: column;
-
         z-index: 9999;
         position: relative;
         padding: 15px;
@@ -816,7 +839,6 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-
         width: 100%;
     }
 
@@ -840,7 +862,6 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         padding: 5px;
-
         width: 100%;
     }
 

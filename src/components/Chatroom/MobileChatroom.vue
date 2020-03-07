@@ -15,8 +15,8 @@
             </div>
         </div>
 
-        <div class="chatroom-messages-list" v-if="!showChats">
-            <div @click="disableMessagesForChat()" class="chatroom-chats-item active">
+        <div class="chatroom-messages-list" id="messagesBody" v-if="!showChats">
+            <div @click="disableMessagesForChat" class="chatroom-chats-item active">
                 <img :src="selectedChat.profile_img" class="chatroom-chats-item-image">
                 <div class="chatroom-chats-item-info">
                     <h4 class="isansFont--faNum">
@@ -98,10 +98,30 @@
                 chats: [],
                 selectedChatMessages: [],
                 inputMessage: '',
+                updateMessageInterval: null,
             }
         },
         created() {
             this.getChats();
+            console.log('setting interval');
+            this.updateMessageInterval = setInterval(() => {
+                console.log('interval actived.');
+                if(!this.showChats) {
+                    console.log('open chat');
+                    this.getMessagesForSelectedChat();
+                } else {
+                    console.log('no open chat')
+                }
+            }, 5000);
+        },
+        updated() {
+            if(!this.showChats) {
+                window.document.getElementById("messagesBody").scroll(0,10000);
+            }
+        },
+        destroyed() {
+            console.log('update mobile interval cleared');
+            clearInterval(this.updateMessageInterval);
         },
         methods: {
 
@@ -126,13 +146,12 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             },
 
             async sendMessage() {
                 try {
+                    this.$loading(true);
                     let payload = new FormData();
                     payload.append("chat", this.selectedChat.id);
                     payload.append("text_message", this.inputMessage);
@@ -149,7 +168,7 @@
                         }
                     );
                     console.log(result);
-                    this.getMessagesForSelectedChat();
+                    await this.getMessagesForSelectedChat();
                     this.inputMessage = '';
                 } catch (e) {
                     console.log(e);
@@ -157,7 +176,7 @@
                         console.log(e.response);
                     }
                 } finally {
-
+                    this.$loading(false);
                 }
             },
 
@@ -167,6 +186,7 @@
 
             async getChats() {
                 try {
+                    this.$loading(true);
                     let result = await axios.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;
@@ -177,7 +197,7 @@
                         console.log(e.response);
                     }
                 } finally {
-
+                    this.$loading(false);
                 }
             },
         },
@@ -338,6 +358,8 @@
         margin-left: 15px;
         padding: 10px;
         font-size: 16px;
+        color: #4B6969;
+        background-color: #E7FFFF;
     }
 
     .chatroom-messages-item-content-text {
@@ -345,9 +367,7 @@
     }
 
     .chatroom-messages-item-content.content-other {
-        border: none;
-        color: #4B6969;
-        background-color: #E7FFFF;
+        background-color: white;
     }
 
     .chatroom-messages-item-content-image {
@@ -402,6 +422,9 @@
         background-color: #f3f3f3;
         margin: 10px;
         border-radius: 5px;
+        position: absolute;
+        width: calc(100% - 20px);
+        left: 0;
     }
 
     .chatroom-messages-new-attach {

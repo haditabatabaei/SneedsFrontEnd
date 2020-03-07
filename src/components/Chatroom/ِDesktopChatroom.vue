@@ -5,11 +5,12 @@
                 <input type="text" placeholder="جستجو" class="chatroom-chats-search-input isansFont">
             </div>
 
-
             <!-- DESKTOP VERSION  -->
-            <div class="chatroom-chats-list" v-if="windowWidth > 991.8">
-                <div @click="setSelectedChat(chat)" class="chatroom-chats-item"
-                     :class="[{'active' : selectedChat.id == chat.id}]" v-for="(chat, index) in chats"
+            <div class="chatroom-chats-list" v-if="chats.length > 0">
+                <div @click="setSelectedChat(chat)"
+                     class="chatroom-chats-item"
+                     :class="[{'active' : selectedChat && selectedChat.id === chat.id}]"
+                     v-for="(chat, index) in chats"
                      :key="index">
                     <img :src="chat.profile_img" alt="" class="chatroom-chats-item-image">
                     <div class="chatroom-chats-item-info">
@@ -19,12 +20,21 @@
                     </div>
                 </div>
             </div>
+            <div class="chatroom-chats-list" v-else>
+                <p class="isansFont--faNum">
+                    چتی برای نمایش وجود ندارد.
+                </p>
+            </div>
+
         </div>
         <div class="col-md-8 chatroom-messages">
             <!-- DESKTOP VERSION -->
             <div class="chatroom-messages-title" v-if="windowWidth > 991.8">
-                <h4 class="isansFont--faNum">
+                <h4 class="isansFont--faNum" v-if="selectedChat">
                     سید محمد هادی طباطبایی
+                </h4>
+                <h4 class="isansFont--faNum" v-else>
+
                 </h4>
                 <div class="chatroom-messages-title-icons">
                     <button>
@@ -36,21 +46,7 @@
                 </div>
             </div>
 
-            <!-- MOBILE VERSION -->
-            <!--            <div v-else @click="selectedChat = chat" class="chatroom-chats-item"-->
-            <!--                 :class="[{'active' : selectedChat.id = chat.id}]" v-for="(chat, index) in chats" :key="index">-->
-            <!--                <img :src="chat.profile_img" alt="" class="chatroom-chats-item-image">-->
-            <!--                <div class="chatroom-chats-item-info">-->
-            <!--                    <h4 class="isansFont&#45;&#45;faNum">{{chat.other_person.first_name + " " +-->
-            <!--                        chat.other_person.last_name}}</h4>-->
-            <!--                </div>-->
-            <!--                <button class="chatroom-chats-item-back">-->
-            <!--                    <i class="material-icons">keyboard_backspace</i>-->
-            <!--                </button>-->
-            <!--            </div>-->
-
-
-            <div class="chatroom-messages-list">
+            <div class="chatroom-messages-list" id="messagesBody" v-if="selectedChat">
                 <div class="chatroom-messages-item" v-for="(message, index) in selectedChatMessages" :key="index">
                     <img draggable="false" :src="message.profile_img"
                          class="chatroom-messages-item-avatar" alt="">
@@ -60,8 +56,8 @@
                             {{message.text_message}}
                         </p>
                         <span class="chatroom-messages-item-time isansFont--faNum">
-                                    {{getJalali(message.created).locale('fa').format('HH:mm')}}
-                                </span>
+                            {{getJalali(message.created).locale('fa').format('HH:mm')}}
+                        </span>
                     </div>
                     <div class="chatroom-messages-item-content" :class="[{'content-other' : !message.is_sender_me}]"
                          v-else-if="message.messageType == 'ImageMessage'">
@@ -91,7 +87,8 @@
                     </div>
                 </div>
             </div>
-            <form @submit.prevent="sendMessage" class="chatroom-messages-new">
+            <p class="isansFont--faNum text-center mt-100" v-if="!selectedChat">چتی برای نمایش انتخاب نشده است.</p>
+            <form @submit.prevent="sendMessage" class="chatroom-messages-new" v-if="selectedChat">
                 <button type="button" class="chatroom-messages-new-attach">
                     <i class="material-icons">attach_file</i>
                 </button>
@@ -117,10 +114,11 @@
         data: function () {
             return {
                 chats: [],
-                selectedChat: {},
+                selectedChat: null,
                 selectedChatMessages: [],
                 inputMessage: '',
                 showMobileMessages: false,
+                updateMessageInterval : null
             }
         },
         computed: {
@@ -135,11 +133,20 @@
             }
         },
         created() {
-            if (this.$route.query.newmessage != 'true') {
-                this.initComp();
-            } else {
-                console.log(this.$route.query);
+            this.initComp();
+            this.updateMessageInterval = setInterval(() => {
+                if(this.selectedChat) {
+                   this.getMessagesForSelectedChat();
+                }
+            }, 5000)
+        },
+        updated() {
+            if(this.selectedChat) {
+                window.document.getElementById("messagesBody").scroll(0,10000);
             }
+        },
+        destroyed() {
+            clearInterval(this.updateMessageInterval);
         },
         methods: {
             getJalali: function (date) {
@@ -151,7 +158,7 @@
                     let result = await axios.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;
-                    this.selectedChat = this.chats[0];
+                    // this.selectedChat = this.chats[0];
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -167,6 +174,7 @@
                     let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
+                    console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -207,7 +215,6 @@
                 }
             },
 
-
             setSelectedChat(chat) {
                 this.selectedChat = chat;
                 this.getMessagesForSelectedChat();
@@ -215,22 +222,12 @@
 
             async initComp() {
                 await this.getChats();
-                await this.getMessagesForSelectedChat();
             },
         }
     }
 </script>
 
 <style scoped>
-
-    .chatroomWrapper {
-        margin-top: 30px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
-        background-color: white;
-        min-height: 700px;
-    }
-
     .chatroom-chats {
         border-radius: 0 15px 0 0;
         height: 700px;
@@ -397,12 +394,14 @@
     }
 
     .chatroom-messages-item-content {
-        border: 1px solid #74BDBC;
         border-radius: 15px 15px 5px 15px;
         width: 100%;
         margin-right: 65px;
         margin-left: 15px;
         padding: 10px;
+        border: none;
+        background-color: #E7FFFF;
+        color: #4B6969;
     }
 
     .chatroom-messages-item-content-text {
@@ -410,9 +409,8 @@
     }
 
     .chatroom-messages-item-content.content-other {
-        border: none;
-        color: #4B6969;
-        background-color: #E7FFFF;
+        border: 1px solid #74BDBC;
+        background-color: white;
     }
 
     .chatroom-messages-item-content-image {
@@ -500,55 +498,5 @@
         background: none;
         border: none;
         color: #2EAFEC;
-    }
-
-    @media only screen and (max-width: 991.8px) {
-        .chatroom-chats-search {
-            display: none;
-        }
-
-        .chatroomWrapper {
-            box-shadow: none;
-            border-radius: 0;
-        }
-
-        .chatroom-chats {
-            border-left: none;
-            height: initial;
-        }
-
-        .chatroom-chats-list {
-            height: initial;
-        }
-
-        .chatroom-chats-item {
-            margin-top: 0;
-            border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        .chatroom-chats-item.active {
-            border-right: none;
-        }
-
-        .chatroom-chats-item-next {
-            background: none;
-            padding: 0;
-            border: none;
-            display: flex;
-            align-items: center;
-            margin: 0 auto 0 30px;
-        }
-
-        .chatroom-chats-item-back {
-            background: none;
-            padding: 0;
-            border: none;
-            display: flex;
-            align-items: center;
-            margin: 0 auto 0 30px;
-            color: #9038CC;
-        }
     }
 </style>

@@ -3,18 +3,18 @@
   "short_name": "Sneeds",
   "icons": [
     {
-      "src": "http://185.209.243.97/sneedsAssets/img/sneedsLogo%20-%20192.png",
+      "src": "http://37.152.182.253/sneedsAssets/img/sneedsLogo%20-%20192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "http://185.209.243.97/sneedsAssets/img/sneedsLogo%20-%20512.png",
+      "src": "http://37.152.182.253/sneedsAssets/img/sneedsLogo%20-%20512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#e91e63",
   "theme_color": "#ffffff"
 }

@@ -244,7 +244,7 @@
 
     .chatroom-chats-item.active {
         border-bottom: 2px solid #ccc;
-        z-index:999;
+        z-index: 998;
         width: 100%;
         box-shadow:0 10px 30px -10px rgba(0,0,0,0.2);
         position: absolute;

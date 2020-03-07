@@ -294,7 +294,7 @@
         left: 0;
         background-color: white;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        z-index: 999;
+        z-index: 1000;
         display: flex;
         align-items: center;
         justify-content: center;

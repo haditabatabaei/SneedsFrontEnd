@@ -5,7 +5,8 @@
                 <div class="col-md-3 sidebarWrapperDesktop">
                     <div class="userSidebarBlock">
                         <div class="userSidebarBlock--info">
-                            <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
+                            <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture" alt="">
+                            <img v-else src="" alt="">
                             <div class="userSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum" v-if="showFirstName">
                                     {{`${user.first_name} ${user.last_name}`}}
@@ -116,7 +117,6 @@
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
                     {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "پرداخت های قبلی", target: '/user/orders',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
                     {name : "ویرایش رمز عبور", target : "/user/password", icon : "circle", tag : 0, hasSubmenu: false, submenu: []}

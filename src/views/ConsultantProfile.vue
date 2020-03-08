@@ -73,10 +73,10 @@
                         </div>
                         <div class="consultantSidebarBlock--numberDiscounts isansFont--faNum">
                             <ul class="consultantSidebarBlock--numberDiscounts_list">
-                                <li v-for="(item, index) in listOfDiscounts" :key="index">
+                                <li v-for="(item, index) in shownDiscounts" :key="index">
                                     <i class="material-icons">info</i>
                                     <span>
-                                        به ازای هر
+                                        با اضافه کردن 1 جلسه دیگر و با داشتن
                                         <mark>
                                             {{item.number}}
                                             جلسه ،
@@ -150,14 +150,17 @@
             }
         },
         computed: {
-            isLoggedIn: function () {
+            isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
-            activeCart: function () {
+            activeCart() {
                 return this.$store.getters.getCart;
             },
-            stash: function () {
+            stash() {
                 return this.$store.getters.getStash;
+            },
+            shownDiscounts() {
+              return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1) );
             }
         },
         created() {
@@ -172,12 +175,9 @@
             document.removeEventListener('scroll', this.handleScroll, false);
         },
 
-        mounted() {
-        },
-
         methods: {
 
-            setSlot: function (slots) {
+            setSlot(slots) {
                 this.slots = slots;
             },
 
@@ -447,10 +447,8 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: center;
-
-        padding-right: 0;
-        margin-right: 10px;
         margin-top: 20px;
+        padding: 0 10px;
         list-style: none;
     }
 
@@ -458,11 +456,10 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-
         font-size: 12px;
         font-weight: bold;
-
         color: #b8b8b8;
+        margin-top: 15px;
     }
 
     .consultantSidebarBlock--numberDiscounts_list li i {

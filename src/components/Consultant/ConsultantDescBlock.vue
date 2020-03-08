@@ -13,17 +13,12 @@
                 <i class="material-icons text-green">class</i>
                 <span>{{consultant.field_of_studies[0].name}}</span>
             </div>
-<!--            <div class="consultantDescBlock&#45;&#45;head_item">-->
-<!--                <i class="material-icons text-purple">house</i>-->
-<!--                <span>{{consultant.field_of_studies[0].name}}</span>-->
-<!--            </div>-->
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video">
                 <iframe :src="getVideoFrameLink(consultant.aparat_link)" />
 
                 <router-link class="consultantDescBlock--main_videoLink" to="">
-                    <!--                    <i class="material-icons">play_circle_filled</i>-->
                     مشاهده مصاحبه کامل با {{consultant.first_name}}
                 </router-link>
             </div>
@@ -36,7 +31,7 @@
                 </p>
 
                 <button class="showMoreBtn" @click="toggleSummary()">
-                    <span v-if="showSummary">بیشتر متن</span>
+                    <span v-if="showSummary">بیشتر</span>
                     <span v-else>خلاصه متن</span>
                     <i class="material-icons" v-if="showSummary">keyboard_arrow_down</i>
                     <i class="material-icons" v-else>keyboard_arrow_up</i>

@@ -81,7 +81,7 @@
                         <li class="text-right">
                             <router-link to="/user/packages">پکیج ها</router-link>
                         </li>
-                        <li class="text-right">
+                        <li class="text-right" v-if="!isConsultant">
                             <router-link to="/user/orders">پرداخت ها</router-link>
                         </li>
                         <li class="text-right">
@@ -172,7 +172,7 @@
                                     پکیج ها
                                 </router-link>
                             </li>
-                            <li class="mobileMenuList--item">
+                            <li class="mobileMenuList--item" v-if="!isConsultant">
                                 <router-link to="/user/orders" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     پرداخت ها

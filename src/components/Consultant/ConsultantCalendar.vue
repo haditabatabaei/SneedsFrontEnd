@@ -34,7 +34,7 @@
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
-                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate)"
+                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate) && !isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7),days[rowIndex - 1].clone().hour(index + 8))"
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
                     <!-- Its not reserved ( not purple ) and its empty -->
@@ -115,7 +115,7 @@
                 try {
                     this.$loading(true);
                     let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`);
-                    let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                    let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                     console.log('all slots : ', slotsResult);
                     console.log('sold slots : ', soldSlotsResult);
                     this.slots = slotsResult.data;
@@ -309,7 +309,7 @@
 
             isInReservedTimes(cellStartDate, cellEndDate) {
                 for (let slot of this.soldSlots) {
-                    if (cellStartDate.isSame(jalali(slot.start_time), 'minutes') && cellEndDate.isSame(jalali(slot.end_time), 'minutes')) {
+                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
                         return true;
                     }
                 }

@@ -391,27 +391,6 @@
         margin-left: 10px;
     }
 
-    .selectedDateBox {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #f9f9f9;
-        border-top: 1px solid #e2e2e2;
-        min-height: 60px;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .selectedDateBlockContent {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
     .btn-sample {
         cursor: default !important;
     }
@@ -440,6 +419,12 @@
     .timeSelected {
         background-color: #ffca18 !important;
         cursor: pointer;
+    }
+
+    .timeReserved {
+        border:2px solid #c9737c;
+        color: #c9737c;
+        background-color: white;
     }
 
     .timeOpenForManagerToSet {
@@ -473,9 +458,6 @@
         width: 100%;
     }
 
-    .timeReserved {
-        background-color: #9038CC;
-    }
 
     .myTableRow {
         display: flex;

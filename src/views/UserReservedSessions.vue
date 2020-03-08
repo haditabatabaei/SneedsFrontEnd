@@ -29,6 +29,7 @@
                     :session="session"
                     :rate="session.rate"
                     @update-list="updateList()"
+                    @update-rates="updateRates()"
                     :key="index"
                 />
             </div>
@@ -62,26 +63,37 @@
 
         async created() {
             await this.updateList();
-        },
-
-        mounted() {
-            // setTimeout(() => {
-            //     console.log('setting sync video interval');
-            //     setInterval( async () => {
-            //         await this.getVideoRoomsSyncReq();
-            //     }, 1000 * 60);
-            // }, 1000 * 10);
-        },
-
-        beforeDestroy() {
-            clearInterval(this.roomInterval);
+            console.log('activating video rooms interval');
+            this.roomInterval = setInterval(() => {
+                //remove false in production
+                this.getVideoRoomsSyncReq();
+            }, 1000 * 60)
         },
 
         destroyed() {
+            console.log('deleting video rooms interval');
             clearInterval(this.roomInterval);
         },
 
         methods: {
+            async updateRates() {
+                for(let soldSlot of this.reservedSessions) {
+                    try {
+                        this.$loading(true);
+                        console.log('getting rate of ', soldSlot.id);
+                        let ratesResult = await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
+                        soldSlot.rate = ratesResult.data;
+                    } catch (e) {
+                        soldSlot.rate = null;
+                    } finally {
+                        this.$loading(false);
+                    }
+                }
+                this.filterBy('all');
+                this.filterBy(this.activeFilter);
+                console.log(this.shownReservedSessions);
+            },
+
             filterBy(param) {
                 this.activeFilter = param;
                 switch (param) {
@@ -141,7 +153,6 @@
                     }
 
                     console.log("Check here ", this.reservedSessions);
-                    // this.reservedSessions = soldSlotsResult.data;
                     this.filterBy('all');
                     this.$loading(false);
 
@@ -153,31 +164,20 @@
 
             async getVideoRoomsSyncReq() {
                 console.log('calling sync video rooms');
-                try {
-                    let rooms = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/`,this.$store.getters.httpConfig);
-                    this.videoRooms = rooms.data;
-                    for(let soldSlot of this.reservedSessions) {
-                        soldSlot["login_url"] = this.getSessionRoomWithId(soldSlot.id);
-                    }
-                    this.filterBy('all');
-                    this.filterBy(this.activeFilter)
-                } catch (e) {
-                    console.log(e);
-                    if(e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
-                }
-            },
-
-            getSessionRoomWithId(id) {
-                for (let i = 0; i < this.videoRooms.length; i++) {
-                    if (this.videoRooms[i].sold_time_slot == id) {
-                        return this.videoRooms[i].login_url;
+                for(let soldSlot of this.reservedSessions) {
+                    try {
+                        this.$loading(true);
+                        console.log('getting video of ', soldSlot.id);
+                        let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
+                        soldSlot.room = roomsResult.data;
+                    } catch (e) {
+                        soldSlot.room = null;
+                    } finally {
+                        this.$loading(false);
                     }
                 }
-                return null;
+                this.filterBy('all');
+                this.filterBy(this.activeFilter)
             },
         },
     }

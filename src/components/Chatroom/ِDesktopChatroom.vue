@@ -49,7 +49,7 @@
             <div class="chatroom-messages-list" id="messagesBody" v-if="selectedChat">
                 <div class="chatroom-messages-item" v-for="(message, index) in selectedChatMessages" :key="index">
                     <img draggable="false" :src="message.profile_img"
-                         class="chatroom-messages-item-avatar" alt="">
+                         class="chatroom-messages-item-avatar" alt="" v-if="message.messageType != 'VoiceMessage'">
                     <div class="chatroom-messages-item-content" :class="[{'content-other' : !message.is_sender_me}]"
                          v-if="message.messageType == 'TextMessage'">
                         <p class="chatroom-messages-item-content-text isansFont--faNum text-justify">
@@ -76,10 +76,10 @@
                         </a>
                         <p class="isansFont--faNum">
                             <span>
-                                filename.mp3
+                                {{message.name}}
                             </span>
                             <span>
-                                n مگابایت
+                                {{Math.floor((message.volume / 1024))}} KB
                             </span>
                         </p>
                         <span class="chatroom-messages-item-time isansFont--faNum">
@@ -87,22 +87,22 @@
                         </span>
                     </div>
 
-                    <div class="chatroom-messages-item-content content-file"
-                         :class="[{'content-other' : !message.is_sender_me}]"
-                         v-else-if="message.messageType == 'VoiceMessage'">
-                        <audio :src="message.file_field" controls/>
-                        <p class="isansFont--faNum">
-                            <span>
-                                filename.mp3
-                            </span>
-                            <span>
-                                n مگابایت
-                            </span>
-                        </p>
-                        <span class="chatroom-messages-item-time isansFont--faNum">
-                            {{getJalali(message.created).locale('fa').format('HH:mm')}}
-                        </span>
-                    </div>
+<!--                    <div class="chatroom-messages-item-content content-file"-->
+<!--                         :class="[{'content-other' : !message.is_sender_me}]"-->
+<!--                         v-else-if="message.messageType == 'VoiceMessage'">-->
+<!--                        <audio :src="message.file_field" controls/>-->
+<!--                        <p class="isansFont&#45;&#45;faNum">-->
+<!--                            <span>-->
+<!--                                filename.mp3-->
+<!--                            </span>-->
+<!--                            <span>-->
+<!--                                n مگابایت-->
+<!--                            </span>-->
+<!--                        </p>-->
+<!--                        <span class="chatroom-messages-item-time isansFont&#45;&#45;faNum">-->
+<!--                            {{getJalali(message.created).locale('fa').format('HH:mm')}}-->
+<!--                        </span>-->
+<!--                    </div>-->
                 </div>
             </div>
             <p class="isansFont--faNum text-center mt-100" v-if="!selectedChat">
@@ -114,9 +114,9 @@
                     <i class="material-icons">attach_file</i>
                 </label>
 <!--                <vue-record-audio @result="onResult" />-->
-                <input type="text" @keypress.="sendMessage" class="chatroom-messages-new-input isansFont--faNum"
+                <input type="text" @keypress="sendMessageByKey" class="chatroom-messages-new-input isansFont--faNum"
                        placeholder="متن پیام..." v-model="inputMessage">
-                <button class="chatroom-messages-new-send" @click="sendMessage">
+                <button class="chatroom-messages-new-send" @click="sendMessage(null)">
                     <i class="material-icons">
                         send
                     </i>
@@ -158,8 +158,8 @@
             this.initComp();
             this.updateMessageInterval = setInterval(() => {
                 //remove false in production
-                if(this.selectedChat && false) {
-                   this.getMessagesForSelectedChat();
+                if(this.selectedChat) {
+                   this.updateMessages();
                 }
             }, 5000)
         },
@@ -186,6 +186,37 @@
                 this.sendMessage(payload);
             },
 
+            async updateMessages() {
+              if(this.selectedChatMessages.length > 0) {
+                  try {
+                      let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&tag=${this.selectedChatMessages[this.selectedChatMessages.length - 1].tag}&ordering=created`, this.$store.getters.httpConfig);
+                      console.log('update chats messages result ', result);
+                      this.selectedChatMessages = this.selectedChatMessages.concat(result.data);
+                      // console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
+                  } catch (e) {
+                      console.log(e);
+                      if (e.response) {
+                          console.log(e.response);
+                      }
+                  } finally {
+
+                  }
+              } else {
+                  try {
+                      let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
+                      console.log('selected chats messages result ', result);
+                      this.selectedChatMessages = result.data;
+                      console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
+                  } catch (e) {
+                      console.log(e);
+                      if (e.response) {
+                          console.log(e.response);
+                      }
+                  } finally {
+
+                  }
+              }
+            },
 
             async handleFile(event) {
                 let file = event.target.files[0];
@@ -202,6 +233,7 @@
                     payload.append("voice_field", file);
                 }
                 payload.append("chat", this.selectedChat.id);
+                console.log(payload);
                 this.sendMessage(payload);
             },
 
@@ -237,7 +269,14 @@
                 }
             },
 
+            async sendMessageByKey(event) {
+              if(event.key == 'Enter' && event.shiftKey == false) {
+                  this.sendMessage(null);
+              }
+            },
+
             async sendMessage(payload) {
+                console.log(payload);
                 try {
                     if(!payload) {
                         let localPayload = new FormData();
@@ -246,17 +285,16 @@
                         localPayload.append("messageType", "TextMessage");
                         let result = await axios.post(
                             `${this.$store.getters.getApi}/chat/messages/`,
-                            payload,
+                            localPayload,
                             {
                                 headers: {
                                     'Authorization': `JWT ${this.$store.getters.getToken}`,
                                     "Content-Type": "multipart/form-data"
                                 },
-                                timeout: 6000
                             }
                         );
                         console.log(result);
-                        this.getMessagesForSelectedChat();
+                        this.updateMessages();
                         this.inputMessage = '';
                     } else {
                         let result = await axios.post(

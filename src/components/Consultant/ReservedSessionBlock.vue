@@ -104,7 +104,7 @@
                         this.$store.getters.httpConfig
                     );
                     console.log('rate result emitting event for update :', result.data);
-                    this.$emit('update-list');
+                    this.$emit('update-rates');
                 } catch (e) {
                     console.log(e);
                     if(e.response) {
@@ -141,7 +141,7 @@
         width: calc(33% - 30px);
         margin: 50px 15px 15px 0;
         padding-bottom: 10px;
-        min-height: 320px;
+        min-height: 360px;
     }
 
     .reservedCard--image {

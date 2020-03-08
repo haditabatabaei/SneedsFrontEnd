@@ -103,11 +103,11 @@
                 try {
                     this.$loading(true);
                     let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`);
-                    let soldResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                    // let soldResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                     console.log(result);
-                    console.log(soldResult);
+                    // console.log(soldResult);
                     this.slots = result.data;
-                    this.soldSlots = soldResult.data;
+                    // this.soldSlots = soldResult.data;
                     this.$emit('get-slots', this.slots);
                     this.shownDate = jalali().locale('fa');
                     this.handleWeek(this.shownDate);

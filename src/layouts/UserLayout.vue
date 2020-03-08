@@ -5,8 +5,7 @@
                 <div class="col-md-3 sidebarWrapperDesktop">
                     <div class="userSidebarBlock">
                         <div class="userSidebarBlock--info">
-                            <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture" alt="">
-                            <img v-else src="" alt="">
+                            <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture">
                             <div class="userSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum" v-if="showFirstName">
                                     {{`${user.first_name} ${user.last_name}`}}
@@ -76,7 +75,7 @@
                         <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
                         <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
                             <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
-                                <router-link :to="subItem.target">{{subItem.name}}</router-link>
+                                <router-link class="isansFont--faNum" :to="subItem.target">{{subItem.name}}</router-link>
                             </li>
                         </ul>
                     </li>
@@ -88,7 +87,7 @@
                         <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
                         <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
                             <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
-                                <router-link :to="subItem.target">{{subItem.name}}</router-link>
+                                <router-link class="isansFont--faNum" :to="subItem.target">{{subItem.name}}</router-link>
                             </li>
                         </ul>
                     </li>
@@ -193,6 +192,7 @@
         justify-content: space-evenly;
         background-color: #9038CC;
         color:white;
+        min-height: 90px;
     }
 
     .userSidebarBlock--info_detail {

@@ -28,8 +28,9 @@
                     :isConsultant="isConsultant"
                     :session="session"
                     :rate="session.rate"
+                    :room="session.room"
                     @update-list="updateList()"
-                    @update-rates="updateRates()"
+                    @update-rates="updateList()"
                     :key="index"
                 />
             </div>
@@ -66,7 +67,7 @@
             console.log('activating video rooms interval');
             this.roomInterval = setInterval(() => {
                 //remove false in production
-                this.getVideoRoomsSyncReq();
+                this.updateList();
             }, 1000 * 60)
         },
 
@@ -169,6 +170,7 @@
                         this.$loading(true);
                         console.log('getting video of ', soldSlot.id);
                         let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
+                        console.log('room result for ', soldSlot.id, roomsResult);
                         soldSlot.room = roomsResult.data;
                     } catch (e) {
                         soldSlot.room = null;

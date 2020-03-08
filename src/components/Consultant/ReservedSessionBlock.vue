@@ -29,8 +29,8 @@
         </p>
 
         <div class="reservedCard--actions">
-            <a :href="session.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success"
-               v-if="session.login_url != null">ورود به جلسه</a>
+            <a :href="room.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success"
+               v-if="room != null">ورود به جلسه</a>
             <button disabled class="isansFont--faNum reservedCard--enterButton btn btn-default"
                     v-else>ورود به جلسه
             </button>
@@ -79,6 +79,10 @@
             },
             isConsultant: {
                 type : Boolean
+            },
+            room: {
+                type : Object,
+                default: () => null
             },
             rate: {
                 type : Object,

@@ -344,24 +344,29 @@
     }
 
     .timeNotAvailable {
-        background-color: #d8d8d8;
+        background-color: #fafafa;
+        color: #ccc;
     }
 
     .timeOpen {
-        background-color: #4ee367;
+        border:2px solid #6ed7d3;
+        transition: all 80ms;
+        background-color: white;
         cursor: pointer;
+        color: #6ed7d3;
     }
 
     .timeOpen:hover {
-        background-color: #57d06d;
+        border-width: 4px;
     }
 
     .timeReserved {
-        background-color: #9038CC;
+        border:2px solid #c9737c;
+        color: #c9737c;
     }
 
     .timeSelected {
-        background-color: #ffca18 !important;
+        background-color: #6ed7d3 !important;
         cursor: pointer;
     }
 

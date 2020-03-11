@@ -2,17 +2,18 @@
     <section class="profileWrapper">
         <div class="container" v-if="windowWidth > 991.8">
             <div class="row">
-                <div class="col-md-3 sidebarWrapperDesktop">
+                <div class="col-md-3 sidebarWrapperDesktop" v-if="$route.name != 'user-chatroom'">
                     <div class="userSidebarBlock">
                         <div class="userSidebarBlock--info">
                             <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture">
+                            <img v-else src="https://picsum.photos/id/0/75/75">
                             <div class="userSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum" v-if="showFirstName">
                                     {{`${user.first_name} ${user.last_name}`}}
                                 </h1>
-                                <h1 class="isansFont--faNum text-sm" v-else>
+                                <h4 class="isansFont--faNum text-sm" v-else>
                                     <router-link to="/user/profile">لطفا نام و نام خانوادگی خود را تکمیل کنید.</router-link>
-                                </h1>
+                                </h4>
                             </div>
                         </div>
                         <div class="userSidebarBlock--links isansFont--faNum">
@@ -46,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div :class="[{'col-md-12' : $route.name == 'user-chatroom'}, {'col-md-9' : $route.name != 'user-chatroom'}]">
                     <div class="row">
                         <router-view :key="$route.fullPath" class="mobile-view" />
                     </div>
@@ -56,13 +57,13 @@
 
         <div class="mobile" v-else>
             <div class="mobile-info">
-                <img src="../../public/sneedsAssets/img/samandehi.png" alt="">
+                <img src="https://picsum.photos/id/0/75/75" alt="">
                 <h1 class="isansFont--faNum" v-if="showFirstName">
                     {{user.first_name + " " + user.last_name}}
                 </h1>
-                <h1 class="isansFont--faNum" v-else>
+                <h4 class="isansFont--faNum" v-else>
                     لطفا نام و نام خانوداگی خود را تکمیل کنید.
-                </h1>
+                </h4>
 
                 <h4 class="isansFont--faNum">
                     <router-link to="/profile/settings">تکمیل اطلاعات ></router-link>
@@ -229,8 +230,7 @@
         width: 70px;
         height: auto;
         border-radius: 10px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin: 10px;
     }
 
     .userSidebarBlock--links {

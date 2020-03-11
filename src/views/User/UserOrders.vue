@@ -32,8 +32,8 @@
                     {{order.total}}
                 </p>
 
-                <p class="order-item-date isansFont--faNum">
-                    {{getJalali(order.updated).locale('fa').format('jYYYY/MM/DD  HH:mm')}}
+                <p class="order-item-date" :class="[{'isansFont--faNum' : $store.getters.locale == 'fa','isansFont' : $store.getters.locale != 'fa' }]">
+                    {{getJalali(order.updated).locale($store.getters.locale).format('YYYY/MM/DD  HH:mm')}}
                 </p>
 
                 <div class="order-item-status isansFont--faNum">

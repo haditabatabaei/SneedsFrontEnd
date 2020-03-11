@@ -31,7 +31,7 @@
             <!-- DESKTOP VERSION -->
             <div class="chatroom-messages-title" v-if="windowWidth > 991.8">
                 <h4 class="isansFont--faNum" v-if="selectedChat">
-                    سید محمد هادی طباطبایی
+                    {{this.selectedChat.other_person.first_name + " " + this.selectedChat.other_person.last_name}}
                 </h4>
                 <h4 class="isansFont--faNum" v-else>
 
@@ -49,7 +49,11 @@
             <div class="chatroom-messages-list" id="messagesBody" v-if="selectedChat">
                 <div class="chatroom-messages-item" v-for="(message, index) in selectedChatMessages" :key="index">
                     <img draggable="false" :src="message.profile_img"
-                         class="chatroom-messages-item-avatar" alt="" v-if="message.messageType != 'VoiceMessage'">
+                         class="chatroom-messages-item-avatar" alt="" v-if="message.profile_img && message.messageType != 'VoiceMessage'">
+
+                    <img draggable="false" src="https://picsum.photos/id/0/75/75"
+                         class="chatroom-messages-item-avatar" alt="" v-else-if="message.messageType != 'VoiceMessage'">
+
                     <div class="chatroom-messages-item-content" :class="[{'content-other' : !message.is_sender_me}]"
                          v-if="message.messageType == 'TextMessage'">
                         <p class="chatroom-messages-item-content-text isansFont--faNum text-justify">

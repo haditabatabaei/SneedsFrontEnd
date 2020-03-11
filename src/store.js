@@ -29,7 +29,8 @@ export default new Vuex.Store({
         httpConfig : {
             headers : {
                 "Authorization" : "JWT " + localStorage.getItem('token'),
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "CLIENT-TIMEZONE" : Intl.DateTimeFormat().resolvedOptions().timeZone,
             },
             timeout: 6000,
         },
@@ -39,6 +40,10 @@ export default new Vuex.Store({
         stash: [],
 
         mobileMenuShow : true,
+
+        timezoneSafe : ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
+
+        timezone : Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
@@ -208,6 +213,20 @@ export default new Vuex.Store({
 
         getMobileMenuShow : state => state.mobileMenuShow,
 
-        httpConfig : state => state.httpConfig
+        httpConfig : state => state.httpConfig,
+
+        timezone : state => state.timezone,
+
+        timezoneSafe: state => state.timezoneSafe,
+
+        isiran : state => state.timezoneSafe === 'Asia-Tehran',
+
+        locale : state => {
+            if (state.timezoneSafe === 'Asia-Tehran') {
+                return 'fa';
+            } else {
+                return 'en'
+            }
+        }
     }
 })

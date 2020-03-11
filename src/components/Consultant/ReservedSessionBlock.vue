@@ -9,10 +9,15 @@
         <h5 class="reservedCard--detail-name isansFont--faNum text-center" v-else>
             {{session.consultant.first_name + " " + session.consultant.last_name}}
         </h5>
-        <p class="reservedCard--detail-remain isansFont--faNum"
+        <p v-if="!sessionIsOngoing" class="reservedCard--detail-remain isansFont--faNum"
            :class="[{'deactiveRemain': currentTimeAfterSession},{'nearBeforeTime' : nearBeforeTime}, {'farBeforeTime' : farBeforeTime}]">
             {{getJalali(session.start_time).locale('fa').fromNow()}}
         </p>
+
+        <p v-else class="reservedCard--detail-remain isansFont--faNum ongoing">
+            در حال برگزاری
+        </p>
+
         <p class="reservedCard--detail-date isansFont--faNum">
             <time>
                 {{getJalali(session.start_time).locale('fa').format('dddd YYYY/MM/DD')}}
@@ -120,20 +125,27 @@
             },
         },
         computed: {
-            canRate: function () {
+            canRate() {
                 return this.rate == null;
             },
             currentTimeAfterSession: function () {
                 return this.getJalali().isAfter(this.getJalali(this.session.end_time));
             },
-            nearBeforeTime: function () {
+
+            nearBeforeTime() {
                 let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
                 return diff >= 0 && diff <= 12;
             },
-            farBeforeTime: function () {
+
+            farBeforeTime() {
                 let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
                 return diff > 12;
+            },
+
+            sessionIsOngoing() {
+                return this.getJalali().isBetween(this.getJalali(this.session.start_time), this.getJalali(this.session.end_time));
             }
+
         }
     }
 </script>
@@ -187,6 +199,11 @@
     .farBeforeTime {
         background-color: #FCFAB1;
         color: #A3871B;
+    }
+
+    .ongoing {
+        background-color: white;
+        color : #00c853;
     }
 
     .reservedCard--detail-date time {

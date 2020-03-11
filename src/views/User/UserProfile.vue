@@ -18,7 +18,7 @@
                     <div class="col-md-6">
                         <label for="firstName" class="info-label">
                             نام :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.first_name}`" v-model.trim="inputUser.first_name" id="firstName" class="info-input">
+                            <input type="text" :placeholder="firstNamePlaceholder" v-model.trim="inputUser.first_name" id="firstName" class="info-input">
                             <span class="text-danger isansFont--faNum" v-if="firstNameIsInvalid">نام وارد شده معتبر نیست.</span>
                         </label>
                     </div>
@@ -26,7 +26,7 @@
                     <div class="col-md-6">
                         <label for="lastName" class="info-label">
                             نام خانوادگی :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.last_name}`" v-model.trim="inputUser.last_name" id="lastName" class="info-input">
+                            <input type="text" :placeholder="lastNamePlaceholder" v-model.trim="inputUser.last_name" id="lastName" class="info-input">
                             <span class="text-danger isansFont--faNum" v-if="lastNameIsInvalid">نام خانوادگی وارد شده معتبر نیست.</span>
 
                         </label>
@@ -150,6 +150,20 @@
 
             formIsInvalid() {
                 return this.submitted && (this.firstNameIsInvalid || this.lastNameIsInvalid);
+            },
+            firstNamePlaceholder() {
+                if(this.user.first_name == null) {
+                    return 'فعلی: ثبت نشده'
+                } else {
+                    return `فعلی: ${this.user.first_name}`
+                }
+            },
+            lastNamePlaceholder() {
+                if(this.user.last_name == null) {
+                    return 'فعلی: ثبت نشده'
+                } else {
+                    return `فعلی: ${this.user.last_name}`
+                }
             }
         }
     }

@@ -8,8 +8,11 @@
 
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug">
+                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug" v-if="consultant.first_name != null && consultant.last_name != null">
                         {{consultant.first_name + ' ' + consultant.last_name}}
+                    </router-link>
+                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug" v-else>
+                        بدون نام
                     </router-link>
                     <router-link class="isansFont consultantCalendarLink"
                                  :to="'/consultants/' + consultant.slug ">

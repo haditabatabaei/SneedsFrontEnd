@@ -182,7 +182,7 @@
         },
         mounted() {
             //scroll to up
-            // this.$store.dispatch('saveCurrentLocation', this.$route.path);
+            // this.$store.dispatch('saveCu rrentLocation', this.$route.path);
         }
     }
 </script>

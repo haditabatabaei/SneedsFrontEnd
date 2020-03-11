@@ -115,7 +115,7 @@
 
                     try {
                         this.$loading(true);
-                        let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                        let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig);
                         this.reservedSessions = soldSlotsResult.data;
                     } catch (e) {
                         console.log(e);

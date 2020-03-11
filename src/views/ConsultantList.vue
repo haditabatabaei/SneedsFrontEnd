@@ -93,6 +93,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <label class="ratesort isansFont--faNum" style="margin-top:20px" for="rateSort">
+                                        <span class="checked" v-if="orderRateAscending">
+                                            <i class="material-icons">done</i>
+                                        </span>
+                                        <span v-else class="unchecked">
+
+                                        </span>
+                                        مرتب سازی بر اساس امتیاز
+                                    </label>
+                                    <input style="display:none" id="rateSort" type="checkbox" v-model="orderRateAscending" @change="doFilter()">
                                 </div>
                             </div>
                         </div>
@@ -217,7 +229,7 @@
                         </div>
                         <div class="col-sm-9 col-xs-12">
                             <div class="row consultantListRow">
-                                <div class="col-sm-12" v-for="(consultantPerson, index) in consultantList" :key="index">
+                                <div class="col-sm-12" v-for="(consultantPerson, index) in activeConsultants" :key="index">
                                     <consultant-block :consultant="consultantPerson" />
                                 </div>
                             </div>
@@ -246,6 +258,8 @@
                 universitiesList: [],
                 fieldOfStudiesList: [],
 
+                orderRateAscending: true,
+
                 tempScroll: window.scrollY,
             }
         },
@@ -260,12 +274,17 @@
                     return true;
                 } else return false;
             },
+
+            activeConsultants() {
+                return this.consultantList.filter((consultant) => consultant.active);
+            }
         },
         created() {
             this.getListOfConsultants();
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();
+            this.doFilter();
         },
         methods: {
             generateQueryParameters: function () {
@@ -288,6 +307,13 @@
                         query += '&field_of_studies=' + this.fieldOfStudiesList[i].id;
                     }
                 }
+
+                if(this.orderRateAscending) {
+                    query += '&ordering=-rate'
+                } else {
+                    query += '&ordering=rate'
+                }
+
                 return query;
             },
 
@@ -395,6 +421,7 @@
             toggleFilterPanel: function () {
                 this.showFilterPanel = !this.showFilterPanel;
             }
+
         }, watch: {
             tempScroll: function (newValue) {
                 console.log(newValue);
@@ -585,6 +612,32 @@
 
     .row.consultantListRow {
         margin-right: 0;
+    }
+
+    .ratesort{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ratesort span{
+        width: 25px;
+        height: 25px;
+        border-radius: 5px;
+        margin-left: 5px;
+    }
+
+    .ratesort span.checked {
+        background-color: #9038CC;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .ratesort span.unchecked {
+        background-color: white;
+        border:2px solid #999;
     }
 
     @media only screen and (max-width: 767.8px) and (min-width: 0) {

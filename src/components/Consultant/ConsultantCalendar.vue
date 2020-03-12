@@ -23,39 +23,47 @@
         <div class="myTable isansFont" v-if="days.length != 0">
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="(day, index) in tableDataArray" :key="index">
-                    <p>{{day.format('dddd')}}</p>
-                    <p class="monthSmallText">{{day.format('DD MMMM')}}</p>
+                <div class="myTableCell dayTitleCell" v-for="(day, index) in days" :key="index">
+                    <p v-if="isiran">{{day.clone().locale('fa').format('dddd')}}</p>
+                    <p v-else>{{day.format('dddd')}}</p>
+                    <p class="monthSmallText" v-if="isiran">{{day.clone().locale('fa').format('DD MMMM')}}</p>
+                    <p class="monthSmallText" v-else>{{day.format('DD MMMM')}}</p>
                 </div>
             </div>
-            <div v-for="index in 16" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow">
-                    {{ (index - 1 + 8) + ":00" + " تا " + (index - 1 + 1 + 8) + ":00"}}
+            <div v-for="index in 24" :key="index" class="myTableRow">
+                <div class="myTableCell firstCellInRow" v-if="minutesOffsetFromTehran.toString().length === 2">
+                    {{ (index - 1) + ":" + minutesOffsetFromTehran + " تا " + (index) + ":" + minutesOffsetFromTehran}}
                 </div>
+                <div class="myTableCell firstCellInRow" v-else>
+                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" + minutesOffsetFromTehran}}
+                </div>
+
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
-                            v-if="days[rowIndex - 1].clone().hour(index + 7).isBefore(justNowDate) && !isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7),days[rowIndex - 1].clone().hour(index + 8))"
+                            v-if="days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).isBefore(justNowDate) &&
+                             !isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
                             class="myTableSemiCell timeNotAvailable"
                     ></div>
                     <!-- Its not reserved ( not purple ) and its empty -->
                     <div
-                        v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8)) &&
-                       !isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                        @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())"
-                        :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index + 7).toISOString(),days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
+                        v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran)) &&
+                       !isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                        @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
+                        :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),
+                        days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
                         class="myTableSemiCell timeOpenForManagerToSet"
                     ></div>
 
                     <!-- Its not reserved ( not purple ) but its available for users to choose -->
                     <div
-                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
-                        :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())}]"
-                        @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index + 7).toISOString(), days[rowIndex - 1].clone().hour(index + 8).toISOString())"
+                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                        :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
+                        @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
                         class="myTableSemiCell timeOpen"
                     ></div>
 
                     <div
-                        v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index + 7), days[rowIndex - 1].clone().hour(index + 8))"
+                        v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
                         class="myTableSemiCell timeReserved"
                     ></div>
                 </div>
@@ -90,8 +98,9 @@
                 selectedDatesToRemove: [],
                 selectedDatesToOpen: [],
                 shownDate: {},
-                justNowDate: jalali().locale('fa'),
-                tableDataArray: [],
+                justNowDate: {},
+                calendarLocale : 'en',
+                minutesOffsetFromTehran: 0
             }
         },
         computed: {
@@ -101,8 +110,11 @@
             activeCart: function () {
                 return this.$store.getters.getCart;
             },
+            isiran() {
+                return this.$store.getters.isiran;
+            }
         },
-        created() {
+        async created() {
             this.initComp();
         },
 
@@ -114,13 +126,28 @@
             async initComp() {
                 try {
                     this.$loading(true);
-                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`);
+                    console.log('active time zone' , this.$store.getters.timezone);
+                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`,this.$store.getters.httpConfig);
                     let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/auth/timezone-time/${this.$store.getters.timezoneSafe}/`);
                     console.log('all slots : ', slotsResult);
                     console.log('sold slots : ', soldSlotsResult);
                     this.slots = slotsResult.data;
                     this.soldSlots = soldSlotsResult.data;
-                    this.shownDate = jalali().locale('fa');
+                    this.shownDate = this.getJalali(timezoneResult.data.now);
+                    this.justNowDate = this.getJalali(timezoneResult.data.now);
+
+                    let timezone = this.shownDate.format('Z');
+                    let sign = timezone[0];
+                    let hour = Number(timezone.split(':')[0].split(sign)[1]);
+                    let minute = Number(timezone.split(':')[1]);
+                    console.log(sign, hour, " ", minute);
+                    let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
+                    console.log( Number(sign + ((hour * 60) + minute)));
+                    console.log(Number("+" + 210));
+                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60) ) * 60);
+                    console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
+                    console.log(this.shownDate);
                     this.handleWeek(this.shownDate);
                 } catch (e) {
                     console.log(e);
@@ -131,11 +158,21 @@
                 }
             },
 
-            getTimeStampByIndex(dayIndexInArr, timeIndex, hourToAdd, getIsoString) {
-                if (getIsoString) {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd)).toISOString();
-                } else {
-                    return this.days[dayIndexInArr - 1].clone().hour(Number(timeIndex) + Number(hourToAdd));
+
+            handleWeek(now) {
+                console.log('HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE')
+                console.log('is iran?', this.isiran);
+                this.days = [];
+                this.days.push(this.generateSaturdayNew(now));
+                this.days.push(this.generateSundayNew(now));
+                this.days.push(this.generateMondayNew(now));
+                this.days.push(this.generateTuesdayNew(now));
+                this.days.push(this.generateWednesdayNew(now));
+                this.days.push(this.generateThursdayNew(now));
+                this.days.push(this.generateFridayNew(now));
+                console.log(this.days);
+                for (let i = 0; i < this.days.length; i++) {
+                    console.log(this.days[i].format());
                 }
             },
 
@@ -198,9 +235,9 @@
 
             showWeek: function (numOfWeek, siblingStatus) {
                 if (siblingStatus === 'prev') {
-                    this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale('fa'));
+                    this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale(this.calendarLocale));
                 } else if (siblingStatus === 'next') {
-                    this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale('fa'));
+                    this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale(this.calendarLocale));
                 }
             },
 
@@ -213,47 +250,31 @@
             },
 
             generateSaturdayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(0 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(0 - date.weekday(), 'd');
             },
 
             generateSundayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(1 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(1 - date.weekday(), 'd');
             },
 
             generateMondayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(2 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(2 - date.weekday(), 'd');
             },
 
             generateTuesdayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(3 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(3 - date.weekday(), 'd');
             },
 
             generateWednesdayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(4 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(4 - date.weekday(), 'd');
             },
 
             generateThursdayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(5 - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(5 - date.weekday(), 'd');
             },
 
             generateFridayNew(date) {
-                return date.minute(0).second(0).millisecond(0).clone().add(6 - date.weekday(), 'd');
-            },
-
-            handleWeek(now) {
-                console.log(now.locale('fa').weekday());
-                this.days = [];
-                this.days.push(this.generateSaturdayNew(now));
-                this.days.push(this.generateSundayNew(now));
-                this.days.push(this.generateMondayNew(now));
-                this.days.push(this.generateTuesdayNew(now));
-                this.days.push(this.generateWednesdayNew(now));
-                this.days.push(this.generateThursdayNew(now));
-                this.days.push(this.generateFridayNew(now));
-                console.log(this.days);
-                for (let i = 0; i < this.days.length; i++) {
-                    this.tableDataArray[i] = this.days[i];
-                }
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(6 - date.weekday(), 'd');
             },
 
             removeElementFromToOpenDates(value) {
@@ -373,13 +394,11 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-
         background-color: #f3f3f3;
         border-radius: 10px;
         border: none;
         padding: 5px 15px;
         font-size: 13px;
-
         color: #666;
     }
 

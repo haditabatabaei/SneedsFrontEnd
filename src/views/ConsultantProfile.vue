@@ -67,7 +67,8 @@
                                 <li v-for="(item, index) in stash" :key="index">
                                     <i class="material-icons" role="button"
                                        @click="$store.commit('removeItemFromStash',item)">close</i>
-                                    <span>{{getJalali(item.datestart).locale('fa').format('dddd') + " - " + getJalali(item.datestart).locale('fa').format('HH:mm') + " تا " + getJalali(item.dateend).locale('fa').format('HH:mm') }}</span>
+                                    <span v-if="$store.getters.isiran">{{getJalali(item.datestart).locale('fa').format('dddd') + " - " + getJalali(item.datestart).locale('fa').format('HH:mm') + " تا " + getJalali(item.dateend).locale('fa').format('HH:mm') }}</span>
+                                    <span v-else class="isansFont">{{getJalali(item.datestart).locale('en').format('dddd') + " - " + getJalali(item.datestart).locale('en').format('HH:mm') + " till " + getJalali(item.dateend).locale('en').format('HH:mm') }}</span>
                                 </li>
                             </ul>
                         </div>

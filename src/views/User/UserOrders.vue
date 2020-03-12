@@ -28,11 +28,11 @@
                     </p>
                 </div>
 
-                <p class="order-item-price isansFont--faNum">
+                <p class="order-item-price" :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran}]">
                     {{order.total}}
                 </p>
 
-                <p class="order-item-date" :class="[{'isansFont--faNum' : $store.getters.locale == 'fa','isansFont' : $store.getters.locale != 'fa' }]">
+                <p class="order-item-date" :class="[{'isansFont--faNum' : $store.getters.isiran,'isansFont' : !$store.getters.isiran}]">
                     {{getJalali(order.updated).locale($store.getters.locale).format('YYYY/MM/DD  HH:mm')}}
                 </p>
 

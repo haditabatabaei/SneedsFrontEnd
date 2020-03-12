@@ -29,21 +29,21 @@
 
                         <p>
                             <span>مبلغ سفارش :</span>
-                            <span>{{`${order.total} تومان`}}</span>
+                            <span :classs="[{'isansFont' : !$store.getters.isiran}]">{{`${order.total} تومان`}}</span>
                         </p>
 
                         <p>
                             <span>تاریخ ثبت سفارش :</span>
-                            <span>{{getJalali(order.created).locale('fa').format('jYYYY/MM/DD HH:mm')}}</span>
+                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(order.created).locale($store.getters.locale).format('YYYY/MM/DD HH:mm')}}</span>
                         </p>
                     </div>
 
                     <div class="cartsWrapper-item" v-for="(product, index) in order.sold_time_slot_sales" :key="index">
-                        <p class="isansFont--faNum cartsWrapper-item--day">{{getJalali(product.start_time).locale('fa').format('dddd DD MMMM')}}</p>
+                        <p class="cartsWrapper-item--day" :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('dddd DD MMMM')}}</p>
                         <p class="isansFont--faNum cartsWrapper-item-length">
                             <i class="material-icons">alarm_on</i>
-                            <span>{{getJalali(product.start_time).locale('fa').format('HH:mm')}}</span>
-                            <span>{{getJalali(product.end_time).locale('fa').format('HH:mm')}}</span>
+                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('HH:mm')}}</span>
+                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.end_time).locale($store.getters.locale).format('HH:mm')}}</span>
                         </p>
                     </div>
                 </div>

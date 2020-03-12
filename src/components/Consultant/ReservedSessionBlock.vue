@@ -9,16 +9,17 @@
         <h5 class="reservedCard--detail-name isansFont--faNum text-center" v-else>
             {{session.consultant.first_name + " " + session.consultant.last_name}}
         </h5>
-        <p v-if="!sessionIsOngoing" class="reservedCard--detail-remain isansFont--faNum"
-           :class="[{'deactiveRemain': currentTimeAfterSession},{'nearBeforeTime' : nearBeforeTime}, {'farBeforeTime' : farBeforeTime}]">
-            {{getJalali(session.start_time).locale('fa').fromNow()}}
+        <p v-if="!sessionIsOngoing" class="reservedCard--detail-remain "
+           :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran},{'deactiveRemain': currentTimeAfterSession},{'nearBeforeTime' : nearBeforeTime}, {'farBeforeTime' : farBeforeTime}]">
+            {{getJalali(session.start_time).locale($store.getters.locale).fromNow()}}
         </p>
+
 
         <p v-else class="reservedCard--detail-remain isansFont--faNum ongoing">
             در حال برگزاری
         </p>
 
-        <p class="reservedCard--detail-date isansFont--faNum">
+        <p class="reservedCard--detail-date isansFont--faNum" v-if="$store.getters.isiran">
             <time>
                 {{getJalali(session.start_time).locale('fa').format('dddd YYYY/MM/DD')}}
             </time>
@@ -30,6 +31,21 @@
             <span>تا</span>
             <time :datetime="getJalali(session.end_time)">
                 {{getJalali(session.end_time).locale('fa').format('HH:mm')}}
+            </time>
+        </p>
+
+        <p class="reservedCard--detail-date isansFont" v-else>
+            <time>
+                {{getJalali(session.start_time).format('dddd YYYY/MM/DD')}}
+            </time>
+            <br>
+            <span>from</span>
+            <time :datetime="getJalali(session.start_time)">
+                {{getJalali(session.start_time).format('HH:mm')}}
+            </time>
+            <span>till</span>
+            <time :datetime="getJalali(session.end_time)">
+                {{getJalali(session.end_time).format('HH:mm')}}
             </time>
         </p>
 

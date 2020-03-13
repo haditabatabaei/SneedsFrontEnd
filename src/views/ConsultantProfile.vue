@@ -154,9 +154,6 @@
             isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
-            activeCart() {
-                return this.$store.getters.getCart;
-            },
             stash() {
                 return this.$store.getters.getStash;
             },
@@ -182,7 +179,7 @@
                 this.slots = slots;
             },
 
-            addSelectedTimesToCart: async function () {
+            async addSelectedTimesToCart() {
                 console.log(this.stash);
 
                 let payload = {"products": []};
@@ -210,7 +207,7 @@
                 }
             },
 
-            getJalali: function (date) {
+            getJalali(date) {
                 return jalali(date);
             },
 
@@ -221,14 +218,14 @@
                 }
             },
 
-            getElementOffsetTop: function (elemId) {
+            getElementOffsetTop(elemId) {
                 return document.getElementById(elemId).offsetTop + 20;
             },
 
-            getListOfNumberDiscounts: async function () {
+            async getListOfNumberDiscounts() {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/discount/time-slot-sale-number-discounts/`);
+                    let result = await axios.get(`${this.$store.getters.getApi}/discount/time-slot-sale-number-discounts/`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.listOfDiscounts = result.data;
                 } catch (e) {
@@ -240,7 +237,7 @@
             },
 
 
-            handleScroll: function () {
+            handleScroll() {
                 this.descPos = document.getElementById('descBlock').offsetTop;
                 this.calendarPos = document.getElementById('calendarBlock').offsetTop;
                 this.commentsPos = document.getElementById('commentsBlock').offsetTop;
@@ -270,14 +267,14 @@
 
             },
 
-            toggleSection: function (newSec) {
+            toggleSection(newSec) {
                 this.activeSection = newSec;
             },
 
-            getConsultantBySlug: async function(consultantSlug) {
+            async getConsultantBySlug(consultantSlug) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}`);
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}`, this.$store.getters.httpConfig);
                     this.consultant = result.data;
                     console.log(result);
                 } catch(e) {
@@ -323,12 +320,10 @@
         width: 100%;
         border-radius: 15px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-
         display: flex;
         align-items: flex-start;
         justify-content: flex-start;
         flex-direction: column;
-
         margin-top: 30px;
         padding-bottom: 10px;
     }
@@ -419,11 +414,8 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-
         padding-right: 0;
-
         font-size: 13px;
-
         margin-top: 5px;
     }
 
@@ -558,11 +550,8 @@
             background-color: #e91e63;
             color: white;
             box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
-
             flex-direction: column;
             align-items: center;
         }
-
-
     }
 </style>

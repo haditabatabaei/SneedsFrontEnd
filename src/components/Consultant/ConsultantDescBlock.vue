@@ -130,6 +130,7 @@
         align-self: flex-start;
         padding: 15px;
         line-height: 26px;
+        word-break: break-word;
     }
 
     .consultantDescBlock--main_video {

@@ -212,7 +212,7 @@
                 this.submitted = true;
                 if (!this.emailIsInvalid) {
                     try {
-                        let resetResult = await axios.post(`${this.$store.getters.getApi}/auth/password-reset/`, {"email" : this.userToLogin.email} ,{timeout : 5000});
+                        let resetResult = await axios.post(`${this.$store.getters.getApi}/auth/password-reset/`, {"email" : this.userToLogin.email} ,this.$store.getters.httpConfig);
                         this.printMessage("تا لحظاتی دیگر یک ایمیل حاوی مراحب دریافت رمز جدید برایتان ارسال می شود. لطفا پوشه اسپم خود را نیز چک کنید.", "بازیابی رمز عبور: موفق", "success", 6000, "notif");
                         this.$loading(false);
                         console.log(resetResult);

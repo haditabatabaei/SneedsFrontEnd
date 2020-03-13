@@ -10,8 +10,6 @@ export default new Vuex.Store({
 
         expires: localStorage.getItem('expires') || '',
 
-        userIsLoggedIn: false,
-
         userInfo: JSON.parse(localStorage.getItem('userInfo')) || {
             "id": '',
             "user_type": '',
@@ -25,17 +23,6 @@ export default new Vuex.Store({
         api: 'http://37.152.182.253:8000',
 
         authApi: 'http://37.152.182.253:8000',
-
-        httpConfig : {
-            headers : {
-                "Authorization" : "JWT " + localStorage.getItem('token'),
-                "Content-Type" : "application/json",
-                "CLIENT-TIMEZONE" : Intl.DateTimeFormat().resolvedOptions().timeZone,
-            },
-            timeout: 6000,
-        },
-
-        cart: null,
 
         stash: [],
 
@@ -62,15 +49,8 @@ export default new Vuex.Store({
             localStorage.clear();
             state.token = '';
             state.expires = '';
-            state.userIsLoggedIn = false;
             state.user = {};
             state.inputUser = {};
-            state.httpConfig = {
-                headers : {
-                    "Content-Type" : "application/json"
-                },
-                timeout: 6000
-            };
             state.userInfo = {"id": '', "user_type": '', 'consultant': ''};
         },
 
@@ -85,7 +65,6 @@ export default new Vuex.Store({
         setToken(state, newToken) {
             localStorage.setItem('token', newToken);
             state.token = newToken;
-            state.httpConfig.headers["Authorization"] = "JWT " + newToken;
         },
 
         setExpires(state, newExpires) {
@@ -108,10 +87,6 @@ export default new Vuex.Store({
             localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
         },
 
-        setCart(state, cart) {
-            state.cart = cart;
-        },
-
         setStash(state, newStash) {
             state.stash = newStash;
         },
@@ -121,21 +96,14 @@ export default new Vuex.Store({
         },
 
         removeItemFromStash(state, itemToRemoved) {
-            state.stash = state.stash.filter(function (val) {
-                return val.datestart != itemToRemoved.datestart && val.dateend != itemToRemoved.dateend;
-            })
+            state.stash = state.stash.filter( val => val.datestart != itemToRemoved.datestart && val.dateend != itemToRemoved.dateend );
         }
     },
     actions: {
         async getUserMeta({commit}) {
             console.log("Getting user key");
 
-            let result = await axios.get(`${this.getters.getApi}/auth/my-account/`, {
-                headers : {
-                    "Authorization" : `JWT ${this.getters.getToken}`
-                },
-                timeout : 5000
-            });
+            let result = await axios.get(`${this.getters.getApi}/auth/my-account/`, this.getters.httpConfig);
             console.log(result);
             commit('setUserId', result.data.id);
             commit('setUserType', result.data.user_type);
@@ -144,12 +112,7 @@ export default new Vuex.Store({
 
         async getUserWithId({commit}, userId) {
             console.log("Getting user with key", userId);
-            let result = await axios.get(`${this.getters.getApi}/auth/accounts/${userId}/`, {
-                headers : {
-                    "Authorization" : `JWT ${this.getters.getToken}`
-                },
-                timeout: 5000
-            });
+            let result = await axios.get(`${this.getters.getApi}/auth/accounts/${userId}/`, this.getters.httpConfig);
             console.log(result);
             commit('setUser', result.data);
             commit('setInputUser', JSON.parse(JSON.stringify(result.data)));
@@ -157,7 +120,7 @@ export default new Vuex.Store({
 
         async login({commit}, user) {
             console.log("login payload :", user);
-            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`, user, {timeout: 5000});
+            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`,user , this.getters.httpConfig);
             console.log(loginResult);
             commit('setToken', loginResult.data.token);
             commit('setExpires', loginResult.data.expires);
@@ -166,7 +129,7 @@ export default new Vuex.Store({
 
         async register({commit}, user) {
             console.log("register payload", user);
-            let registerResult = await axios.post(`${this.getters.getApi}/auth/accounts/`, user, {timeout : 5000});
+            let registerResult = await axios.post(`${this.getters.getApi}/auth/accounts/`, user, this.getters.httpConfig);
             commit('setToken', registerResult.data.token_response.token);
             commit('setExpires', registerResult.data.token_response.expires);
             commit('setLoggedInStatus', true);
@@ -174,15 +137,7 @@ export default new Vuex.Store({
 
         async edit({commit}, user) {
             console.log('update user with ', user);
-            let editResult = await axios.put(
-                `${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}`,
-                user,
-                {
-                    headers : {
-                        "Authorization" : `JWT ${this.getters.getToken}`
-                    },timeout: 5000
-                }
-            );
+            let editResult = await axios.put(`${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}`, user, this.getters.httpConfig);
             console.log(editResult);
         },
 
@@ -191,19 +146,17 @@ export default new Vuex.Store({
         },
     },
     getters: {
-        isLoggedIn: state => state.userIsLoggedIn || (state.token !== ''),
+        isLoggedIn: state => !!state.token,
 
         getToken: state => state.token,
 
-        getExpires: state => state.token,
+        getExpires: state => state.expires,
 
         getUser: state => state.user,
 
         getUserInfo: state => state.userInfo,
 
         getInputUser: state => state.inputUser,
-
-        getCart: state => state.cart,
 
         getApi: state => state.api,
 
@@ -213,7 +166,27 @@ export default new Vuex.Store({
 
         getMobileMenuShow : state => state.mobileMenuShow,
 
-        httpConfig : state => state.httpConfig,
+        httpConfig : state => {
+            if(state.token) {
+                return {
+                    headers : {
+                        "Authorization" : `JWT ${state.token}`,
+                        "Content-Type" : "application/json",
+                        "CLIENT-TIMEZONE" : state.timezone,
+                    },
+                    timeout: 10000,
+                }
+            } else {
+                return {
+                    headers : {
+                        "Content-Type" : "application/json",
+                        "CLIENT-TIMEZONE" : state.timezone,
+                    },
+                    timeout: 10000,
+                }
+
+            }
+        },
 
         timezone : state => state.timezone,
 

@@ -66,7 +66,7 @@
                 </h4>
 
                 <h4 class="isansFont--faNum">
-                    <router-link to="/profile/settings">تکمیل اطلاعات ></router-link>
+                    <router-link to="/user/profile">تکمیل اطلاعات ></router-link>
                 </h4>
             </div>
             <div class="mobile-menu">

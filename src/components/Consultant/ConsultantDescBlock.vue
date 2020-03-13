@@ -23,19 +23,9 @@
                 </router-link>
             </div>
             <div class="consultantDescBlock--main_bio">
-                <p v-if="showSummary">
-                    {{summaryBio + "..."}}
-                </p>
-                <p v-else>
+                <p>
                     {{consultant.bio}}
                 </p>
-
-                <button class="showMoreBtn" @click="toggleSummary()">
-                    <span v-if="showSummary">بیشتر</span>
-                    <span v-else>خلاصه متن</span>
-                    <i class="material-icons" v-if="showSummary">keyboard_arrow_down</i>
-                    <i class="material-icons" v-else>keyboard_arrow_up</i>
-                </button>
             </div>
         </main>
     </section>
@@ -47,30 +37,10 @@
         props: {
             consultant: {}
         },
-        data() {
-            return {
-                showSummary: true,
-                summaryCharacterNumber: 50
-            }
-        },
-        computed: {
-            summaryBio: function () {
-                let summary = '';
-                for (let i = 0; i < this.consultant.bio.length; i++) {
-                    if (i <= this.summaryCharacterNumber) {
-                        summary += this.consultant.bio[i];
-                    }
-                }
-                return summary;
-            }
-        },
         created() {
             console.log(this.consultant);
         },
         methods: {
-            toggleSummary: function () {
-                this.showSummary = !this.showSummary;
-            },
             getVideoFrameLink(aparatLink) {
                 if(aparatLink != null) {
                     return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
@@ -101,16 +71,12 @@
         min-height: 300px;
         background-color: white;
         border: 1.5px solid #ccc;
-
         border-radius: 15px;
-
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-
         position: relative;
-
         margin-top: 30px;
         margin-bottom: 30px;
     }
@@ -123,7 +89,6 @@
         top: -50px;
         background-color: white;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-
         display: flex;
         justify-content: space-evenly;
         align-items: center;
@@ -148,7 +113,6 @@
         align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
-
         width: 80%;
         padding-top: 60px;
         margin-top: 30px;
@@ -161,11 +125,11 @@
     }
 
     .consultantDescBlock--main_bio p {
-        padding: 0 15px 15px 0;
         color: #9e9e9e;
         text-align: justify;
         align-self: flex-start;
-        word-break: break-all;
+        padding: 15px;
+        line-height: 26px;
     }
 
     .consultantDescBlock--main_video {

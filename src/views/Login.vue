@@ -147,11 +147,7 @@
         },
 
         methods: {
-            resetLoadingLogic: function () {
-                window.console.log('no loading deploy');
-            },
-
-            login: async function () {
+            async login() {
                 window.console.log('login pressed');
                 this.$v.$touch();
                 this.submitted = true;
@@ -189,7 +185,7 @@
                 return string;
             },
 
-            togglePassType: function () {
+            togglePassType() {
                 if (this.passType == 'password') {
                     this.passType = 'text'
                 } else {
@@ -197,7 +193,7 @@
                 }
             },
 
-            toggleResetPassword: function () {
+            toggleResetPassword() {
                 this.loginOrReset = !this.loginOrReset;
             },
 
@@ -211,7 +207,7 @@
                 })
             },
 
-            resetPassword: async function () {
+            async resetPassword() {
                 this.$loading(true);
                 this.submitted = true;
                 if (!this.emailIsInvalid) {

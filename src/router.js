@@ -162,7 +162,7 @@ let router = new Router({
             redirect: '/404',
         }
     ],
-    scrollBehavior (to, from, savesPosition) {
+    scrollBehavior () {
         return {x : 0, y: 0}
     }
 });

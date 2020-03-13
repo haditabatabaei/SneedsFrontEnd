@@ -216,6 +216,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <label class="ratesort isansFont--faNum" style="margin-top:20px" for="rateSort">
+                                        <span class="checked" v-if="orderRateAscending">
+                                            <i class="material-icons">done</i>
+                                        </span>
+                                            <span v-else class="unchecked">
+
+                                        </span>
+                                            مرتب سازی بر اساس امتیاز
+                                        </label>
+                                        <input style="display:none" id="rateSort" type="checkbox" v-model="orderRateAscending" @change="doFilter()">
                                     </div>
                                     <div class="bottomActionPanel">
                                         <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">
@@ -276,18 +286,18 @@
             },
 
             activeConsultants() {
-                return this.consultantList.filter((consultant) => consultant.active);
+                return this.consultantList.filter(consultant => consultant.active);
             }
         },
         created() {
-            this.getListOfConsultants();
+            // await this.getListOfConsultants();
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();
             this.doFilter();
         },
         methods: {
-            generateQueryParameters: function () {
+            generateQueryParameters() {
                 let query = '';
 
                 for (let i = 0; i < this.countriesList.length; i++) {
@@ -317,7 +327,7 @@
                 return query;
             },
 
-            doFilter: async function(toggleIndicator) {
+            async doFilter(toggleIndicator) {
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters()}`);
@@ -336,7 +346,7 @@
                 }
             },
 
-            resetFilter: function (toggleIndicator) {
+            resetFilter(toggleIndicator) {
                 this.addSelectPropertyToList(this.countriesList);
                 this.addSelectPropertyToList(this.universitiesList);
                 this.addSelectPropertyToList(this.fieldOfStudiesList);
@@ -349,7 +359,7 @@
                 }
             },
 
-            getListOfConsultants: async function (toggleIndicator) {
+            async getListOfConsultants(toggleIndicator) {
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
@@ -364,7 +374,7 @@
                 }
             },
 
-            getListOfCountries: async function () {
+            async getListOfCountries() {
                 this.$loading(true);
                 try {
                     this.$loading(true);
@@ -379,7 +389,7 @@
                 }
             },
 
-            getListOfUniversities: async function () {
+            async getListOfUniversities() {
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/account/universities/`);
@@ -394,7 +404,7 @@
                 }
             },
 
-            getListOfFields: async function () {
+            async getListOfFields() {
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
@@ -418,12 +428,12 @@
                 })
             },
 
-            toggleFilterPanel: function () {
+            toggleFilterPanel() {
                 this.showFilterPanel = !this.showFilterPanel;
             }
 
         }, watch: {
-            tempScroll: function (newValue) {
+            tempScroll(newValue) {
                 console.log(newValue);
             }
         },

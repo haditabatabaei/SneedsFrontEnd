@@ -2,21 +2,21 @@
     <form class="loginForm" @submit.prevent="register()">
         <label class="loginForm-label isansFont" for="email">
             ایمیل :
-            <input class="loginForm-control" id="email" type="text" v-model="$v.userToRegister.email.$model">
+            <input class="loginForm-control" id="email" type="text" v-model.trim="$v.userToRegister.email.$model">
             <span class="loginForm-meta error" v-if="emailIsInvalid">
                 لطفا یک ایمیل معتبر وارد کنید.
             </span>
         </label>
         <label class="loginForm-label isansFont" for="phone">
             شماره تلفن :
-            <input class="loginForm-control" id="phone" type="text" v-model="$v.userToRegister.phone_number.$model">
+            <input class="loginForm-control" id="phone" type="text" v-model.trim="$v.userToRegister.phone_number.$model">
             <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">
                 لطفا یک شماره تلفن معتبر وارد کنید.
             </span>
         </label>
         <label class="loginForm-label isansFont" for="password">
             رمز عبور :
-            <input class="loginForm-control" id="password" :type="passType" v-model="$v.userToRegister.password.$model">
+            <input class="loginForm-control" id="password" :type="passType" v-model.trim="$v.userToRegister.password.$model">
             <span class="loginForm-meta error" v-if="passwordIsInvalid">
                 لطفا یک رمز عبور معتبر وارد کنید.
             </span>

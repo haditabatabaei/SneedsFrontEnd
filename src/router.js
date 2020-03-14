@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from "@/views/Home";
+import AuthLayout from '@/layouts/AuthLayout'
 import Login from '@/views/Login';
 import Register from '@/views/Register';
 
@@ -40,20 +41,31 @@ let router = new Router({
             }
         },
         {
-            path: '/login',
-            name: Login,
-            component: Login,
+            path : '/auth',
+            name : 'auth',
+            redirect: '/auth/login',
+            component : AuthLayout,
             meta: {
-                auth: 'noReq'
-            }
-        },
-        {
-            path: '/register',
-            name: 'Register',
-            component: Register,
-            meta: {
-                auth: 'noReq'
-            }
+                auth : 'noReq'
+            },
+            children: [
+                {
+                    path: 'login',
+                    name: 'auth-login',
+                    component: Login,
+                    meta: {
+                        auth: 'noReq'
+                    }
+                },
+                {
+                    path: 'register',
+                    name: 'auth-register',
+                    component: Register,
+                    meta: {
+                        auth: 'noReq'
+                    }
+                },
+            ]
         },
         {
             path: '/user',
@@ -173,7 +185,7 @@ router.beforeEach((to, from, next) => {
         if (store.getters.isLoggedIn) {
             next();
         } else {
-            next('/login');
+            next('/auth/login');
         }
     } else if (to.meta.auth === 'noReq') {
         if (!store.getters.isLoggedIn) {

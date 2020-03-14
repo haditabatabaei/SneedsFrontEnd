@@ -29,10 +29,9 @@
                     </p>
                 </div>
                 <div class="consultantBlockInfoItem">
-                <span class="rate noRate isansFont--faNum"
-                      v-if="consultant.rate == null || consultant.rate.length == 0">بدون امتیاز</span>
-                    <span class="rate goodRate isansFont--faNum" v-else-if="consultant.rate >= 3.5">5 / {{consultant.rate.toFixed(1)}}</span>
-                    <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate.toFixed(1)}}</span>
+                <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
+                    <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">5 / {{consultant.rate}}</span>
+                    <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate}}</span>
                     <router-link class="isansFont--faNum comments"
                                  :to="'/consultants/' + consultant.slug">{{consultant.comment_number}}
                         نظر ثبت شده
@@ -54,7 +53,10 @@
     export default {
         name: "ConsultantBlock",
         props: {
-            consultant: {},
+            consultant: {
+                type : Object,
+                default: () => null
+            },
         }
 
     }

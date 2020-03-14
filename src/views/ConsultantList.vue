@@ -278,13 +278,6 @@
             console.log(this.tempScroll);
         },
         computed: {
-            minimizedFiltering: function () {
-                if (window.innerWidth < 768) {
-                    console.log(window.innerWidth);
-                    return true;
-                } else return false;
-            },
-
             activeConsultants() {
                 return this.consultantList.filter(consultant => consultant.active);
             }

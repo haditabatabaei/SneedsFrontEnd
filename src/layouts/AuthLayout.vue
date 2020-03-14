@@ -4,6 +4,7 @@
             <div class="authFormWrapper-switcher isansFont">
                 <router-link to="/auth/login" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-login'}]">ورود</router-link>
                 <router-link to="/auth/register" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-register'}]">ثبت نام</router-link>
+                <router-link to="/auth/forget" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-forget-pass'}]">بازیابی حساب</router-link>
             </div>
             <router-view :key="$route.fullPath" />
         </div>

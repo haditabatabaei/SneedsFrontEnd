@@ -57,7 +57,7 @@
                 </ul>
             </div>
             <div class="profileWrapper">
-                <router-link to="/login" class="btn btn-rose isansFont authButton navbar-left" v-if="!isLoggedIn">
+                <router-link to="/auth/login" class="btn btn-rose isansFont authButton navbar-left" v-if="!isLoggedIn">
                     <i class="material-icons">person</i>
                     ورود | ثبت نام
                 </router-link>
@@ -145,7 +145,7 @@
                                 </ul>
                             </li>
                             <li class="mobileMenuList--item" v-if="!isLoggedIn">
-                                <router-link class="mobileMenuList--linkItem special" to="/login">
+                                <router-link class="mobileMenuList--linkItem special" to="/auth/login">
                                     <i class="material-icons">person</i>
                                     ورود | ثبت نام
                                 </router-link>
@@ -277,7 +277,7 @@
         }, methods: {
             logout: function () {
                 this.$store.dispatch('logout');
-                this.$router.push('/login');
+                this.$router.push('/auth/login');
             },
         }
     }

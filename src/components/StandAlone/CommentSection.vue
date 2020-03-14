@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-md-12" v-else>
-            <router-link to="/login" class="btn btn-sm btn-warning isansFont">
+            <router-link to="/auth/login" class="btn btn-sm btn-warning isansFont">
                 برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
             </router-link>
         </div>

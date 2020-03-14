@@ -144,7 +144,7 @@
                             title: 'ویرایش رمز عبور : موفق',
                             text: 'رمز عبور شما با موفقیت تغییر کرد، به صفحه ورود فرستاده می شوید.'
                         });
-                        this.$router.push('/login');
+                        this.$router.push('/auth/login');
                     }).catch((err) => {
                         console.log(err);
                         this.$notify({

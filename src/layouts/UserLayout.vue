@@ -442,7 +442,7 @@
         .userSidebarBlock--links-menuitem {
             padding-right: 20px;
             padding-left:20px;
-            font-family: "IRANSansWebFaNum Medium";
+            font-family: "IRANSansWebFaNum Medium",serif;
         }
 
         .mobile-view {

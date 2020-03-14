@@ -1,21 +1,20 @@
 <template>
-    <div class="consultantBlock row" @click="$router.push('/consultants/' + consultant.slug)">
+    <div class="consultantBlock row" @click="$router.push(`/consultants/${consultant.slug}`).catch(()=>{})">
         <div class="consultantBlockData col-md-8">
-            <router-link class="consultantBlockImage" :to="'/consultants/' + consultant.slug"
+            <router-link class="consultantBlockImage" :to="`/consultants/${consultant.slug}`"
                          :style="'background-image: url(' + consultant.profile_picture + ')'">
                 <div class="ripple-container"></div>
             </router-link>
 
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug" v-if="consultant.first_name != null && consultant.last_name != null">
+                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-if="consultant.first_name != null && consultant.last_name != null">
                         {{consultant.first_name + ' ' + consultant.last_name}}
                     </router-link>
-                    <router-link class="isansFont consultantName" :to="'/consultants/' + consultant.slug" v-else>
+                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-else>
                         بدون نام
                     </router-link>
-                    <router-link class="isansFont consultantCalendarLink"
-                                 :to="'/consultants/' + consultant.slug ">
+                    <router-link class="isansFont consultantCalendarLink" :to="`/consultants/${consultant.slug}`">
                         <i class="material-icons">assignment</i>
                         مشاهده تقویم مشاور
                     </router-link>
@@ -41,7 +40,7 @@
         </div>
 
         <div class="consultantBlockAction col-md-4 text-center">
-            <router-link :to="'/consultants/' + consultant.slug" class="btn consultantShowButton isansFont">
+            <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton isansFont">
                 مشـاهده مشاور
             </router-link>
         </div>

@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from "@/views/Home";
 import AuthLayout from '@/layouts/AuthLayout'
-import Login from '@/views/Login';
-import Register from '@/views/Register';
-import Forget from "@/views/Forget";
+import Login from '@/views/Auth/Login';
+import Register from '@/views/Auth/Register';
+import Forget from "@/views/Auth/Forget";
 
 import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
@@ -15,9 +15,9 @@ import UserOrderItem from '@/views/User/UserOrderItem'
 
 import Error404 from '@/views/Error404';
 
-import ConsultantList from "@/views/ConsultantList";
-import ConsultManagement from "@/views/ConsultManagement";
-import ConsultantProfile from "@/views/ConsultantProfile";
+import ConsultantList from "@/views/Consultant/ConsultantList";
+import ConsultManagement from "@/views/Consultant/ConsultManagement";
+import ConsultantProfile from "@/views/Consultant/ConsultantProfile";
 
 import UserReservedSessions from "@/views/UserReservedSessions";
 
@@ -29,7 +29,7 @@ import Chatroom from '@/views/Chatroom';
 
 Vue.use(Router);
 
-let router = new Router({
+const router = new Router({
     base: process.env.BASE_URL,
     // mode : 'history',
     routes: [
@@ -165,13 +165,19 @@ let router = new Router({
         },
         {
             path: '/consultants',
-            name: 'ConsultantList',
+            name: 'consultants',
             component: ConsultantList,
+            meta : {
+                auth : 'optional'
+            },
         },
         {
             path: '/consultants/:consultantSlug',
-            name: 'ConsultantProfile',
+            name: 'consultants-profile',
             component: ConsultantProfile,
+            meta : {
+                auth : 'optional'
+            }
         },
         {
             path: '/404',

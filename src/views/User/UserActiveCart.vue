@@ -33,9 +33,9 @@
                             <form @submit.prevent="checkDiscountCode()" class="cartsWrapper-price--discount">
                                 <input type="text" placeholder="کد تخفیف" class="isansFont--faNum" :class="[codeStatus]" v-model.trim="inputCode">
                                 <button class="isansFont--faNum" :class="[codeStatus]">
-                                    <i class="material-icons" v-if="codeStatus == 'empty'">add</i>
-                                    <i class="material-icons" v-else-if="codeStatus == 'success'">done</i>
-                                    <i class="material-icons" v-else-if="codeStatus == 'error'">close</i>
+                                    <i class="material-icons" v-if="codeStatus === 'empty'">add</i>
+                                    <i class="material-icons" v-else-if="codeStatus === 'success'">done</i>
+                                    <i class="material-icons" v-else-if="codeStatus === 'error'">close</i>
                                 </button>
                             </form>
 
@@ -175,7 +175,7 @@
                 try {
                     this.$loading(true);
                     let result = await axios.post(
-                        `${this.$store.getters.getApi}/discount/cart-consultant-discounts/`,
+                        `${this.$store.getters.getApi}/discount/cart-discounts/`,
                         {"cart": this.cart.id, "code": this.inputCode},
                         this.$store.getters.httpConfig
                     );
@@ -196,7 +196,7 @@
             async getDiscountsOnThisCart() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/discount/cart-consultant-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
+                    let result = await axios.get(`${this.$store.getters.getApi}/discount/cart-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
                     console.log('discounts for this cart :', result);
                     this.discounts = result.data;
                     if(this.discounts.length > 0) {
@@ -218,7 +218,7 @@
             async deleteDiscountById(id) {
                 try {
                     this.$loading(true);
-                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-consultant-discounts/${id}`, this.$store.getters.httpConfig);
+                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}`, this.$store.getters.httpConfig);
                     console.log('delete for this cart :', result);
                     await this.initComp();
                 } catch (e) {

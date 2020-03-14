@@ -4,6 +4,7 @@ import Home from "@/views/Home";
 import AuthLayout from '@/layouts/AuthLayout'
 import Login from '@/views/Login';
 import Register from '@/views/Register';
+import Forget from "@/views/Forget";
 
 import UserLayout from '@/layouts/UserLayout';
 import UserStatus from '@/views/UserStatus';
@@ -65,6 +66,14 @@ let router = new Router({
                         auth: 'noReq'
                     }
                 },
+                {
+                    path : 'forget',
+                    name : 'auth-forget-pass',
+                    component : Forget,
+                    meta : {
+                        auth: 'noReq'
+                    }
+                }
             ]
         },
         {

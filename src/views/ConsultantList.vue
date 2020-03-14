@@ -4,7 +4,7 @@
             <div class="section">
                 <div class="container">
                     <div class="row" style="margin-top:30px;">
-                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="windowWidth > 767.8">
+                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="windowWidth > 991.8">
                             <h3 class="isansFont">پنل فیلترینگ</h3>
                             <div class="panel-group filterPanel" id="filterPanel" role="tablist"
                                  aria-multiselectable="true">
@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-if="windowWidth < 767.8">
+                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-if="windowWidth < 991.8">
                             <div class="bottomFilterColumnTitle" @click="toggleFilterPanel()">
                                 <p class="isansFont filterColumnTitle">
                                     <i class="material-icons">note</i>
@@ -237,7 +237,7 @@
                                 </div>
                             </transition>
                         </div>
-                        <div class="col-sm-9 col-xs-12">
+                        <div :class="[{'col-md-12' : windowWidth < 991.8, 'col-md-9' : windowWidth >= 991.8}]">
                             <div class="row consultantListRow">
                                 <div class="col-sm-12" v-for="(consultantPerson, index) in activeConsultants" :key="index">
                                     <consultant-block :consultant="consultantPerson" />
@@ -650,7 +650,7 @@
         border:2px solid #999;
     }
 
-    @media only screen and (max-width: 767.8px) and (min-width: 0) {
+    @media only screen and (max-width: 991.8px) and (min-width: 0) {
         /* Enter and leave animations can use different */
         /* durations and timing functions.              */
         .slide-fade-enter-active {

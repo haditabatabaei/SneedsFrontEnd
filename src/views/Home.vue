@@ -161,7 +161,7 @@
                         description: 'اسنیدز، پلتفرم بهینه رفع نیاز دانشجویی در سطح بالای فناوری امروز است.',
                         imageStyle: 'webimages/bg3.jpg',
                         hasButton: true,
-                        button: {value: 'ازاینجا شروع کنید', target: '/login', colorTheme: 'primary'},
+                        button: {value: 'ازاینجا شروع کنید', target: '/auth/login', colorTheme: 'primary'},
                     },
                     {
                         title: 'جزوات برتر',

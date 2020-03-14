@@ -106,7 +106,7 @@
                             title: 'ثبت رمز عبور جدید : موفق',
                             text: 'رمز عبور جدید با موفقیت ثبت شد. به صفحه ورود فرستاده می شوید.'
                         });
-                        this.$router.push('/login')
+                        this.$router.push('/auth/login')
                     }).catch(error => {
                         console.log(error);
                         if (error.response) {

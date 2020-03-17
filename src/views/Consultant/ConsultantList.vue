@@ -316,7 +316,6 @@
                 } else {
                     query += '&ordering=rate'
                 }
-
                 return query;
             },
 

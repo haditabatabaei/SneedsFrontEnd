@@ -129,7 +129,7 @@
                     console.log('active time zone' , this.$store.getters.timezone);
                     let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`,this.$store.getters.httpConfig);
                     let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/auth/timezone-time/${this.$store.getters.timezoneSafe}/`);
+                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
                     console.log('all slots : ', slotsResult);
                     console.log('sold slots : ', soldSlotsResult);
                     this.slots = slotsResult.data;

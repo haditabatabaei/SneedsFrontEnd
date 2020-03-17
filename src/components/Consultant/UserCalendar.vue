@@ -115,7 +115,7 @@
                     this.$loading(true);
                     let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                     let soldResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/auth/timezone-time/${this.$store.getters.timezoneSafe}/`);
+                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
                     console.log(result);
                     this.slots = result.data;
                     this.soldSlots = soldResult.data;

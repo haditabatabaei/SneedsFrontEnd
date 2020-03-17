@@ -274,7 +274,7 @@
             async getConsultantBySlug(consultantSlug) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}`, this.$store.getters.httpConfig);
+                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}/`, this.$store.getters.httpConfig);
                     this.consultant = result.data;
                     console.log(result);
                 } catch(e) {

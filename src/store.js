@@ -173,6 +173,7 @@ export default new Vuex.Store({
                         "Authorization" : `JWT ${state.token}`,
                         "Content-Type" : "application/json",
                         "CLIENT-TIMEZONE" : state.timezone,
+                        "origin" : "http://37.152.182.253"
                     },
                     timeout: 10000,
                 }
@@ -181,6 +182,7 @@ export default new Vuex.Store({
                     headers : {
                         "Content-Type" : "application/json",
                         "CLIENT-TIMEZONE" : state.timezone,
+                        "origin" : "http://37.152.182.253"
                     },
                     timeout: 10000,
                 }

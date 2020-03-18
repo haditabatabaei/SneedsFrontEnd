@@ -78,9 +78,6 @@
                         </h4>
                         <div class="gallery-feed">
                             <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
-                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
-                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
-                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
                         </div>
                     </div>
                 </div>
@@ -116,7 +113,6 @@
                     {itemName: 'درباره اسنیدز', target: '/in-touch/about', hasDropdown: false, dropdownItems: []},
                 ], guideMenuItems: [
                     {itemName: 'رزرو مشاور', target: '/guide/reservation', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'سامانه تیکتینگ', target: '/guide/ticketing', hasDropdown: false, dropdownItems: []},
                 ]
             }
         },

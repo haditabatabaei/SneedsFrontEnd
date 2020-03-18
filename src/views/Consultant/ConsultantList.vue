@@ -267,9 +267,7 @@
                 countriesList: [],
                 universitiesList: [],
                 fieldOfStudiesList: [],
-
                 orderRateAscending: true,
-
                 tempScroll: window.scrollY,
             }
         },
@@ -283,7 +281,6 @@
             }
         },
         created() {
-            // await this.getListOfConsultants();
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();
@@ -392,7 +389,6 @@
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
                 } finally {
                     this.$loading(false);
-
                 }
             },
 
@@ -419,11 +415,9 @@
                     duration: duration
                 })
             },
-
             toggleFilterPanel() {
                 this.showFilterPanel = !this.showFilterPanel;
             }
-
         }, watch: {
             tempScroll(newValue) {
                 console.log(newValue);
@@ -663,6 +657,4 @@
             margin-right: -10px;
         }
     }
-
-
 </style>

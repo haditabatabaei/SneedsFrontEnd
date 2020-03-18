@@ -125,7 +125,6 @@
 <style scoped>
     .loginForm {
         width: 100%;
-        /*background-color: blue;*/
         display: flex;
         align-items: stretch;
         justify-content: center;

@@ -108,9 +108,9 @@
                     {itemName: 'شرایط استفاده', target: '/services/terms', hasDropdown: false, dropdownItems: []},
                     {itemName: 'حریم خصوصی', target: '/services/privacy', hasDropdown: false, dropdownItems: []},
                 ], withSneedsMenuItems: [
-                    {itemName: 'تماس با اسنیدز', target: '/in-touch/contact', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'فرصت های شغلی', target: '/in-touch/jobs', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'درباره اسنیدز', target: '/in-touch/about', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'تماس با اسنیدز', target: '/contact', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'فرصت های شغلی', target: '/jobs', hasDropdown: false, dropdownItems: []},
+                    {itemName: 'درباره اسنیدز', target: '/about', hasDropdown: false, dropdownItems: []},
                 ], guideMenuItems: [
                     {itemName: 'رزرو مشاور', target: '/guide/reservation', hasDropdown: false, dropdownItems: []},
                 ]

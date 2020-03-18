@@ -243,7 +243,7 @@
                     },
                     {
                         itemName: 'درباره ما',
-                        target: '/in-touch/aboutus',
+                        target: '/about',
                         type: 'router',
                         hasDropdown: false,
                         dropdownItems: [],
@@ -251,7 +251,7 @@
                     },
                     {
                         itemName: 'تماس با ما',
-                        target: '/in-touch/contact',
+                        target: '/contact',
                         type: 'router',
                         hasDropdown: false,
                         dropdownItems: [],

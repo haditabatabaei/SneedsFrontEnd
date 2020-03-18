@@ -330,7 +330,7 @@
 
     .sideBarBlockSticky {
         position: sticky;
-        top: 50px;
+        top: 120px;
         padding-right: 0;
     }
 

@@ -168,7 +168,7 @@
 
     .profileWrapper {
         width : 100%;
-        margin-top:70px;
+        margin-top:120px;
         min-height:100vh;
     }
 

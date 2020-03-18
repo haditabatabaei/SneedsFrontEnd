@@ -476,7 +476,7 @@
     .filterColumn {
         z-index: 999;
         position: sticky;
-        top: 85px;
+        top: 134px;
         background-color: white;
         border-radius: 10px;
         padding: 10px;

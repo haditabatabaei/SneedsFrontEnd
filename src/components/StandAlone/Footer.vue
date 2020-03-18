@@ -64,11 +64,9 @@
                         </h4>
                         <a href="http://instagram.com/sneeds_ir" target="_blank"
                            class="btn btn-rose isansFont instaButton">
-                            <i class="fa fa-instagram" />
                             اینستاگرام اسنیدز
                         </a>
                         <a href="https://t.me/sneeds_ir" target="_blank" class="btn btn-info isansFont">
-                            <i class="fa fa-telegram" />
                             تلگرام اسنیدز
                         </a>
                     </div>

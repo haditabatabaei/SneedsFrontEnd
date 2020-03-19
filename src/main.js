@@ -9,9 +9,6 @@ import VueLoading from 'vuejs-loading-plugin';
 import VueWindowSize from 'vue-window-size';
 import VModal from 'vue-js-modal'
 
-// import VueRecord from '@codekraft-studio/vue-record'
-
-
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(Notifications);
@@ -20,7 +17,7 @@ Vue.use(VModal);
 // Vue.use(VueRecord);
 Vue.use(VueLoading, {
     text: 'صبر کنید...',
-    classes : ['isansFont']
+    classes : ['isansFont', 'loadingZIndex']
 });
 
 new Vue({

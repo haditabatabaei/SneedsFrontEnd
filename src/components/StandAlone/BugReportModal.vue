@@ -12,7 +12,7 @@
             لطفا با گزارش باگ ها و مشکلات سایت به ما در بهبود عملکرد سایتمون کمک کنید.
         </p>
         <hr>
-        <form class="loginForm">
+        <form class="loginForm" @submit.prevent="reportBug">
             <label class="loginForm-label isansFont" for="email">
                     <span class="text-right">
                         ایمیل :
@@ -20,6 +20,9 @@
                     </span>
                 <input class="loginForm-control" placeholder="ایمیل خود را وارد کنید..." id="email" type="email"
                        v-model.trim="$v.bug.senderEmail.$model">
+                <span class="loginForm-meta error" v-if="emailIsInvalid">
+                    لطفا یک ایمیل معتبر وارد کنید.
+                </span>
             </label>
             <label class="loginForm-label isansFont" for="desc">
                     <span class="text-right">
@@ -30,6 +33,9 @@
                           placeholder="انتظار داشتی چی بشه و چی شد!؟" id="desc" type="text"
                           v-model.trim="$v.bug.description.$model">
                     </textarea>
+                <span class="loginForm-meta error" v-if="descriptionIsInvalid">
+                        لطفا توضیحات را وارد کنید.
+                    </span>
             </label>
             <label class="loginForm-label isansFont" for="bugImage">
                     <span class="text-right">
@@ -43,13 +49,18 @@
                     </span>
                 <input class="loginForm-control" style="display: none" placeholder="ایمیل خود را وارد کنید..."
                        id="bugImage" type="file" @change="fileHandler">
+                <span class="loginForm-meta error" v-if=imageIsInvalid>
+                    لطفا تصویر معتبر انتخاب کنید.
+                </span>
 
             </label>
             <div class="files">
                 <ul>
-                    <li v-for="(image, index) in bug.images" :key="index">{{image.name}}
-                        <button class="btn btn-sm btn-simple" @click="removeItem(index)"><i
-                                class="material-icons">close</i></button>
+                    <li v-if="bug.image.name != undefined">
+                        {{bug.image.name}}
+                        <button class="btn btn-sm btn-simple" @click="removeItem">
+                            <i class="material-icons">close</i>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -61,6 +72,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import {email, maxLength, minLength, required} from "vuelidate/lib/validators";
 
     export default {
@@ -68,8 +80,8 @@
         validations: {
             bug: {
                 senderEmail: {email},
-                description: {required, minLength: minLength(5), maxLength: maxLength(400)},
-                images: {}
+                description: {required, minLength: minLength(1), maxLength: maxLength(1024)},
+                image: {}
             }
         },
         data() {
@@ -77,26 +89,96 @@
                 bug: {
                     senderEmail: '',
                     description: '',
-                    images: []
+                    image: {}
+                },
+                submitted: false,
+            }
+        },
+        computed: {
+            emailIsInvalid() {
+                return this.submitted && this.$v.bug.senderEmail.$error;
+            },
+            descriptionIsInvalid() {
+                return this.submitted && this.$v.bug.description.$error;
+            },
+            imageIsInvalid() {
+                if (this.bug.image.name != undefined) {
+                    //there is a file there
+                    if (this.bug.image.type.startsWith("image")) {
+                        //its good
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    //there is no file
+                    return false;
                 }
+            },
+
+            formIsInvalid() {
+                return this.submitted && this.$v.bug.$invalid;
             }
         },
         methods: {
             fileHandler(event) {
-                console.log(event);
-                console.log(event.target.files);
-                if (event.target.files[0].type.startsWith("image") && !this.bug.images.find(val => val.name === event.target.files[0])) {
-                    this.bug.images.push(event.target.files[0]);
+                if (event.target.files[0].type.startsWith("image")) {
+                    this.bug.image = event.target.files[0];
+                } else {
+                    this.$notify({})
                 }
             },
-            removeItem(imageToRemove) {
-                this.bug.images.splice(imageToRemove, 1);
-                // this.files
+            removeItem() {
+                this.bug.image = {}
+            },
+            async reportBug() {
+                this.$v.bug.$touch();
+                this.submitted = true;
+                if(!this.formIsInvalid) {
+                    //form is valid
+                    try {
+                        this.$loading(true);
+                        let payload = new FormData();
+                        payload.append("email", this.bug.senderEmail);
+                        payload.append("comment", this.bug.description);
+                        if(!this.imageIsInvalid && this.bug.image.name != undefined) {
+                            payload.append("picture", this.bug.image);
+                        }
+                        let result = await axios.post(`${this.$store.getters.getApi}/custom-form/bugs`, payload, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            },
+                            timeout: 20000
+                        });
+                        this.printMessage("گزارش شما با موفقیت ثبت شد. ممنون از همکاری شما. درصورت نیاز همکاران ما با شما در ارتباط خواهند بود.", "گزارش باگ: موفق", "success", 7000, "notif");
+                        this.bug.image = {};
+                        this.bug.senderEmail = "";
+                        this.bug.description = "";
+                        this.submitted = false;
+                        this.$modal.hide("bugReportModal");
+                    } catch (e) {
+                        console.log(e);
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                        this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "گزارش باگ: خطا", "error", 3000, "notif");
+                    } finally {
+                        this.$loading(false);
+                    }
+                } else {
+                    this.printMessage("لطفا اطلاعات فرم را به درستی پر کنید.", "گزارش باگ: اخطار", "warn", 3000, "notif");
+                }
+            },
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
+                })
             },
         },
-        created() {
-
-        }
     }
 </script>
 

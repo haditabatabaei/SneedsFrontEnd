@@ -318,6 +318,7 @@
         margin-top: 120px !important;
         padding-bottom: 30px !important;
         overflow: auto !important;
+        z-index: 1001 !important;
     }
 
     .v--modal-overlay .v--modal-box::-webkit-scrollbar {

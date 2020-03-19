@@ -411,10 +411,11 @@
             position: fixed;
             top: 0;
             right: 0;
-            height: calc(100vh - 70px);
-            margin-top: 70px;
+            height: calc(100vh - 120px);
+            margin-top: 120px;
             background-color: rgba(255, 255, 255, 1);
             width: 100%;
+            z-index: 998;
         }
 
         .mobileMenuListWrapper {

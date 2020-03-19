@@ -46,4 +46,16 @@
         color: white;
         margin: 0;
     }
+
+    @media only screen and (max-width: 768px) {
+        .bugReport p {
+            font-size: 12px;
+        }
+    }
+
+    @media only screen and (max-width: 400px) {
+        .bugReport p {
+            font-size: 10px;
+        }
+    }
 </style>

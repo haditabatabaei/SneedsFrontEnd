@@ -10,6 +10,7 @@ const router = new Router({
         {
             path: '/',
             name: 'Home',
+            redirect: '/consultants',
             component: () => import("@/views/Home"),
             meta: {
                 auth: 'optional'

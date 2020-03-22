@@ -217,14 +217,14 @@
         data: function () {
             return {
                 topMenuListItems: [
-                    {
-                        itemName: 'صفحه اصلی',
-                        target: '/',
-                        type: 'router',
-                        hasDropdown: false,
-                        dropdownItems: [],
-                        icon: 'home'
-                    },
+                    // {
+                    //     itemName: 'صفحه اصلی',
+                    //     target: '/',
+                    //     type: 'router',
+                    //     hasDropdown: false,
+                    //     dropdownItems: [],
+                    //     icon: 'home'
+                    // },
                     {
                         itemName: 'مشاوران',
                         target: '/consultants',
@@ -243,16 +243,16 @@
                     },
                     {
                         itemName: 'درباره ما',
-                        target: '/about',
-                        type: 'router',
+                        target: 'http://sneeds.ir/%D8%AF%D8%B1%D8%A8%D8%A7%D8%B1%D9%87-%D9%85%D8%A7/',
+                        type: 'hyper',
                         hasDropdown: false,
                         dropdownItems: [],
                         icon: 'info'
                     },
                     {
                         itemName: 'تماس با ما',
-                        target: '/contact',
-                        type: 'router',
+                        target: 'http://sneeds.ir/%d8%aa%d9%85%d8%a7%d8%b3/',
+                        type: 'hyper',
                         hasDropdown: false,
                         dropdownItems: [],
                         icon: 'phone'

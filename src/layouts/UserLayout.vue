@@ -1,6 +1,6 @@
 <template>
     <section class="profileWrapper">
-        <div class="container" style="margin-top: 120px;" v-if="windowWidth > 991.8">
+        <div class="container" v-if="windowWidth > 991.8">
             <div class="row">
                 <div class="col-md-3 sidebarWrapperDesktop" v-if="$route.name != 'user-chatroom'">
                     <div class="userSidebarBlock">

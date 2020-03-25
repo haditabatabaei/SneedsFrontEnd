@@ -431,6 +431,7 @@
     .section {
         background-color: #eeeeee;
         min-height: 100vh;
+        padding-top: 0;
     }
 
     .filterCheckWrapper {

@@ -7,7 +7,7 @@
         <transition name="fade" mode="out-in">
             <router-view style="margin-top:110px;" :key="$route.fullPath"/>
         </transition>
-        <Footer/>
+        <sneeds-footer/>
     </div>
 
 </template>
@@ -24,7 +24,7 @@
             "top-menu": TopMenu,
             "bug-report": BugReport,
             "bug-report-modal": BugReportModal,
-            Footer
+            "sneeds-footer": Footer
         },
     }
 </script>

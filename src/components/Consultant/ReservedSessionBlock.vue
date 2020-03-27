@@ -1,88 +1,68 @@
 <template>
-    <div class="col-md-4 reservedCard text-center">
-        <img class="reservedCard--image" :src="session.consultant.profile_picture"
-             :alt="session.consultant.first_name +' '+ session.consultant.last_name" v-if="!isConsultant">
-        <h5 class="reservedCard--detail-name isansFont--faNum text-center noImageTitle" v-if="isConsultant">
-            توسط :
-            {{session.sold_to.first_name + " " + session.sold_to.last_name}}
-        </h5>
-        <h5 class="reservedCard--detail-name isansFont--faNum text-center" v-else>
-            {{session.consultant.first_name + " " + session.consultant.last_name}}
-        </h5>
-        <p v-if="!sessionIsOngoing" class="reservedCard--detail-remain "
-           :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran},{'deactiveRemain': currentTimeAfterSession},{'nearBeforeTime' : nearBeforeTime}, {'farBeforeTime' : farBeforeTime}]">
-            {{getJalali(session.start_time).locale($store.getters.locale).fromNow()}}
-        </p>
-
-
-        <p v-else class="reservedCard--detail-remain isansFont--faNum ongoing">
-            در حال برگزاری
-        </p>
-
-        <p class="reservedCard--detail-date isansFont--faNum" v-if="$store.getters.isiran">
-            <time>
-                {{getJalali(session.start_time).locale('fa').format('dddd YYYY/MM/DD')}}
-            </time>
-            <br>
-            <span>از ساعت</span>
-            <time :datetime="getJalali(session.start_time)">
-                {{getJalali(session.start_time).locale('fa').format('HH:mm')}}
-            </time>
-            <span>تا</span>
-            <time :datetime="getJalali(session.end_time)">
-                {{getJalali(session.end_time).locale('fa').format('HH:mm')}}
-            </time>
-        </p>
-
-        <p class="reservedCard--detail-date isansFont" v-else>
-            <time>
-                {{getJalali(session.start_time).format('dddd YYYY/MM/DD')}}
-            </time>
-            <br>
-            <span>from</span>
-            <time :datetime="getJalali(session.start_time)">
-                {{getJalali(session.start_time).format('HH:mm')}}
-            </time>
-            <span>till</span>
-            <time :datetime="getJalali(session.end_time)">
-                {{getJalali(session.end_time).format('HH:mm')}}
-            </time>
-        </p>
-
-        <div class="reservedCard--actions">
-            <a :href="room.login_url" class="isansFont--faNum reservedCard--enterButton btn btn-success"
-               v-if="room != null">ورود به جلسه</a>
-            <button disabled class="isansFont--faNum reservedCard--enterButton btn btn-default"
-                    v-else>ورود به جلسه
-            </button>
-        </div>
-
-        <div class="isansFont--faNum reservedCard--rate text-center" v-if="session.used">
-            <div class="col-md-12" v-if="canRate && !isConsultant">
-                <star-rating
-                    v-model="inputRate"
-                    :rtl="true"
-                    :star-size="25"
-                    :rounded-corners="true"
-                />
-                <button
-                        @click="submitRate(session.id, inputRate)"
-                        class="isansFont btn btn-rose btn-sm btn-round">
-                    ثبت امتیاز
-                </button>
-            </div>
-            <p v-else-if="canRate && isConsultant">
-                کاربر امتیاز خود را ثبت نکرده است
+    <div class="session-block">
+        <img class="session-image" :src="session.consultant.profile_picture"
+             :alt="session.consultant.first_name + ' ' + session.consultant.last_name">
+        <div class="session-info isansFont">
+            <h2 class="session-other-name isansFont" v-if="isConsultant">
+                {{session.sold_to.first_name + " " + session.sold_to.last_name}}
+            </h2>
+            <h2 class="session-other-name isansFont" v-else>
+                {{session.consultant.first_name + " " + session.consultant.last_name}}
+            </h2>
+            <p class="session-date" :class="[{'isansFont--faNum' : $store.getters.isiran}]">
+                <time class="session-date-day">
+                    <i class="material-icons">calendar_today</i>
+                    {{sessionStartDate.format('dddd YYYY/MM/DD')}}
+                </time>
+                <time class="session-date-time">
+                    <i class="material-icons">access_time</i>
+                    {{sessionStartDate.format('HH:mm')}}
+                    <span v-if="$store.getters.isiran" class="session-date-time--separator">تا</span>
+                    <span v-else class="session-date-time--separator">till</span>
+                    {{sessionEndDate.format('HH:mm')}}
+                </time>
             </p>
-            <p v-else-if="!canRate && isConsultant">
-                کاربر امتیاز خود را ثبت کرده است
+            <p class="session-remain session-ongoing" v-if="sessionIsOngoing">
+                در حال برگزاری
             </p>
-            <p v-else>
-                شما امتیاز خود را ثبت کردید :
-                {{rate.rate}}
+            <p class="session-remain" v-else
+               :class="[{'isansFont--faNum': $store.getters.isiran}, sessionRemainingClass]">
+                {{sessionStartDate.from(currentTime)}}
             </p>
         </div>
+        <a :href="room.login_url" class="session-room-button active isansFont" v-if="activeRoom">
+            ورود به جلسه
+        </a>
+        <a class="session-room-button isansFont" v-if="deactiveRoom">
+            ورود به جلسه
+        </a>
 
+        <div class="session-rate" :class="[{'isansFont--faNum': $store.getters.isiran}]" v-if="hideRoom">
+            <star-rating
+                    v-if="rate != null && !isConsultant"
+                    :rtl="$store.getters.isiran"
+                    :star-size="20"
+                    :padding="5"
+                    :read-only="true"
+                    style="background-color: #FCFCFC;padding:10px 10px 5px 15px; border-radius:20px"
+                    inactive-color="#FCFCFC"
+                    active-color="#F4CA64"
+                    :showRating="false"
+                    v-model="rate.rate"/>
+
+            <star-rating
+                    v-else-if="rate == null && !isConsultant"
+                    :rtl="$store.getters.isiran"
+                    :star-size="16"
+                    :padding="5"
+                    :showRating="false"
+                    style="background-color: white;padding:10px 10px 5px 15px;border:1.5px solid #8C3DDB;border-radius:20px;"
+                    border-color="#8C3DDB"
+                    active-color="#8C3DDB"
+                    :border-width="2"
+                    @rating-selected="submitRate"
+                    v-model="inputRate"/>
+        </div>
     </div>
 </template>
 
@@ -93,46 +73,93 @@
 
     export default {
         name: "ReservedSessionBlock",
-        components: {"star-rating" :StarRating},
+        components: {"star-rating": StarRating},
         props: {
             session: {
-                type : Object
+                type: Object
             },
             isConsultant: {
-                type : Boolean
+                type: Boolean
             },
-            room: {
-                type : Object,
-                default: () => null
-            },
-            rate: {
-                type : Object,
-                default: () => null
+            currentTime: {
+                type: Object,
+                default: () => this.getJalali().locale(this.$store.getters.locale)
             },
         },
         data() {
             return {
-                inputRate : 0
+                interval: null,
+                inputRate: 0,
+                rate: null,
+                room: null,
             }
         },
+        created() {
+            this.getMyRoom(true);
+            this.getMyRate(true);
+            this.interval = setInterval(() => {
+                this.currentTime.add('1', 'minutes');
+                this.getMyRate(false);
+                this.getMyRoom(false);
+            }, 1000 * 60 * 60);
+        },
+        beforeDestroy() {
+            clearInterval(this.interval);
+        },
         methods: {
-            getJalali: function (date) {
+            getJalali(date) {
                 return jalali(date);
             },
-            async submitRate(soldSlotId, rate) {
-                console.log('rate for ', soldSlotId, ' rate ', rate);
+
+            async getMyRate(overrideConditions) {
+                if (this.readyToCheckForRate || overrideConditions) {
+                    try {
+                        this.$loading(true);
+                        let rateResult = (await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
+                        console.log(`current session ${this.session.id} rate :`, rateResult);
+                        this.rate = rateResult;
+                    } catch (e) {
+                        // console.log(e);
+                        console.log(`current session ${this.session.id} doesnt have rate`)
+                    } finally {
+                        this.$loading(false);
+                    }
+                } else {
+                    console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
+                }
+            },
+
+            async getMyRoom(overrideConditions) {
+                if (this.readyToCheckForRoom || overrideConditions) {
+                    try {
+                        this.$loading(true);
+                        let roomResult = (await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
+                        console.log(`current session ${this.session.id} room :`, roomResult);
+                        this.room = roomResult;
+                    } catch (e) {
+                        // console.log(e);
+                        console.log(`current session ${this.session.id} doesnt have room`);
+                    } finally {
+                        this.$loading(false);
+                    }
+                } else {
+                    console.log(`no time or already has room for getting session ${this.session.id} room.`);
+                }
+            },
+
+            async submitRate(rate) {
+                console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
                     this.$loading(true);
                     let result = await axios.post(
                         `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
-                        {"sold_time_slot" : soldSlotId, "rate" : rate},
+                        {"sold_time_slot": this.session.id, "rate": rate},
                         this.$store.getters.httpConfig
                     );
-                    console.log('rate result emitting event for update :', result.data);
-                    this.$emit('update-rates');
+                    await this.getMyRate(true);
                 } catch (e) {
                     console.log(e);
-                    if(e.response) {
+                    if (e.response) {
                         console.log(e.response);
                     }
                 } finally {
@@ -141,114 +168,220 @@
             },
         },
         computed: {
-            canRate() {
-                return this.rate == null;
-            },
-            currentTimeAfterSession: function () {
-                return this.getJalali().isAfter(this.getJalali(this.session.end_time));
+            sessionEndDate() {
+                return this.getJalali(this.session.end_time).locale(this.$store.getters.locale).add(5, 'minutes');
             },
 
-            nearBeforeTime() {
-                let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
-                return diff >= 0 && diff <= 12;
+            sessionStartDate() {
+                return this.getJalali(this.session.start_time).locale(this.$store.getters.locale).subtract(5, 'minutes');
             },
 
-            farBeforeTime() {
-                let diff = this.getJalali(this.session.start_time).diff(this.getJalali(), 'hour');
-                return diff > 12;
+            currentTimeAfterSessionEnd() {
+                return this.currentTime.isAfter(this.sessionEndDate);
+            },
+
+            currentTimeBeforeSessionStart() {
+                return this.currentTime.isBefore(this.sessionStartDate);
             },
 
             sessionIsOngoing() {
-                return this.getJalali().isBetween(this.getJalali(this.session.start_time), this.getJalali(this.session.end_time));
-            }
+                return this.currentTime.isBetween(this.sessionStartDate, this.sessionEndDate);
+            },
 
+            diffBeforeOffsetInHours() {
+                return this.sessionStartDate.diff(this.currentTime, 'hour');
+            },
+
+            nearBeforeTime() {
+                return this.diffBeforeOffsetInHours > 2 && this.diffBeforeOffsetInHours <= 12;
+            },
+
+            veryNearBeforeTime() {
+                return this.diffBeforeOffsetInHours >= 0 && this.diffBeforeOffsetInHours <= 2;
+            },
+
+            farBeforeTime() {
+                return this.diffBeforeOffsetInHours > 12;
+            },
+
+            readyToCheckForRoom() {
+                return this.sessionIsOngoing && this.rate == null;
+            },
+
+            readyToCheckForRate() {
+                return this.sessionIsOngoing && this.rate == null && !this.isConsultant;
+            },
+
+            roomActive() {
+                return this.room != null && this.sessionIsOngoing;
+            },
+
+            activeRoom() {
+                return this.room != null && this.sessionIsOngoing;
+            },
+
+            deactiveRoom() {
+                return this.currentTimeBeforeSessionStart && !this.hideRoom;
+            },
+
+            hideRoom() {
+                return this.currentTimeAfterSessionEnd;
+            },
+
+            alreadyRate() {
+                return this.rate != null;
+            },
+
+            // roomDeactive() {
+            //     return !
+            // },
+
+
+            sessionRemainingClass() {
+                if (this.farBeforeTime) {
+                    return 'session-before--far';
+                } else if (this.nearBeforeTime) {
+                    return 'session-before--near';
+                } else if (this.veryNearBeforeTime) {
+                    return 'session-before--verynear';
+                } else if (this.currentTimeAfterSessionEnd) {
+                    return 'session-passed';
+                } else {
+                    return '';
+                }
+            }
         }
     }
 </script>
 
 <style scoped>
-    .reservedCard {
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        width: calc(33% - 30px);
-        margin: 50px 15px 15px 0;
-        padding-bottom: 10px;
-        min-height: 360px;
-    }
-
-    .reservedCard--image {
-        border-radius: 20px;
-        height: 110px;
-        width: 110px;
-        position: relative;
-        top: -20px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .reservedCard--detail-name {
-        margin-top: -10px;
-        margin-bottom: 15px;
-        font-weight: bold;
-    }
-
-    .reservedCard--detail-name.noImageTitle {
+    .session-block {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100px;
         margin-top: 15px;
     }
 
-    .reservedCard--detail-remain {
-        border-radius: 20px;
+    .session-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 15px;
+        margin-left: 15px;
+    }
+
+    .session-info {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .session-other-name {
+        margin: 0;
+        font-size: 16px;
         font-weight: bold;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        color: #303143;
     }
 
-    .deactiveRemain {
-        background-color: #f1f1f1;
-        color: #bebebe;
+    .session-date {
+        margin: 10px 0;
+        display: flex;
+        color: #585858;
     }
 
-    .nearBeforeTime {
-        background-color: #EAA5B0;
-        color: #A25252;
+    .session-remain {
+        margin: 0;
+        font-size: 12px;
+        padding: 2.5px 15px;
+        border-radius: 15px;
     }
 
-    .farBeforeTime {
-        background-color: #FCFAB1;
-        color: #A3871B;
+    .session-passed {
+        background: #F2F2F2;
+        color: #707070;
     }
 
-    .ongoing {
-        background-color: white;
-        color : #00c853;
+    .session-before--near {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
     }
 
-    .reservedCard--detail-date time {
-        font-weight: bold;
+    .session-before--verynear {
+        background-color: #FFFEFA;
+        color: #DC3030;
     }
 
-    .reservedCard--enterButton {
+    .session-before--far {
+        background-color: #FAFDFF;
+        color: #1B655E;
+    }
+
+    .session-ongoing {
+        background-color: #1B655E;
+        color: white;
+    }
+
+    .session-date-day {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        margin-left: 15px;
+    }
+
+    .session-date-day i {
+        font-size: 14px;
+        margin-left: 5px;
+        color: #B3B3B3;
+    }
+
+    .session-date-time {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .session-date-time i {
+        font-size: 14px;
+        margin-left: 5px;
+        color: #B3B3B3;
+    }
+
+    .session-date-time--separator {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+
+    .session-room-button {
+        margin-right: auto;
+        border: none;
+        padding: 7px 25px;
+        margin-left: 15px;
         border-radius: 10px;
-        font-weight: bold;
-        padding: 8px 20px;
-        margin-top: 0;
+        background-color: #F2F2F2;
+        color: #B3B3B3;
     }
 
-    .reservedCard--enterButton[disabled] {
-        background-color: #f1f1f1;
-        opacity: 1;
-        color: #bebebe;
+    .session-room-button.active {
+        background: #9038CC;
+        color: white;
     }
 
-    .reservedCard--rate .vue-star-rating {
-        justify-content: center;
+    .session-room-button.active:hover {
+        box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.2);
     }
 
+    .session-rate {
+        margin-right: auto;
+        margin-left: 30px;
+    }
+
+    .vue-star-rating-star {
+        display: flex !important;
+        align-items: center !important;
+    }
 
     @media only screen and (max-width: 991.8px) {
-        .reservedCard {
-            width: 100%;
-            margin-right: 0;
-            margin-left: 0;
-        }
+
     }
 </style>

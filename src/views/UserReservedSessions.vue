@@ -1,39 +1,29 @@
 <template>
-    <div class="container-fluid itemBlock">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="filterButtons isansFont--faNum">
-                    <button @click="filterBy('all')" :class="[{'active' : activeFilter === 'all'}]">
-                        همه
-                    </button>
-                    <button @click="filterBy('finished')"
-                            :class="[{'active' : activeFilter === 'finished'}]">
-                        برگزار شده
-                    </button>
-                    <button @click="filterBy('nostart')" :class="[{'active' : activeFilter === 'nostart'}]">
-                        برگزار نشده
+    <div class="itemBlock">
+        <div class="authWrapper">
+            <div class="authFormWrapper">
+                <div class="authFormWrapper-switcher isansFont">
+                    <button v-for="(filter, index) in availableFilters"
+                            :key="index"
+                            @click="filterBy(filter)"
+                            class="switcher"
+                            :class="[{'switcher--active' : activeFilter.value === filter.value}]">
+                        {{filter.name}}
                     </button>
                 </div>
             </div>
-            <div class="col-md-12 text-center mt-10" v-if="reservedSessions.length === 0">
-                <p class="isansFont">جلسه ای برای نمایش وجود ندارد</p>
-                <router-link to="/consultants" class="btn btn-info btn-simple btn-lg text-center isansFont">
-                    مشاهده مشاوران
-                </router-link>
-            </div>
-
-            <div class="col-md-12" v-else>
-                <reserved-session-block
+        </div>
+        <div class="session-items">
+            <p v-if="shownReservedSessions.length === 0" class="session-items--text isansFont">
+                جلسه ای برای نمایش وجود ندارد.
+            </p>
+            <reserved-session-block
                     v-for="(session, index) in shownReservedSessions"
-                    :isConsultant="isConsultant"
-                    :session="session"
-                    :rate="session.rate"
-                    :room="session.room"
-                    @update-list="updateList()"
-                    @update-rates="updateList()"
                     :key="index"
-                />
-            </div>
+                    :currentTime="currentTime"
+                    :session="session"
+                    :isConsultant="isConsultant"
+            />
         </div>
     </div>
 </template>
@@ -45,17 +35,20 @@
 
     export default {
         name: "UserReservedSessions",
-        components: {ReservedSessionBlock},
+        components: {"reserved-session-block": ReservedSessionBlock},
         data() {
             return {
-                roomInterval: null,
                 reservedSessions: [],
                 shownReservedSessions: [],
-                activeFilter: 'all',
-                videoRooms: [],
-                availableRates: [],
+                currentTime: null,
+                activeFilter: {name: 'برگزار نشده', value: "notstarted"},
+                availableFilters: [
+                    {name: 'برگزار نشده', value: "notstarted"},
+                    {name: 'برگزار شده', value: "finished"}
+                ]
             }
         },
+
         computed: {
             isConsultant() {
                 return this.$store.getters.getUserInfo.user_type === 'consultant';
@@ -63,123 +56,59 @@
         },
 
         async created() {
-            await this.updateList();
-            console.log('activating video rooms interval');
-            this.roomInterval = setInterval(() => {
-                //remove false in production
-                this.updateList();
-            }, 1000 * 60)
-        },
-
-        destroyed() {
-            console.log('deleting video rooms interval');
-            clearInterval(this.roomInterval);
+            await this.getCurrentTimeInTimezone();
+            await this.getAllSessions();
         },
 
         methods: {
-            async updateRates() {
-                for(let soldSlot of this.reservedSessions) {
-                    try {
-                        this.$loading(true);
-                        console.log('getting rate of ', soldSlot.id);
-                        let ratesResult = await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                        soldSlot.rate = ratesResult.data;
-                    } catch (e) {
-                        soldSlot.rate = null;
-                    } finally {
-                        this.$loading(false);
+            async getAllSessions() {
+                try {
+                    this.$loading(true);
+                    this.reservedSessions = (await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig)).data;
+                    console.log(this.reservedSessions);
+                    this.filterBy(this.activeFilter);
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
                     }
+                } finally {
+                    this.$loading(false);
                 }
-                this.filterBy('all');
-                this.filterBy(this.activeFilter);
-                console.log(this.shownReservedSessions);
             },
 
-            filterBy(param) {
-                this.activeFilter = param;
-                switch (param) {
-                    case 'all' :
-                        this.shownReservedSessions = this.reservedSessions;
-                        break;
-                    case 'nostart' :
+            async getCurrentTimeInTimezone() {
+                try {
+                    this.$loading(true);
+                    let timeString = ((await axios.get(
+                        `${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`,
+                        this.$store.getters.httpConfig)).data).now;
+                    this.currentTime = this.getJalali(timeString).locale(this.$store.getters.locale);
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            filterBy(filter) {
+                this.activeFilter = filter;
+                switch (this.activeFilter.value) {
+                    case 'notstarted' :
                         this.shownReservedSessions = this.reservedSessions.filter(value => !value.used);
                         break;
                     case 'finished' :
                         this.shownReservedSessions = this.reservedSessions.filter(value => value.used);
                         break;
                 }
-            },
-
-            async updateList() {
-                    this.$loading(true);
-
-                    try {
-                        this.$loading(true);
-                        let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig);
-                        this.reservedSessions = soldSlotsResult.data;
-                    } catch (e) {
-                        console.log(e);
-                        if(e.response) {
-                            console.log(e.response);
-                        }
-                    } finally {
-                        this.$loading(false);
-                    }
-
-                    console.log('sold slot results ', this.reservedSessions);
-                    for(let soldSlot of this.reservedSessions) {
-                        try {
-                            this.$loading(true);
-                            console.log('getting rate of ', soldSlot.id);
-                            let ratesResult = await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                            soldSlot.rate = ratesResult.data;
-                        } catch (e) {
-                            soldSlot.rate = null;
-                        } finally {
-                            this.$loading(false);
-                        }
-
-                        try {
-                            this.$loading(true);
-                            console.log('getting video of ', soldSlot.id);
-                            let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                            soldSlot.room = roomsResult.data;
-                        } catch (e) {
-                            soldSlot.room = null;
-                        } finally {
-                            this.$loading(false);
-                        }
-
-
-                    }
-
-                    console.log("Check here ", this.reservedSessions);
-                    this.filterBy('all');
-                    this.$loading(false);
-
+                this.getCurrentTimeInTimezone();
             },
 
             getJalali(date) {
                 return jalali(date);
-            },
-
-            async getVideoRoomsSyncReq() {
-                console.log('calling sync video rooms');
-                for(let soldSlot of this.reservedSessions) {
-                    try {
-                        this.$loading(true);
-                        console.log('getting video of ', soldSlot.id);
-                        let roomsResult = await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${soldSlot.id}`, this.$store.getters.httpConfig);
-                        console.log('room result for ', soldSlot.id, roomsResult);
-                        soldSlot.room = roomsResult.data;
-                    } catch (e) {
-                        soldSlot.room = null;
-                    } finally {
-                        this.$loading(false);
-                    }
-                }
-                this.filterBy('all');
-                this.filterBy(this.activeFilter)
             },
         },
     }
@@ -193,6 +122,10 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         margin-top: 30px;
         padding-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
     }
 
     .filterButtons {
@@ -223,4 +156,46 @@
         background-color: white;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
+
+    .authFormWrapper-switcher {
+        border-bottom: 3px solid #eee;
+        min-height: 50px;
+        margin: 15px 0 0 0;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .authWrapper {
+        width: 100%;
+    }
+
+    .switcher {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: #aaa;
+        background: none;
+        border: none;
+    }
+
+    .switcher--active {
+        border-bottom: 3px solid #9038CC;
+        color: #9038CC;
+    }
+
+    .session-items {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        min-height: 400px;
+    }
+
+    .session-items--text {
+        text-align: center;
+        margin-top: 30px;
+    }
+
 </style>

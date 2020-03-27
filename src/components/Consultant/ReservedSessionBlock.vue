@@ -1,7 +1,12 @@
 <template>
     <div class="session-block">
-        <img class="session-image" :src="session.consultant.profile_picture"
-             :alt="session.consultant.first_name + ' ' + session.consultant.last_name">
+        <img class="session-image"
+             :src="session.consultant.profile_picture"
+             :alt="session.consultant.first_name + ' ' + session.consultant.last_name"
+             v-if="!isConsultant">
+        <div class="session-image section-image--user" v-else>
+            <i class="material-icons">person</i>
+        </div>
         <div class="session-info isansFont">
             <h2 class="session-other-name isansFont" v-if="isConsultant">
                 {{session.sold_to.first_name + " " + session.sold_to.last_name}}
@@ -158,10 +163,10 @@
                     );
                     await this.getMyRate(true);
                 } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
+                    // console.log(e);
+                    // if (e.response) {
+                    //     console.log(e.response);
+                    // }
                 } finally {
                     this.$loading(false);
                 }
@@ -212,10 +217,6 @@
                 return this.sessionIsOngoing && this.rate == null && !this.isConsultant;
             },
 
-            roomActive() {
-                return this.room != null && this.sessionIsOngoing;
-            },
-
             activeRoom() {
                 return this.room != null && this.sessionIsOngoing;
             },
@@ -227,15 +228,6 @@
             hideRoom() {
                 return this.currentTimeAfterSessionEnd;
             },
-
-            alreadyRate() {
-                return this.rate != null;
-            },
-
-            // roomDeactive() {
-            //     return !
-            // },
-
 
             sessionRemainingClass() {
                 if (this.farBeforeTime) {
@@ -269,6 +261,21 @@
         border-radius: 50%;
         margin-right: 15px;
         margin-left: 15px;
+    }
+
+    .section-image--user {
+        width: 94px;
+        height: 94px;
+        background-color: #8E39CC;
+        border: 6px solid #ECD9FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .section-image--user i {
+        font-size : 50px;
+        color: #ECD9FF;
     }
 
     .session-info {

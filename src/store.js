@@ -20,9 +20,9 @@ export default new Vuex.Store({
 
         user: {},
 
-        api: 'http://194.5.206.177:8000',
+        api: process.env.VUE_APP_ROOT_API,
 
-        authApi: 'http://194.5.206.177:8000',
+        authApi: process.env.VUE_APP_ROOT_API,
 
         stash: [],
 

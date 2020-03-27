@@ -22,10 +22,7 @@
                     مشاهده مصاحبه کامل با {{consultant.first_name}}
                 </router-link>
             </div>
-            <div class="consultantDescBlock--main_bio">
-                <p>
-                    {{consultant.bio}}
-                </p>
+            <div class="consultantDescBlock--main_bio" v-html="consultant.bio">
             </div>
         </main>
     </section>

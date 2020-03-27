@@ -101,7 +101,7 @@
                 this.currentTime.add('1', 'minutes');
                 this.getMyRate(false);
                 this.getMyRoom(false);
-            }, 1000 * 60 * 60);
+            }, 1000 * 60);
         },
         beforeDestroy() {
             clearInterval(this.interval);
@@ -116,16 +116,16 @@
                     try {
                         this.$loading(true);
                         let rateResult = (await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
-                        console.log(`current session ${this.session.id} rate :`, rateResult);
+                        // console.log(`current session ${this.session.id} rate :`, rateResult);
                         this.rate = rateResult;
                     } catch (e) {
                         // console.log(e);
-                        console.log(`current session ${this.session.id} doesnt have rate`)
+                        // console.log(`current session ${this.session.id} doesnt have rate`)
                     } finally {
                         this.$loading(false);
                     }
                 } else {
-                    console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
+                    // console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
                 }
             },
 
@@ -134,21 +134,21 @@
                     try {
                         this.$loading(true);
                         let roomResult = (await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
-                        console.log(`current session ${this.session.id} room :`, roomResult);
+                        // console.log(`current session ${this.session.id} room :`, roomResult);
                         this.room = roomResult;
                     } catch (e) {
                         // console.log(e);
-                        console.log(`current session ${this.session.id} doesnt have room`);
+                        // console.log(`current session ${this.session.id} doesnt have room`);
                     } finally {
                         this.$loading(false);
                     }
                 } else {
-                    console.log(`no time or already has room for getting session ${this.session.id} room.`);
+                    // console.log(`no time or already has room for getting session ${this.session.id} room.`);
                 }
             },
 
             async submitRate(rate) {
-                console.log('submit rate for session', this.session.id, ' rate ', rate);
+                // console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
                     this.$loading(true);
                     let result = await axios.post(

@@ -20,9 +20,9 @@ export default new Vuex.Store({
 
         user: {},
 
-        api: 'http://194.5.206.177:8000',
+        api: 'http://37.152.182.253:8000',
 
-        authApi: 'http://194.5.206.177:8000',
+        authApi: 'http://37.152.182.253:8000',
 
         stash: [],
 
@@ -102,7 +102,7 @@ export default new Vuex.Store({
     actions: {
         async getUserMeta({commit}) {
             console.log("Getting user key");
-
+            console.log("http config:", this.getters.httpConfig);
             let result = await axios.get(`${this.getters.getApi}/auth/my-account/`, this.getters.httpConfig);
             console.log(result);
             commit('setUserId', result.data.id);
@@ -120,6 +120,7 @@ export default new Vuex.Store({
 
         async login({commit}, user) {
             console.log("login payload :", user);
+            console.log('http config', this.getters.httpConfig);
             let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`,user , this.getters.httpConfig);
             console.log(loginResult);
             commit('setToken', loginResult.data.token);
@@ -137,7 +138,7 @@ export default new Vuex.Store({
 
         async edit({commit}, user) {
             console.log('update user with ', user);
-            let editResult = await axios.put(`${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}`, user, this.getters.httpConfig);
+            let editResult = await axios.put(`${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}/`, user, this.getters.httpConfig);
             console.log(editResult);
         },
 

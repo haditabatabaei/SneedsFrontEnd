@@ -101,7 +101,7 @@
 <script>
     export default {
         name: "UserLayout",
-        data: function () {
+        data() {
             return {
                 userSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
@@ -132,8 +132,9 @@
                     duration: duration
                 })
             },
-        }, computed: {
-            user: function () {
+        },
+        computed: {
+            user() {
                 return this.$store.getters.getUser;
             },
 
@@ -141,14 +142,10 @@
                 return Boolean(this.user.first_name) && Boolean(this.user.last_name);
             },
 
-            userInfo: function() {
+            userInfo() {
                 return this.$store.getters.getUserInfo;
             }
         },
-
-        mounted() {
-        },
-
         async created() {
             this.$loading(true);
             try {

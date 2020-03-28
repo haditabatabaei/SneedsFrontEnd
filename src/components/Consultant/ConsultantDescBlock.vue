@@ -6,18 +6,28 @@
         </div>
         <header class="consultantDescBlock--head isansFont--faNum">
             <img :src="consultant.profile_picture" class="consultantDescBlock--head-image" :alt="consultant.first_name + ' ' + consultant.last_name">
+
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons text-pink">account_balance</i>
-                <span>{{consultant.universities[0].name}}</span>
+                <i class="material-icons" v-if="consultant.universities[0] == undefined">account_balance</i>
+                <img class="consultantDescBlock--head_item_image" :src="consultant.universities[0].picture" :alt="consultant.universities[0].name" v-else />
+                <p class="consultantDescBlock--head_item_support">دانشگاه</p>
+                <p class="consultantDescBlock--head_item_text">{{consultant.universities[0].name}}</p>
             </div>
+
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons text-blue">house</i>
-                <span>{{consultant.countries[0].name}}</span>
+                <i class="material-icons" v-if="consultant.countries[0] == undefined">house</i>
+                <img class="consultantDescBlock--head_item_image" :src="consultant.countries[0].picture" :alt="consultant.countries[0].name" v-else />
+                <p class="consultantDescBlock--head_item_support">کشور در حال تحصیل</p>
+                <p class="consultantDescBlock--head_item_text">{{consultant.countries[0].name}}</p>
             </div>
+
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons text-green">class</i>
-                <span>{{consultant.field_of_studies[0].name}}</span>
+                <i class="material-icons" v-if="consultant.field_of_studies[0] == undefined">add</i>
+                <img class="consultantDescBlock--head_item_image" :src="consultant.field_of_studies[0].picture" :alt="consultant.field_of_studies[0].name" v-else />
+                <p class="consultantDescBlock--head_item_support">رشته</p>
+                <p class="consultantDescBlock--head_item_text">{{consultant.field_of_studies[0].name}}</p>
             </div>
+
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video">
@@ -36,7 +46,7 @@
             consultant: {}
         },
         created() {
-            console.log(this.consultant);
+            console.log("current consultant:", this.consultant);
         },
         methods: {
             getVideoFrameLink(aparatLink) {
@@ -132,11 +142,43 @@
         flex-direction: column;
     }
 
-    .consultantDescBlock--head_item span {
-        color: #666;
-        font-weight: bold;
-        margin-top: 5px;
+    .consultantDescBlock--head_item i {
+        color: #8C3DDB;
+        background-color: #F4E9FF;
+        font-size: 17px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        padding: 0;
     }
+
+    .consultantDescBlock--head_item_support {
+        color: #B3B3B3;
+        font-size: 12px;
+        margin: 5px 0 0 0;
+    }
+
+    .consultantDescBlock--head_item_text {
+        color: #707070;
+        margin:5px 0 0 0;
+        font-weight: bold;
+    }
+
+    .consultantDescBlock--head_item_image {
+        width: 25px;
+        height: 25px;
+        border-radius:50%;
+    }
+
+
+    /*.consultantDescBlock--head_item span {*/
+    /*    color: #666;*/
+    /*    font-weight: bold;*/
+    /*    margin-top: 5px;*/
+    /*}*/
 
     .consultantDescBlock--main {
         display: flex;

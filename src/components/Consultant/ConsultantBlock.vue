@@ -1,11 +1,7 @@
 <template>
     <div class="consultantBlock row" @click="$router.push(`/consultants/${consultant.slug}`).catch(()=>{})">
         <div class="consultantBlockData col-md-8">
-            <router-link class="consultantBlockImage" :to="`/consultants/${consultant.slug}`"
-                         :style="'background-image: url(' + consultant.profile_picture + ')'">
-                <div class="ripple-container"></div>
-            </router-link>
-
+            <img :src="consultant.profile_picture" :alt="consultant.first_name + ' ' + consultant.last_name" class="consultantBlockImage" />
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
                     <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-if="consultant.first_name != null && consultant.last_name != null">
@@ -13,10 +9,6 @@
                     </router-link>
                     <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-else>
                         بدون نام
-                    </router-link>
-                    <router-link class="isansFont consultantCalendarLink" :to="`/consultants/${consultant.slug}`">
-                        <i class="material-icons">assignment</i>
-                        مشاهده تقویم مشاور
                     </router-link>
                 </div>
                 <div class="consultantBlockInfoItem">
@@ -31,8 +23,10 @@
                 <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
                     <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">5 / {{consultant.rate}}</span>
                     <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate}}</span>
-                    <router-link class="isansFont--faNum comments"
-                                 :to="'/consultants/' + consultant.slug">{{consultant.comment_number}}
+                    <router-link
+                            class="isansFont--faNum comments"
+                            :to="'/consultants/' + consultant.slug">
+                        {{consultant.comment_number}}
                         نظر ثبت شده
                     </router-link>
                 </div>
@@ -204,7 +198,6 @@
             width: 100px;
             height: 100px;
         }
-
 
         .consultantCalendarLink {
             display: none;

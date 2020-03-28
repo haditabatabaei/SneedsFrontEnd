@@ -28,7 +28,7 @@
                 <div class="col-md-3 sideBarBlockSticky">
                     <div class="consultantSidebarBlock">
                         <div class="consultantSidebarBlock--info">
-                            <img :src="consultant.profile_picture" alt="">
+                            <img v-if="activeSection != 'desc' || windowWidth < 991.8" :src="consultant.profile_picture" :alt="consultant.first_name + ' ' + consultant.last_name">
                             <div class="consultantSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum">
                                     {{consultant.first_name + " " + consultant.last_name}}
@@ -100,6 +100,7 @@
                 <div class="col-md-9">
                     <div class="row" id="descBlock">
                         <div class="col-md-12">
+                            <div class="meta"></div>
                             <consultant-desc-block :consultant="consultant" v-if="consultant.id" />
                         </div>
                     </div>
@@ -130,13 +131,14 @@
     import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
     import UserCalendar from '@/components/Consultant/UserCalendar'
+    import ConsultantDescTopMeta from "@/components/Consultant/ConsultantDescTopMeta";
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
     import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, UserCalendar
+            CommentSection, ConsultantDescBlock, UserCalendar, ConsultantDescTopMeta
         },
         data() {
             return {
@@ -303,7 +305,6 @@
 <style scoped>
 
     .main {
-        padding-top: 100px;
         min-height: 100vh;
         padding-bottom: 40px;
         background-color: #f2f2f2;
@@ -345,6 +346,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        margin-right: 10px;
     }
 
     .consultantSidebarBlock--info_detail h1 {
@@ -360,12 +362,22 @@
         padding: 3px 20px;
     }
 
+    .meta {
+        margin-bottom: 15px;
+        width: 100%;
+        height: 100px;
+        background-color: #20B8A3;
+        border-radius: 0 0 15px 15px;
+        box-shadow:0 3px 10px 1px rgba(0,0,0,0.2);
+    }
+
     .consultantSidebarBlock--info img {
         width: 70px;
-        height: auto;
+        height: 70px;
         border-radius: 10px;
         margin-top: 10px;
         margin-right: 10px;
+        margin-left: 10px;
     }
 
     .consultantSidebarBlock--links {
@@ -552,6 +564,10 @@
             box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
             flex-direction: column;
             align-items: center;
+        }
+
+        .meta {
+            display: none;
         }
     }
 </style>

@@ -1,6 +1,11 @@
 <template>
     <section class="consultantDescBlock">
+        <div class="consultantDescBlock--head-info">
+            <p class="isansFont">{{consultant.first_name + ' ' + consultant.last_name}}</p>
+            <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank" class="consultantDescBlock--head-resume isansFont" >دانلود رزومه</a>
+        </div>
         <header class="consultantDescBlock--head isansFont--faNum">
+            <img :src="consultant.profile_picture" class="consultantDescBlock--head-image" :alt="consultant.first_name + ' ' + consultant.last_name">
             <div class="consultantDescBlock--head_item">
                 <i class="material-icons text-pink">account_balance</i>
                 <span>{{consultant.universities[0].name}}</span>
@@ -17,10 +22,6 @@
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video">
                 <iframe :src="getVideoFrameLink(consultant.aparat_link)" />
-
-                <router-link class="consultantDescBlock--main_videoLink" to="">
-                    مشاهده مصاحبه کامل با {{consultant.first_name}}
-                </router-link>
             </div>
             <div class="consultantDescBlock--main_bio" v-html="consultant.bio">
             </div>
@@ -92,6 +93,38 @@
         flex-wrap: wrap;
     }
 
+    .consultantDescBlock--head-image {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border:5px solid white;
+        position: absolute;
+        right: 15px;
+        top: -45px;
+    }
+
+    .consultantDescBlock--head-info {
+        position: absolute;
+        right: 200px;
+        top: -90px;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .consultantDescBlock--head-info p {
+        margin: 0;
+    }
+
+    .consultantDescBlock--head-resume {
+        color: white;
+        border:2px solid white;
+        margin-right: 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        padding: 5px 15px;
+    }
+
     .consultantDescBlock--head_item {
         display: flex;
         align-items: center;
@@ -107,8 +140,8 @@
 
     .consultantDescBlock--main {
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        align-items: stretch;
+        flex-direction: column;
         flex-wrap: wrap;
         width: 80%;
         padding-top: 60px;
@@ -117,8 +150,8 @@
     }
 
     .consultantDescBlock--main_bio {
-        width: calc(50% - 10px);
-        margin-right: 10px;
+        width: 100%;
+        margin-top: 15px;
     }
 
     .consultantDescBlock--main_bio p {
@@ -132,7 +165,7 @@
 
     .consultantDescBlock--main_video {
         align-self: flex-start;
-        width: 50%;
+        width: 100%;
     }
 
     .consultantDescBlock--main_video iframe {
@@ -225,6 +258,14 @@
         .consultantDescBlock--head {
             padding:10px;
             font-size:10px;
+        }
+
+        .consultantDescBlock--head-info {
+            display: none;
+        }
+
+        .consultantDescBlock--head-image {
+            display: none;
         }
 
     }

@@ -5,9 +5,9 @@
         <bug-report-modal />
         <top-menu style="top:50px"/>
         <transition name="fade" mode="out-in">
-            <router-view style="margin-top:110px;" :key="$route.fullPath"/>
+            <router-view style="margin-top:120px;" :key="$route.fullPath"/>
         </transition>
-        <sneeds-footer/>
+<!--        <sneeds-footer/>-->
     </div>
 
 </template>

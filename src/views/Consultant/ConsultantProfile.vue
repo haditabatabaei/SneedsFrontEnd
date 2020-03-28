@@ -131,14 +131,13 @@
     import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
     import UserCalendar from '@/components/Consultant/UserCalendar'
-    import ConsultantDescTopMeta from "@/components/Consultant/ConsultantDescTopMeta";
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
     import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, UserCalendar, ConsultantDescTopMeta
+            CommentSection, ConsultantDescBlock, UserCalendar
         },
         data() {
             return {

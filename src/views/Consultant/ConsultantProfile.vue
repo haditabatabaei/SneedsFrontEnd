@@ -503,7 +503,7 @@
 
         .consultantSidebarBlock {
             margin-bottom: 30px;
-            margin-top: 0;
+            margin-top: 10px;
         }
 
         .consultantSidebarBlock--links {

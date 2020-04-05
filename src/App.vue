@@ -14,7 +14,7 @@
 
 <script>
     import TopMenu from "@/components/TopMenus/TopMenu";
-    import Footer from "@/components/StandAlone/Footer";
+    // import Footer from "@/components/StandAlone/Footer";
     import BugReport from '@/components/StandAlone/BugReport';
     import BugReportModal from "@/components/StandAlone/BugReportModal";
 
@@ -24,7 +24,7 @@
             "top-menu": TopMenu,
             "bug-report": BugReport,
             "bug-report-modal": BugReportModal,
-            "sneeds-footer": Footer
+            // "sneeds-footer": Footer
         },
     }
 </script>

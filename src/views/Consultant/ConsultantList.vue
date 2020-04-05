@@ -1,247 +1,224 @@
 <template>
-    <div>
-        <div class="main">
-            <div class="section">
-                <div class="container">
-                    <div class="row" style="margin-top:30px;">
-                        <div class="col-sm-3 col-xs-12 filterColumn" v-if="windowWidth > 991.8">
-                            <h3 class="isansFont">پنل فیلترینگ</h3>
-                            <div class="panel-group filterPanel" id="filterPanel" role="tablist"
-                                 aria-multiselectable="true">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="countryFilter">
-                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                           href="#countryFilterCollapse"
-                                           aria-expanded="false"
-                                           aria-controls="collapseOne"
-                                           class="collapsed">
-                                            <h4 class="panel-title isansFont">
-                                                <span class="float-right">
-                                                    <i class="material-icons">flag</i>
-                                                    کشور
-                                                </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </h4>
-                                        </a>
-                                    </div>
-
-                                    <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="countryFilter" aria-expanded="true" style="height: 0;">
-                                        <div class="panel-body">
-                                            <div class="filterCheckWrapper isansFont" v-for="(country, index) in countriesList" :key="index">
-                                                <label>
-                                                    <input type="checkbox" name="country" :value="country.name"
-                                                           v-model="country.select" @change="doFilter()">
-                                                    {{country.name}}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-heading" role="tab" id="universityFilter">
-                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                           href="#universityFilterCollapse" aria-expanded="false"
-                                           aria-controls="collapseOne" class="collapsed">
-                                            <h4 class="panel-title isansFont">
-                                                <span class="float-right">
-                                                    <i class="material-icons">account_balance</i>
-                                                    دانشگاه
-                                                </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </h4>
-                                        </a>
-                                    </div>
-
-                                    <div id="universityFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="universityFilter" aria-expanded="true" style="height: 0;">
-                                        <div class="panel-body">
-                                            <div class="filterCheckWrapper isansFont"
-                                                 v-for="(university, index) in universitiesList" :key="index">
-                                                <label>
-                                                    <input type="checkbox" name="country" :value="university.name"
-                                                           v-model="university.select" @change="doFilter()">
-                                                    {{university.name}}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-heading" role="tab" id="fieldOfStudyFilter">
-                                        <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                           href="#fieldOfStudiesCollapse" aria-expanded="false"
-                                           aria-controls="collapseOne" class="collapsed">
-                                            <h4 class="panel-title isansFont">
-                                                <span class="float-right">
-                                                    <i class="material-icons">build</i>
-                                                    رشته
-                                                </span>
-                                                <i class="material-icons float-left">keyboard_arrow_down</i>
-                                            </h4>
-                                        </a>
-                                    </div>
-
-                                    <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="fieldOfStudyFilter" aria-expanded="true" style="height: 0;">
-                                        <div class="panel-body">
-                                            <div class="isansFont filterCheckWrapper"
-                                                 v-for="(field, index) in fieldOfStudiesList" :key="index">
-                                                <label :title="field.description">
-                                                    <input type="checkbox" name="country" :value="field.name"
-                                                           v-model="field.select" @change="doFilter()">
-                                                    {{field.name}}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <label class="ratesort isansFont--faNum" style="margin-top:20px" for="rateSort">
-                                        <span class="checked" v-if="orderRateAscending">
-                                            <i class="material-icons">done</i>
-                                        </span>
-                                        <span v-else class="unchecked">
-
-                                        </span>
-                                        مرتب سازی بر اساس امتیاز
-                                    </label>
-                                    <input style="display:none" id="rateSort" type="checkbox" v-model="orderRateAscending" @change="doFilter()">
+    <div class="main">
+        <div class="section">
+            <div class="section-bg"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 topFilter">
+                        <ul class="topFilter-list isansFont">
+                            <li class="topFilter-item topFilter-item--active">
+                                مشاور عمومی اپلای
+                            </li>
+                            <li class="topFilter-item">
+                                مشاوره ویزا
+                                <sub>به زودی</sub>
+                            </li>
+                            <li class="topFilter-item">
+                                مشاوره CV
+                                <sub>به زودی</sub>
+                            </li>
+                            <li class="topFilter-item">
+                                مشاوره SOP
+                                <sub>به زودی</sub>
+                            </li>
+                            <li class="topFilter-item">
+                                مشاوره زبان
+                                <sub>به زودی</sub>
+                            </li>
+                        </ul>
+                        <button class="topFilter-sort-button isansFont" @click="toggleRateSort">
+                            بیشترین امتیاز
+                            <i class="material-icons" v-if="orderRateAscending">keyboard_arrow_down</i>
+                            <i class="material-icons" v-else>keyboard_arrow_up</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-sm-3 col-xs-12 filterColumn" v-if="windowWidth > 991.8">
+                        <!-- Filter panel in desktop -->
+                        <div class="filterBlock">
+                            <div class="filterBlock-head">
+                                <div class="filterBlock-head-title">
+                                    <p class="filterBlock-head-title--text isansFont">
+                                        <i class="material-icons">line_weight</i>
+                                        فیلتر های اعمال شده
+                                    </p>
+                                    <button @click="clearActiveFilters"
+                                            class="filterBlock-head-title--action isansFont">
+                                        پاکسازی
+                                    </button>
                                 </div>
                             </div>
+                            <div class="filterBlock-content">
+                                <ul class="filterBlock-active-list isansFont">
+                                    <li class="filterBlock-active-item" v-for="(item, index) in activeFilters"
+                                        :key="index">
+                                        <button @click="toggleSelectItem(item)" class="filter-active-item-button">
+                                            <i class="material-icons">close</i></button>
+                                        {{item.name}}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="bottomFilterColumn" :class="[{'fullHeightBottomFilter' : showFilterPanel}]" v-if="windowWidth < 991.8">
-                            <div class="bottomFilterColumnTitle" @click="toggleFilterPanel()">
-                                <p class="isansFont filterColumnTitle">
-                                    <i class="material-icons">note</i>
-                                    فیلتر نتایج
-                                </p>
-                                <button class="btn btn-simple isansFont">
-                                    <span v-if="showFilterPanel" class="isansFont">بستن</span>
-                                    <i class="material-icons" v-if="showFilterPanel">close</i>
-                                    <i class="material-icons" v-else>keyboard_arrow_up</i>
+                        <div class="filterBlock">
+                            <div class="filterBlock-head">
+                                <div class="filterBlock-head-title">
+                                    <p class="filterBlock-head-title--text isansFont">
+                                        <i class="material-icons">insert_photo</i>
+                                        کشور در حال تحصیل
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="filterBlock-search">
+                                <div class="filterBlock-search-form">
+                                    <input v-model.trim="countryQuery" @input="searchByIn('countryQuery', 'countries')"
+                                           type="text"
+                                           class="isansFont"
+                                           placeholder="جستجو">
+                                    <i class="material-icons">search</i>
+                                </div>
+                            </div>
+                            <div class="filterBlock-content">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(country)"
+                                        v-for="(country, index) in shownCountries" :key="index">
+                                        <img class="filterBlock-item-image" :src="country.picture" :alt="country.name">
+                                        {{country.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="country.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filterBlock">
+                            <div class="filterBlock-head">
+                                <div class="filterBlock-head-title">
+                                    <p class="filterBlock-head-title--text isansFont">
+                                        <i class="material-icons">insert_photo</i>
+                                        رشته در حال تحصیل
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="filterBlock-search">
+                                <div class="filterBlock-search-form">
+                                    <input v-model.trim="fieldQuery" @input="searchByIn('fieldQuery', 'fields')"
+                                           type="text" class="isansFont" placeholder="جستجو">
+                                    <i class="material-icons">search</i>
+                                </div>
+                            </div>
+                            <div class="filterBlock-content">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(field)"
+                                        v-for="(field, index) in shownFields" :key="index">
+                                        <img class="filterBlock-item-image" :src="field.picture" :alt="field.name">
+                                        {{field.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="field.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filterBlock">
+                            <div class="filterBlock-head">
+                                <div class="filterBlock-head-title">
+                                    <p class="filterBlock-head-title--text isansFont">
+                                        <i class="material-icons">insert_photo</i>
+                                        دانشگاه در حال تحصیل
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="filterBlock-search">
+                                <div class="filterBlock-search-form">
+                                    <input v-model="universityQuery"
+                                           @input="searchByIn('universityQuery', 'universities')" type="text"
+                                           class="isansFont" placeholder="جستجو">
+                                    <i class="material-icons">search</i>
+                                </div>
+                            </div>
+                            <div class="filterBlock-content">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(university)"
+                                        v-for="(university, index) in shownUniversities" :key="index">
+                                        <img class="filterBlock-item-image" :src="university.picture"
+                                             :alt="university.name">
+                                        {{university.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="university.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottomFilter"
+                         :class="[{'fullHeightBottomFilter' : showFilterPanel}]"
+                         v-if="windowWidth < 991.8">
+                        <div class="bottomFilter-head" @click="toggleFilterPanel()">
+                            <p class="isansFont bottomFilter-head-title">
+                                <i class="material-icons">line_weight</i>
+                                فیلتر نتایج
+                            </p>
+                            <button class="bottomFilter-head-toggler isansFont">
+                                <span v-if="showFilterPanel" class="isansFont">بستن</span>
+                                <i class="material-icons" v-if="showFilterPanel">close</i>
+                                <i class="material-icons" v-else>keyboard_arrow_up</i>
+                            </button>
+                        </div>
+                        <div class="bottomFilter-content" v-if="showFilterPanel">
+                            <div class="bottomFilter-content-tabs isansFont">
+                                <button @click="toggleMobileFilterTab('countries')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'countries'}]">
+                                    کشور ها
+                                </button>
+                                <button @click="toggleMobileFilterTab('fields')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'fields'}]">
+                                    رشته ها
+                                </button>
+                                <button @click="toggleMobileFilterTab('universities')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'universities'}]">
+                                    دانشگاه ها
                                 </button>
                             </div>
+                            <div class="filterBlock-content" v-if="activeMobileFilterTab === 'countries'">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(country)"
+                                        v-for="(country, index) in shownCountries" :key="index">
+                                        <img class="filterBlock-item-image" :src="country.picture" :alt="country.name">
+                                        {{country.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="country.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
 
-                            <transition name="slide-fade">
-                                <div class="panel-group filterPanel" v-if="showFilterPanel" id="filterPanel"
-                                     role="tablist"
-                                     aria-multiselectable="true">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="countryFilter">
-                                            <a
-                                                    role="button"
-                                                    data-toggle="collapse"
-                                                    data-parent="#filterPanel"
-                                                    href="#countryFilterCollapse"
-                                                    aria-expanded="false"
-                                                    aria-controls="collapseOne"
-                                                    class="collapsed">
-                                                <p class="panel-title isansFont"
-                                                   style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">
-                                                    کشور
-                                                </span>
-                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <div id="countryFilterCollapse" class="panel-collapse collapse" role="tabpanel"
-                                             aria-labelledby="countryFilter" aria-expanded="true" style="height: 0px;">
-                                            <div class="panel-body" style="background-color:#f7f7f7">
-                                                <div class="filterCheckWrapper isansFont"
-                                                     v-for="(country, index) in countriesList" :key="index">
-                                                    <label>
-                                                        <input type="checkbox" name="country" :value="country.name"
-                                                               v-model="country.select">
-                                                        {{country.name}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-heading" role="tab" id="universityFilter"
-                                             style="margin-top:25px;">
-                                            <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                               href="#universityFilterCollapse" aria-expanded="false"
-                                               aria-controls="collapseOne" class="collapsed">
-                                                <p class="panel-title isansFont"
-                                                   style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">
-                                                    دانشگاه
-                                                </span>
-                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <div id="universityFilterCollapse" class="panel-collapse collapse"
-                                             role="tabpanel"
-                                             aria-labelledby="universityFilter" aria-expanded="true"
-                                             style="height: 0px;">
-                                            <div class="panel-body" style="background-color:#f7f7f7">
+                            <div class="filterBlock-content" v-else-if="activeMobileFilterTab === 'fields'">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(field)"
+                                        v-for="(field, index) in shownFields" :key="index">
+                                        <img class="filterBlock-item-image" :src="field.picture" :alt="field.name">
+                                        {{field.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="field.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
 
-                                                <div class="filterCheckWrapper isansFont"
-                                                     v-for="(university, index) in universitiesList" :key="index">
-                                                    <label>
-                                                        <input type="checkbox" name="university"
-                                                               :value="university.name"
-                                                               v-model="university.select">
-                                                        {{university.name}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-heading" role="tab" id="fieldOfStudyFilter"
-                                             style="margin-top:25px;">
-                                            <a role="button" data-toggle="collapse" data-parent="#filterPanel"
-                                               href="#fieldOfStudiesCollapse" aria-expanded="false"
-                                               aria-controls="collapseOne" class="collapsed">
-                                                <p class="panel-title isansFont"
-                                                   style="display:flex;align-items:center;justify-content:space-between">
-                                                <span class="float-right">
-                                                    رشته
-                                                </span>
-                                                    <i class="material-icons float-left">keyboard_arrow_down</i>
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <div id="fieldOfStudiesCollapse" class="panel-collapse collapse" role="tabpanel"
-                                             aria-labelledby="fieldOfStudyFilter" aria-expanded="true"
-                                             style="height: 0;">
-                                            <div class="panel-body" style="background-color:#f7f7f7">
-                                                <div class="filterCheckWrapper isansFont"
-                                                     v-for="(field, index) in fieldOfStudiesList" :key="index">
-                                                    <label>
-                                                        <input type="checkbox" name="field" :value="field.name"
-                                                               v-model="field.select">
-                                                        {{field.name}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label class="ratesort isansFont--faNum" style="margin-top:20px" for="rateSort">
-                                        <span class="checked" v-if="orderRateAscending">
-                                            <i class="material-icons">done</i>
-                                        </span>
-                                            <span v-else class="unchecked">
-
-                                        </span>
-                                            مرتب سازی بر اساس امتیاز
-                                        </label>
-                                        <input style="display:none" id="rateSort" type="checkbox" v-model="orderRateAscending" @change="doFilter()">
-                                    </div>
-                                    <div class="bottomActionPanel">
-                                        <button class="btn btn-default btn-simple isansFont" @click="resetFilter(true)">
-                                            پاکسازی فیلتر ها
-                                        </button>
-                                        <button class="btn btn-primary isansFont" @click="doFilter(true)">اعمال فیلترها
-                                        </button>
-                                    </div>
-                                </div>
-                            </transition>
+                            <div class="filterBlock-content" v-else-if="activeMobileFilterTab === 'universities'">
+                                <ul class="filterBlock-list isansFont">
+                                    <li class="filterBlock-item" @click="toggleSelectItem(university)"
+                                        v-for="(university, index) in shownUniversities" :key="index">
+                                        <img class="filterBlock-item-image" :src="university.picture"
+                                             :alt="university.name">
+                                        {{university.name}}
+                                        <i class="material-icons filterBlock-item-selected"
+                                           v-if="university.select">done</i>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div :class="[{'col-md-12' : windowWidth < 991.8, 'col-md-9' : windowWidth >= 991.8}]">
-                            <div class="row consultantListRow">
-                                <div class="col-sm-12" v-for="(consultantPerson, index) in activeConsultants" :key="index">
-                                    <consultant-block :consultant="consultantPerson" />
-                                </div>
+                    </div>
+                    <div :class="[{'col-md-12' : windowWidth < 991.8, 'col-md-9' : windowWidth >= 991.8}]">
+                        <div class="row consultantListRow">
+                            <div class="col-sm-12" v-for="(consultant, index) in activeConsultants"
+                                 :key="index">
+                                <consultant-block :consultant="consultant"/>
                             </div>
                         </div>
                     </div>
@@ -263,11 +240,18 @@
         data() {
             return {
                 showFilterPanel: false,
-                consultantList: [],
-                countriesList: [],
-                universitiesList: [],
-                fieldOfStudiesList: [],
+                consultants: [],
+                countries: [],
+                universities: [],
+                fields: [],
+                shownCountries: [],
+                shownUniversities: [],
+                shownFields: [],
+                countryQuery: '',
+                fieldQuery: '',
+                universityQuery: '',
                 orderRateAscending: true,
+                activeMobileFilterTab: 'none',
                 tempScroll: window.scrollY,
             }
         },
@@ -277,8 +261,11 @@
         },
         computed: {
             activeConsultants() {
-                return this.consultantList.filter(consultant => consultant.active);
-            }
+                return this.consultants.filter(consultant => consultant.active);
+            },
+            activeFilters() {
+                return this.countries.filter(country => country.select).concat(this.universities.filter(uni => uni.select)).concat(this.fields.filter(field => field.select));
+            },
         },
         created() {
             this.getListOfCountries();
@@ -287,28 +274,59 @@
             this.doFilter();
         },
         methods: {
+            toggleSelectItem(item) {
+                if (item.select != undefined) {
+                    item.select = !item.select;
+                    this.doFilter(false);
+                }
+            },
+
+            toggleRateSort() {
+                this.orderRateAscending = !this.orderRateAscending;
+                this.doFilter(false);
+            },
+
+            toggleMobileFilterTab(tabName) {
+              if(this.activeMobileFilterTab === tabName) {
+                  this.activeMobileFilterTab = 'none'
+              } else {
+                  this.activeMobileFilterTab = tabName;
+              }
+            },
+
+            clearActiveFilters() {
+                this.countries.forEach(country => country.select = false);
+                this.universities.forEach(uni => uni.select = false);
+                this.fields.forEach(field => field.select = false);
+                this.doFilter(false);
+            },
+
+            searchByIn(query, list) {
+                this[`shown${list[0].toUpperCase()}${list.slice(1)}`] = this[list].filter(item => item.name.toLowerCase().startsWith(this[query].toLowerCase()));
+            },
+
             generateQueryParameters() {
                 let query = '';
 
-                for (let i = 0; i < this.countriesList.length; i++) {
-                    if (this.countriesList[i].select) {
-                        query += '&countries=' + this.countriesList[i].id;
+                this.countries.forEach(item => {
+                    if (item.select) {
+                        query += `&countries=${item.id}`;
                     }
-                }
+                });
 
-                for (let i = 0; i < this.universitiesList.length; i++) {
-                    if (this.universitiesList[i].select) {
-                        query += '&universities=' + this.universitiesList[i].id;
+                this.universities.forEach(item => {
+                    if (item.select) {
+                        query += `&universities=${item.id}`;
                     }
-                }
+                });
 
-                for (let i = 0; i < this.fieldOfStudiesList.length; i++) {
-                    if (this.fieldOfStudiesList[i].select) {
-                        query += '&field_of_studies=' + this.fieldOfStudiesList[i].id;
+                this.fields.forEach(item => {
+                    if (item.select) {
+                        query += `&field_of_studies=${item.id}`;
                     }
-                }
+                });
 
-                if(this.orderRateAscending) {
+                if (this.orderRateAscending) {
                     query += '&ordering=-rate'
                 } else {
                     query += '&ordering=rate'
@@ -321,24 +339,24 @@
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters()}`);
                     console.log(result);
-                    this.consultantList = result.data;
-                    if(this.consultantList.length === 0) {
+                    this.consultants = result.data;
+                    if (this.consultants.length === 0) {
                         this.printMessage("متاسفانه مشاوری با این اطلاعات یافت نشد.", "لیست مشاوران : اخطار", "warn", 4000, "notif");
                     }
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif");
                 } finally {
                     this.$loading(false);
-                    if(toggleIndicator) {
+                    if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
                 }
             },
 
             resetFilter(toggleIndicator) {
-                this.addSelectPropertyToList(this.countriesList);
-                this.addSelectPropertyToList(this.universitiesList);
-                this.addSelectPropertyToList(this.fieldOfStudiesList);
+                this.addSelectPropertyToList(this.countries);
+                this.addSelectPropertyToList(this.universities);
+                this.addSelectPropertyToList(this.fields);
                 this.getListOfConsultants(toggleIndicator);
             },
 
@@ -352,7 +370,7 @@
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
-                    this.consultantList = result.data;
+                    this.consultants = result.data;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
@@ -370,7 +388,8 @@
                     let result = await axios.get(`${this.$store.getters.getApi}/account/countries/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
-                    this.countriesList = result.data;
+                    this.countries = result.data;
+                    this.shownCountries = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
                 } finally {
@@ -384,7 +403,8 @@
                     let result = await axios.get(`${this.$store.getters.getApi}/account/universities/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
-                    this.universitiesList = result.data;
+                    this.universities = result.data;
+                    this.shownUniversities = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
                 } finally {
@@ -398,7 +418,8 @@
                     let result = await axios.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
-                    this.fieldOfStudiesList = result.data;
+                    this.fields = result.data;
+                    this.shownFields = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
                 } finally {
@@ -427,102 +448,30 @@
 </script>
 
 <style scoped>
-
     .section {
         background-color: #eeeeee;
         min-height: 100vh;
-        padding-top: 0;
+        padding-top: 50px;
+        position: relative;
     }
 
-    .filterCheckWrapper {
-        cursor: pointer;
-        padding-right: 10px;
-    }
-
-    .filterCheckWrapper label {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .filterCheckWrapper input[type="checkbox"] {
-        width: 15px;
-        height: 15px;
-        margin: 5px;
-    }
-
-    .page-header {
-        min-height: 100vh;
-        background-image: url('http://185.209.243.97/sneedsAssets/img/consultantsBg.jpg');
-        background-size: cover;
-    }
-
-    .nav-pills.nav-pills-white > li.active > a {
-        background-color: white;
-        color: #555555;
-        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .groupRow {
-        margin-bottom: 15px;
-        position: sticky;
-        top: 70px;
-        z-index: 999;
-        background-color: white;
-        padding-top: 5px;
-        border-radius: 10px;
-        margin-top: 20px;
+    .section-bg {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        background-color: #8C3DDB;
+        height: 100px;
     }
 
     .filterColumn {
-        z-index: 999;
+        z-index: 998;
         position: sticky;
         top: 134px;
-        background-color: white;
-        border-radius: 10px;
-        padding: 10px;
-        transition: all 0.2s ease-in-out;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        padding: 0 0 15px 0;
     }
 
-    .filterColumn > h3 {
-        font-weight: bold;
-        font-size: 17px;
-        margin: 10px 5px 5px 5px;
-    }
 
-    .filterColumn .filterPanel {
-        padding: 10px;
-    }
-
-    .filterColumn .panel-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between
-    }
-
-    .filterColumn .panel-body {
-        background-color: #f7f7f7;
-    }
-
-    .filterColumn .panel-heading {
-        margin-top: 20px;
-        padding: 15px 0 10px 0;
-    }
-
-    .filterColumn .panel-heading:first-child {
-        margin-top: 0;
-    }
-
-    .card .card-content {
-        padding: 10px;
-    }
-
-    .filterPanel {
-        display: block;
-    }
-
-    .bottomFilterColumn {
+    .bottomFilter {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -531,38 +480,82 @@
         z-index: 9999;
         box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
         border-top: 1px solid #ccc;
-        overflow-y: scroll;
-        border-radius:10px 10px 0 0;
+        overflow-y: auto;
+        border-radius: 10px 10px 0 0;
     }
 
-    .bottomFilterColumnTitle {
+    .bottomFilter-head {
         cursor: pointer;
-    }
-
-    .bottomFilterColumnTitle p {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding-right: 5px;
-        margin-bottom: 0;
-        color: #666;
-    }
-
-    .bottomFilterColumnTitle button {
-        margin: 10px;
-        color: #666;
-        padding: 10px 5px;
-    }
-
-    .bottomFilterColumn p:first-child i {
-        margin-left: 5px;
-    }
-
-    .bottomFilterColumnTitle {
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
+    }
+
+    .bottomFilter-head-title {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 10px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .bottomFilter-head-title i {
+        margin-left: 5px;
+        font-size: 16px;
+    }
+
+    .bottomFilter-head-toggler {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        color: #666;
+        padding: 0;
+        background: none;
+        border: none;
+        font-size: 12px;
+    }
+
+    .bottomFilter-head-toggler i {
+        font-size: 14px;
+    }
+
+    .bottomFilter-content-tabs {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .bottomFilter-content-tabs-button {
+        background: none;
+        font-size: 12px;
+        border: none;
+        color: #777;
+        margin:0 10px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    .bottomFilter-content-tabs-button.active {
+        color: white;
+        background-color: #8C3DDB;
+    }
+
+
+
+
+
+
+
+
+
+
+    .bottomFilterColumn p:first-child i {
+        margin-left: 5px;
     }
 
     .bottomFilterColumn .panel {
@@ -611,14 +604,14 @@
         margin-right: 0;
     }
 
-    .ratesort{
+    .ratesort {
         display: flex;
         width: 100%;
         align-items: center;
         justify-content: center;
     }
 
-    .ratesort span{
+    .ratesort span {
         width: 25px;
         height: 25px;
         border-radius: 5px;
@@ -634,28 +627,263 @@
 
     .ratesort span.unchecked {
         background-color: white;
-        border:2px solid #999;
+        border: 2px solid #999;
+    }
+
+    .filterBlock {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        /*height: 300px;*/
+        border-radius: 15px;
+        background-color: white;
+        box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .filterBlock:not(:first-child) {
+        margin-top: 15px;
+    }
+
+    .filterBlock-head {
+        background-color: #fcfcfc;
+        /*height: 40px;*/
+        border-radius: 15px 15px 0 0;
+    }
+
+    .filterBlock-head-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+        font-size: 12px;
+    }
+
+    .filterBlock-head-title--text {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        padding-right: 10px;
+        color: #9B9999;
+    }
+
+    .filterBlock-head-title--text i {
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .filterBlock-head-title--action {
+        margin: 0 0 0 10px;
+        background: none;
+        cursor: pointer;
+        border: none;
+        color: #d26f6e;
+        outline: none;
+    }
+
+    .filterBlock-head-title--action:hover {
+        color: red;
+    }
+
+    .filterBlock-search {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #f7f7f7;
+    }
+
+    .filterBlock-search-form {
+        background-color: #F8F8F8;
+        margin: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 15px;
+        border-radius: 10px;
+        width: 100%;
+        border: 1px solid #F2F2F2;
+    }
+
+    .filterBlock-search-form input {
+        border: none;
+        background: none;
+        outline: none;
+        color: #B3B3B3;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .filterBlock-search-form i {
+        margin-right: 10px;
+        font-size: 18px;
+        color: #B3B3B3;
+    }
+
+    .filterBlock-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        padding: 0;
+        margin: 10px 0;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .filterBlock-list::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 15px;
+    }
+
+    .filterBlock-list::-webkit-scrollbar-track {
+        left: 4px;
+        border-radius: 15px;
+    }
+
+    .filterBlock-list::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        outline: 1px solid gray;
+        border-radius: 15px;
+    }
+
+    .filterBlock-item {
+        display: flex;
+        align-items: center;
+        color: #B3B3B3;
+        margin: 5px 10px;
+        border-radius: 10px;
+        padding: 5px 0;
+        font-size: 12px;
+    }
+
+    .filterBlock-item:hover {
+        background-color: #FCFCFC;
+        cursor: pointer;
+    }
+
+    .filterBlock-item-image {
+        width: 20px;
+        height: 20px;
+        margin: 0 10px;
+    }
+
+    .filterBlock-item-selected {
+        margin: 0 auto 0 10px;
+        font-size: 13px;
+        background-color: #B3B3B3;
+        color: white;
+        border-radius: 50%;
+        padding: 2px;
+    }
+
+
+    .filterBlock-active-list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .filterBlock-active-item {
+        display: flex;
+        align-items: center;
+        background-color: #FCFCFC;
+        color: #B3B3B3;
+        border-radius: 10px;
+        padding: 5px 10px;
+        font-size: 12px;
+        margin: 5px;
+    }
+
+    .filter-active-item-button {
+        margin: 0;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .filter-active-item-button i {
+        font-size: 14px;
+    }
+
+    .topFilter {
+        margin-top: 15px;
+        background-color: white;
+        border-radius: 15px;
+        height: 75px;
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .topFilter-list {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .topFilter-item {
+        font-size: 14px;
+        margin-right: 15px;
+        color: #9B9999;
+        padding: 10px 25px;
+        border-radius: 15px;
+    }
+
+    .topFilter-item--active {
+        color: white;
+        background-color: #8C3DDB;
+    }
+
+    .topFilter-sort-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #707070;
+        background: none;
+        padding: 5px;
+        border: none;
+        outline: none;
+    }
+
+    .topFilter-sort-button i {
+        color: #8C3DDB;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
-        /* Enter and leave animations can use different */
-        /* durations and timing functions.              */
-        .slide-fade-enter-active {
-            transition: all 1s ease;
-        }
-
-        .slide-fade-leave-active {
-            transition: all 1s ease;
-        }
-
-        .slide-fade-enter, .slide-fade-leave-to /* .slide-fade-leave-active below version 2.1.8 */
-        {
-            transform: translateX(10px);
-            opacity: 0;
-        }
-
         .row.consultantListRow {
             margin-right: -10px;
+        }
+
+        .topFilter-item {
+            font-size: 12px;
+        }
+
+        .topFilter-sort-button {
+            font-size: 12px;
+        }
+
+        .topFilter-sort-button i {
+            font-size: 14px;
+        }
+    }
+
+    @media only screen and (max-width: 576.8px) {
+        .topFilter-item {
+            display: none;
+        }
+
+        .topFilter-item--active {
+            display: flex;
         }
     }
 </style>

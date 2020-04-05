@@ -4,7 +4,7 @@
             <div class="alert-icon">
                 <img src="http://185.209.243.97/sneedsAssets/img/loading.svg" alt="loading icon" class="loadingIcon" v-if="type === 'warning'">
                 <i class="material-icons" v-else-if="type === 'success'">done</i>
-                <i class="material-icons" v-else="type === 'danger' ">block</i>
+                <i class="material-icons" v-else>block</i>
             </div>
             {{message}}
         </div>
@@ -15,9 +15,16 @@
     export default {
         name: "RectNotifBlock",
         props: {
-            message: '',
-            type: '',
-            borderRound: true,
+            message: {
+                type: String
+            },
+            type: {
+                type: String
+            },
+            borderRound: {
+                type: Boolean,
+                default: () => true
+            },
         },
         mounted(){
         }

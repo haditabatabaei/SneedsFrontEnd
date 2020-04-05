@@ -2,36 +2,41 @@
     <section class="consultantDescBlock">
         <div class="consultantDescBlock--head-info">
             <p class="isansFont">{{consultant.first_name + ' ' + consultant.last_name}}</p>
-            <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank" class="consultantDescBlock--head-resume isansFont" >دانلود رزومه</a>
+            <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
+               class="consultantDescBlock--head-resume isansFont">دانلود رزومه</a>
         </div>
         <header class="consultantDescBlock--head isansFont--faNum">
-            <img :src="consultant.profile_picture" class="consultantDescBlock--head-image" :alt="consultant.first_name + ' ' + consultant.last_name">
+            <img :src="consultant.profile_picture" class="consultantDescBlock--head-image"
+                 :alt="consultant.first_name + ' ' + consultant.last_name">
 
             <div class="consultantDescBlock--head_item">
                 <i class="material-icons" v-if="consultant.universities[0] == undefined">account_balance</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.universities[0].picture" :alt="consultant.universities[0].name" v-else />
+                <img class="consultantDescBlock--head_item_image" :src="consultant.universities[0].picture"
+                     :alt="consultant.universities[0].name" v-else/>
                 <p class="consultantDescBlock--head_item_support">دانشگاه</p>
                 <p class="consultantDescBlock--head_item_text">{{consultant.universities[0].name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
                 <i class="material-icons" v-if="consultant.countries[0] == undefined">house</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.countries[0].picture" :alt="consultant.countries[0].name" v-else />
+                <img class="consultantDescBlock--head_item_image" :src="consultant.countries[0].picture"
+                     :alt="consultant.countries[0].name" v-else/>
                 <p class="consultantDescBlock--head_item_support">کشور در حال تحصیل</p>
                 <p class="consultantDescBlock--head_item_text">{{consultant.countries[0].name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
                 <i class="material-icons" v-if="consultant.field_of_studies[0] == undefined">add</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.field_of_studies[0].picture" :alt="consultant.field_of_studies[0].name" v-else />
+                <img class="consultantDescBlock--head_item_image" :src="consultant.field_of_studies[0].picture"
+                     :alt="consultant.field_of_studies[0].name" v-else/>
                 <p class="consultantDescBlock--head_item_support">رشته</p>
                 <p class="consultantDescBlock--head_item_text">{{consultant.field_of_studies[0].name}}</p>
             </div>
 
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
-            <div class="consultantDescBlock--main_video">
-                <iframe :src="getVideoFrameLink(consultant.aparat_link)" />
+            <div class="consultantDescBlock--main_video" v-if="consultant.aparat_link">
+                <iframe :src="getVideoFrameLink(consultant.aparat_link)"/>
             </div>
             <div class="consultantDescBlock--main_bio" v-html="consultant.bio">
             </div>
@@ -50,7 +55,7 @@
         },
         methods: {
             getVideoFrameLink(aparatLink) {
-                if(aparatLink != null) {
+                if (aparatLink != null) {
                     return 'https://www.aparat.com//video/video/embed/videohash/' + aparatLink.replace('https://www.aparat.com/v/', '') + '/vt/frame'
                 } else return "";
             },
@@ -107,7 +112,7 @@
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        border:5px solid white;
+        border: 5px solid white;
         position: absolute;
         right: 15px;
         top: -45px;
@@ -128,7 +133,7 @@
 
     .consultantDescBlock--head-resume {
         color: white;
-        border:2px solid white;
+        border: 2px solid white;
         margin-right: 10px;
         border-radius: 10px;
         font-size: 12px;
@@ -163,22 +168,15 @@
 
     .consultantDescBlock--head_item_text {
         color: #707070;
-        margin:5px 0 0 0;
+        margin: 5px 0 0 0;
         font-weight: bold;
     }
 
     .consultantDescBlock--head_item_image {
         width: 25px;
         height: 25px;
-        border-radius:50%;
+        border-radius: 50%;
     }
-
-
-    /*.consultantDescBlock--head_item span {*/
-    /*    color: #666;*/
-    /*    font-weight: bold;*/
-    /*    margin-top: 5px;*/
-    /*}*/
 
     .consultantDescBlock--main {
         display: flex;
@@ -298,8 +296,8 @@
         }
 
         .consultantDescBlock--head {
-            padding:10px;
-            font-size:10px;
+            padding: 10px;
+            font-size: 10px;
         }
 
         .consultantDescBlock--head-info {

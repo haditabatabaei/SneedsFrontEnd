@@ -10,7 +10,7 @@
                 </transition>
             </div>
             <div class="LogoWrapper">
-                <Logo />
+                <sneeds-logo />
             </div>
             <div class="menuWrapper">
                 <ul class="menuList isansFont">
@@ -57,43 +57,40 @@
                 </ul>
             </div>
             <div class="profileWrapper">
-                <router-link to="/auth/login" class="btn btn-rose isansFont authButton navbar-left" v-if="!isLoggedIn">
+                <router-link to="/auth/login" class="menu-login-button isansFont navbar-left" v-if="!isLoggedIn">
                     <i class="material-icons">person</i>
                     ورود | ثبت نام
                 </router-link>
 
                 <div class="dropdown authButton" v-else>
-                    <button href="#" style="margin-left:5px;"
-                            class="dropdown-toggle btn btn-white btn-round gadugiFont isansFont"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                        <i class="material-icons">account_circle</i>
+                    <button @click="toggleProfileDropdown" class="profile-menu-button isansFont" :class="[{'profile-menu-button--active' : profileDropdownMenuOpen}]" >
+                        <i class="material-icons">person_outline</i>
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret" />
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right left-0 isansFont gadugiFont profileDropDownMenu">
-                        <li class="text-right">
-                            <router-link to="/user/profile">اطلاعات کاربری</router-link>
+                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen">
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/profile">اطلاعات کاربری</router-link>
                         </li>
-                        <li class="text-right">
-                            <router-link to="/user/sessions">جلسات مشاوره</router-link>
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/sessions">جلسات مشاوره</router-link>
                         </li>
-                        <li class="text-right">
-                            <router-link to="/user/packages">پکیج ها</router-link>
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/packages">پکیج ها</router-link>
                         </li>
-                        <li class="text-right" v-if="!isConsultant">
-                            <router-link to="/user/orders">پرداخت ها</router-link>
+                        <li class="profile-menu-list-item" v-if="!isConsultant">
+                            <router-link class="profile-menu-list-link" to="/user/orders">پرداخت ها</router-link>
                         </li>
-                        <li class="text-right">
-                            <router-link to="/user/chatroom">چتروم</router-link>
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
                         </li>
-                        <li class="divider" v-if="isConsultant" />
+                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant" />
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
-                        <li class="text-right" v-if="isConsultant">
-                            <router-link to="/user/calendar">مدیریت تقویم</router-link>
+                        <li class="profile-menu-list-item" v-if="isConsultant">
+                            <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
                         </li>
-                        <li class="divider" />
-                        <li><a @click.prevent="logout()" role="button" class="btn btn-danger">خروج</a></li>
+                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant" />
+                        <li class="profile-menu-list-item"><button class="profile-menu-list-link" @click.prevent="logout">خروج</button></li>
                     </ul>
                 </div>
             </div>
@@ -212,19 +209,12 @@
     export default {
         name: "TopMenu",
         components: {
-            Logo
+            "sneeds-logo": Logo
         },
-        data: function () {
+        data() {
             return {
+                profileDropdownMenuOpen: false,
                 topMenuListItems: [
-                    // {
-                    //     itemName: 'صفحه اصلی',
-                    //     target: '/',
-                    //     type: 'router',
-                    //     hasDropdown: false,
-                    //     dropdownItems: [],
-                    //     icon: 'home'
-                    // },
                     {
                         itemName: 'مشاوران',
                         target: '/consultants',
@@ -261,21 +251,24 @@
             }
         },
         computed: {
-            isLoggedIn: function () {
+            isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
-            isConsultant: function () {
+            isConsultant() {
                 return this.$store.getters.getUserInfo.user_type == 'consultant';
             },
-            activeCart: function () {
+            activeCart() {
                 return this.$store.getters.getCart;
             },
-            mobileMenuShow: function () {
+            mobileMenuShow() {
                 return this.$store.getters.getMobileMenuShow;
             }
-
-        }, methods: {
-            logout: function () {
+        },
+        methods: {
+            toggleProfileDropdown() {
+                this.profileDropdownMenuOpen = !this.profileDropdownMenuOpen;
+            },
+            logout() {
                 this.$store.dispatch('logout');
                 this.$router.push('/auth/login');
             },
@@ -357,10 +350,85 @@
         display: none;
     }
 
+    .menu-login-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        border-radius: 25px;
+        padding: 7px 30px;
+        border:1.5px solid #8E39CC;
+        cursor: pointer;
+        color: #8E39CC;
+        background-color: white;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .profile-menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        border-radius: 25px;
+        padding: 7px 30px;
+        border:1.5px solid #8E39CC;
+        cursor: pointer;
+        color: #8E39CC;
+        background-color: white;
+        outline: none;
+        font-size: 14px;
+        transition: all 0.1s ease;
+        z-index: 20;
+    }
+
+    .profile-menu-button span {
+        margin-left: 10px;
+    }
+
+    .profile-menu-button i {
+        font-size: 18px;
+    }
+
+    .profile-menu-button--active {
+        background-color: #8E39CC;
+        color: white;
+    }
+
+    .profile-menu-list {
+        position: absolute;
+        background-color: white;
+        border-radius: 15px;
+        width: 100%;
+        top: 40px;
+        padding: 0;
+        z-index: 10;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow:0 0 10px 2px rgba(0,0,0,0.2);
+    }
+
+    .profile-menu-list-item {
+        display: flex;
+    }
+    .profile-menu-list-link {
+        display: flex;
+        width: 100%;
+        font-size: 13px;
+        padding:10px 10px 10px 0;
+        color: #666;
+        background: none;
+        border: none;
+    }
+
+    .profile-menu-list-link:hover {
+        background-color: #f4f4f4;
+    }
+
+
+
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
-        /* Enter and leave animations can use different */
-        /* durations and timing functions.              */
         .slide-fade-enter-active {
             transition: all 0.2s ease;
         }
@@ -369,8 +437,7 @@
             transition: all 0.2s ease;
         }
 
-        .slide-fade-enter, .slide-fade-leave-to /*.slide-fade-leave-active below version 2.1.8 */
-        {
+        .slide-fade-enter, .slide-fade-leave-to{
             transform: translateX(10px);
             opacity: 0;
         }

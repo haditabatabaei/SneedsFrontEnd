@@ -1,7 +1,25 @@
 <template>
     <section class="consultantDescBlock">
         <div class="consultantDescBlock--head-info">
-            <p class="isansFont">{{consultant.first_name + ' ' + consultant.last_name}}</p>
+            <p class="isansFont consultantDescBlock--head-name">{{consultant.first_name + ' ' + consultant.last_name}}</p>
+            <!-- rate -->
+            <star-rating
+                    v-if="consultant.rate != null"
+                    :rtl="$store.getters.isiran"
+                    :star-size="12"
+                    :padding="5"
+                    :read-only="true"
+                    style="background: none;margin-left: 15px;display:flex;align-items:center"
+                    inactive-color="rgba(0,0,0,0)"
+                    active-color="#fff"
+                    :showRating="false"
+                    v-model="consultant.rate"/>
+
+            <!-- consultant minutes -->
+            <p class="isansFont--faNum consultantDescBlock--head-minutes">
+                <strong>{{Math.floor(Math.random() * 100)}}</strong>
+                دقیقه مشاوره برگزار شده
+            </p>
             <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
                class="consultantDescBlock--head-resume isansFont">دانلود رزومه</a>
         </div>
@@ -45,10 +63,14 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating'
     export default {
         name: "ConsultantDescBlock",
+        components: {"star-rating": StarRating},
         props: {
-            consultant: {}
+            consultant: {
+                type: Object,
+            }
         },
         created() {
             console.log("current consultant:", this.consultant);
@@ -64,21 +86,6 @@
 </script>
 
 <style scoped>
-
-
-    .fade-enter-active,
-    .fade-leave-active {
-        transition-duration: 0.3s;
-        transition-property: opacity;
-        transition-timing-function: ease;
-    }
-
-    .fade-enter,
-    .fade-leave-active {
-        opacity: 0
-    }
-
-
     .consultantDescBlock {
         width: 100%;
         min-height: 300px;
@@ -90,14 +97,14 @@
         align-items: center;
         justify-content: flex-start;
         position: relative;
-        margin-top: 30px;
+        margin-top: 15px;
         margin-bottom: 30px;
     }
 
     .consultantDescBlock--head {
         position: absolute;
         width: 80%;
-        height: 100px;
+        height: 135px;
         border-radius: 15px;
         top: -50px;
         background-color: white;
@@ -109,13 +116,13 @@
     }
 
     .consultantDescBlock--head-image {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
         border: 5px solid white;
         position: absolute;
         right: 15px;
-        top: -45px;
+        top: -50px;
     }
 
     .consultantDescBlock--head-info {
@@ -127,8 +134,19 @@
         align-items: center;
     }
 
-    .consultantDescBlock--head-info p {
+    .consultantDescBlock--head-name {
+        font-weight: bold;
+        font-size: 20px;
+        margin: 0 0 0 15px;
+    }
+
+    .consultantDescBlock--head-minutes {
+        font-size: 12px;
         margin: 0;
+    }
+
+    .consultantDescBlock--head-minutes strong {
+        font-size: 16px;
     }
 
     .consultantDescBlock--head-resume {
@@ -206,6 +224,7 @@
     .consultantDescBlock--main_video {
         align-self: flex-start;
         width: 100%;
+        margin-top: 15px;
     }
 
     .consultantDescBlock--main_video iframe {
@@ -215,62 +234,11 @@
         border: none;
     }
 
-    .consultantDescBlock--main_videoLink {
-        font-size: 13px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        color: #3ba9a1;
-        border: 1.2px solid #e6e6e6;
-        border-radius: 10px;
-        padding-top: 7px;
-        padding-bottom: 7px;
-        transition: all 0.1s ease-in-out;
-    }
-
-    .consultantDescBlock--main_videoLink:hover {
-        background-color: #3ba9a1;
-        color: white;
-        border-color: white;
-    }
-
-    .consultantDescBlock--main_videoLink i {
-        font-size: 14px;
-        margin-left: 5px;
-    }
-
-    .showMoreBtn {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-radius: 5px;
-        border: none;
-        padding: 5px 10px 5px 10px;
-        margin-right: 10px;
-        background-color: #f0f0f0;
-        color: #7F7F80;
-        width: 100%;
-    }
-
-    .text-pink {
-        color: #EB8BB6;
-    }
-
-    .text-blue {
-        color: #89BEE5;
-    }
-
-    .text-green {
-        color: #72BDBA;
-    }
-
-    .text-purple {
-        color: #9083CB;
-    }
-
     @media only screen and (max-width: 991.8px) {
+        .consultantDescBlock {
+            margin-top: 30px;
+        }
+
         .consultantDescBlock--main {
             flex-direction: column;
             align-items: center;

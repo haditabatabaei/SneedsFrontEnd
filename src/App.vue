@@ -75,4 +75,10 @@
         border-right-color: #418a9f;
     }
 
+    .vue-star-rating-star {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+
 </style>

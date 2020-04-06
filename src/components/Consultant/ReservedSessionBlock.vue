@@ -382,13 +382,4 @@
         margin-right: auto;
         margin-left: 30px;
     }
-
-    .vue-star-rating-star {
-        display: flex !important;
-        align-items: center !important;
-    }
-
-    @media only screen and (max-width: 991.8px) {
-
-    }
 </style>

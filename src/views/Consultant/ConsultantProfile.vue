@@ -100,7 +100,9 @@
                 <div class="col-md-9">
                     <div class="row" id="descBlock">
                         <div class="col-md-12">
-                            <div class="meta"></div>
+                            <div class="meta" style="background:url(/sneedsAssets/img/consultant-profile-top-bg.png) no-repeat 100% / cover">
+                                <div class="meta-overlap" style="position: absolute;width:100%;height:100%;top:0;left:0;background-color:rgba(32, 184, 163,0.8);border-radius:0 0 15px 15px"></div>
+                            </div>
                             <consultant-desc-block :consultant="consultant" v-if="consultant.id" />
                         </div>
                     </div>
@@ -367,6 +369,7 @@
         background-color: #20B8A3;
         border-radius: 0 0 15px 15px;
         box-shadow:0 3px 10px 1px rgba(0,0,0,0.2);
+        position: relative;
     }
 
     .consultantSidebarBlock--info img {

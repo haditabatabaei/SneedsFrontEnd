@@ -57,14 +57,6 @@ const router = new Router({
             component: () => import("@/layouts/UserLayout"),
             children: [
                 {
-                    path: 'status',
-                    name: 'user-status',
-                    component: () => import("@/views/UserStatus"),
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
                     path: 'profile',
                     name: 'user-profile',
                     component: () => import("@/views/User/UserProfile"),

@@ -92,7 +92,7 @@
                             </ul>
                         </div>
 
-                        <button class="btn btn-round btn-bg btn-rose isansFont--faNum addToCartButton"
+                        <button class="isansFont--faNum addToCartButton"
                                 @click="addSelectedTimesToCart()">رزرو جلسات انتخاب شده
                         </button>
                     </div>
@@ -325,7 +325,6 @@
         justify-content: flex-start;
         flex-direction: column;
         margin-top: 30px;
-        padding-bottom: 10px;
     }
 
     .sideBarBlockSticky {
@@ -374,9 +373,7 @@
         width: 70px;
         height: 70px;
         border-radius: 10px;
-        margin-top: 10px;
-        margin-right: 10px;
-        margin-left: 10px;
+        margin: 10px;
     }
 
     .consultantSidebarBlock--links {
@@ -481,9 +478,16 @@
         font-size: 13px;
     }
 
-    .consultantSidebarBlock > button {
-        margin-right: auto;
-        margin-left: auto;
+    .addToCartButton {
+        align-self: stretch;
+        border-radius: 0 0 15px 15px;
+        border: none;
+        font-size: 14px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        color: white;
+        background-color: #8C3DDB;
+        outline: none;
     }
 
     .mobileConsultantMenu {

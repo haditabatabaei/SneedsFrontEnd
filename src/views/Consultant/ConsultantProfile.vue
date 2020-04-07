@@ -161,8 +161,8 @@
                 return this.$store.getters.getStash;
             },
             shownDiscounts() {
-              return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1) );
-            }
+              return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1));
+            },
         },
         created() {
             document.addEventListener('scroll', this.handleScroll, false);
@@ -406,14 +406,14 @@
     }
 
     .consultantSidebarBlock--links ul li button:hover {
-        border-right: inset 3px #B73EB3;
+        border-right: inset 3px #8C3DDB;
         font-weight: bold;
         color: #4c4c4c;
         padding-right: 15px;
     }
 
     .consultantSidebarBlock--links ul li.active button {
-        border-right: inset 3px #B73EB3;
+        border-right: inset 3px #8C3DDB;
         font-weight: bold;
         color: #4c4c4c;
         padding-right: 15px;
@@ -540,7 +540,6 @@
             left: 0;
             width: 100%;
             background-color: white;
-            border-radius: 20px 20px 0 0;
             z-index: 999;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
         }
@@ -565,7 +564,7 @@
         }
 
         .mobileConsultantMenu--button.active {
-            background-color: #e91e63;
+            background-color: #8C3DDB;
             color: white;
             box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
             flex-direction: column;

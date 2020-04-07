@@ -11,19 +11,15 @@
                             </li>
                             <li class="topFilter-item">
                                 مشاوره ویزا
-                                <sub>به زودی</sub>
                             </li>
                             <li class="topFilter-item">
                                 مشاوره CV
-                                <sub>به زودی</sub>
                             </li>
                             <li class="topFilter-item">
                                 مشاوره SOP
-                                <sub>به زودی</sub>
                             </li>
                             <li class="topFilter-item">
                                 مشاوره زبان
-                                <sub>به زودی</sub>
                             </li>
                         </ul>
                         <button class="topFilter-sort-button isansFont" @click="toggleRateSort">
@@ -150,29 +146,29 @@
                         </div>
                     </div>
 
-                    <div class="bottomFilter"
-                         :class="[{'fullHeightBottomFilter' : showFilterPanel}]"
-                         v-if="windowWidth < 991.8">
-                        <div class="bottomFilter-head" @click="toggleFilterPanel()">
+                    <div class="bottomFilter" v-if="windowWidth < 991.8">
+                        <div class="bottomFilter-head" :class="[{'bottomFilter-head--open': showFilterPanel}]"
+                             @click="toggleFilterPanel()">
                             <p class="isansFont bottomFilter-head-title">
                                 <i class="material-icons">line_weight</i>
                                 فیلتر نتایج
                             </p>
-                            <button class="bottomFilter-head-toggler isansFont">
-                                <span v-if="showFilterPanel" class="isansFont">بستن</span>
-                                <i class="material-icons" v-if="showFilterPanel">close</i>
-                                <i class="material-icons" v-else>keyboard_arrow_up</i>
-                            </button>
                         </div>
                         <div class="bottomFilter-content" v-if="showFilterPanel">
                             <div class="bottomFilter-content-tabs isansFont">
-                                <button @click="toggleMobileFilterTab('countries')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'countries'}]">
+                                <button @click="toggleMobileFilterTab('countries')"
+                                        class="bottomFilter-content-tabs-button"
+                                        :class="[{'active': activeMobileFilterTab === 'countries'}]">
                                     کشور ها
                                 </button>
-                                <button @click="toggleMobileFilterTab('fields')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'fields'}]">
+                                <button @click="toggleMobileFilterTab('fields')"
+                                        class="bottomFilter-content-tabs-button"
+                                        :class="[{'active': activeMobileFilterTab === 'fields'}]">
                                     رشته ها
                                 </button>
-                                <button @click="toggleMobileFilterTab('universities')" class="bottomFilter-content-tabs-button" :class="[{'active': activeMobileFilterTab === 'universities'}]">
+                                <button @click="toggleMobileFilterTab('universities')"
+                                        class="bottomFilter-content-tabs-button"
+                                        :class="[{'active': activeMobileFilterTab === 'universities'}]">
                                     دانشگاه ها
                                 </button>
                             </div>
@@ -180,7 +176,8 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
-                                        <img class="filterBlock-item-image" :src="country.picture" :alt="country.name">
+                                        <img class="filterBlock-item-image" :src="country.picture"
+                                             :alt="country.name">
                                         {{country.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="country.select">done</i>
@@ -251,7 +248,7 @@
                 fieldQuery: '',
                 universityQuery: '',
                 orderRateAscending: true,
-                activeMobileFilterTab: 'none',
+                activeMobileFilterTab: 'countries',
                 tempScroll: window.scrollY,
             }
         },
@@ -287,11 +284,11 @@
             },
 
             toggleMobileFilterTab(tabName) {
-              if(this.activeMobileFilterTab === tabName) {
-                  this.activeMobileFilterTab = 'none'
-              } else {
-                  this.activeMobileFilterTab = tabName;
-              }
+                if (this.activeMobileFilterTab === tabName) {
+                    this.activeMobileFilterTab = 'none'
+                } else {
+                    this.activeMobileFilterTab = tabName;
+                }
             },
 
             clearActiveFilters() {
@@ -478,47 +475,36 @@
         background-color: white;
         width: 100%;
         z-index: 9999;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-        border-top: 1px solid #ccc;
-        overflow-y: auto;
-        border-radius: 10px 10px 0 0;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
     }
 
     .bottomFilter-head {
         cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         flex-wrap: nowrap;
+        height: 50px;
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .bottomFilter-head--open {
+        background-color: white;
+        color: #666;
     }
 
     .bottomFilter-head-title {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin: 10px;
-        color: #666;
         font-size: 14px;
+        margin: 0;
     }
 
     .bottomFilter-head-title i {
         margin-left: 5px;
         font-size: 16px;
-    }
-
-    .bottomFilter-head-toggler {
-        display: flex;
-        align-items: center;
-        margin: 10px;
-        color: #666;
-        padding: 0;
-        background: none;
-        border: none;
-        font-size: 12px;
-    }
-
-    .bottomFilter-head-toggler i {
-        font-size: 14px;
     }
 
     .bottomFilter-content-tabs {
@@ -534,7 +520,7 @@
         font-size: 12px;
         border: none;
         color: #777;
-        margin:0 10px;
+        margin: 0 10px;
         padding: 5px 10px;
         border-radius: 10px;
         outline: none;
@@ -544,15 +530,6 @@
         color: white;
         background-color: #8C3DDB;
     }
-
-
-
-
-
-
-
-
-
 
     .bottomFilterColumn p:first-child i {
         margin-left: 5px;
@@ -764,6 +741,7 @@
     .filterBlock-item-image {
         width: 20px;
         height: 20px;
+        border-radius: 50%;
         margin: 0 10px;
     }
 
@@ -884,6 +862,14 @@
 
         .topFilter-item--active {
             display: flex;
+        }
+
+        .section-bg {
+            display: none;
+        }
+
+        .section {
+            padding-top: 0;
         }
     }
 </style>

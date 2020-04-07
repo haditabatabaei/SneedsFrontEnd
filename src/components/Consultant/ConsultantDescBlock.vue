@@ -28,19 +28,19 @@
                  :alt="consultant.first_name + ' ' + consultant.last_name">
 
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons" v-if="consultant.universities[0] == undefined">account_balance</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.universities[0].picture"
-                     :alt="consultant.universities[0].name" v-else/>
+                <i class="material-icons" v-if="currentUniversity == undefined">account_balance</i>
+                <img class="consultantDescBlock--head_item_image" :src="currentUniversity.picture"
+                     :alt="currentUniversity.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">دانشگاه</p>
-                <p class="consultantDescBlock--head_item_text">{{consultant.universities[0].name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{currentUniversity.name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons" v-if="consultant.countries[0] == undefined">house</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.countries[0].picture"
-                     :alt="consultant.countries[0].name" v-else/>
+                <i class="material-icons" v-if="currentCountry == undefined">house</i>
+                <img class="consultantDescBlock--head_item_image" :src="currentCountry.picture"
+                     :alt="currentCountry.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">کشور در حال تحصیل</p>
-                <p class="consultantDescBlock--head_item_text">{{consultant.countries[0].name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{currentCountry.name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
@@ -70,6 +70,18 @@
         props: {
             consultant: {
                 type: Object,
+            }
+        },
+        computed: {
+            currentUniversity() {
+                if(this.consultant.universities) {
+                    return this.consultant.universities[0];
+                }
+            },
+            currentCountry() {
+                if(this.consultant.countries) {
+                    return this.consultant.countries[this.consultant.countries.length - 1];
+                }
             }
         },
         created() {
@@ -104,7 +116,7 @@
     .consultantDescBlock--head {
         position: absolute;
         width: 80%;
-        height: 135px;
+        min-height: 135px;
         border-radius: 15px;
         top: -50px;
         background-color: white;

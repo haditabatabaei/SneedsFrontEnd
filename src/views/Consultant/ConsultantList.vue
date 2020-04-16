@@ -445,14 +445,7 @@
         background-color: #eeeeee;
         min-height: 100vh;
         position: relative;
-    }
-
-    .section-bg {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        background-color: #8C3DDB;
-        height: 100px;
+        padding-top: 0;
     }
 
     .filterColumn {

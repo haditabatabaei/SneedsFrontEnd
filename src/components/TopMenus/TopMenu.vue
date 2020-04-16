@@ -68,7 +68,7 @@
                         <span style="margin-right:5px;">پروفایل</span>
                         <b style="margin-right:5px;" class="caret" />
                     </button>
-                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen">
+                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen" @click.prevent="toggleProfileDropdown">
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/profile">اطلاعات کاربری</router-link>
                         </li>

@@ -1,6 +1,9 @@
 <template>
-    <div class="commentSectionWrapper">
-
+    <section class="commentSectionWrapper">
+        <h1 class="commentSectionWrapper-title isansFont">
+            نظرات
+            <sub v-if="comments.length > 0" class="commentSectionWrapper-title-meta isansFont--faNum">{{comments.length}} نظر</sub>
+        </h1>
         <div class="commentInputSection isansFont--faNum" v-if="isLoggedIn">
             <textarea
                 id="comment"
@@ -14,16 +17,13 @@
             </button>
         </div>
 
-        <div class="col-md-12" v-else>
-            <router-link to="/auth/login" class="btn btn-sm btn-warning isansFont">
+        <div class="col-md-12 text-center" v-else>
+            <router-link to="/auth/login" class=" isansFont">
                 برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
             </router-link>
         </div>
 
         <div class="col-md-12 commentsWrapper">
-            <h3 class="text-right commentsMiniTitle isansFont--faNum">
-                نظرات ( {{comments.length}} )
-            </h3>
             <comment-block
                 v-for="(comment, index) in comments"
                 :key="index"
@@ -33,7 +33,7 @@
                 :comment="comment"
             />
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -125,18 +125,25 @@
 <style scoped>
     .commentSectionWrapper {
         background-color: white;
-        border: 1.5px solid #ccc;
-
-        margin-top: 30px;
-        border-radius: 15px;
-
+        border-radius: 0 0 15px 15px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         width: 100%;
-
         padding: 15px;
+    }
+
+    .commentSectionWrapper-title {
+        font-size: 24px;
+        color: #444;
+        margin-top: 30px;
+        font-weight: bold;
+    }
+
+    .commentSectionWrapper-title-meta {
+        font-size: 12px;
+        color: #555;
     }
 
     .commentInputSection {
@@ -147,8 +154,8 @@
         width: 100%;
         padding: 10px;
         resize: none;
-        border: none;
-        border-bottom: 2px solid #ccc;
+        border: 1px solid #ccc;
+        border-radius: 15px;
     }
 
     .commentInputSection button {

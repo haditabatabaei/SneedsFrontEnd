@@ -1,34 +1,29 @@
 <template>
     <main class="main">
         <section class="container">
-            <div class="mobileConsultantMenu">
-                <div class="mobileConsultantMenu--links">
-                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'desc'}]"
-                            @click="smoothScrollToPos(getElementOffsetTop('descBlock'))">
-                        <i class="material-icons">info</i>
-                    </button>
-                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'calendar'}]"
-                            @click="smoothScrollToPos(getElementOffsetTop('calendarBlock'))">
-                        <i class="material-icons">date_range</i>
-                    </button>
-                    <button class="mobileConsultantMenu--button" :class="[{'active' : activeSection === 'comments'}]"
-                            @click="smoothScrollToPos(getElementOffsetTop('commentsBlock'))">
-                        <i class="material-icons">comment</i>
-                    </button>
-                </div>
-                <div class="mobileConsultantMenu--shop" v-if="stash.length !== 0">
-                    <button class="btn btn-round btn-sm btn-rose isansFont--faNum" @click="addSelectedTimesToCart()">
-                        رزرو
-                        {{stash.length}}
-                        زمان انتخاب شده.
-                    </button>
-                </div>
-            </div>
             <div class="row">
+                <div class="col-md-9">
+                    <div class="row" id="descBlock">
+                        <div class="col-md-12 consultantBlock">
+                            <div class="meta">
+                                <div class="meta-overlap"></div>
+                            </div>
+                            <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
+                            <user-calendar
+                                    v-if="consultant.id && windowWidth > 991.8"
+                                    :consultantId="consultant.id"
+                                    @get-slots="setSlot">
+                            </user-calendar>
+                            <comment-section :consultant="consultant" v-if="consultant.id"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-3 sideBarBlockSticky">
                     <div class="consultantSidebarBlock">
                         <div class="consultantSidebarBlock--info">
-                            <img v-if="activeSection != 'desc' || windowWidth < 991.8" :src="consultant.profile_picture" :alt="consultant.first_name + ' ' + consultant.last_name">
+                            <img v-if="activeSection != 'desc' || windowWidth < 991.8" :src="consultant.profile_picture"
+                                 :alt="consultant.first_name + ' ' + consultant.last_name">
                             <div class="consultantSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum">
                                     {{consultant.first_name + " " + consultant.last_name}}
@@ -36,27 +31,6 @@
                                 <span class="isansFont--faNum" v-if="consultant.rate != null"> امتیاز {{consultant.rate}}</span>
                                 <span class="isansFont--faNum" v-else>بدون امتیاز</span>
                             </div>
-                        </div>
-                        <div class="consultantSidebarBlock--links isansFont--faNum">
-                            <ul>
-                                <li :class="[{'active' : activeSection === 'desc'}]">
-                                    <button @click="smoothScrollToPos(getElementOffsetTop('descBlock'))">مشخصات</button>
-                                    <span class="line" />
-                                </li>
-                                <li :class="[{'active' : activeSection === 'calendar'}]">
-                                    <button @click="smoothScrollToPos(getElementOffsetTop('calendarBlock'))">تقویم
-                                        مشاور و رزرو
-                                    </button>
-                                    <span class="line" />
-                                </li>
-                                <li :class="[{'active' : activeSection === 'comments'}]">
-                                    <button @click="smoothScrollToPos(getElementOffsetTop('commentsBlock'))">
-                                        نظرات
-                                        <sub>{{consultant.comment_number}}</sub>
-                                        <span class="line" />
-                                    </button>
-                                </li>
-                            </ul>
                         </div>
                         <div class="consultantSidebarBlock--selectedItems isansFont--faNum">
                             <ul class="consultantSidebarBlock--selectedItems_list">
@@ -97,32 +71,18 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <div class="row" id="descBlock">
-                        <div class="col-md-12">
-                            <div class="meta" style="background:url(/sneedsAssets/img/consultant-profile-top-bg.png) no-repeat 100% / cover">
-                                <div class="meta-overlap" style="position: absolute;width:100%;height:100%;top:0;left:0;background-color:rgba(32, 184, 163,0.8);border-radius:0 0 15px 15px"></div>
-                            </div>
-                            <consultant-desc-block :consultant="consultant" v-if="consultant.id" />
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="row" id="calendarBlock">
-                        <div class="col-md-12">
-                            <user-calendar
-                                 v-if="consultant.id"
-                                 :consultantId="consultant.id"
-                                 @get-slots="setSlot">
-                            </user-calendar>
-                        </div>
-                    </div>
-
-                    <div class="row" id="commentsBlock">
-                        <div class="col-md-12">
-                            <comment-section :consultant="consultant" v-if="consultant.id" />
-                        </div>
-                    </div>
+            <div class="consultant-mobile-calendar isansFont" :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
+                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">رزرو وقت مشاوره</button>
+                <div class="mobile-calendar-header" v-if="showMobileCalendar">
+                    <button @click="toggleMobileCalendar" class="mobile-calendar-close">
+                        <i class="material-icons">
+                            close
+                        </i>
+                    </button>
                 </div>
+                <mobile-user-calendar :consultant-id="consultant.id" v-if="consultant.id && showMobileCalendar" />
             </div>
         </section>
     </main>
@@ -133,13 +93,14 @@
     import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
     import UserCalendar from '@/components/Consultant/UserCalendar'
+    import MobileUserCalendar from "@/components/Consultant/MobileUserCalendar";
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
     import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, UserCalendar
+            CommentSection, ConsultantDescBlock, UserCalendar, MobileUserCalendar
         },
         data() {
             return {
@@ -150,7 +111,8 @@
                 descPos: 0,
                 calendarPos: 0,
                 commentsPos: 0,
-                scrollListener: null
+                scrollListener: null,
+                showMobileCalendar: false,
             }
         },
         computed: {
@@ -161,7 +123,7 @@
                 return this.$store.getters.getStash;
             },
             shownDiscounts() {
-              return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1));
+                return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1));
             },
         },
         created() {
@@ -177,6 +139,9 @@
         },
 
         methods: {
+            toggleMobileCalendar() {
+              this.showMobileCalendar = !this.showMobileCalendar;
+            },
 
             setSlot(slots) {
                 this.slots = slots;
@@ -184,15 +149,13 @@
 
             async addSelectedTimesToCart() {
                 console.log(this.stash);
-
                 let payload = {"products": []};
-
                 for (let i = 0; i < this.stash.length; i++) {
                     payload.products.push(this.getSlotIdByDate(this.stash[i].datestart, this.stash[i].dateend));
                 }
 
-                if(this.isLoggedIn) {
-                    if(this.stash.length > 0) {
+                if (this.isLoggedIn) {
+                    if (this.stash.length > 0) {
                         try {
                             this.$loading(true);
                             let result = await axios.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
@@ -200,7 +163,7 @@
                             this.$router.push(`/carts/${result.data.id}`);
                         } catch (e) {
                             console.log(e);
-                            if(e.response) {
+                            if (e.response) {
                                 console.log(e.response)
                             }
                         } finally {
@@ -221,10 +184,6 @@
                 }
             },
 
-            getElementOffsetTop(elemId) {
-                return document.getElementById(elemId).offsetTop + 20;
-            },
-
             async getListOfNumberDiscounts() {
                 this.$loading(true);
                 try {
@@ -239,48 +198,13 @@
                 }
             },
 
-
-            handleScroll() {
-                this.descPos = document.getElementById('descBlock').offsetTop;
-                this.calendarPos = document.getElementById('calendarBlock').offsetTop;
-                this.commentsPos = document.getElementById('commentsBlock').offsetTop;
-                if (scrollY >= 0 && scrollY < this.calendarPos) {
-                    //desc block insight
-                    this.toggleSection('desc')
-                } else if (scrollY >= this.calendarPos && scrollY < this.commentsPos) {
-                    //calendar block insight
-                    this.toggleSection('calendar')
-                } else {
-                    //comments block insight
-                    this.toggleSection('comments')
-                }
-            },
-
-            smoothScrollToPos(yPos) {
-                let step = 10;
-                if (scrollY >= yPos)
-                    step *= -1;
-
-                let scrollInterval = setInterval(() => {
-                    scrollTo(0, scrollY + step);
-                    if (Math.abs(yPos - scrollY) <= Math.abs(step)) {
-                        clearInterval(scrollInterval);
-                    }
-                }, 0.1);
-
-            },
-
-            toggleSection(newSec) {
-                this.activeSection = newSec;
-            },
-
             async getConsultantBySlug(consultantSlug) {
                 this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}/`, this.$store.getters.httpConfig);
                     this.consultant = result.data;
                     console.log(result);
-                } catch(e) {
+                } catch (e) {
                     console.log(e.response);
                     this.printMessage("خطایی هنگام ارتبا با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
                 } finally {
@@ -298,9 +222,7 @@
                 })
             },
         }
-
     }
-
 </script>
 
 <style scoped>
@@ -321,12 +243,12 @@
         background-color: white;
         width: 100%;
         border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: flex-start;
         justify-content: flex-start;
         flex-direction: column;
-        margin-top: 30px;
+        margin-top: 130px;
     }
 
     .sideBarBlockSticky {
@@ -363,13 +285,22 @@
     }
 
     .meta {
-        margin-bottom: 15px;
         width: 100%;
-        height: 100px;
-        background-color: #20B8A3;
+        height: 115px;
         border-radius: 0 0 15px 15px;
-        box-shadow:0 3px 10px 1px rgba(0,0,0,0.2);
+        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
         position: relative;
+        background: url('/sneedsAssets/img/consultant-profile-top-bg.png') no-repeat 0 -300px / cover;
+    }
+
+    .meta-overlap {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(32, 184, 163, 0.8);
+        border-radius: 0 0 15px 15px;
     }
 
     .consultantSidebarBlock--info img {
@@ -493,14 +424,27 @@
         outline: none;
     }
 
-    .mobileConsultantMenu {
+    .consultant-mobile-calendar {
         display: none;
     }
 
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
-        .sticky-top {
-            position: static;
-            top: initial;
+        .main {
+            padding-bottom: 50px;
+            width: 100%;
+            border-radius: 0;
+        }
+
+        .meta {
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-position: center;
+        }
+
+        .meta-overlap {
+            border-radius: 0;
         }
 
         .sideBarBlockSticky {
@@ -509,70 +453,73 @@
         }
 
         .consultantSidebarBlock {
-            margin-bottom: 30px;
-            margin-top: 10px;
-        }
-
-        .consultantSidebarBlock--links {
             display: none;
         }
 
-        .consultantSidebarBlock--numberDiscounts {
-            display: none;
+        .container {
+            padding-right: 0;
+            padding-left: 0;
         }
 
-        .consultantSidebarBlock--selectedItems {
-            display: none;
+        .row {
+            margin-right: 0;
+            margin-left: 0;
         }
 
-        .addToCartButton {
-            display: none;
+        .col-md-9 {
+            padding-right: 0;
+            padding-left: 0;
         }
 
+        .col-md-12 {
+            padding-right: 0;
+            padding-left: 0;
+        }
 
-        .mobileConsultantMenu {
+        .consultant-mobile-calendar {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: flex-start;
             flex-direction: column;
+            min-height: 65px;
             position: fixed;
-            bottom: -2px;
+            bottom: 0;
             left: 0;
             width: 100%;
             background-color: white;
-            z-index: 999;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
         }
 
-        .mobileConsultantMenu--links {
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-            width: 100%;
-            height: 70px;
+        .consultant-mobile-calendar--round {
+            border-radius: 15px 15px 0 0;
         }
 
-        .mobileConsultantMenu--button {
-            background: none;
+        .mobile-calendar-toggler {
+            color: white;
+            background-color: #8C3DDB;
             border: none;
-            padding: 10px;
-            margin: 0;
-            border-radius: 50%;
+            width: 100%;
+            height: 65px;
+        }
+
+        .mobile-calendar-close {
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            margin: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 12px;
+            border-radius: 50%;
+            border: 1px solid #B3B3B3;
+            color: #B3B3B3;
+            background-color: white;
         }
 
-        .mobileConsultantMenu--button.active {
-            background-color: #8C3DDB;
-            color: white;
-            box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
-            flex-direction: column;
-            align-items: center;
+        .mobile-calendar-close i {
+            font-size: 12px;
         }
 
-        .meta {
-            display: none;
-        }
     }
 </style>

@@ -667,17 +667,8 @@
             justify-content: center;
         }
 
-
-
-        /*.priceWrapper {*/
-        /*    margin-right: 0;*/
-        /*    margin-top: 15px;*/
-        /*}*/
-
-        /*.cardsWrapper {*/
-        /*    margin-right: 0;*/
-        /*}*/
-
-
+        .activeCart {
+            padding-bottom: 260px;
+        }
     }
 </style>

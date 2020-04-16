@@ -65,7 +65,7 @@
         margin-bottom: 15px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         flex-wrap: wrap;
         cursor: pointer;
     }

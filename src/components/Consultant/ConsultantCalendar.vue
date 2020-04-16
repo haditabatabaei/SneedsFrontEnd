@@ -1,4 +1,4 @@
-    <template>
+<template>
     <div v-if="consultantId" class="userCalendarWrapper">
         <div class="userCalendarWeekWrapper isansFont--faNum">
             <button @click.prevent="showPrevWeek()">
@@ -35,7 +35,8 @@
                     {{ (index - 1) + ":" + minutesOffsetFromTehran + " تا " + (index) + ":" + minutesOffsetFromTehran}}
                 </div>
                 <div class="myTableCell firstCellInRow" v-else>
-                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" + minutesOffsetFromTehran}}
+                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" +
+                    minutesOffsetFromTehran}}
                 </div>
 
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
@@ -46,25 +47,25 @@
                     ></div>
                     <!-- Its not reserved ( not purple ) and its empty -->
                     <div
-                        v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran)) &&
+                            v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran)) &&
                        !isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                        @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
-                        :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),
+                            @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
+                            :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),
                         days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
-                        class="myTableSemiCell timeOpenForManagerToSet"
+                            class="myTableSemiCell timeOpenForManagerToSet"
                     ></div>
 
                     <!-- Its not reserved ( not purple ) but its available for users to choose -->
                     <div
-                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                        :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
-                        @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
-                        class="myTableSemiCell timeOpen"
+                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
+                            @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
+                            class="myTableSemiCell timeOpen"
                     ></div>
 
                     <div
-                        v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                        class="myTableSemiCell timeReserved"
+                            v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                            class="myTableSemiCell timeReserved"
                     ></div>
                 </div>
             </div>
@@ -86,20 +87,20 @@
         },
         props: {
             consultantId: {
-                type : Number || String
+                type: Number || String
             },
         },
         data() {
             return {
                 slots: [],
-                soldSlots : [],
+                soldSlots: [],
                 days: [],
                 selectedDates: [],
                 selectedDatesToRemove: [],
                 selectedDatesToOpen: [],
                 shownDate: {},
                 justNowDate: {},
-                calendarLocale : 'en',
+                calendarLocale: 'en',
                 minutesOffsetFromTehran: 0
             }
         },
@@ -126,8 +127,8 @@
             async initComp() {
                 try {
                     this.$loading(true);
-                    console.log('active time zone' , this.$store.getters.timezone);
-                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`,this.$store.getters.httpConfig);
+                    console.log('active time zone', this.$store.getters.timezone);
+                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                     let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                     let timezoneResult = await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
                     console.log('all slots : ', slotsResult);
@@ -143,9 +144,9 @@
                     let minute = Number(timezone.split(':')[1]);
                     console.log(sign, hour, " ", minute);
                     let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
-                    console.log( Number(sign + ((hour * 60) + minute)));
+                    console.log(Number(sign + ((hour * 60) + minute)));
                     console.log(Number("+" + 210));
-                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60) ) * 60);
+                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
                     console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
                     console.log(this.shownDate);
                     this.handleWeek(this.shownDate);
@@ -278,13 +279,13 @@
             },
 
             removeElementFromToOpenDates(value) {
-                this.selectedDatesToOpen = this.selectedDatesToOpen.filter( val => {
+                this.selectedDatesToOpen = this.selectedDatesToOpen.filter(val => {
                     return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
                 });
             },
 
             removeElementFromToRemoveDates(value) {
-                this.selectedDatesToRemove = this.selectedDatesToRemove.filter( val => {
+                this.selectedDatesToRemove = this.selectedDatesToRemove.filter(val => {
                     return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
                 });
             },
@@ -318,7 +319,7 @@
                         await this.initComp();
                     } catch (e) {
                         console.log(e);
-                        if(e.response) {
+                        if (e.response) {
                             console.log(e.response);
                         }
                     } finally {
@@ -347,7 +348,7 @@
                             "start_time": selectedDate.datestart,
                             "end_time": selectedDate.dateend,
                         };
-                        let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
+                        let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`, payload, this.$store.getters.httpConfig);
                         console.log(result);
                     }
 
@@ -355,7 +356,7 @@
                     this.selectedDatesToOpen = [];
                 } catch (e) {
                     console.log(e);
-                    if(e.response) {
+                    if (e.response) {
                         console.log(e.response);
                     }
                 } finally {
@@ -441,7 +442,7 @@
     }
 
     .timeReserved {
-        border:2px solid #c9737c;
+        border: 2px solid #c9737c;
         color: #c9737c;
         background-color: white;
     }

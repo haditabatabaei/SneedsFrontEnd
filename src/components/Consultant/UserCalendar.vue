@@ -1,23 +1,22 @@
 <template>
-    <div v-if="consultantId" class="userCalendarWrapper">
+    <section v-if="consultantId" class="userCalendarWrapper">
         <div class="userCalendarWeekWrapper isansFont--faNum">
-            <button @click.prevent="showPrevWeek()">
+            <button class="userCalendarWeekWrapper-button" @click.prevent="showPrevWeek()">
                 <i class="material-icons">keyboard_arrow_right</i>
                 هفته قبلی
             </button>
-            <button @click.prevent="showNextWeek()">
+            <button class="userCalendarWeekWrapper-button" @click.prevent="showNextWeek()">
                 هفته بعدی
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
         </div>
         <div class="calendarTopWrapper">
-
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
-                <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
-                <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
-                <span class="btn btn-round btn-sm btn-simple timeReserved isansFont--faNum">رزرو شده</span>
+                <button class="calendar-button timeNotAvailable isansFont">غیر فعال</button>
+                <button class="calendar-button timeOpen isansFont">باز برای انتخاب</button>
+                <button class="calendar-button timeSelected isansFont">انتخاب شده</button>
+                <button class="calendar-button timeReserved isansFont--faNum">رزرو شده</button>
             </div>
         </div>
         <div class="myTable isansFont" v-if="days.length != 0">
@@ -35,31 +34,33 @@
                     {{ (index - 1) + ":" + minutesOffsetFromTehran + " تا " + (index) + ":" + minutesOffsetFromTehran}}
                 </div>
                 <div class="myTableCell firstCellInRow" v-else>
-                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" + minutesOffsetFromTehran}}
+                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" +
+                    minutesOffsetFromTehran}}
                 </div>
                 <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
                     <div
-                        v-if="days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).isBefore(justNowDate) &&
+                            v-if="days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).isBefore(justNowDate) &&
                          !isReserved(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                        class="myTableSemiCell timeNotAvailable"
+                            class="myTableSemiCell timeNotAvailable"
                     ></div>
 
                     <div
-                        v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                        @click="itemClickHandler(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
-                        :class="[
+                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                            @click="itemClickHandler(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
+                            :class="[
                             {'timeOpen' : !isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())},
                             {'timeSelected' : isDatePresentOnSelectedList($store.getters.getStash, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())},
                         ]"
                     ></div>
 
                     <div
-                        v-else-if="isReserved(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))" class="myTableSemiCell timeReserved"
+                            v-else-if="isReserved(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
+                            class="myTableSemiCell timeReserved"
                     ></div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -74,18 +75,18 @@
         },
         props: {
             consultantId: {
-                type : Number || String
+                type: Number || String
             },
         },
         data() {
             return {
                 slots: [],
-                soldSlots : [],
+                soldSlots: [],
                 days: [],
                 selectedDates: [],
                 shownDate: {},
                 justNowDate: {},
-                calendarLocale : 'en',
+                calendarLocale: 'en',
                 minutesOffsetFromTehran: 0,
 
             }
@@ -127,9 +128,9 @@
                     let minute = Number(timezone.split(':')[1]);
                     console.log(sign, hour, " ", minute);
                     let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
-                    console.log( Number(sign + ((hour * 60) + minute)));
+                    console.log(Number(sign + ((hour * 60) + minute)));
                     console.log(Number("+" + 210));
-                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60) ) * 60);
+                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
                     console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
                     this.$emit('get-slots', this.slots);
                     this.handleWeek(this.shownDate);
@@ -224,7 +225,7 @@
             },
 
             isReserved(cellStartDate, cellEndDate) {
-                for(let slot of this.soldSlots) {
+                for (let slot of this.soldSlots) {
                     if (cellStartDate.isSame(jalali(slot.start_time), 'minutes') && cellEndDate.isSame(jalali(slot.end_time), 'minutes')) {
                         return true;
                     }
@@ -250,11 +251,7 @@
     .userCalendarWrapper {
         width: 100%;
         background-color: white;
-        border: 1.5px solid #ccc;
         min-height: 300px;
-
-        border-radius: 15px;
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -270,7 +267,7 @@
         width: 100%;
     }
 
-    .userCalendarWeekWrapper button {
+    .userCalendarWeekWrapper-button {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
@@ -284,78 +281,22 @@
         color: #666;
     }
 
-    .userCalendarWeekWrapper button:hover {
+    .userCalendarWeekWrapper-button:hover {
         background-color: #e1e1e1;
     }
 
-    .userCalendarWeekWrapper button:first-child {
+    .userCalendarWeekWrapper-button:first-child {
         margin-left: 10px;
     }
 
-    .selectedDateBox {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #f9f9f9;
-        border-top: 1px solid #e2e2e2;
-        min-height: 60px;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .selectedDateBlockContent {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .selectedDateBlock {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-left: 1px solid #a8a8a8;
-    }
-
-    .selectedDateBlock button {
-        margin-right: 5px;
-    }
-
-    .selectedDateBlock:last-child {
-        border-left: none;
-    }
-
-    .selectedDateBlock p {
+    .calendar-button {
+        padding:5px 15px;
+        border: none;
+        border-radius: 15px;
+        margin:0 5px;
         font-size: 12px;
-        padding: 10px;
-        margin-bottom: 0;
-    }
-
-    .selectedDateBlockHeader p {
-        margin-top: 20px;
-    }
-
-    .selectedDateBlockFooter {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        align-self: stretch;
-        flex-wrap: wrap;
-    }
-
-    .btn-sample {
-        cursor: default !important;
-    }
-
-    .btn-sample.text-dark {
-        color: #b3b3b3;
-    }
-
-    .btn-sample.text-dark:hover {
-        color: #b3b3b3;
+        cursor: default;
+        outline: none;
     }
 
     .timeNotAvailable {
@@ -364,19 +305,16 @@
     }
 
     .timeOpen {
-        border:2px solid #6ed7d3;
+        border: 2px solid #6ed7d3;
         transition: all 80ms;
         background-color: white;
         cursor: pointer;
         color: #6ed7d3;
     }
 
-    .timeOpen:hover {
-        border-width: 4px;
-    }
 
     .timeReserved {
-        border:2px solid #c9737c;
+        border: 2px solid #c9737c;
         color: #c9737c;
     }
 
@@ -457,7 +395,7 @@
     .firstRow {
         background-color: white;
         position: sticky;
-        top: 115px;
+        top: 120px;
     }
 
     .firstCellInRow {

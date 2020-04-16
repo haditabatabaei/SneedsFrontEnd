@@ -1,7 +1,8 @@
 <template>
     <section class="consultantDescBlock">
         <div class="consultantDescBlock--head-info">
-            <p class="isansFont consultantDescBlock--head-name">{{consultant.first_name + ' ' + consultant.last_name}}</p>
+            <p class="isansFont consultantDescBlock--head-name">{{consultant.first_name + ' ' +
+                consultant.last_name}}</p>
             <!-- rate -->
             <star-rating
                     v-if="consultant.rate != null"
@@ -54,7 +55,7 @@
         </header>
         <main class="consultantDescBlock--main isansFont--faNum">
             <div class="consultantDescBlock--main_video" v-if="consultant.aparat_link">
-                <iframe :src="getVideoFrameLink(consultant.aparat_link)"/>
+                <iframe allowfullscreen="true" :src="getVideoFrameLink(consultant.aparat_link)"/>
             </div>
             <div class="consultantDescBlock--main_bio" v-html="consultant.bio">
             </div>
@@ -64,6 +65,7 @@
 
 <script>
     import StarRating from 'vue-star-rating'
+
     export default {
         name: "ConsultantDescBlock",
         components: {"star-rating": StarRating},
@@ -74,13 +76,13 @@
         },
         computed: {
             currentUniversity() {
-                if(this.consultant.universities) {
+                if (this.consultant.universities) {
                     return this.consultant.universities[0];
                 }
             },
             currentCountry() {
-                if(this.consultant.countries) {
-                    return this.consultant.countries[this.consultant.countries.length - 1];
+                if (this.consultant.countries) {
+                    return this.consultant.countries[0];
                 }
             }
         },
@@ -102,25 +104,23 @@
         width: 100%;
         min-height: 300px;
         background-color: white;
-        border: 1.5px solid #ccc;
-        border-radius: 15px;
+        border-radius: 15px 15px 0 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
         position: relative;
         margin-top: 15px;
-        margin-bottom: 30px;
     }
 
     .consultantDescBlock--head {
         position: absolute;
-        width: 80%;
-        min-height: 135px;
+        width: 85%;
+        min-height: 112px;
         border-radius: 15px;
         top: -50px;
         background-color: white;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         display: flex;
         justify-content: space-evenly;
         align-items: center;
@@ -139,8 +139,8 @@
 
     .consultantDescBlock--head-info {
         position: absolute;
-        right: 200px;
-        top: -90px;
+        right: 185px;
+        top: -85px;
         color: white;
         display: flex;
         align-items: center;
@@ -148,7 +148,7 @@
 
     .consultantDescBlock--head-name {
         font-weight: bold;
-        font-size: 20px;
+        font-size: 18px;
         margin: 0 0 0 15px;
     }
 
@@ -168,6 +168,12 @@
         border-radius: 10px;
         font-size: 12px;
         padding: 5px 15px;
+        transition: all 100ms ease-in-out;
+    }
+
+    .consultantDescBlock--head-resume:hover {
+        background-color: white;
+        color: rgba(32, 184, 163, 0.8);
     }
 
     .consultantDescBlock--head_item {
@@ -200,6 +206,7 @@
         color: #707070;
         margin: 5px 0 0 0;
         font-weight: bold;
+        font-size: 12px;
     }
 
     .consultantDescBlock--head_item_image {
@@ -213,52 +220,45 @@
         align-items: stretch;
         flex-direction: column;
         flex-wrap: wrap;
-        width: 80%;
         padding-top: 60px;
-        margin-top: 30px;
-        margin-bottom: 30px;
     }
 
     .consultantDescBlock--main_bio {
         width: 100%;
-        margin-top: 15px;
+        padding: 0 30px 30px 30px;
     }
 
     .consultantDescBlock--main_bio p {
-        color: #9e9e9e;
         text-align: justify;
         align-self: flex-start;
-        padding: 15px;
-        line-height: 26px;
         word-break: break-word;
     }
 
     .consultantDescBlock--main_video {
-        align-self: flex-start;
-        width: 100%;
-        margin-top: 15px;
+        width: calc(100% - 60px);
+        margin: 30px;
     }
 
     .consultantDescBlock--main_video iframe {
         border-radius: 15px;
         width: 100%;
-        height: 250px;
+        height: 350px;
         border: none;
     }
 
     @media only screen and (max-width: 991.8px) {
         .consultantDescBlock {
-            margin-top: 30px;
+            margin-top: 0;
         }
 
         .consultantDescBlock--main {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding-top: 0;
         }
 
         .consultantDescBlock--main_video {
-            width: 100%;
         }
 
         .consultantDescBlock--main_bio {
@@ -276,12 +276,28 @@
         }
 
         .consultantDescBlock--head {
-            padding: 10px;
             font-size: 10px;
+            position: static;
+            width: 100%;
+            border-radius: 0;
         }
 
+
         .consultantDescBlock--head-info {
+            right: initial;
+            top: -75px;
+        }
+
+        .consultantDescBlock--head-minutes {
             display: none;
+        }
+
+        .consultantDescBlock--head-resume {
+            margin-right: 5px;
+        }
+
+        .consultantDescBlock--head-name {
+            font-size: 16px;
         }
 
         .consultantDescBlock--head-image {

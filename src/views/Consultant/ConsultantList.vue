@@ -1,7 +1,6 @@
 <template>
     <div class="main">
         <div class="section">
-            <div class="section-bg"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 topFilter">
@@ -67,7 +66,7 @@
                             </div>
                             <div class="filterBlock-search">
                                 <div class="filterBlock-search-form">
-                                    <input v-model.trim="countryQuery" @input="searchByIn('countryQuery', 'countries')"
+                                    <input v-model.trim="countryQuery" @input="searchByIn('countryQuery', 'countries', 'start')"
                                            type="text"
                                            class="isansFont"
                                            placeholder="جستجو">
@@ -97,7 +96,7 @@
                             </div>
                             <div class="filterBlock-search">
                                 <div class="filterBlock-search-form">
-                                    <input v-model.trim="fieldQuery" @input="searchByIn('fieldQuery', 'fields')"
+                                    <input v-model.trim="fieldQuery" @input="searchByIn('fieldQuery', 'fields', 'middle')"
                                            type="text" class="isansFont" placeholder="جستجو">
                                     <i class="material-icons">search</i>
                                 </div>
@@ -126,7 +125,7 @@
                             <div class="filterBlock-search">
                                 <div class="filterBlock-search-form">
                                     <input v-model="universityQuery"
-                                           @input="searchByIn('universityQuery', 'universities')" type="text"
+                                           @input="searchByIn('universityQuery', 'universities', 'middle')" type="text"
                                            class="isansFont" placeholder="جستجو">
                                     <i class="material-icons">search</i>
                                 </div>
@@ -298,8 +297,15 @@
                 this.doFilter(false);
             },
 
-            searchByIn(query, list) {
-                this[`shown${list[0].toUpperCase()}${list.slice(1)}`] = this[list].filter(item => item.name.toLowerCase().startsWith(this[query].toLowerCase()));
+            searchByIn(query, list, type) {
+                switch (type) {
+                    case "start" :
+                        this[`shown${list[0].toUpperCase()}${list.slice(1)}`] = this[list].filter(item => item.name.toLowerCase().startsWith(this[query].toLowerCase()));
+                        break;
+                    case "middle" :
+                        this[`shown${list[0].toUpperCase()}${list.slice(1)}`] = this[list].filter(item => item.name.toLowerCase().includes(this[query].toLowerCase()));
+                        break;
+                }
             },
 
             generateQueryParameters() {
@@ -379,9 +385,7 @@
             },
 
             async getListOfCountries() {
-                this.$loading(true);
                 try {
-                    this.$loading(true);
                     let result = await axios.get(`${this.$store.getters.getApi}/account/countries/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
@@ -389,13 +393,10 @@
                     this.shownCountries = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
-                } finally {
-                    this.$loading(false);
                 }
             },
 
             async getListOfUniversities() {
-                this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/account/universities/`);
                     this.addSelectPropertyToList(result.data);
@@ -404,13 +405,10 @@
                     this.shownUniversities = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
-                } finally {
-                    this.$loading(false);
                 }
             },
 
             async getListOfFields() {
-                this.$loading(true);
                 try {
                     let result = await axios.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
                     this.addSelectPropertyToList(result.data);
@@ -419,8 +417,6 @@
                     this.shownFields = result.data;
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "خطا", "error", 3000, "notif");
-                } finally {
-                    this.$loading(false);
                 }
             },
 
@@ -448,7 +444,6 @@
     .section {
         background-color: #eeeeee;
         min-height: 100vh;
-        padding-top: 50px;
         position: relative;
     }
 
@@ -464,9 +459,28 @@
         z-index: 998;
         position: sticky;
         top: 134px;
-        padding: 0 0 15px 0;
+        padding: 5px 5px 15px 5px;
+        min-height: calc(100vh - 220px);
+        max-height: calc(100vh - 400px);
+        overflow: auto;
     }
 
+
+    .filterColumn::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 15px;
+    }
+
+    .filterColumn::-webkit-scrollbar-track {
+        left: 4px;
+        border-radius: 15px;
+    }
+
+    .filterColumn::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        outline: 1px solid gray;
+        border-radius: 15px;
+    }
 
     .bottomFilter {
         position: fixed;
@@ -731,6 +745,7 @@
         border-radius: 10px;
         padding: 5px 0;
         font-size: 12px;
+        min-height: 30px;
     }
 
     .filterBlock-item:hover {
@@ -840,6 +855,7 @@
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .row.consultantListRow {
             margin-right: -10px;
+            padding-bottom: 50px;
         }
 
         .topFilter-item {

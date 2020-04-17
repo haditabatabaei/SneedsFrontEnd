@@ -158,8 +158,9 @@
                                 فیلتر نتایج
                             </p>
                             <button @click="clearActiveFilters" v-if="showFilterPanel"
-                                    class="filterBlock-head-title--action isansFont">
+                                    class="filterBlock-head-title--action isansFont--faNum">
                                 پاکسازی فیلتر های اعمالی
+                                <span v-if="activeFilters.length > 0">( {{activeFilters.length}} )</span>
                             </button>
                         </div>
                         <div class="bottomFilter-content" v-if="showFilterPanel">
@@ -317,6 +318,7 @@
             activeConsultants() {
                 return this.consultants.filter(consultant => consultant.active);
             },
+
             activeFilters() {
                 return this.countries.filter(country => country.select).concat(this.universities.filter(uni => uni.select)).concat(this.fields.filter(field => field.select));
             },

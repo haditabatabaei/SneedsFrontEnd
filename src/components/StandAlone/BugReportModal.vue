@@ -125,7 +125,7 @@
                 if (event.target.files[0].type.startsWith("image")) {
                     this.bug.image = event.target.files[0];
                 } else {
-                    this.$notify({})
+                    this.printMessage("لطفا یک تصویر با فرمت های استاندارد تصاویر انتخاب کنید.", "گزارش باگ:  اخطار", "warn", 7000, "notif");
                 }
             },
             removeItem() {
@@ -144,7 +144,7 @@
                         if(!this.imageIsInvalid && this.bug.image.name != undefined) {
                             payload.append("picture", this.bug.image);
                         }
-                        let result = await axios.post(`${this.$store.getters.getApi}/custom-form/bugs`, payload, {
+                        let result = await axios.post(`${this.$store.getters.getApi}/custom-form/bugs/`, payload, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             },

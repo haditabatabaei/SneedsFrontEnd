@@ -122,14 +122,6 @@ const router = new Router({
                     }
                 },
                 {
-                    path: 'checkout',
-                    name: 'user-checkout',
-                    component: () => import("@/views/User/UserCheckout"),
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
                     path: 'chatroom',
                     name: 'user-chatroom',
                     component: () => import("@/views/Chatroom"),

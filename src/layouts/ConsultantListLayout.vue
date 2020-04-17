@@ -393,7 +393,7 @@
                 if(resetPagination) {
                     this.togglePage(1);
                 }
-                let query = `limit=${this.itemsPerPage}&offset=${this.offsetInCurrentPage}`;
+                let query = `page=${this.currentPage}&page_size=${this.itemsPerPage}`;
                 this.countries.forEach(item => {
                     if (item.select) {
                         query += `&countries=${item.id}`;
@@ -425,8 +425,7 @@
             async doFilter(toggleIndicator, resetPagination) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetPagination)}`);
-
+                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles-temp/?${this.generateQueryParameters(resetPagination)}`);
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;

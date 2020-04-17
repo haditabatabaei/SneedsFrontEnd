@@ -1,5 +1,5 @@
 <template>
-    <section class="profileWrapper">
+    <section class="profileWrapper" :class="[{'no-min-height': $route.name == 'user-chatroom' }]">
         <div class="container" v-if="windowWidth > 991.8">
             <div class="row">
                 <div class="col-md-3 sidebarWrapperDesktop" v-if="$route.name != 'user-chatroom'">
@@ -167,6 +167,10 @@
         width : 100%;
         margin-top:120px;
         min-height:100vh;
+    }
+
+    .profileWrapper.no-min-height {
+        min-height: initial;
     }
 
     .userSidebarBlock {

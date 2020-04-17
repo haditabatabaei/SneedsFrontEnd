@@ -30,7 +30,6 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         border-radius: 15px;
         background-color: white;
-        min-height: 700px;
     }
 
     @media only screen and (max-width: 991.8px) {

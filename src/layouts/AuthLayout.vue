@@ -59,12 +59,14 @@
     @media only screen and (max-width: 767.8px) {
         .authWrapper {
             align-items: flex-start;
-            min-height: initial;
+            height: calc(100vh - 120px);
+            background-color: white;
         }
 
         .authFormWrapper {
             box-shadow: none;
             width: 100%;
+            border-radius: 0;
         }
     }
 

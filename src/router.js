@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -17,12 +18,12 @@ const router = new Router({
             }
         },
         {
-            path : '/auth',
-            name : 'auth',
+            path: '/auth',
+            name: 'auth',
             redirect: '/auth/login',
-            component : () => import("@/layouts/AuthLayout"),
+            component: () => import("@/layouts/AuthLayout"),
             meta: {
-                auth : 'noReq'
+                auth: 'noReq'
             },
             children: [
                 {
@@ -42,14 +43,22 @@ const router = new Router({
                     }
                 },
                 {
-                    path : 'forget',
-                    name : 'auth-forget-pass',
-                    component : () => import("@/views/Auth/Forget"),
-                    meta : {
+                    path: 'forget',
+                    name: 'auth-forget-pass',
+                    component: () => import("@/views/Auth/Forget"),
+                    meta: {
                         auth: 'noReq'
                     }
                 }
             ]
+        },
+        {
+            path: '/consultants',
+            name : 'consultants',
+            component: () => import("@/layouts/ConsultantListLayout"),
+            meta: {
+                auth: 'optional'
+            }
         },
         {
             path: '/user',
@@ -105,19 +114,27 @@ const router = new Router({
                     }
                 },
                 {
-                    path : 'orders/:id',
-                    name : 'user-orders-item',
-                    component : () => import("@/views/User/UserOrderItem"),
+                    path: 'orders/:id',
+                    name: 'user-orders-item',
+                    component: () => import("@/views/User/UserOrderItem"),
                     meta: {
-                        auth : 'req'
+                        auth: 'req'
                     }
                 },
                 {
-                    path : 'chatroom',
-                    name : 'user-chatroom',
-                    component : () => import("@/views/Chatroom"),
-                    meta : {
-                        auth : 'req'
+                    path: 'checkout',
+                    name: 'user-checkout',
+                    component: () => import("@/views/User/UserCheckout"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'chatroom',
+                    name: 'user-chatroom',
+                    component: () => import("@/views/Chatroom"),
+                    meta: {
+                        auth: 'req'
                     }
                 }
             ]
@@ -134,16 +151,16 @@ const router = new Router({
             path: '/consultants',
             name: 'consultants',
             component: () => import("@/views/Consultant/ConsultantList"),
-            meta : {
-                auth : 'optional'
+            meta: {
+                auth: 'optional'
             },
         },
         {
             path: '/consultants/:consultantSlug',
             name: 'consultants-profile',
             component: () => import("@/views/Consultant/ConsultantProfile"),
-            meta : {
-                auth : 'optional'
+            meta: {
+                auth: 'optional'
             }
         },
         {
@@ -156,8 +173,8 @@ const router = new Router({
             redirect: '/404',
         }
     ],
-    scrollBehavior () {
-        return {x : 0, y: 0}
+    scrollBehavior() {
+        return {x: 0, y: 0}
     }
 });
 

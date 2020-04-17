@@ -150,10 +150,17 @@
                     <div class="bottomFilter" v-if="windowWidth < 991.8">
                         <div class="bottomFilter-head" :class="[{'bottomFilter-head--open': showFilterPanel}]"
                              @click="toggleFilterPanel()">
+                            <button class="bottomFilter-head-title-close" v-if="showFilterPanel">
+                                <i class="material-icons">close</i>
+                            </button>
                             <p class="isansFont bottomFilter-head-title">
                                 <i class="material-icons">line_weight</i>
                                 فیلتر نتایج
                             </p>
+                            <button @click="clearActiveFilters" v-if="showFilterPanel"
+                                    class="filterBlock-head-title--action isansFont">
+                                پاکسازی فیلتر های اعمالی
+                            </button>
                         </div>
                         <div class="bottomFilter-content" v-if="showFilterPanel">
                             <div class="bottomFilter-content-tabs isansFont">
@@ -174,6 +181,16 @@
                                 </button>
                             </div>
                             <div class="filterBlock-content" v-if="activeMobileFilterTab === 'countries'">
+                                <div class="filterBlock-search">
+                                    <div class="filterBlock-search-form">
+                                        <input v-model.trim="countryQuery"
+                                               @input="searchByIn('countryQuery', 'countries', 'start')"
+                                               type="text"
+                                               class="isansFont"
+                                               placeholder="جستجو">
+                                        <i class="material-icons">search</i>
+                                    </div>
+                                </div>
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
@@ -187,6 +204,14 @@
                             </div>
 
                             <div class="filterBlock-content" v-else-if="activeMobileFilterTab === 'fields'">
+                                <div class="filterBlock-search">
+                                    <div class="filterBlock-search-form">
+                                        <input v-model.trim="fieldQuery"
+                                               @input="searchByIn('fieldQuery', 'fields', 'middle')"
+                                               type="text" class="isansFont" placeholder="جستجو">
+                                        <i class="material-icons">search</i>
+                                    </div>
+                                </div>
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(field)"
                                         v-for="(field, index) in shownFields" :key="index">
@@ -199,6 +224,14 @@
                             </div>
 
                             <div class="filterBlock-content" v-else-if="activeMobileFilterTab === 'universities'">
+                                <div class="filterBlock-search">
+                                    <div class="filterBlock-search-form">
+                                        <input v-model="universityQuery"
+                                               @input="searchByIn('universityQuery', 'universities', 'middle')" type="text"
+                                               class="isansFont" placeholder="جستجو">
+                                        <i class="material-icons">search</i>
+                                    </div>
+                                </div>
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(university)"
                                         v-for="(university, index) in shownUniversities" :key="index">
@@ -949,6 +982,39 @@
 
         .topFilter-sort-button i {
             font-size: 14px;
+        }
+
+        .filterBlock-search {
+            border-bottom: none;
+        }
+
+        .bottomFilter-head--open {
+            justify-content: space-between;
+        }
+
+        .filterBlock-head-title--action {
+            font-size: 12px;
+            margin-left: 15px;
+        }
+
+        .bottomFilter-head-title {
+        }
+
+        .bottomFilter-head-title-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            margin-right: 15px;
+            background: none;
+            border: none;
+            color: #666;
+        }
+
+        .bottomFilter-head-title-close i {
+            margin: 0;
         }
     }
 

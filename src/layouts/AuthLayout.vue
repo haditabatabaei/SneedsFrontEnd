@@ -19,7 +19,7 @@
 <style scoped>
     .authWrapper {
         width: 100%;
-        min-height: calc(100vh - 70px);
+        min-height: calc(100vh - 120px);
         margin-top: 70px;
         display: flex;
         align-items: center;
@@ -28,7 +28,6 @@
 
     .authFormWrapper {
         width: 450px;
-        /*min-height: 550px;*/
         background-color: white;
         border-radius: 15px;
         padding-bottom: 20px;
@@ -55,6 +54,18 @@
     .switcher--active {
         border-bottom:3px solid #9038CC;
         color: #9038CC;
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .authWrapper {
+            align-items: flex-start;
+            min-height: initial;
+        }
+
+        .authFormWrapper {
+            box-shadow: none;
+            width: 100%;
+        }
     }
 
 </style>

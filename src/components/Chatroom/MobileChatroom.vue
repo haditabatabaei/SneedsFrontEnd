@@ -264,7 +264,7 @@
 
     .chatroom-chats-item.active {
         border-bottom: 2px solid #ccc;
-        z-index: 998;
+        z-index: 997;
         width: 100%;
         box-shadow:0 10px 30px -10px rgba(0,0,0,0.2);
         position: absolute;
@@ -321,7 +321,7 @@
 
     .chatroom-messages-list {
         overflow: auto;
-        height: calc(100vh - 140px);
+        height: calc(100vh - 120px);
     }
 
     .chatroom-messages-item {
@@ -422,9 +422,10 @@
         background-color: #f3f3f3;
         margin: 10px;
         border-radius: 5px;
-        position: absolute;
+        position: fixed;
         width: calc(100% - 20px);
         left: 0;
+        bottom: 0;
     }
 
     .chatroom-messages-new-attach {

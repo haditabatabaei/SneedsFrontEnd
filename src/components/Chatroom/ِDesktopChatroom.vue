@@ -339,7 +339,6 @@
 <style scoped>
     .chatroom-chats {
         border-radius: 0 15px 0 0;
-        height: 700px;
         padding: 0;
         border-left: 1px solid #ddd;
     }
@@ -366,7 +365,8 @@
         align-items: stretch;
         flex-direction: column;
         overflow: auto;
-        height: 400px;
+        height: calc(100vh - 200px);
+        max-height: 470px;
     }
 
     .chatroom-chats-list::-webkit-scrollbar {
@@ -425,7 +425,6 @@
     }
 
     .chatroom-messages {
-        height: 700px;
         padding: 0;
         border-radius: 15px 0 0 15px;
     }
@@ -466,7 +465,8 @@
     }
 
     .chatroom-messages-list {
-        height: 570px;
+        height: calc(100vh - 200px);
+        max-height: 470px;
         overflow: auto;
     }
 

@@ -29,27 +29,27 @@
                  :alt="consultant.first_name + ' ' + consultant.last_name">
 
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons" v-if="currentUniversity == undefined">account_balance</i>
-                <img class="consultantDescBlock--head_item_image" :src="currentUniversity.picture"
-                     :alt="currentUniversity.name" v-else/>
+                <i class="material-icons" v-if="studyInfo.university == undefined">account_balance</i>
+                <img class="consultantDescBlock--head_item_image" :src="studyInfo.university.picture"
+                     :alt="studyInfo.university.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">دانشگاه</p>
-                <p class="consultantDescBlock--head_item_text">{{currentUniversity.name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{studyInfo.university.name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons" v-if="currentCountry == undefined">house</i>
-                <img class="consultantDescBlock--head_item_image" :src="currentCountry.picture"
-                     :alt="currentCountry.name" v-else/>
+                <i class="material-icons" v-if="studyInfo.country == undefined">house</i>
+                <img class="consultantDescBlock--head_item_image" :src="studyInfo.country.picture"
+                     :alt="studyInfo.country.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">کشور در حال تحصیل</p>
-                <p class="consultantDescBlock--head_item_text">{{currentCountry.name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{studyInfo.country.name}}</p>
             </div>
 
             <div class="consultantDescBlock--head_item">
-                <i class="material-icons" v-if="consultant.field_of_studies[0] == undefined">add</i>
-                <img class="consultantDescBlock--head_item_image" :src="consultant.field_of_studies[0].picture"
-                     :alt="consultant.field_of_studies[0].name" v-else/>
+                <i class="material-icons" v-if="studyInfo.field_of_study == undefined">add</i>
+                <img class="consultantDescBlock--head_item_image" :src="studyInfo.field_of_study.picture"
+                     :alt="studyInfo.field_of_study.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">رشته</p>
-                <p class="consultantDescBlock--head_item_text">{{consultant.field_of_studies[0].name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{studyInfo.field_of_study.name}}</p>
             </div>
 
         </header>
@@ -72,17 +72,28 @@
         props: {
             consultant: {
                 type: Object,
+                default: () => null
             }
         },
         computed: {
-            currentUniversity() {
-                if (this.consultant.universities) {
-                    return this.consultant.universities[0];
-                }
+            studyInfo() {
+                return this.consultant.study_info[this.consultant.study_info.length - 1];
             },
-            currentCountry() {
-                if (this.consultant.countries) {
-                    return this.consultant.countries[0];
+
+            persianGrade() {
+                if (this.consultant != null) {
+                    switch (this.studyInfo.grade) {
+                        case 'phd':
+                            return 'دکترا';
+                        case 'master':
+                            return 'کارشناسی ارشد';
+                        case 'bachelor':
+                            return 'کارشناسی';
+                        default :
+                            return ' ';
+                    }
+                } else {
+                    return ' ';
                 }
             }
         },

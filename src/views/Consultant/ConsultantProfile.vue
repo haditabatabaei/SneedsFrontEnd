@@ -22,8 +22,11 @@
                 <div class="col-md-3 sideBarBlockSticky">
                     <div class="consultantSidebarBlock">
                         <div class="consultantSidebarBlock--info">
-                            <img v-if="activeSection != 'desc' || windowWidth < 991.8" :src="consultant.profile_picture"
-                                 :alt="consultant.first_name + ' ' + consultant.last_name">
+                            <transition name="fade">
+                                <img v-if="showSidebarAvatar" :src="consultant.profile_picture"
+                                     :alt="consultant.first_name + ' ' + consultant.last_name">
+
+                            </transition>
                             <div class="consultantSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum">
                                     {{consultant.first_name + " " + consultant.last_name}}
@@ -73,8 +76,11 @@
                 </div>
             </div>
 
-            <div class="consultant-mobile-calendar isansFont" :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
-                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">رزرو وقت مشاوره</button>
+            <div class="consultant-mobile-calendar isansFont"
+                 :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
+                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">رزرو
+                    وقت مشاوره
+                </button>
                 <div class="mobile-calendar-header" v-if="showMobileCalendar">
                     <button @click="toggleMobileCalendar" class="mobile-calendar-close">
                         <i class="material-icons">
@@ -82,7 +88,7 @@
                         </i>
                     </button>
                 </div>
-                <mobile-user-calendar :consultant-id="consultant.id" v-if="consultant.id && showMobileCalendar" />
+                <mobile-user-calendar :consultant-id="consultant.id" v-if="consultant.id && showMobileCalendar"/>
             </div>
         </section>
     </main>
@@ -113,6 +119,7 @@
                 commentsPos: 0,
                 scrollListener: null,
                 showMobileCalendar: false,
+                showSidebarAvatar: false,
             }
         },
         computed: {
@@ -127,7 +134,7 @@
             },
         },
         created() {
-            document.addEventListener('scroll', this.handleScroll, false);
+            document.addEventListener('scroll', this.scrollEnoughToShowAvatar, false);
             console.log(this.scrollListener);
             console.log('consultant profile created hook called');
             this.getConsultantBySlug(this.$route.params.consultantSlug);
@@ -135,12 +142,16 @@
         },
 
         beforeDestroy() {
-            document.removeEventListener('scroll', this.handleScroll, false);
+            document.removeEventListener('scroll', this.scrollEnoughToShowAvatar, false);
         },
 
         methods: {
+            scrollEnoughToShowAvatar() {
+                this.showSidebarAvatar = window.scrollY >= 150 && this.windowWidth > 991.8;
+            },
+
             toggleMobileCalendar() {
-              this.showMobileCalendar = !this.showMobileCalendar;
+                this.showMobileCalendar = !this.showMobileCalendar;
             },
 
             setSlot(slots) {
@@ -487,7 +498,7 @@
             left: 0;
             width: 100%;
             background-color: white;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
         }
 
         .consultant-mobile-calendar--round {

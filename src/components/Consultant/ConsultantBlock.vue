@@ -1,10 +1,12 @@
 <template>
     <router-link class="consultantBlock row" :to="`/consultants/${consultant.slug}`">
         <div class="consultantBlockData col-md-8">
-            <img :src="consultant.profile_picture" :alt="consultant.first_name + ' ' + consultant.last_name" class="consultantBlockImage" />
+            <img :src="consultant.profile_picture" :alt="`${consultant.first_name} ${consultant.last_name}`"
+                 class="consultantBlockImage"/>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-if="consultant.first_name != null && consultant.last_name != null">
+                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`"
+                                 v-if="consultant.first_name != null && consultant.last_name != null">
                         {{consultant.first_name + ' ' + consultant.last_name}}
                     </router-link>
                     <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-else>
@@ -13,14 +15,11 @@
                 </div>
                 <div class="consultantBlockInfoItem">
                     <p class="isansFont consultantBio">
-                        دانشجوی
-                        {{consultant.field_of_studies[0].name}}
-                        در
-                        {{consultant.countries[0].name}}
+                        {{studyText}}
                     </p>
                 </div>
                 <div class="consultantBlockInfoItem">
-                <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
+                    <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
                     <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">5 / {{consultant.rate}}</span>
                     <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate}}</span>
                     <router-link
@@ -47,16 +46,45 @@
         name: "ConsultantBlock",
         props: {
             consultant: {
-                type : Object,
+                type: Object,
                 default: () => null
             },
+        },
+        computed: {
+            studyText() {
+                if (this.consultant != null) {
+                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                } else {
+                    return " ";
+                }
+            },
+
+            studyInfo() {
+                return this.consultant.study_info[this.consultant.study_info.length - 1];
+            },
+
+            persianGrade() {
+                if (this.consultant != null) {
+                    switch (this.studyInfo.grade) {
+                        case 'phd':
+                            return 'دکترا';
+                        case 'master':
+                            return 'کارشناسی ارشد';
+                        case 'bachelor':
+                            return 'کارشناسی';
+                        default :
+                            return ' ';
+                    }
+                } else {
+                    return ' ';
+                }
+            }
         }
 
     }
 </script>
 
 <style scoped>
-
     .consultantBlock {
         background-color: white;
         border-radius: 10px;
@@ -126,6 +154,8 @@
 
     .consultantBio {
         color: #666;
+        font-size: 12px;
+        line-height: 25px;
     }
 
     .rate {

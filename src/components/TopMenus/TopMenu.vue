@@ -66,7 +66,8 @@
                     <button @click="toggleProfileDropdown" class="profile-menu-button isansFont" :class="[{'profile-menu-button--active' : profileDropdownMenuOpen}]" >
                         <i class="material-icons">person_outline</i>
                         <span style="margin-right:5px;">پروفایل</span>
-                        <b style="margin-right:5px;" class="caret" />
+                        <i class="material-icons" v-if="!profileDropdownMenuOpen">keyboard_arrow_down</i>
+                        <i class="material-icons" style="margin-right:5px;" v-else >keyboard_arrow_up</i>
                     </button>
                     <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen" @click.prevent="toggleProfileDropdown">
                         <li class="profile-menu-list-item">
@@ -287,7 +288,7 @@
         left: 0;
         background-color: white;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
+        z-index: 998;
         display: flex;
         align-items: center;
         justify-content: center;

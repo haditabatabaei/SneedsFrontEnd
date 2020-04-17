@@ -1,5 +1,5 @@
 <template>
-    <div class="consultantBlock row" @click="$router.push(`/consultants/${consultant.slug}`).catch(()=>{})">
+    <router-link class="consultantBlock row" :to="`/consultants/${consultant.slug}`">
         <div class="consultantBlockData col-md-8">
             <img :src="consultant.profile_picture" :alt="consultant.first_name + ' ' + consultant.last_name" class="consultantBlockImage" />
             <div class="consultantBlockInfo" style="margin-top:10px;">
@@ -39,7 +39,7 @@
             </router-link>
         </div>
 
-    </div>
+    </router-link>
 </template>
 
 <script>

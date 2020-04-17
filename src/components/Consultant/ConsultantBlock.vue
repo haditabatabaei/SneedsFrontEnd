@@ -17,6 +17,9 @@
                     <p class="isansFont consultantBio">
                         {{studyText}}
                     </p>
+                    <p class="isansFont consultantBio--mobile">
+                        {{studyTextMobile}}
+                    </p>
                 </div>
                 <div class="consultantBlockInfoItem">
                     <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
@@ -54,6 +57,14 @@
             studyText() {
                 if (this.consultant != null) {
                     return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                } else {
+                    return " ";
+                }
+            },
+
+            studyTextMobile() {
+                if (this.consultant != null) {
+                    return ` دانشجوی  ${this.studyInfo.field_of_study.name} در ${this.studyInfo.country.name} `
                 } else {
                     return " ";
                 }
@@ -223,6 +234,10 @@
         display: block;
     }
 
+    .consultantBio--mobile {
+        display: none;
+    }
+
     @media only screen and (max-width: 576.8px) and (min-width: 0) {
         .consultantBlockImage {
             width: 100px;
@@ -259,6 +274,16 @@
         .rate {
             font-size: 10px;
             padding: 5px 10px;
+        }
+
+
+        .consultantBio {
+            display: none;
+        }
+
+        .consultantBio--mobile {
+            display: initial;
+            color: #666;
         }
 
     }

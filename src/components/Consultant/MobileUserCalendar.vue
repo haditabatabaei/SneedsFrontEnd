@@ -22,17 +22,25 @@
                     <button class="cal-days-toggler"
                             :class="[{'cal-days-toggler--active': day.format() === activeDay.format()}]"
                             @click="showDay(day)">
+
                         {{day.locale($store.getters.locale).format('dddd')}}
+                        <sup class="cal-days-toggler--hasTime" v-if="hasFreeSlotsInDay(day)">
+                            *
+                        </sup>
                     </button>
                 </li>
             </ul>
             <div class="cal-week-days-slots">
+                <p class="cal-week-days-slots-empty" v-if="shownFreeSlots.length === 0">زمانی برای این روز تنظیم نشده است.</p>
                 <button class="days-slots-item days-slots-item--free"
                         :class="[{'isansFont--faNum': isiran, 'days-slots-item--selected': isSlotSelected(slot)}]"
                         @click="toggleSlotToStash(slot)"
                         v-for="(slot, index) in shownFreeSlots">
-                    {{getJalali(slot.start_time).locale($store.getters.locale).format('DD MMMM')}}-
-                    {{getJalali(slot.start_time).locale($store.getters.locale).format('HH')}} تا
+                    <span v-if="isiran">{{getJalali(slot.start_time).locale($store.getters.locale).format('DD MMMM')}}</span>
+                    <span v-else>{{getJalali(slot.start_time).locale($store.getters.locale).format('MMMM DD')}}</span>
+                    -
+                    {{getJalali(slot.start_time).locale($store.getters.locale).format('HH')}}
+                    <span v-if="isiran">تا</span> <span v-else>till</span>
                     {{getJalali(slot.end_time).locale($store.getters.locale).format('HH')}}
                 </button>
                 <button class="days-slots-item days-slots-item--sold" v-for="(slot, index) in shownSoldSlots">
@@ -44,7 +52,7 @@
             </div>
         </div>
         <button disabled v-if="stash.length == 0" class="calendar-reserve-button calendar-reserve-button--disabled">
-            برای رزرو حداقل یک جلسه انتخاب کنید
+            برای رزرو، حداقل یک جلسه انتخاب کنید.
         </button>
         <button class="calendar-reserve-button isansFont--faNum" @click="addSelectedItemsToCart" v-else>
             رزرو {{stash.length}} جلسه انتخاب شده
@@ -269,6 +277,10 @@
                 this.showDay(this.days[0]);
             },
 
+            hasFreeSlotsInDay(day) {
+                return this.slots.findIndex(slot => jalali(slot.start_time).locale(this.$store.getters.locale).isSame(day, 'day')) != -1;
+            },
+
             isSlotSelected(slot) {
                 return this.stash.filter(stashSlot => stashSlot.datestart === slot.start_time && stashSlot.dateend === slot.end_time).length != 0;
             },
@@ -311,8 +323,9 @@
         justify-content: space-around;
         background-color: #F8F8F8;
         border: none;
-        padding: 8px 15px;
+        padding: 2px 8px;
         color: #585858;
+        font-size: 12px;
     }
 
     .cal-week-switcher-button:first-child {
@@ -325,10 +338,16 @@
 
     .cal-week-switcher-button i {
         margin: 5px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
     }
 
     .cal-week-switcher-current {
         margin: 0;
+        font-size: 12px;
     }
 
     .cal-week-days {
@@ -388,6 +407,16 @@
     .days-slots-item--selected {
         color: white;
         background-color: #3CAEA3;
+    }
+
+    .cal-days-toggler--hasTime {
+        color: #3CAEA3;
+    }
+
+    .cal-week-days-slots-empty {
+        font-size: 12px;
+        text-align: center;
+        margin: auto;
     }
 
     .days-slots-item--sold {

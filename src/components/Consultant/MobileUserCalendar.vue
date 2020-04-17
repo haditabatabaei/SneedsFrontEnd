@@ -374,6 +374,7 @@
         background: none;
         border: none;
         padding: 5px;
+        position: relative;
     }
 
     .cal-days-toggler--active {
@@ -411,6 +412,9 @@
 
     .cal-days-toggler--hasTime {
         color: #3CAEA3;
+        position: absolute;
+        top: 10px;
+        left: 1px;
     }
 
     .cal-week-days-slots-empty {

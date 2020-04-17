@@ -558,7 +558,7 @@
         left: 0;
         background-color: white;
         width: 100%;
-        z-index: 9999;
+        z-index: 998;
         box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
     }
 

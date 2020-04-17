@@ -646,7 +646,7 @@
             width: 100%;
             padding: 0;
             border-radius: 0;
-            z-index: 999;
+            z-index: 998;
         }
 
         .payWrapper .cartsWrapper {

@@ -123,10 +123,6 @@
     .consultantBlockImage {
         width: 150px;
         height: 150px;
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-
         border-radius: 10px;
     }
 

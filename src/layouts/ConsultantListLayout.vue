@@ -6,7 +6,7 @@
                     <div class="col-md-12 topFilter">
                         <ul class="topFilter-list isansFont">
                             <li class="topFilter-item topFilter-item--active">
-                                مشاور عمومی اپلای
+                                مشاوره عمومی اپلای
                             </li>
                         </ul>
                         <button class="topFilter-sort-button isansFont" @click="toggleRateSort">

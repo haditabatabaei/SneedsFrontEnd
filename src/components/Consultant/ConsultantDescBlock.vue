@@ -157,7 +157,7 @@
     .consultantDescBlock--head-info {
         position: absolute;
         right: 185px;
-        top: -85px;
+        top: -88px;
         color: white;
         display: flex;
         align-items: center;

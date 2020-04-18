@@ -59,6 +59,12 @@
             </div>
             <div class="consultantDescBlock--main_bio" v-html="consultant.bio">
             </div>
+            <div class="consultantBlock-calendar-warn">
+                <i class="material-icons consultantBlock-calendar-warn-icon">
+                    info
+                </i>
+                مدت زمان هر جلسه مشاوره 40 دقیقه می باشد و هزینه هر جلسه مبلغ {{consultant.time_slot_price}} تومان است.
+            </div>
         </main>
     </section>
 </template>
@@ -255,6 +261,21 @@
         width: 100%;
         height: 350px;
         border: none;
+    }
+
+    .consultantBlock-calendar-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: center;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .consultantBlock-calendar-warn-icon {
+        color: #CAA53D;
+        margin-left: 10px;
     }
 
     @media only screen and (max-width: 991.8px) {

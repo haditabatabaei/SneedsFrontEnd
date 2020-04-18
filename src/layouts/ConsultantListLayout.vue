@@ -425,7 +425,7 @@
             async doFilter(toggleIndicator, resetPagination) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles-temp/?${this.generateQueryParameters(resetPagination)}`);
+                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetPagination)}`);
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;

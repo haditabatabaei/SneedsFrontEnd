@@ -10,7 +10,7 @@
                 </transition>
             </div>
             <div class="LogoWrapper">
-                <sneeds-logo />
+                <sneeds-logo/>
             </div>
             <div class="menuWrapper">
                 <ul class="menuList isansFont">
@@ -19,18 +19,18 @@
                         :key="index"
                         v-bind:class="[{'dropdown':item.hasDropdown}]">
                         <a
-                            href="#"
-                            v-if="item.hasDropdown && item.type === 'router'"
-                            class="dropdown-toggle"
-                            data-toggle="dropdown menuList--linkItem">
+                                href="#"
+                                v-if="item.hasDropdown && item.type === 'router'"
+                                class="dropdown-toggle"
+                                data-toggle="dropdown menuList--linkItem">
                             <span>{{item.itemName}}</span>
-                            <b class="caret" />
+                            <b class="caret"/>
                         </a>
 
                         <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
                            class="dropdown-toggle menuList--linkItem" target="_blank" data-toggle="dropdown">
                             <span>{{item.itemName}}</span>
-                            <b class="caret" />
+                            <b class="caret"/>
                         </a>
 
                         <router-link v-else-if="!item.hasDropdown && item.type === 'router'" :to="item.target"
@@ -49,7 +49,8 @@
                                 <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type === 'router'">
                                     {{dropdownItem.itemName}}
                                 </router-link>
-                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'" target="_blank">{{dropdownItem.itemName}}</a>
+                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
+                                   target="_blank">{{dropdownItem.itemName}}</a>
                             </li>
                         </ul>
                     </li>
@@ -63,13 +64,15 @@
                 </router-link>
 
                 <div class="dropdown authButton" v-else>
-                    <button @click="toggleProfileDropdown" class="profile-menu-button isansFont" :class="[{'profile-menu-button--active' : profileDropdownMenuOpen}]" >
+                    <button @click="toggleProfileDropdown" class="profile-menu-button isansFont"
+                            :class="[{'profile-menu-button--active' : profileDropdownMenuOpen}]">
                         <i class="material-icons">person_outline</i>
                         <span style="margin-right:5px;">پروفایل</span>
                         <i class="material-icons" v-if="!profileDropdownMenuOpen">keyboard_arrow_down</i>
-                        <i class="material-icons" style="margin-right:5px;" v-else >keyboard_arrow_up</i>
+                        <i class="material-icons" style="margin-right:5px;" v-else>keyboard_arrow_up</i>
                     </button>
-                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen" @click.prevent="toggleProfileDropdown">
+                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen"
+                        @click.prevent="toggleProfileDropdown">
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/profile">اطلاعات کاربری</router-link>
                         </li>
@@ -85,13 +88,15 @@
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
                         </li>
-                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant" />
+                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
                         </li>
-                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant" />
-                        <li class="profile-menu-list-item"><button class="profile-menu-list-link" @click.prevent="logout">خروج</button></li>
+                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
+                        <li class="profile-menu-list-item">
+                            <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -224,30 +229,6 @@
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
-                    {
-                        itemName: 'بلاگ',
-                        target: 'http://sneeds.ir/%d8%a8%d9%84%d8%a7%da%af/',
-                        type: 'hyper',
-                        hasDropdown: false,
-                        dropdownItems: [],
-                        icon: 'table_chart'
-                    },
-                    {
-                        itemName: 'درباره ما',
-                        target: 'http://sneeds.ir/%D8%AF%D8%B1%D8%A8%D8%A7%D8%B1%D9%87-%D9%85%D8%A7/',
-                        type: 'hyper',
-                        hasDropdown: false,
-                        dropdownItems: [],
-                        icon: 'info'
-                    },
-                    {
-                        itemName: 'تماس با ما',
-                        target: 'http://sneeds.ir/%d8%aa%d9%85%d8%a7%d8%b3/',
-                        type: 'hyper',
-                        hasDropdown: false,
-                        dropdownItems: [],
-                        icon: 'phone'
-                    },
                 ],
             }
         },
@@ -278,8 +259,6 @@
 </script>
 
 <style scoped>
-
-
     .topNavWrapper {
         width: 100%;
         position: fixed;
@@ -311,7 +290,7 @@
     }
 
     .menuWrapper {
-        margin: auto;
+        margin: auto 0 auto auto;
     }
 
     .menuList {
@@ -357,7 +336,7 @@
         justify-content: space-around;
         border-radius: 25px;
         padding: 7px 30px;
-        border:1.5px solid #8E39CC;
+        border: 1.5px solid #8E39CC;
         cursor: pointer;
         color: #8E39CC;
         background-color: white;
@@ -371,7 +350,7 @@
         justify-content: space-around;
         border-radius: 25px;
         padding: 7px 30px;
-        border:1.5px solid #8E39CC;
+        border: 1.5px solid #8E39CC;
         cursor: pointer;
         color: #8E39CC;
         background-color: white;
@@ -406,17 +385,18 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        box-shadow:0 0 10px 2px rgba(0,0,0,0.2);
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
     }
 
     .profile-menu-list-item {
         display: flex;
     }
+
     .profile-menu-list-link {
         display: flex;
         width: 100%;
         font-size: 13px;
-        padding:10px 10px 10px 0;
+        padding: 10px 10px 10px 0;
         color: #666;
         background: none;
         border: none;
@@ -425,8 +405,6 @@
     .profile-menu-list-link:hover {
         background-color: #f4f4f4;
     }
-
-
 
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
@@ -438,7 +416,7 @@
             transition: all 0.2s ease;
         }
 
-        .slide-fade-enter, .slide-fade-leave-to{
+        .slide-fade-enter, .slide-fade-leave-to {
             transform: translateX(10px);
             opacity: 0;
         }
@@ -549,11 +527,11 @@
 
         .cartTooltip {
             background-color: #d9534f;
-            color:white;
-            border-radius:5px;
-            font-size:10px;
-            padding-right:5px;
-            padding-left:5px;
+            color: white;
+            border-radius: 5px;
+            font-size: 10px;
+            padding-right: 5px;
+            padding-left: 5px;
         }
     }
 </style>

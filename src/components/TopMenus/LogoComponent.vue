@@ -1,8 +1,8 @@
 <template>
-    <router-link to="/" class="logo isansFont--faNum">
+    <a href="http://www.sneeds.ir" target="_blank" class="logo isansFont--faNum">
         <img class="logoImage" src="../../../public/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
         <span class="logoName">اسنیدز</span>
-    </router-link>
+    </a>
 </template>
 
 <script>

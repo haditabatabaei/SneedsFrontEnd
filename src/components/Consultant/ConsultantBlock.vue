@@ -121,8 +121,12 @@
     }
 
     .consultantBlockImage {
-        width: 150px;
-        height: 150px;
+        width: 150px !important;
+        height: 150px !important;
+        min-width: 150px;
+        max-width: 150px;
+        min-height: 150px;
+        max-height: 150px;
         border-radius: 10px;
     }
 
@@ -236,8 +240,12 @@
 
     @media only screen and (max-width: 576.8px) and (min-width: 0) {
         .consultantBlockImage {
-            width: 100px;
-            height: 100px;
+            width: 100px !important;
+            height: 100px !important;
+            min-width: 100px;
+            min-height: 100px;
+            max-width: 100px;
+            max-height: 100px;
         }
 
         .consultantCalendarLink {

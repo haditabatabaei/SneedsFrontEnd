@@ -396,19 +396,19 @@
                 let query = `page=${this.currentPage}&page_size=${this.itemsPerPage}`;
                 this.countries.forEach(item => {
                     if (item.select) {
-                        query += `&countries=${item.id}`;
+                        query += `&country=${item.id}`;
                     }
                 });
 
                 this.universities.forEach(item => {
                     if (item.select) {
-                        query += `&universities=${item.id}`;
+                        query += `&university=${item.id}`;
                     }
                 });
 
                 this.fields.forEach(item => {
                     if (item.select) {
-                        query += `&field_of_studies=${item.id}`;
+                        query += `&field_of_study=${item.id}`;
                     }
                 });
 

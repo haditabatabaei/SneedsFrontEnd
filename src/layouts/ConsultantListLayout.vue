@@ -8,18 +8,6 @@
                             <li class="topFilter-item topFilter-item--active">
                                 مشاور عمومی اپلای
                             </li>
-                            <li class="topFilter-item">
-                                مشاوره ویزا
-                            </li>
-                            <li class="topFilter-item">
-                                مشاوره CV
-                            </li>
-                            <li class="topFilter-item">
-                                مشاوره SOP
-                            </li>
-                            <li class="topFilter-item">
-                                مشاوره زبان
-                            </li>
                         </ul>
                         <button class="topFilter-sort-button isansFont" @click="toggleRateSort">
                             بیشترین امتیاز

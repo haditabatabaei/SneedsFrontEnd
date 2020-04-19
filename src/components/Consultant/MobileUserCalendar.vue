@@ -1,60 +1,64 @@
 <template>
-    <div class="mobile-cal">
-        <div class="cal-week-switcher isansFont">
+    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]">
+        <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek">
                 <i class="material-icons">keyboard_arrow_right</i>
                 هفته قبل
             </button>
             <p class="cal-week-switcher-current isansFont" :class="[{'isansFont--faNum': isiran}]"
                v-if="days.length > 0">
-                {{days[0].locale($store.getters.locale).format('DD MMMM')}}
+                {{days[0].format('DD MMMM')}}
                 تا
-                {{days[days.length -1].locale($store.getters.locale).format('DD MMMM')}}
+                {{days[days.length -1].format('DD MMMM')}}
             </p>
             <button class="cal-week-switcher-button" @click="showNextWeek">
                 هفته بعد
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
         </div>
-        <div class="cal-week-days">
-            <ul class="cal-days-list">
+        <div class="cal-week-days" :class="[{'isansFont': desktopMode}]">
+            <ul class="cal-days-list" :class="[{'cal-days-list--desktop' : desktopMode}]">
                 <li class="cal-days-item" v-for="(day, index) in days">
                     <button class="cal-days-toggler"
                             :class="[{'cal-days-toggler--active': day.format() === activeDay.format()}]"
                             @click="showDay(day)">
 
-                        {{day.locale($store.getters.locale).format('dddd')}}
+                        {{day.format('dddd')}}
                         <sup class="cal-days-toggler--hasTime" v-if="hasFreeSlotsInDay(day)">
                             *
                         </sup>
                     </button>
                 </li>
             </ul>
-            <div class="cal-week-days-slots">
-                <p class="cal-week-days-slots-empty" v-if="shownFreeSlots.length === 0">زمانی برای این روز تنظیم نشده است.</p>
+            <div class="cal-week-days-slots" :class="[{'cal-week-days-slots--desktop': desktopMode}]">
+                <p class="cal-week-days-slots-empty" v-if="shownFreeSlots.length === 0">زمانی برای این روز تنظیم نشده
+                    است.</p>
                 <button class="days-slots-item days-slots-item--free"
-                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--selected': isSlotSelected(slot)}]"
+                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode,  'days-slots-item--selected': isSlotSelected(slot)}]"
                         @click="toggleSlotToStash(slot)"
                         v-for="(slot, index) in shownFreeSlots">
-                    <span v-if="isiran">{{getJalali(slot.start_time).locale($store.getters.locale).format('DD MMMM')}}</span>
-                    <span v-else>{{getJalali(slot.start_time).locale($store.getters.locale).format('MMMM DD')}}</span>
+                    <span v-if="isiran">{{slot.start_time_date.format('DD MMMM')}}</span>
+                    <span v-else>{{slot.start_time_date.format('MMMM DD')}}</span>
                     -
-                    {{getJalali(slot.start_time).locale($store.getters.locale).format('HH')}}
+                    {{slot.start_time_date.format('HH:mm')}}
                     <span v-if="isiran">تا</span> <span v-else>till</span>
-                    {{getJalali(slot.end_time).locale($store.getters.locale).format('HH')}}
+                    {{slot.end_time_date.format('HH:mm')}}
                 </button>
-                <button class="days-slots-item days-slots-item--sold" v-for="(slot, index) in shownSoldSlots">
-                    {{getJalali(slot.start_time).locale($store.getters.locale).format('DD MMMM')}}-
-                    {{getJalali(slot.start_time).locale($store.getters.locale).format('HH')}}
+                <button class="days-slots-item days-slots-item--sold"
+                        :class="[{'days-slots-item--desktop' : desktopMode}]" v-for="(slot, index) in shownSoldSlots">
+                    {{slot.start_time_date.format('DD MMMM')}}-
+                    {{slot.start_time_date.format('HH:mm')}}
                     <span v-if="isiran">تا</span> <span v-else>till</span>
-                    {{getJalali(slot.end_time).locale($store.getters.locale).format('HH')}}
+                    {{slot.end_time_date.format('HH:mm')}}
                 </button>
             </div>
         </div>
-        <button disabled v-if="stash.length == 0" class="calendar-reserve-button calendar-reserve-button--disabled">
+        <button disabled v-if="stash.length == 0 && !desktopMode"
+                class="calendar-reserve-button calendar-reserve-button--disabled">
             برای رزرو، حداقل یک جلسه انتخاب کنید.
         </button>
-        <button class="calendar-reserve-button isansFont--faNum" @click="addSelectedItemsToCart" v-else>
+        <button class="calendar-reserve-button isansFont--faNum" v-else-if="stash.length != 0 && !desktopMode" @click="addSelectedItemsToCart"
+                v-else>
             رزرو {{stash.length}} جلسه انتخاب شده
         </button>
     </div>
@@ -70,7 +74,9 @@
             return {
                 days: [],
                 slots: [],
+                slotsDates: [],
                 soldSlots: [],
+                soldSlotsDates: [],
                 activeDay: {},
                 justNowDate: {},
                 shownDate: {},
@@ -82,7 +88,11 @@
         props: {
             consultantId: {
                 type: Number || String
-            }
+            },
+            desktopMode: {
+                type: Boolean,
+                default: () => false
+            },
         },
         created() {
             this.initComp();
@@ -93,12 +103,12 @@
             },
             showDay(day) {
                 this.activeDay = day;
-                this.shownFreeSlots = this.slots.filter(slot => {
-                    return this.getJalali(slot.start_time).locale(this.$store.getters.locale).isSame(this.activeDay.locale(this.$store.getters.locale), 'day');
+                this.shownFreeSlots = this.slotsDates.filter(slotDate => {
+                    return slotDate.start_time_date.isSame(this.activeDay, 'day');
                 });
 
-                this.shownSoldSlots = this.soldSlots.filter(slot => {
-                    return this.getJalali(slot.start_time).locale(this.$store.getters.locale).isSame(this.activeDay.locale(this.$store.getters.locale), 'day');
+                this.shownSoldSlots = this.soldSlotsDates.filter(slotDate => {
+                    return slotDate.start_time_date.isSame(this.activeDay, 'day');
                 });
 
                 console.log('shown free slots for day:', this.shownFreeSlots);
@@ -107,9 +117,9 @@
 
             toggleSlotToStash(slot) {
                 if (this.isSlotSelected(slot)) {
-                    this.$store.commit('removeItemFromStash', {datestart: slot.start_time, dateend: slot.end_time});
+                    this.$store.commit('removeItemFromStash', {datestart: slot.old_slot.start_time, dateend: slot.old_slot.end_time});
                 } else {
-                    this.$store.commit('addItemToStash', {datestart: slot.start_time, dateend: slot.end_time});
+                    this.$store.commit('addItemToStash', {datestart: slot.old_slot.start_time, dateend: slot.old_slot.end_time});
                 }
 
                 console.log('current stash:', this.stash);
@@ -120,18 +130,29 @@
                     this.$loading(true);
                     this.slots = (await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
                     this.soldSlots = (await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    this.justNowDate = this.getJalali(((await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
+                    this.justNowDate = jalali(((await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
                     this.shownDate = this.justNowDate.clone();
-                    let timezone = this.justNowDate.format('Z');
-                    let sign = timezone[0];
-                    let hour = Number(timezone.split(':')[0].split(sign)[1]);
-                    let minute = Number(timezone.split(':')[1]);
-                    let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
-                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
-
                     console.log('slots', this.slots);
                     console.log('sold slots', this.soldSlots);
                     console.log('just now date', this.justNowDate.format());
+
+                    this.slotsDates = this.slots.map(slot => {
+                        return {
+                            "old_slot": slot,
+                            "start_time_date": jalali(slot.start_time).locale(this.locale),
+                            "end_time_date": jalali(slot.end_time).locale(this.locale)
+                        }
+                    });
+                    this.soldSlotsDates = this.soldSlots.map(slot => {
+                        return {
+                            "old_slot": slot,
+                            "start_time_date": jalali(slot.start_time).locale(this.locale),
+                            "end_time_date": jalali(slot.end_time).locale(this.locale)
+                        }
+                    });
+
+                    console.log('mapped slots:', this.slotsDates);
+                    console.log('mapped sold slots:', this.soldSlotsDates);
                     this.handleWeek(this.shownDate)
                 } catch (e) {
                     console.log(e);
@@ -193,7 +214,7 @@
                 if (this.isiran) {
                     offset = -1;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateSundayNew(date) {
@@ -201,7 +222,7 @@
                 if (this.isiran) {
                     offset = 0;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateMondayNew(date) {
@@ -209,7 +230,7 @@
                 if (this.isiran) {
                     offset = 1;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateTuesdayNew(date) {
@@ -217,7 +238,7 @@
                 if (this.isiran) {
                     offset = 2;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateWednesdayNew(date) {
@@ -225,7 +246,7 @@
                 if (this.isiran) {
                     offset = 3;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateThursdayNew(date) {
@@ -233,7 +254,7 @@
                 if (this.isiran) {
                     offset = 4;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             generateFridayNew(date) {
@@ -241,7 +262,7 @@
                 if (this.isiran) {
                     offset = 5;
                 }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(offset - date.weekday(), 'd');
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
             showWeek(numOfWeek, siblingStatus) {
@@ -278,11 +299,11 @@
             },
 
             hasFreeSlotsInDay(day) {
-                return this.slots.findIndex(slot => jalali(slot.start_time).locale(this.$store.getters.locale).isSame(day, 'day')) != -1;
+                return this.slotsDates.findIndex(slotDate => slotDate.start_time_date.isSame(day, 'day')) !== -1;
             },
 
             isSlotSelected(slot) {
-                return this.stash.filter(stashSlot => stashSlot.datestart === slot.start_time && stashSlot.dateend === slot.end_time).length != 0;
+                return this.stash.filter(stashSlot => stashSlot.datestart === slot.old_slot.start_time && stashSlot.dateend === slot.old_slot.end_time).length !== 0;
             },
         },
         computed: {
@@ -296,6 +317,10 @@
 
             isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
+            },
+            
+            locale() {
+                return this.$store.getters.locale;
             }
         },
     }
@@ -310,11 +335,19 @@
         justify-self: flex-start;
     }
 
+    .mobile-cal--desktop {
+        background-color: white;
+    }
+
     .cal-week-switcher {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
+    }
+
+    .cal-week-switcher--desktop {
+        padding: 15px 0;
     }
 
     .cal-week-switcher-button {
@@ -364,6 +397,10 @@
         padding: 0;
     }
 
+    .cal-days-list--desktop {
+        justify-content: space-evenly;
+    }
+
     .cal-days-item {
         font-size: 13px;
         font-weight: bold;
@@ -391,6 +428,10 @@
         flex-wrap: wrap;
     }
 
+    .cal-week-days-slots--desktop {
+        max-height: 300px;
+    }
+
     .days-slots-item {
         margin: 10px auto;
         padding: 7px 10px;
@@ -398,6 +439,10 @@
         border: none;
         font-size: 14px;
         border-radius: 20px;
+    }
+
+    .days-slots-item--desktop {
+        margin: 10px;
     }
 
     .days-slots-item--free {
@@ -420,7 +465,7 @@
     .cal-week-days-slots-empty {
         font-size: 12px;
         text-align: center;
-        margin: auto;
+        margin: 10px auto;
     }
 
     .days-slots-item--sold {

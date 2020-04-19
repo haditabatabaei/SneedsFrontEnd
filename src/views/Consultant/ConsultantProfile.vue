@@ -9,11 +9,11 @@
                                 <div class="meta-overlap"></div>
                             </div>
                             <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
-                            <user-calendar
-                                    v-if="consultant.id && windowWidth > 991.8"
-                                    :consultantId="consultant.id"
-                                    @get-slots="setSlot">
-                            </user-calendar>
+                            <mobile-user-calendar
+                                v-if="consultant.id && windowWidth > 991.8"
+                                :consultant-id="consultant.id"
+                                :desktop-mode="true"
+                            />
                             <comment-section :consultant="consultant" v-if="consultant.id"/>
                         </div>
                     </div>
@@ -98,7 +98,6 @@
 <script>
     import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
-    import UserCalendar from '@/components/Consultant/UserCalendar'
     import MobileUserCalendar from "@/components/Consultant/MobileUserCalendar";
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
     import jalali from 'jalali-moment'
@@ -106,7 +105,7 @@
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, UserCalendar, MobileUserCalendar
+            CommentSection, ConsultantDescBlock, MobileUserCalendar
         },
         data() {
             return {

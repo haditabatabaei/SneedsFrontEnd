@@ -26,11 +26,11 @@ export default new Vuex.Store({
 
         stash: [],
 
-        mobileMenuShow : true,
+        mobileMenuShow: true,
 
-        timezoneSafe : ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
+        timezoneSafe: ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
 
-        timezone : Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
@@ -42,7 +42,7 @@ export default new Vuex.Store({
         },
 
         toggleMobileMenuShow(state) {
-          state.mobileMenuShow = !state.mobileMenuShow;
+            state.mobileMenuShow = !state.mobileMenuShow;
         },
 
         logout(state) {
@@ -95,8 +95,11 @@ export default new Vuex.Store({
             state.stash.push(newItem);
         },
 
-        removeItemFromStash(state, itemToRemoved) {
-            state.stash = state.stash.filter( val => val.datestart != itemToRemoved.datestart && val.dateend != itemToRemoved.dateend );
+        removeItemFromStash(state, {itemToRemove, type}) {
+            console.log('remove item fired by', {itemToRemove, type});
+            if (type == 'time-slot') {
+                state.stash = state.stash.filter(slot => slot.old_slot.start_time != itemToRemove.old_slot.start_time && slot.old_slot.end_time != itemToRemove.old_slot.end_time);
+            }
         }
     },
     actions: {
@@ -121,7 +124,7 @@ export default new Vuex.Store({
         async login({commit}, user) {
             console.log("login payload :", user);
             console.log('http config', this.getters.httpConfig);
-            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`,user , this.getters.httpConfig);
+            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`, user, this.getters.httpConfig);
             console.log(loginResult);
             commit('setToken', loginResult.data.token);
             commit('setExpires', loginResult.data.expires);
@@ -165,23 +168,23 @@ export default new Vuex.Store({
 
         getStash: state => state.stash,
 
-        getMobileMenuShow : state => state.mobileMenuShow,
+        getMobileMenuShow: state => state.mobileMenuShow,
 
-        httpConfig : state => {
-            if(state.token) {
+        httpConfig: state => {
+            if (state.token) {
                 return {
-                    headers : {
-                        "Authorization" : `JWT ${state.token}`,
-                        "Content-Type" : "application/json",
-                        "CLIENT-TIMEZONE" : state.timezone,
+                    headers: {
+                        "Authorization": `JWT ${state.token}`,
+                        "Content-Type": "application/json",
+                        "CLIENT-TIMEZONE": state.timezone,
                     },
                     timeout: 10000,
                 }
             } else {
                 return {
-                    headers : {
-                        "Content-Type" : "application/json",
-                        "CLIENT-TIMEZONE" : state.timezone,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "CLIENT-TIMEZONE": state.timezone,
                     },
                     timeout: 10000,
                 }
@@ -189,13 +192,13 @@ export default new Vuex.Store({
             }
         },
 
-        timezone : state => state.timezone,
+        timezone: state => state.timezone,
 
         timezoneSafe: state => state.timezoneSafe,
 
-        isiran : state => state.timezoneSafe === 'Asia-Tehran',
+        isiran: state => state.timezoneSafe === 'Asia-Tehran',
 
-        locale : state => {
+        locale: state => {
             if (state.timezoneSafe === 'Asia-Tehran') {
                 return 'fa';
             } else {

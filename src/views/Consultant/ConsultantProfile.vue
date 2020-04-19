@@ -43,9 +43,9 @@
                                 </li>
                                 <li v-for="(item, index) in stash" :key="index">
                                     <i class="material-icons" role="button"
-                                       @click="$store.commit('removeItemFromStash',item)">close</i>
-                                    <span v-if="$store.getters.isiran">{{getJalali(item.datestart).locale('fa').format('dddd') + " - " + getJalali(item.datestart).locale('fa').format('HH:mm') + " تا " + getJalali(item.dateend).locale('fa').format('HH:mm') }}</span>
-                                    <span v-else class="isansFont">{{getJalali(item.datestart).locale('en').format('dddd') + " - " + getJalali(item.datestart).locale('en').format('HH:mm') + " till " + getJalali(item.dateend).locale('en').format('HH:mm') }}</span>
+                                       @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
+                                    <span v-if="$store.getters.isiran">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
+                                    <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -160,9 +160,11 @@
             async addSelectedTimesToCart() {
                 console.log(this.stash);
                 let payload = {"products": []};
-                for (let i = 0; i < this.stash.length; i++) {
-                    payload.products.push(this.getSlotIdByDate(this.stash[i].datestart, this.stash[i].dateend));
-                }
+                this.stash.forEach(item => {
+                   payload.products.push(item.old_slot.id);
+                });
+
+                console.log(payload);
 
                 if (this.isLoggedIn) {
                     if (this.stash.length > 0) {
@@ -176,6 +178,7 @@
                             if (e.response) {
                                 console.log(e.response)
                             }
+                            this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
                         } finally {
                             this.$loading(false);
                         }

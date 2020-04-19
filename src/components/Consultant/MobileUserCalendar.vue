@@ -117,9 +117,9 @@
 
             toggleSlotToStash(slot) {
                 if (this.isSlotSelected(slot)) {
-                    this.$store.commit('removeItemFromStash', {datestart: slot.old_slot.start_time, dateend: slot.old_slot.end_time});
+                    this.$store.commit('removeItemFromStash', {'itemToRemove': slot, type: 'time-slot'});
                 } else {
-                    this.$store.commit('addItemToStash', {datestart: slot.old_slot.start_time, dateend: slot.old_slot.end_time});
+                    this.$store.commit('addItemToStash', slot);
                 }
 
                 console.log('current stash:', this.stash);
@@ -164,9 +164,9 @@
             async addSelectedItemsToCart() {
                 console.log(this.stash);
                 let payload = {"products": []};
-                for (let i = 0; i < this.stash.length; i++) {
-                    payload.products.push(this.getSlotIdByDate(this.stash[i].datestart, this.stash[i].dateend));
-                }
+                this.stash.forEach(item => {
+                    payload.products.push(item.old_slot.id);
+                });
 
                 if (this.isLoggedIn) {
                     if (this.stash.length > 0) {
@@ -202,6 +202,9 @@
 
 
             getSlotIdByDate(startDate, endDate) {
+                // this.soldSlotsDates.forEach((slotDate) => {
+                //     if(slotDate.start_time_date.isSame())
+                // })
                 for (let i = 0; i < this.slots.length; i++) {
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
@@ -303,7 +306,7 @@
             },
 
             isSlotSelected(slot) {
-                return this.stash.filter(stashSlot => stashSlot.datestart === slot.old_slot.start_time && stashSlot.dateend === slot.old_slot.end_time).length !== 0;
+                return this.stash.filter(stashSlot => stashSlot.old_slot.start_time === slot.old_slot.start_time && stashSlot.old_slot.end_time === slot.old_slot.end_time).length !== 0;
             },
         },
         computed: {

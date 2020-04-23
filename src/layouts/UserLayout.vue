@@ -6,7 +6,6 @@
                     <div class="userSidebarBlock">
                         <div class="userSidebarBlock--info">
                             <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture">
-                            <img v-else src="https://picsum.photos/id/0/75/75">
                             <div class="userSidebarBlock--info_detail">
                                 <h1 class="isansFont--faNum" v-if="showFirstName">
                                     {{`${user.first_name} ${user.last_name}`}}
@@ -56,9 +55,9 @@
         </div>
         <div class="mobile" v-else>
             <div class="mobile-info">
-                <img src="https://picsum.photos/id/0/75/75" alt="">
+                <img v-if="showUserAvatar" src="https://picsum.photos/id/0/75/75" :alt="`${user.first_name} ${user.last_name}`">
                 <h1 class="isansFont--faNum" v-if="showFirstName">
-                    {{user.first_name + " " + user.last_name}}
+                    {{`${user.first_name} ${user.last_name}`}}
                 </h1>
                 <h4 class="isansFont--faNum" v-else>
                     لطفا نام و نام خانوداگی خود را تکمیل کنید.
@@ -103,6 +102,7 @@
         name: "UserLayout",
         data() {
             return {
+                showUserAvatar: false,
                 userSidebarItems : [
                     {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
                     {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},

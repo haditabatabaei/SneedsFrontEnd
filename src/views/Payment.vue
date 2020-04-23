@@ -199,4 +199,13 @@
     .payment-action:hover {
         box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.2);
     }
+
+    @media only screen and (max-width: 991.8px) {
+        .itemBlock {
+            border-radius: 0;
+            border: none;
+            background-color: white;
+            box-shadow: none;
+        }
+    }
 </style>

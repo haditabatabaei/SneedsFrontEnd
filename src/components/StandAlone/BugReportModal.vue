@@ -251,7 +251,6 @@
         background-color: #F8F8F8;
         margin-top: 10px;
         color: #999;
-        /*width: 50%*/
     }
 
     .files {
@@ -305,6 +304,10 @@
         min-height: 40px;
     }
 
+    .v--modal-overlay {
+        z-index: 1018 !important;
+    }
+
     .v--modal-overlay .v--modal-background-click {
         display: flex;
         align-items: center !important;
@@ -318,7 +321,7 @@
         margin-top: 120px !important;
         padding-bottom: 30px !important;
         overflow: auto !important;
-        z-index: 1001 !important;
+        z-index: 1019 !important;
     }
 
     .v--modal-overlay .v--modal-box::-webkit-scrollbar {

@@ -31,7 +31,7 @@
         left: 0;
         height: 50px;
         background-color: #9038CC;
-        z-index: 1000;
+        z-index: 1020;
         display: flex;
         align-items: center;
         justify-content: center;

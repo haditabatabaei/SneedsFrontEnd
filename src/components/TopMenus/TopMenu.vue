@@ -268,7 +268,7 @@
         left: 0;
         background-color: white;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        z-index: 998;
+        z-index: 1015;
         display: flex;
         align-items: center;
         justify-content: center;

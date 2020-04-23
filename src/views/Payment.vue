@@ -1,19 +1,39 @@
 <template>
-    <div class="container-fluid itemBlock">
-        <div class="brand text-center">
-            <h2 class="title isansFont text-center">تاییدیه پرداخت</h2>
-            <br>
-            <i v-if="this.detail.toLowerCase() == 'success'" class="material-icons text-success" style="font-size:40px">
+    <div class="itemBlock">
+        <div class="payment" v-if="showResult">
+            <i v-if="isSuccess" class="material-icons payment-icon payment-icons--success">
                 done
             </i>
-            <i v-else-if="this.detail == undefined || this.detail.toLowerCase() == 'error'" class="material-icons text-danger" style="font-size:40px">
-                close
+            <i v-else class="material-icons payment-icon payment-icons--error">
+            close
             </i>
-            <br>
-            <p class="refId isansFont">شماره پیگیری پرداخت ( لطفا این شماره را در محلی ثبت کنید ) :
-                {{this.refId}}
+            <p v-if="isSuccess" class="payment-text payment-text--success isansFont">
+                سفارش شما با موفقیت ثبت شد!
             </p>
-            <p class="detail isansFont">توضیحات نتیجه : {{this.detail}}</p>
+            <p v-else class="payment-text payment-text--error isansFont">
+                خطایی هنگام پرداخت رخ داد.
+            </p>
+
+            <p v-if="isSuccess" class="payment-result payment-result--success">
+                <span class="payment-result-info isansFont">کد پیگیری سفارش :</span>
+                <span class="payment-result-code gadugiFont">{{this.refId}}</span>
+            </p>
+
+            <p v-else class="payment-result payment-result--error">
+                <span class="payment-result-info isansFont--faNum">
+                    خطایی هنگام احراز پرداخت شما رخ داد. در صورتی که مبلغی از حسابتان کم شده جای نگرانی نیست و ظرف 72 ساعت به حسابتان بر می گردد. در صورتی که مبلغ مورد نظر بعد از 72 ساعت به حسابتان بازنگشت، با پشتیبانی اسنیدز تماس بگیرید.
+                    <mark class="payment-result-info--marked">برای پیگیری های بعدی لطفاً کد زیر را همراه خود داشته باشید.</mark>
+                </span>
+                <span class="payment-result-code payment-result-code--error gadugiFont">
+                    Authority Code : {{$route.query.Authority}}
+                </span>
+            </p>
+
+
+            <router-link v-if="isSuccess" to="/user/sessions" class="payment-action payment-action--success isansFont">
+                مشاهده جلسات رزرو شده <i class="material-icons">keyboard_arrow_left</i></router-link>
+
+            <router-link v-else to="/" class="payment-action payment-action--error isansFont">بازگشت به صفحه نخست</router-link>
         </div>
     </div>
 </template>
@@ -23,31 +43,48 @@
 
     export default {
         name: "Payment",
-        async mounted() {
-            try {
-                this.$loading(true);
-                let result = await axios.post(
-                    `${this.$store.getters.getApi}/payment/verify/`,
-                    {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
-                    this.$store.getters.httpConfig
-                );
-                this.refId = result.data.ReflD;
-                this.detail = result.data.detail;
-                console.log(result);
-            } catch (e) {
-                console.log(e);
-                if (e.response) {
-                    console.log(e.response);
+        methods: {
+            async verifyPayment() {
+                try {
+                    this.$loading(true);
+                    this.showResult = false;
+                    let result = await axios.post(
+                        `${this.$store.getters.getApi}/payment/verify/`,
+                        {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
+                        this.$store.getters.httpConfig
+                    );
+                    this.detail = result.data.detail;
+                    this.refId = result.data.ReflD;
+                    console.log(result);
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                    this.showResult = true;
                 }
-            } finally {
-                this.$loading(false);
             }
+        },
+        computed: {
+            isSuccess() {
+                if(this.detail.length != 0) {
+                    return this.detail.toLowerCase === 'success';
+                } else {
+                    return false;
+                }
+            },
+        },
+        created() {
+            this.verifyPayment();
         },
 
         data() {
             return {
                 refId: '',
                 detail: '',
+                showResult: false,
             }
         },
     }
@@ -57,32 +94,109 @@
     .itemBlock {
         background-color: white;
         border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 30px #00000029;
+        border: 1px solid #B3B3B3;
         margin-top: 30px;
         padding-bottom: 15px;
     }
 
-    .container .btn {
-        color: rgb(51, 51, 51);
+    .payment {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .payment-icon {
+        font-size: 40px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        border-radius: 50%;
+        margin-top: 15px;
+    }
+
+    .payment-icons--success {
+        background-color: #3CAEA3;
+        color: white;
+    }
+
+    .payment-icons--error {
+        color: white;
+        background-color: #E46464;
+    }
+
+    .payment-text {
+        font-weight: bold;
+        margin: 15px 0;
+        font-size: 20px;
+    }
+
+    .payment-text--success {
+        color: #3CAEA3;
+    }
+
+    .payment-text--error {
+        color: #585858;
+    }
+
+    .payment-result {
+        background-color: #FCFCFC;
+        border-radius: 15px;
+        padding: 15px 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .payment-result-info {
+        color: #707070;
+        font-weight: bold;
+        line-height: 25px;
+    }
+
+    .payment-result-code {
+        color: #3CAEA3;
+        margin: 10px 0;
         font-weight: bold;
     }
 
-    .refId {
-        font-size: 22px;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: white;
-        color: black;
+    .payment-result-code--error {
+        color: #c9737c;
     }
 
-    .detail {
-        margin-top: 5px;
-        font-size: 22px;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: white;
-        color: black;
+    .payment-result-info--marked {
+        color: #c9737c;
+        padding: 0;
+        background: none;
+    }
+
+    .payment-action {
+        display: flex;
+        align-items: center;
+        transition: box-shadow 0.1s ease-in-out;
+        padding: 15px 20px;
+        border-radius: 15px;
+    }
+
+    .payment-action i {
+        margin-right: 10px;
+    }
+
+    .payment-action--success {
+        background-color: #3CAEA3;
+        color: white;
+    }
+
+    .payment-action--error {
+        background-color: #9B9999;
+        color: white;
+    }
+
+    .payment-action:hover {
+        box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.2);
     }
 </style>

@@ -17,7 +17,7 @@
                     v-model="consultant.rate"/>
 
             <!-- consultant minutes -->
-            <p class="isansFont--faNum consultantDescBlock--head-minutes">
+            <p v-if="showMinutesOfConsultations" class="isansFont--faNum consultantDescBlock--head-minutes">
                 <strong>{{Math.floor(Math.random() * 100)}}</strong>
                 دقیقه مشاوره برگزار شده
             </p>
@@ -74,7 +74,12 @@
 
     export default {
         name: "ConsultantDescBlock",
-        components: {"star-rating": StarRating},
+        components: {"star-rating": StarRating },
+        data() {
+          return {
+              showMinutesOfConsultations: false
+          }
+        },
         props: {
             consultant: {
                 type: Object,

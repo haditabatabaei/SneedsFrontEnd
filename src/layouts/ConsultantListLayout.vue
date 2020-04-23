@@ -135,9 +135,10 @@
                         </div>
                     </div>
 
+                    <div class="bottomFilter-overlay" @click="toggleFilterPanel" v-if="windowWidth < 991.8 && showFilterPanel"></div>
                     <div class="bottomFilter" v-if="windowWidth < 991.8">
                         <div class="bottomFilter-head" :class="[{'bottomFilter-head--open': showFilterPanel}]"
-                             @click="toggleFilterPanel()">
+                             @click="toggleFilterPanel">
                             <button class="bottomFilter-head-title-close" v-if="showFilterPanel">
                                 <i class="material-icons">close</i>
                             </button>
@@ -216,7 +217,8 @@
                                 <div class="filterBlock-search">
                                     <div class="filterBlock-search-form">
                                         <input v-model="universityQuery"
-                                               @input="searchByIn('universityQuery', 'universities', 'middle')" type="text"
+                                               @input="searchByIn('universityQuery', 'universities', 'middle')"
+                                               type="text"
                                                class="isansFont" placeholder="جستجو">
                                         <i class="material-icons">search</i>
                                     </div>
@@ -241,7 +243,8 @@
                                 <consultant-block :consultant="consultant"/>
                             </div>
                             <div class="col-md-12 consultantList-pagination isansFont--faNum">
-                                <button v-if="currentPage != 1" class="consultantList-pagination-button"
+                                <button v-if="currentPage != 1 && this.consultants.length != 0"
+                                        class="consultantList-pagination-button"
                                         @click="goPrevPage"><i class="material-icons">keyboard_arrow_right</i></button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
@@ -251,7 +254,8 @@
                                         v-for="page in pagesNeeded" @click="togglePage(page)">
                                     {{page}}
                                 </button>
-                                <button v-if="currentPage != pagesNeeded" class="consultantList-pagination-button"
+                                <button v-if="currentPage != pagesNeeded && this.consultants.length != 0"
+                                        class="consultantList-pagination-button"
                                         @click="goNextPage"><i class="material-icons">keyboard_arrow_left</i></button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
@@ -295,12 +299,12 @@
             }
         },
         computed: {
-            offsetInCurrentPage() {
-                return (this.currentPage - 1) * 10;
-            },
-
             pagesNeeded() {
-                return Math.floor(this.allItems / this.itemsPerPage) + 1;
+                if (this.allItems % this.itemsPerPage === 0) {
+                    return Math.floor(this.allItems / this.itemsPerPage);
+                } else {
+                    return Math.floor(this.allItems / this.itemsPerPage) + 1;
+                }
             },
 
             activeConsultants() {
@@ -315,7 +319,7 @@
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();
-            this.doFilter(false, false);
+            this.doFilter(false, true);
         },
         methods: {
             toggleSelectItem(item) {
@@ -377,9 +381,9 @@
             },
 
 
-            generateQueryParameters(resetPagination) {
-                if(resetPagination) {
-                    this.togglePage(1);
+            generateQueryParameters(resetCurrentPage) {
+                if(resetCurrentPage) {
+                    this.currentPage = 1;
                 }
                 let query = `page=${this.currentPage}&page_size=${this.itemsPerPage}`;
                 this.countries.forEach(item => {
@@ -410,14 +414,16 @@
                 return query;
             },
 
-            async doFilter(toggleIndicator, resetPagination) {
+            async doFilter(toggleIndicator, resetCurrentPage) {
+                console.log('do filter called');
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetPagination)}`);
+                    window.scrollTo(0, 0);
+                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;
-                    if (this.consultants.length === 0) {
+                    if (result.data.results.length === 0) {
                         this.printMessage("متاسفانه مشاوری با این اطلاعات یافت نشد.", "لیست مشاوران : اخطار", "warn", 4000, "notif");
                     }
                 } catch (e) {
@@ -539,13 +545,23 @@
         border-radius: 15px;
     }
 
+    .bottomFilter-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1013;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0,0,0,0.2);
+    }
+
     .bottomFilter {
         position: fixed;
         bottom: 0;
         left: 0;
         background-color: white;
         width: 100%;
-        z-index: 998;
+        z-index: 1014;
         box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
     }
 
@@ -984,9 +1000,6 @@
         .filterBlock-head-title--action {
             font-size: 12px;
             margin-left: 15px;
-        }
-
-        .bottomFilter-head-title {
         }
 
         .bottomFilter-head-title-close {

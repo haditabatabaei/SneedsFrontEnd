@@ -200,18 +200,6 @@
                 })
             },
 
-
-            getSlotIdByDate(startDate, endDate) {
-                // this.soldSlotsDates.forEach((slotDate) => {
-                //     if(slotDate.start_time_date.isSame())
-                // })
-                for (let i = 0; i < this.slots.length; i++) {
-                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
-                        return this.slots[i].id;
-                }
-            },
-
-
             generateSaturdayNew(date) {
                 let offset = 0;
                 if (this.isiran) {

@@ -61,7 +61,7 @@
                     :star-size="16"
                     :padding="5"
                     :showRating="false"
-                    style="background-color: white;padding:10px 10px 5px 15px;border:1.5px solid #8C3DDB;border-radius:20px;"
+                    style="background-color: white;padding:5px 10px 10px 15px;border:1.5px solid #8C3DDB;border-radius:20px;"
                     border-color="#8C3DDB"
                     active-color="#8C3DDB"
                     :border-width="2"
@@ -121,16 +121,16 @@
                     try {
                         this.$loading(true);
                         let rateResult = (await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
-                        // console.log(`current session ${this.session.id} rate :`, rateResult);
+                        console.log(`current session ${this.session.id} rate :`, rateResult);
                         this.rate = rateResult;
                     } catch (e) {
-                        // console.log(e);
-                        // console.log(`current session ${this.session.id} doesnt have rate`)
+                        console.log(e);
+                        console.log(`current session ${this.session.id} doesnt have rate`)
                     } finally {
                         this.$loading(false);
                     }
                 } else {
-                    // console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
+                    console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
                 }
             },
 
@@ -139,21 +139,21 @@
                     try {
                         this.$loading(true);
                         let roomResult = (await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
-                        // console.log(`current session ${this.session.id} room :`, roomResult);
+                        console.log(`current session ${this.session.id} room :`, roomResult);
                         this.room = roomResult;
                     } catch (e) {
-                        // console.log(e);
-                        // console.log(`current session ${this.session.id} doesnt have room`);
+                        console.log(e);
+                        console.log(`current session ${this.session.id} doesnt have room`);
                     } finally {
                         this.$loading(false);
                     }
                 } else {
-                    // console.log(`no time or already has room for getting session ${this.session.id} room.`);
+                    console.log(`no time or already has room for getting session ${this.session.id} room.`);
                 }
             },
 
             async submitRate(rate) {
-                // console.log('submit rate for session', this.session.id, ' rate ', rate);
+                console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
                     this.$loading(true);
                     let result = await axios.post(
@@ -163,10 +163,10 @@
                     );
                     await this.getMyRate(true);
                 } catch (e) {
-                    // console.log(e);
-                    // if (e.response) {
-                    //     console.log(e.response);
-                    // }
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
                 } finally {
                     this.$loading(false);
                 }
@@ -381,5 +381,32 @@
     .session-rate {
         margin-right: auto;
         margin-left: 30px;
+    }
+
+    @media only screen and (max-width: 576px) {
+        .session-block {
+            flex-wrap: wrap;
+        }
+
+        .session-rate {
+            margin: auto;
+        }
+
+        .session-image {
+            width: 75px;
+            height: 75px;
+        }
+
+        .session-date {
+            flex-direction: column;
+        }
+
+        .session-date-day {
+            margin-left: 0;
+        }
+
+        .session-other-name {
+            font-size: 14px;
+        }
     }
 </style>

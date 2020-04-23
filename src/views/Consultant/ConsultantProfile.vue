@@ -49,25 +49,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="consultantSidebarBlock--numberDiscounts isansFont--faNum">
-                            <ul class="consultantSidebarBlock--numberDiscounts_list">
-                                <li v-for="(item, index) in shownDiscounts" :key="index">
-                                    <i class="material-icons">info</i>
-                                    <span>
-                                        با اضافه کردن 1 جلسه دیگر و با داشتن
-                                        <mark>
-                                            {{item.number}}
-                                            جلسه ،
-                                        </mark>
-                                        <mark>
-                                            {{item.discount}}
-                                            درصد تخفیف
-                                        </mark>
-                                        اتوماتیک محاسبه خواهد شد.
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
 
                         <button class="isansFont--faNum addToCartButton"
                                 @click="addSelectedTimesToCart()">رزرو جلسات انتخاب شده
@@ -76,10 +57,11 @@
                 </div>
             </div>
 
+            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar" @click="toggleMobileCalendar" ></div>
             <div class="consultant-mobile-calendar isansFont"
                  :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
-                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">رزرو
-                    وقت مشاوره
+                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
+                    رزرو وقت مشاوره
                 </button>
                 <div class="mobile-calendar-header" v-if="showMobileCalendar">
                     <button @click="toggleMobileCalendar" class="mobile-calendar-close">
@@ -111,8 +93,6 @@
             return {
                 consultant: {},
                 activeSection: 'desc',
-                listOfDiscounts: [],
-                slots: [],
                 descPos: 0,
                 calendarPos: 0,
                 commentsPos: 0,
@@ -128,16 +108,12 @@
             stash() {
                 return this.$store.getters.getStash;
             },
-            shownDiscounts() {
-                return this.listOfDiscounts.filter(discount => discount.number === (this.stash.length + 1));
-            },
         },
         created() {
             document.addEventListener('scroll', this.scrollEnoughToShowAvatar, false);
             console.log(this.scrollListener);
             console.log('consultant profile created hook called');
             this.getConsultantBySlug(this.$route.params.consultantSlug);
-            this.getListOfNumberDiscounts();
         },
 
         beforeDestroy() {
@@ -151,10 +127,6 @@
 
             toggleMobileCalendar() {
                 this.showMobileCalendar = !this.showMobileCalendar;
-            },
-
-            setSlot(slots) {
-                this.slots = slots;
             },
 
             async addSelectedTimesToCart() {
@@ -198,20 +170,6 @@
                 for (let i = 0; i < this.slots.length; i++) {
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
-                }
-            },
-
-            async getListOfNumberDiscounts() {
-                this.$loading(true);
-                try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/discount/time-slot-sale-number-discounts/`, this.$store.getters.httpConfig);
-                    console.log(result);
-                    this.listOfDiscounts = result.data;
-                } catch (e) {
-                    console.log(e.response);
-                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد", "تخفیفات : خطا", "error", 3000, "notif")
-                } finally {
-                    this.$loading(false);
                 }
             },
 
@@ -505,10 +463,21 @@
             width: 100%;
             background-color: white;
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+            z-index: 1014;
         }
 
         .consultant-mobile-calendar--round {
             border-radius: 15px 15px 0 0;
+        }
+
+        .consultant-mobile-calendar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.2);
+            z-index: 1013;
         }
 
         .mobile-calendar-toggler {

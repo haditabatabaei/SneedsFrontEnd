@@ -22,7 +22,7 @@ Vue.use(VueWindowSize);
 Vue.use(VModal);
 // Vue.use(VueRecord);
 Vue.use(VueLoading, {
-    text: 'صبر کنید...',
+    text: 'لطفاً صبر کنید...',
     classes : ['isansFont', 'loadingZIndex']
 });
 

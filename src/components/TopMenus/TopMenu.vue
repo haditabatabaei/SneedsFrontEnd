@@ -1,5 +1,6 @@
 <template>
     <nav class="topNavWrapper">
+        <div v-if="profileDropdownMenuOpen" class="before-profileDropdown-overlay" @click="toggleProfileDropdown"></div>
         <div class="container navbarContainer">
             <div class="mobileNavbarToggleWrapper">
                 <transition name="fade" mode="out-in">
@@ -392,6 +393,14 @@
         display: flex;
     }
 
+    .profile-menu-list-item:first-child .profile-menu-list-link {
+        border-radius: 15px 15px 0 0;
+    }
+
+    .profile-menu-list-item:last-child .profile-menu-list-link{
+        border-radius: 0 0 15px 15px;
+    }
+
     .profile-menu-list-link {
         display: flex;
         width: 100%;
@@ -406,8 +415,22 @@
         background-color: #f4f4f4;
     }
 
+    .before-profileDropdown-overlay {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 9;
+    }
+
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
+        .before-profileDropdown-overlay {
+            display: none;
+        }
+
         .slide-fade-enter-active {
             transition: all 0.2s ease;
         }

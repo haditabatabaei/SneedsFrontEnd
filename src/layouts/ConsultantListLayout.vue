@@ -291,7 +291,7 @@
                 countryQuery: '',
                 fieldQuery: '',
                 universityQuery: '',
-                orderRateAscending: true,
+                orderRateDescending: true,
                 activeMobileFilterTab: 'countries',
                 itemsPerPage: 10,
                 currentPage: 1,
@@ -404,10 +404,10 @@
                     }
                 });
 
-                if (this.orderRateAscending) {
-                    query += '&ordering=-rate'
-                } else {
+                if (this.orderRateDescending) {
                     query += '&ordering=rate'
+                } else {
+                    query += '&ordering=-rate'
                 }
 
                 console.log('query to fire:', query);

@@ -1,25 +1,24 @@
 <template>
         <div class="container activeCart">
             <div class="row">
-                <p class="isansFont--faNum">پرداخت فاکتور :</p>
-                <div class="col-md-8" v-if="cart && cartProducts.length > 0">
+                <div class="col-md-8" v-if="cart && cartTimeSlots.length > 0">
                     <div class="cartsWrapper">
                         <div class="cartsWrapper-title isansFont--faNum">
                             <div class="cartsWrapper-title-consultant">
-                                <img v-bind:src="cartProducts[0].consultant.profile_picture" draggable="false" alt="">
+                                <img v-bind:src="cartTimeSlots[0].consultant.profile_picture" draggable="false" alt="">
                                 <div class="cartsWrapper-title-consultant--info">
                                     <h5 class="isansFont--faNum">رزرو مشاوره آنلاین</h5>
-                                    <h6 class="isansFont--faNum">{{`(${cartProducts[0].consultant.first_name} ${cartProducts[0].consultant.last_name})`}}</h6>
+                                    <h6 class="isansFont--faNum">{{`(${cartTimeSlots[0].consultant.first_name} ${cartTimeSlots[0].consultant.last_name})`}}</h6>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="cartsWrapper-item" v-for="(product, index) in cartProducts" :key="index">
-                            <p class="isansFont--faNum cartsWrapper-item--day">{{getJalali(product.start_time).locale('fa').format('dddd DD MMMM')}}</p>
+                        <div class="cartsWrapper-item" v-for="(slot, index) in cartTimeSlots" :key="index">
+                            <p class="isansFont--faNum cartsWrapper-item--day">{{getJalali(slot.start_time).locale('fa').format('dddd DD MMMM')}}</p>
                             <p class="isansFont--faNum cartsWrapper-item-length">
                                 <i class="material-icons">alarm_on</i>
-                                <span>{{getJalali(product.start_time).locale('fa').format('HH:mm')}}</span>
-                                <span>{{getJalali(product.end_time).locale('fa').format('HH:mm')}}</span>
+                                <span>{{getJalali(slot.start_time).locale('fa').format('HH:mm')}}</span>
+                                <span>{{getJalali(slot.end_time).locale('fa').format('HH:mm')}}</span>
                             </p>
                         </div>
                     </div>
@@ -39,19 +38,17 @@
                                 </button>
                             </form>
 
-                            <p v-if="codeStatus == 'success'" class="isansFont--faNum code-text success">
-                                کد تخفیف
-                                <mark>{{discounts[0].consultant_discount.percent + " %"}}</mark>
-                                اعمال شد
+                            <p v-if="codeStatus == 'success'" class="isansFont--faNum code-text code-text--success">
+                                کد تخفیف اعمال شد
                             </p>
 
-                            <p v-else-if="codeStatus == 'error'" class="isansFont--faNum code-text error">
+                            <p v-else-if="codeStatus == 'error'" class="isansFont--faNum code-text code-text--error">
                                 کد تخفیف وارد شده صحیح نمی باشد!
                             </p>
 
                             <div class="cartsWrapper-discounts isansFont--faNum" v-if="discounts.length > 0">
-                                <p v-for="(discount, index) in discounts" :key="index">
-                                    <button class="btn btn-sm btn-simple btn-danger" @click="deleteDiscountById(discount.id)">
+                                <p class="discounts-item" v-for="(discount, index) in discounts" :key="index">
+                                    <button class="discounts-item-remove-button" @click="deleteDiscountById(discount.id)">
                                         <i class="material-icons">close</i>
                                     </button>
                                     {{discount.code}}
@@ -68,13 +65,12 @@
                 <div class="col-md-4 payWrapper" v-if="cart">
                     <div class="cartsWrapper isansFont--faNum" style="position: relative">
                         <p class="cartsWrapper-item-length-price-subtotal">
-                            <span> هزینه {{`(${cartProducts.length} جلسه)`}}</span>
+                            <span> هزینه {{`(${cartTimeSlots.length} جلسه)`}}</span>
                             <span>{{cart.subtotal}} تومان </span>
                         </p>
-                        <p class="cartsWrapper-item-length-price-discount" v-for="(discount, index) in discounts" :key="index">
-                            <span>تخفیف</span>
+                        <p class="cartsWrapper-item-length-price-discount">
                             <span >
-                                {{`(${discount.consultant_discount.percent}%)`}}
+                                تخفیف خورده :
                                 {{`${cart.subtotal - cart.total} تومان`}}
                             </span>
                         </p>
@@ -95,8 +91,13 @@
 
                         <button class="cartsWrapper-item-paybutton" @click="requestPayment()">
                             پرداخت |
-                            {{cart.total}}
+                            <span v-if="Number(cart.total) == 0">
+                               رایگان !
+                            </span>
+                            <span v-else>
+                                {{cart.total}}
                             تومان
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -113,7 +114,7 @@
         data() {
             return {
                 cart: null,
-                cartProducts: [],
+                cartTimeSlots: [],
                 discounts: [],
                 inputCode: '',
                 codeStatus: 'empty'
@@ -128,18 +129,17 @@
             },
 
             async initComp() {
-                await this.getLastCart();
+                await this.getCurrentCart();
                 if (this.cart) {
-                    await this.getCartProducts();
-                    await this.getDiscountsOnThisCart();
+                    this.getCartProducts();
+                    this.getDiscountsOnThisCart();
                 }
             },
 
-            async getLastCart() {
+            async getCurrentCart() {
                 try {
                     this.$loading(true);
                     let result = await axios.get(`${this.$store.getters.getApi}/cart/carts/${this.$route.params.id}/`, this.$store.getters.httpConfig);
-                    console.log(result);
                     this.cart = result.data;
                     console.log('current last cart ', this.cart);
                 } catch (e) {
@@ -152,23 +152,22 @@
                 }
             },
 
-            async getCartProducts() {
-                try {
-                    this.$loading(true);
-                    this.cartProducts = [];
-                    for (let productId of this.cart.products) {
-                        let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/${productId}/`, this.$store.getters.httpConfig);
-                        console.log(result);
-                        this.cartProducts.push(result.data);
-                    }
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
+            getCartProducts() {
+                this.$loading(true);
+                this.cartTimeSlots = [];
+                let slotReqs = [];
+                this.cart.time_slot_sales.forEach((slot) => {
+                    slotReqs.push(axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/${slot.id}/`, this.$store.getters.httpConfig))
+                });
+
+                Promise.all(slotReqs).then((responseArr) => {
+                    this.cartTimeSlots = responseArr.map((response) => response.data);
+                    console.log(this.cartTimeSlots);
+                }).catch((reject) => {
+                    console.log(reject);
+                }).finally(() => {
                     this.$loading(false);
-                }
+                });
             },
 
             async checkDiscountCode() {
@@ -181,7 +180,8 @@
                     );
                     console.log('code result : ', result);
                     this.inputCode = '';
-                    await this.initComp();
+                    this.getCurrentCart();
+                    this.getDiscountsOnThisCart();
                 } catch (e) {
                     this.codeStatus = 'error';
                     console.log(e);
@@ -218,9 +218,10 @@
             async deleteDiscountById(id) {
                 try {
                     this.$loading(true);
-                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}`, this.$store.getters.httpConfig);
+                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}/`, this.$store.getters.httpConfig);
                     console.log('delete for this cart :', result);
-                    await this.initComp();
+                    this.getCurrentCart();
+                    this.getDiscountsOnThisCart();
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -402,16 +403,6 @@
         margin-left: 5px;
     }
 
-    .cartsWrapper-text {
-        padding-right: 20px;
-        padding-left: 20px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        line-height: 2.5rem;
-        font-size: 15px;
-        color: #999;
-    }
-
     .cartsWrapper-price {
         display: flex;
         align-items: center;
@@ -422,14 +413,6 @@
         padding-left: 20px;
         margin-bottom: 20px;
         margin-top: 20px;
-    }
-
-    .cartsWrapper-price--button {
-        border: none;
-        background-color: #9038CC;
-        color: white;
-        padding: 10px 25px;
-        border-radius: 10px;
     }
 
     .cartsWrapper-price--discount {
@@ -478,12 +461,6 @@
     }
 
 
-    .cartsWrapper-price--meta {
-        margin: auto auto auto 20px;
-        display: flex;
-        align-items: center;
-    }
-
     .cartsWrapper-price--meta strong {
         margin-right: 5px;
         margin-left: 5px;
@@ -508,55 +485,10 @@
         margin-left: 10px;
     }
 
-    .infoWrapper {
-        border-radius: 10px;
-        background-color: white;
-        box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
-        padding-bottom: 10px;
-        padding-top: 10px;
-        margin-top: 30px;
-    }
-
-    .priceWrapper {
-        border-radius: 10px;
-        border: 1px solid #999;
-        background-color: white;
-    }
-
-    .cardConsultBlock--image {
-        height: 100px;
-        width: 100px;
-        border-radius: 10px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        margin-right: 15px;
-    }
-
-    .cardConsultBlock {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-
-        margin-top: 20px;
-    }
-
-    .cardConsultantBlock--price {
-        margin-right: auto;
-    }
-
-    .cardConsultantBlock--info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        flex-grow: 2;
-        align-self: stretch;
-    }
-
     .cardConsultantBlock--info h4 {
         font-weight: bold;
         margin: 0 10px 0 0;
     }
-
 
     .cardConsultantBlock--info p {
         font-size: 15px;
@@ -576,11 +508,6 @@
     .timesCollapse button {
         margin: 0;
         padding: 10px;
-    }
-
-    .priceWrapper--discountCodeBox {
-        margin-top: 20px;
-        margin-bottom: 20px;
     }
 
     .priceWrapper--discountCodeBox form {
@@ -617,25 +544,40 @@
         margin-bottom: 0;
     }
 
-    .cartsWrapper-discounts button {
-        padding: 5px;
-        margin-left: 5px;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
 
     .code-text {
         margin-bottom:0;
         margin-right: 30px
     }
 
-    .code-text.success mark {
-        color : #4cc26c;
+    .code-text--success {
+        color : #22B473;
         background-color: inherit;
         font-weight: bold;
     }
-    .code-text.error {
+    .code-text--error {
         color: #E46465;
+    }
+
+    .discounts-item {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+    }
+
+    .discounts-item-remove-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    .discounts-item-remove-button i {
+        font-size: 18px;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
@@ -668,7 +610,7 @@
         }
 
         .activeCart {
-            padding-bottom: 260px;
+            padding-bottom: 300px;
         }
     }
 </style>

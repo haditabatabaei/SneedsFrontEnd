@@ -9,6 +9,10 @@
             </i>
             <p v-if="isSuccess" class="payment-text payment-text--success isansFont">
                 سفارش شما با موفقیت ثبت شد!
+                <br>
+                <span v-if="this.refld == '00000000'">
+                    سفارش شما رایگان لحاظ شده است.
+                </span>
             </p>
             <p v-else class="payment-text payment-text--error isansFont">
                 خطایی هنگام پرداخت رخ داد.
@@ -16,12 +20,12 @@
 
             <p v-if="isSuccess" class="payment-result payment-result--success">
                 <span class="payment-result-info isansFont">کد پیگیری سفارش :</span>
-                <span class="payment-result-code gadugiFont">{{this.refId}}</span>
+                <span class="payment-result-code gadugiFont">{{this.refld}}</span>
             </p>
 
             <p v-else class="payment-result payment-result--error">
                 <span class="payment-result-info isansFont--faNum">
-                    خطایی هنگام احراز پرداخت شما رخ داد. در صورتی که مبلغی از حسابتان کم شده جای نگرانی نیست و ظرف 72 ساعت به حسابتان بر می گردد. در صورتی که مبلغ مورد نظر بعد از 72 ساعت به حسابتان بازنگشت، با پشتیبانی اسنیدز تماس بگیرید.
+                    خطایی هنگام احراز پرداخت شما رخ داد و یا توسط شما کنسل شد. اگر تا 5 دقیقه دیگر پیامک موفق بودن خرید برایتان نیامد و مبلغی از حسابتان کم شده، جای نگرانی نیست و ظرف 72 ساعت به حسابتان بر می گردد. در صورتی که مبلغ مورد نظر بعد از 72 ساعت به حسابتان بازنگشت، با پشتیبانی اسنیدز تماس بگیرید.
                     <mark class="payment-result-info--marked">برای پیگیری های بعدی لطفاً کد زیر را همراه خود داشته باشید.</mark>
                 </span>
                 <span class="payment-result-code payment-result-code--error gadugiFont">
@@ -54,7 +58,7 @@
                         this.$store.getters.httpConfig
                     );
                     this.detail = result.data.detail;
-                    this.refId = result.data.ReflD;
+                    this.refld = result.data.ReflD;
                     console.log(result);
                 } catch (e) {
                     console.log(e);
@@ -70,19 +74,29 @@
         computed: {
             isSuccess() {
                 if(this.detail.length != 0) {
-                    return this.detail.toLowerCase === 'success';
+                    return this.detail.toLowerCase() === 'success';
                 } else {
                     return false;
                 }
             },
         },
         created() {
-            this.verifyPayment();
+            console.log(this.$route.query);
+            if(this.$route.query.refld && this.$route.query.refld == "00000000") {
+                console.log("REFLD 00000000 & payment is good");
+                this.refld = this.$route.query.refld;
+                this.showResult = true;
+                this.detail = "success";
+                console.log(this.isSuccess);
+                console.log(this.showResult);
+            } else {
+                this.verifyPayment();
+            }
         },
 
         data() {
             return {
-                refId: '',
+                refld: '',
                 detail: '',
                 showResult: false,
             }

@@ -182,8 +182,6 @@
         align-items: center;
     }
 
-    }
-
     .payment-text--error {
         color: #585858;
     }

@@ -91,7 +91,22 @@
                 console.log(this.showResult);
             } else {
                 this.verifyPayment();
+
+                }
+
             }
+        },
+        computed: {
+            isSuccess() {
+                if(this.detail.length != 0) {
+                    return this.detail.toLowerCase === 'success';
+                } else {
+                    return false;
+                }
+            },
+        },
+        created() {
+            this.verifyPayment();
         },
 
         data() {
@@ -136,6 +151,7 @@
     .payment-icons--success {
         background-color: #3CAEA3;
         color: white;
+
     }
 
     .payment-icons--error {
@@ -166,6 +182,20 @@
         align-items: center;
     }
 
+    }
+
+    .payment-text--error {
+        color: #585858;
+    }
+
+    .payment-result {
+        background-color: #FCFCFC;
+        border-radius: 15px;
+        padding: 15px 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
     .payment-result-info {
         color: #707070;
         font-weight: bold;

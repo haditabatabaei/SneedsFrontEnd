@@ -91,9 +91,6 @@
                 console.log(this.showResult);
             } else {
                 this.verifyPayment();
-
-                }
-
             }
         },
         computed: {

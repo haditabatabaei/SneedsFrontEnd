@@ -243,16 +243,42 @@
                     this.$loading(true);
                     let result = await axios.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
                     console.log(result);
-                    window.location.replace(result.data.redirect);
+                    this.$store.commit('setStash', []);
+                    if(result.data.redirect) {
+                        window.location.replace(result.data.redirect);
+                    } else {
+                        this.$router.push('/user/payment/accept?refld=00000000');
+                    }
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
+                        if(e.response.data.detail) {
+                            if(typeof e.response.data.detail == "object") {
+                                this.printMessage(e.response.data.detail.join(","), "پرداخت: خطا", "error", 5000, "notif");
+                            } else if(typeof e.response.data.detail == "string") {
+                                this.printMessage(e.response.data.detail, "پرداخت: خطا", "error", 5000, "notif");
+                            } else {
+                                this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "پرداخت: خطا", "error", 5000, "notif");
+                            }
+                        }
+                    } else {
+                        this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "پرداخت: خطا", "error", 5000, "notif");
                     }
                 } finally {
                     this.$loading(false);
                 }
-            }
+            },
+
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
+                })
+            },
         }
 
     }

@@ -11,7 +11,7 @@
                         </ul>
                         <button class="topFilter-sort-button isansFont" @click="toggleRateSort">
                             بیشترین امتیاز
-                            <i class="material-icons" v-if="orderRateAscending">keyboard_arrow_down</i>
+                            <i class="material-icons" v-if="orderRateDescending">keyboard_arrow_down</i>
                             <i class="material-icons" v-else>keyboard_arrow_up</i>
                         </button>
                     </div>

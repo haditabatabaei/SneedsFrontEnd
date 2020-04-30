@@ -3,12 +3,12 @@
   "short_name": "Sneeds",
   "icons": [
     {
-      "src": "http://37.152.182.253/sneedsAssets/img/sneedsLogo%20-%20192.png",
+      "src": "http://new.sneeds.ir/sneedsAssets/img/sneedsLogo%20-%20192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "http://37.152.182.253/sneedsAssets/img/sneedsLogo%20-%20512.png",
+      "src": "http://new.sneeds.ir/sneedsAssets/img/sneedsLogo%20-%20512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

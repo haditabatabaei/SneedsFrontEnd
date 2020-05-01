@@ -419,7 +419,7 @@
                 this.$loading(true);
                 try {
                     window.scrollTo(0, 0);
-                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;
@@ -452,7 +452,7 @@
             async getListOfConsultants(toggleIndicator) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
                     this.consultants = result.data;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
@@ -466,7 +466,7 @@
 
             async getListOfCountries() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/countries/`);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/countries/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.countries = result.data;
@@ -478,7 +478,7 @@
 
             async getListOfUniversities() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/universities/`);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/universities/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.universities = result.data;
@@ -490,7 +490,7 @@
 
             async getListOfFields() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.fields = result.data;

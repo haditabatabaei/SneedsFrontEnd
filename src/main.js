@@ -9,6 +9,7 @@ import VueLoading from 'vuejs-loading-plugin';
 import VueWindowSize from 'vue-window-size';
 import VModal from 'vue-js-modal'
 import * as Sentry from '@sentry/browser';
+import api from './api';
 import { Vue as VueIntegration } from '@sentry/integrations';
 
 Sentry.init({
@@ -25,6 +26,8 @@ Vue.use(VueLoading, {
     text: 'لطفاً صبر کنید...',
     classes : ['isansFont', 'loadingZIndex']
 });
+
+Vue.prototype.$api = api;
 
 new Vue({
     router,

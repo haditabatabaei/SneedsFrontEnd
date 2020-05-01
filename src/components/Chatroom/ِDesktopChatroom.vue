@@ -193,7 +193,7 @@
             async updateMessages() {
               if(this.selectedChatMessages.length > 0) {
                   try {
-                      let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&tag=${this.selectedChatMessages[this.selectedChatMessages.length - 1].tag}&ordering=created`, this.$store.getters.httpConfig);
+                      let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&tag=${this.selectedChatMessages[this.selectedChatMessages.length - 1].tag}&ordering=created`, this.$store.getters.httpConfig);
                       console.log('update chats messages result ', result);
                       this.selectedChatMessages = this.selectedChatMessages.concat(result.data);
                       // console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
@@ -207,7 +207,7 @@
                   }
               } else {
                   try {
-                      let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
+                      let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                       console.log('selected chats messages result ', result);
                       this.selectedChatMessages = result.data;
                       console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
@@ -243,7 +243,7 @@
 
             async getChats() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;
                     // this.selectedChat = this.chats[0];
@@ -259,7 +259,7 @@
 
             async getMessagesForSelectedChat() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
                     console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
@@ -287,7 +287,7 @@
                         localPayload.append("chat", this.selectedChat.id);
                         localPayload.append("text_message", this.inputMessage);
                         localPayload.append("messageType", "TextMessage");
-                        let result = await axios.post(
+                        let result = await this.$api.post(
                             `${this.$store.getters.getApi}/chat/messages/`,
                             localPayload,
                             {
@@ -301,7 +301,7 @@
                         this.updateMessages();
                         this.inputMessage = '';
                     } else {
-                        let result = await axios.post(
+                        let result = await this.$api.post(
                             `${this.$store.getters.getApi}/chat/messages/`,
                             payload,
                             {

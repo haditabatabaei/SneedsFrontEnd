@@ -43,7 +43,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
 
     export default {
         name: "Payment",
@@ -52,7 +51,7 @@
                 try {
                     this.$loading(true);
                     this.showResult = false;
-                    let result = await axios.post(
+                    let result = await this.$api.post(
                         `${this.$store.getters.getApi}/payment/verify/`,
                         {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
                         this.$store.getters.httpConfig
@@ -92,18 +91,6 @@
             } else {
                 this.verifyPayment();
             }
-        },
-        computed: {
-            isSuccess() {
-                if(this.detail.length != 0) {
-                    return this.detail.toLowerCase === 'success';
-                } else {
-                    return false;
-                }
-            },
-        },
-        created() {
-            this.verifyPayment();
         },
 
         data() {

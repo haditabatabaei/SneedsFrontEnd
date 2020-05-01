@@ -138,7 +138,7 @@
 
             async getMessagesForSelectedChat() {
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
                 } catch (e) {
@@ -156,7 +156,7 @@
                     payload.append("chat", this.selectedChat.id);
                     payload.append("text_message", this.inputMessage);
                     payload.append("messageType", "TextMessage");
-                    let result = await axios.post(
+                    let result = await this.$api.post(
                         `${this.$store.getters.getApi}/chat/messages/`,
                         payload,
                         {
@@ -187,7 +187,7 @@
             async getChats() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;
                     this.selectedChat = this.chats[0];

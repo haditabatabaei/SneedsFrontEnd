@@ -142,7 +142,7 @@
                     if (this.stash.length > 0) {
                         try {
                             this.$loading(true);
-                            let result = await axios.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                             console.log(result);
                             this.$router.push(`/carts/${result.data.id}`);
                         } catch (e) {
@@ -176,7 +176,7 @@
             async getConsultantBySlug(consultantSlug) {
                 this.$loading(true);
                 try {
-                    let result = await axios.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}/`, this.$store.getters.httpConfig);
                     this.consultant = result.data;
                     console.log(result);
                 } catch (e) {

@@ -64,7 +64,7 @@
             async getAllSessions() {
                 try {
                     this.$loading(true);
-                    this.reservedSessions = (await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig)).data;
+                    this.reservedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig)).data;
                     console.log(this.reservedSessions);
                     this.filterBy(this.activeFilter);
                 } catch (e) {
@@ -80,7 +80,7 @@
             async getCurrentTimeInTimezone() {
                 try {
                     this.$loading(true);
-                    let timeString = ((await axios.get(
+                    let timeString = ((await this.$api.get(
                         `${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`,
                         this.$store.getters.httpConfig)).data).now;
                     this.currentTime = this.getJalali(timeString).locale(this.$store.getters.locale);

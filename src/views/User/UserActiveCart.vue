@@ -139,7 +139,7 @@
             async getCurrentCart() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/cart/carts/${this.$route.params.id}/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/cart/carts/${this.$route.params.id}/`, this.$store.getters.httpConfig);
                     this.cart = result.data;
                     console.log('current last cart ', this.cart);
                 } catch (e) {
@@ -157,7 +157,7 @@
                 this.cartTimeSlots = [];
                 let slotReqs = [];
                 this.cart.time_slot_sales.forEach((slot) => {
-                    slotReqs.push(axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/${slot.id}/`, this.$store.getters.httpConfig))
+                    slotReqs.push(this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/${slot.id}/`, this.$store.getters.httpConfig))
                 });
 
                 Promise.all(slotReqs).then((responseArr) => {
@@ -173,7 +173,7 @@
             async checkDiscountCode() {
                 try {
                     this.$loading(true);
-                    let result = await axios.post(
+                    let result = await this.$api.post(
                         `${this.$store.getters.getApi}/discount/cart-discounts/`,
                         {"cart": this.cart.id, "code": this.inputCode},
                         this.$store.getters.httpConfig
@@ -196,7 +196,7 @@
             async getDiscountsOnThisCart() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/discount/cart-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/discount/cart-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
                     console.log('discounts for this cart :', result);
                     this.discounts = result.data;
                     if(this.discounts.length > 0) {
@@ -218,7 +218,7 @@
             async deleteDiscountById(id) {
                 try {
                     this.$loading(true);
-                    let result = await axios.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}/`, this.$store.getters.httpConfig);
                     console.log('delete for this cart :', result);
                     this.getCurrentCart();
                     this.getDiscountsOnThisCart();
@@ -241,7 +241,7 @@
             async requestPayment() {
                 try {
                     this.$loading(true);
-                    let result = await axios.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
+                    let result = await this.$api.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
                     console.log(result);
                     this.$store.commit('setStash', []);
                     if(result.data.redirect) {

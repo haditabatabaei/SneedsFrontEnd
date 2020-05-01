@@ -78,7 +78,7 @@
             async getOrder() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.order = result.data;
                     console.log('current order ', this.order);

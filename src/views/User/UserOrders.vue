@@ -71,7 +71,7 @@
             async getOrders() {
                 try {
                     this.$loading(true);
-                    let result = await axios.get(`${this.$store.getters.getApi}/order/orders/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/order/orders/`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.orders = result.data;
                 } catch (e) {

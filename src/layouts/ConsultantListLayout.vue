@@ -330,7 +330,7 @@
             },
 
             toggleRateSort() {
-                this.orderRateAscending = !this.orderRateAscending;
+                this.orderRateDescending = !this.orderRateDescending;
                 this.doFilter(false, true);
             },
 

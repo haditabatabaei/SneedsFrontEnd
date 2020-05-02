@@ -1,30 +1,20 @@
 <template>
     <div>
         <notifications group="notif" position="bottom right" classes="notif isansFont"/>
-        <bug-report/>
-        <bug-report-modal />
-        <top-menu style="top:50px"/>
+        <top-menu/>
         <transition name="fade" mode="out-in">
-            <router-view style="margin-top:120px;" :key="$route.fullPath"/>
+            <router-view style="margin-top:70px;" :key="$route.fullPath"/>
         </transition>
-<!--        <sneeds-footer/>-->
     </div>
 
 </template>
 
 <script>
     import TopMenu from "@/components/TopMenus/TopMenu";
-    // import Footer from "@/components/StandAlone/Footer";
-    import BugReport from '@/components/StandAlone/BugReport';
-    import BugReportModal from "@/components/StandAlone/BugReportModal";
-
     export default {
         name: 'App',
         components: {
             "top-menu": TopMenu,
-            "bug-report": BugReport,
-            "bug-report-modal": BugReportModal,
-            // "sneeds-footer": Footer
         },
     }
 </script>

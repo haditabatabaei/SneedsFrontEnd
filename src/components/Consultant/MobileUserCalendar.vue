@@ -128,9 +128,9 @@
             async initComp() {
                 try {
                     this.$loading(true);
-                    this.slots = (await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    this.soldSlots = (await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    this.justNowDate = jalali(((await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
+                    this.slots = (await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
+                    this.soldSlots = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
+                    this.justNowDate = jalali(((await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
                     this.shownDate = this.justNowDate.clone();
                     console.log('slots', this.slots);
                     console.log('sold slots', this.soldSlots);
@@ -172,7 +172,7 @@
                     if (this.stash.length > 0) {
                         try {
                             this.$loading(true);
-                            let result = await axios.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                             console.log(result);
                             this.$store.commit('setStash', []);
                             this.$router.push(`/carts/${result.data.id}`);

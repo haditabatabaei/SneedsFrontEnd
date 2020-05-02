@@ -76,7 +76,7 @@
                 console.log('calling get consultant comments');
                 try {
                     this.$loading(true);
-                    let result = await axios.get(
+                    let result = await this.$api.get(
                         `${this.$store.getters.getApi}/comment/comments/?consultant=${consultantId}`,
                         this.$store.getters.httpConfig
                     );
@@ -97,7 +97,7 @@
                     console.log('sending request');
                     try {
                         this.$loading(true);
-                        let result = await axios.post(
+                        let result = await this.$api.post(
                             `${this.$store.getters.getApi}/comment/comments/`,
                             {consultant: this.consultant.id, message: this.inputComment},
                             this.$store.getters.httpConfig

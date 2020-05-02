@@ -128,9 +128,9 @@
                 try {
                     this.$loading(true);
                     console.log('active time zone', this.$store.getters.timezone);
-                    let slotsResult = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let soldSlotsResult = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let timezoneResult = await axios.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
+                    let slotsResult = await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                    let soldSlotsResult = await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                    let timezoneResult = await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
                     console.log('all slots : ', slotsResult);
                     console.log('sold slots : ', soldSlotsResult);
                     this.slots = slotsResult.data;
@@ -312,7 +312,7 @@
                         this.$loading(true);
                         for (let selectedDate of this.selectedDatesToRemove) {
                             let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
-                            let result = await axios.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
+                            let result = await this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
                             console.log(result);
                         }
                         this.selectedDatesToRemove = [];
@@ -348,7 +348,7 @@
                             "start_time": selectedDate.datestart,
                             "end_time": selectedDate.dateend,
                         };
-                        let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`, payload, this.$store.getters.httpConfig);
+                        let result = await this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`, payload, this.$store.getters.httpConfig);
                         console.log(result);
                     }
 

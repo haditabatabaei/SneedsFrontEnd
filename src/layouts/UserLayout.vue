@@ -118,7 +118,6 @@
                     {name : "پکیج ها", target: '/user/packages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
-                    // {name : "تسویه حساب" , target: '/user/checkout', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
                     {name : "ویرایش رمز عبور", target : "/user/password", icon : "circle", tag : 0, hasSubmenu: false, submenu: []}
                 ]
             }

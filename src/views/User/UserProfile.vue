@@ -66,23 +66,15 @@
         },
 
         methods : {
-            updateUser:async function() {
+            async updateUser() {
                 this.$v.inputUser.$touch();
                 this.submitted = true;
                 console.log('update user called ', this.inputUser , 'is invalid : ', this.formIsInvalid);
                 if(!this.formIsInvalid) {
-                    //form is ok
-                    //remove all empty fields from;
                     try {
                         console.log('form is good dispatching requests.')
                         this.$loading(true);
-                        let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,this.generatePayload(),
-                            {
-                                headers : {
-                                    "Authorization" : `JWT ${this.$store.getters.getToken}`
-                                },
-                                timeout: 5000
-                            });
+                        let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,this.generatePayload(),this.$store.getters.httpConfig);
                         console.log(editResult);
                         await this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
                         this.printMessage("اطلاعات شما با موفقیت به روز رسانی شد.", "ویرایش : موفق", "success", "4000", "notif")

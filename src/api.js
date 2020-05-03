@@ -13,7 +13,6 @@ api.interceptors.response.use(response => {
 }, error => {
     console.log('api interceptor catch error, printing input');
     console.dir(error);
-    console.dir(error.config);
     console.log(error.response.status);
     const originalRequest = error.config;
     const originalStatus = error.response.status;

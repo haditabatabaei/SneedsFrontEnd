@@ -6,6 +6,7 @@ const api = axios.create({
     baseURL: '/',
 });
 
+
 console.log('response interceptor added.');
 api.interceptors.response.use(response => {
     return response;

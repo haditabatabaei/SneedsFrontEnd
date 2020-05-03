@@ -1,10 +1,13 @@
 <template>
-    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]">
+    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]" v-if="this.justNowDate && this.slotsDates.length > 0">
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
-            <button class="cal-week-switcher-button" @click="showPrevWeek"
+            <button class="cal-week-switcher-button" @click="showPrevWeek" v-if="canGoPrev"
                     :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
                 <i class="material-icons">keyboard_arrow_right</i>
                 هفته قبل
+            </button>
+            <button class="cal-week-switcher-button cal-week-switcher-button--disabled" disabled v-else>
+
             </button>
             <p class="cal-week-switcher-current isansFont" :class="[{'isansFont--faNum': isiran}]"
                v-show="showCurrentSwitcher && days.length > 0">
@@ -65,6 +68,16 @@
             رزرو {{stash.length}} جلسه انتخاب شده
         </button>
     </div>
+    <div class="consultantBlock-calendar-warn isansFont" v-else-if="this.slotsDates.length === 0">
+        <i class="material-icons consultantBlock-calendar-warn-icon">
+            info
+        </i>
+        <p>
+            متاسفانه این مشاور زمانی برای خود تعیین نکرده است. برای دریافت اطلاعات بیشتر و یا درخواست ایجاد زمان، با
+            <a href="http://t.me/sneeds_admin" target="_blank">پشتیبانی اسنیدز</a>
+            تماس بگیرید.
+        </p>
+    </div>
 </template>
 
 <script>
@@ -80,7 +93,7 @@
                 soldSlots: [],
                 soldSlotsDates: [],
                 activeDay: {},
-                justNowDate: {},
+                justNowDate: null,
                 shownDate: {},
                 shownFreeSlots: [],
                 shownSoldSlots: [],
@@ -134,11 +147,11 @@
                     this.$loading(true);
                     this.slots = (await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
                     this.soldSlots = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    this.justNowDate = jalali(((await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
-                    this.shownDate = this.justNowDate.clone();
+                    // this.justNowDate = jalali(((await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
+                    // this.shownDate = this.justNowDate.clone();
                     console.log('slots', this.slots);
                     console.log('sold slots', this.soldSlots);
-                    console.log('just now date', this.justNowDate.format());
+                    // console.log('just now date', this.justNowDate.format());
 
                     this.slotsDates = this.slots.map(slot => {
                         return {
@@ -146,7 +159,7 @@
                             "start_time_date": jalali(slot.start_time).locale(this.locale),
                             "end_time_date": jalali(slot.end_time).locale(this.locale)
                         }
-                    });
+                    }).sort((slot1, slot2) => slot1.start_time_date.unix() - slot2.start_time_date.unix());
                     this.soldSlotsDates = this.soldSlots.map(slot => {
                         return {
                             "old_slot": slot,
@@ -157,6 +170,8 @@
 
                     console.log('mapped slots:', this.slotsDates);
                     console.log('mapped sold slots:', this.soldSlotsDates);
+                    this.justNowDate = this.slotsDates[0].start_time_date.clone();
+                    this.shownDate = this.slotsDates[0].start_time_date.clone();
                     this.handleWeek(this.shownDate)
                 } catch (e) {
                     console.log(e);
@@ -205,57 +220,57 @@
             },
 
             generateSaturdayNew(date) {
-                let offset = 0;
-                if (this.isiran) {
-                    offset = -1;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
-
-            generateSundayNew(date) {
-                let offset = 1;
+                let offset = -1;
                 if (this.isiran) {
                     offset = 0;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateMondayNew(date) {
-                let offset = 2;
+            generateSundayNew(date) {
+                let offset = 0;
                 if (this.isiran) {
                     offset = 1;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateTuesdayNew(date) {
-                let offset = 3;
+            generateMondayNew(date) {
+                let offset = 1;
                 if (this.isiran) {
                     offset = 2;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateWednesdayNew(date) {
-                let offset = 4;
+            generateTuesdayNew(date) {
+                let offset = 2;
                 if (this.isiran) {
                     offset = 3;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateThursdayNew(date) {
-                let offset = 5;
+            generateWednesdayNew(date) {
+                let offset = 3;
                 if (this.isiran) {
                     offset = 4;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateFridayNew(date) {
-                let offset = 6;
+            generateThursdayNew(date) {
+                let offset = 4;
                 if (this.isiran) {
                     offset = 5;
+                }
+                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
+            },
+
+            generateFridayNew(date) {
+                let offset = 5;
+                if (this.isiran) {
+                    offset = 6;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
@@ -306,7 +321,15 @@
                 this.days.push(this.generateWednesdayNew(now));
                 this.days.push(this.generateThursdayNew(now));
                 this.days.push(this.generateFridayNew(now));
-                this.showDay(this.days[0]);
+
+                let dayToStart = this.days[0];
+                for (let i = 0; i < 7; i++) {
+                    if (this.hasFreeSlotsInDay(this.days[i])) {
+                        dayToStart = this.days[i];
+                        break;
+                    }
+                }
+                this.showDay(dayToStart);
                 this.showCurrentSwitcher = true;
             },
 
@@ -342,7 +365,12 @@
 
             locale() {
                 return this.$store.getters.locale;
-            }
+            },
+
+            canGoPrev() {
+                //last day of prev week
+                return this.justNowDate && this.returnWeek(this.activeWeekOffset - 1)[6].isAfter(this.justNowDate);
+            },
         },
     }
 </script>
@@ -528,9 +556,27 @@
         border: none;
     }
 
+    .cal-week-switcher-button--disabled {
+        min-height: 34px;
+        background-color: white;
+    }
+
     .calendar-reserve-button--disabled {
         cursor: not-allowed;
         background-color: #622593;
+    }
+
+    .consultantBlock-calendar-warn {
+        background-color: #FCE8E8;
+        color: #B82020;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .consultantBlock-calendar-warn-icon {
+        color: #B82020;
+        margin-left: 10px;
     }
 
     @media only screen and (max-width: 767.8px) {

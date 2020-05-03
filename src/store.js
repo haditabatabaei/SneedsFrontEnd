@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import api from './api'
 
 Vue.use(Vuex);
 
@@ -8,7 +8,7 @@ export default new Vuex.Store({
     state: {
         token: localStorage.getItem('token') || '',
 
-        expires: localStorage.getItem('expires') || '',
+        refreshToken: localStorage.getItem('refresh_token') || '',
 
         userInfo: JSON.parse(localStorage.getItem('userInfo')) || {
             "id": '',
@@ -48,7 +48,7 @@ export default new Vuex.Store({
         logout(state) {
             localStorage.clear();
             state.token = '';
-            state.expires = '';
+            state.refreshToken = '';
             state.user = {};
             state.inputUser = {};
             state.userInfo = {"id": '', "user_type": '', 'consultant': ''};
@@ -67,9 +67,9 @@ export default new Vuex.Store({
             state.token = newToken;
         },
 
-        setExpires(state, newExpires) {
-            state.expires = newExpires;
-            localStorage.setItem('expires', newExpires);
+        setRefreshToken(state, newRefreshToken) {
+            localStorage.setItem('refresh_token', newRefreshToken);
+            state.refreshToken = newRefreshToken;
         },
 
         setUserId(state, id) {
@@ -106,7 +106,7 @@ export default new Vuex.Store({
         async getUserMeta({commit}) {
             console.log("Getting user key");
             console.log("http config:", this.getters.httpConfig);
-            let result = await axios.get(`${this.getters.getApi}/auth/my-account/`, this.getters.httpConfig);
+            let result = await api.get(`${this.getters.getApi}/auth/my-account/`, this.getters.httpConfig);
             console.log(result);
             commit('setUserId', result.data.id);
             commit('setUserType', result.data.user_type);
@@ -115,7 +115,7 @@ export default new Vuex.Store({
 
         async getUserWithId({commit}, userId) {
             console.log("Getting user with key", userId);
-            let result = await axios.get(`${this.getters.getApi}/auth/accounts/${userId}/`, this.getters.httpConfig);
+            let result = await api.get(`${this.getters.getApi}/auth/accounts/${userId}/`, this.getters.httpConfig);
             console.log(result);
             commit('setUser', result.data);
             commit('setInputUser', JSON.parse(JSON.stringify(result.data)));
@@ -124,24 +124,24 @@ export default new Vuex.Store({
         async login({commit}, user) {
             console.log("login payload :", user);
             console.log('http config', this.getters.httpConfig);
-            let loginResult = await axios.post(`${this.getters.getApi}/auth/jwt/token/`, user, this.getters.httpConfig);
+            let loginResult = await api.post(`${this.getters.getApi}/auth/jwt/token/`, user, this.getters.httpConfig);
             console.log(loginResult);
-            commit('setToken', loginResult.data.token);
-            commit('setExpires', loginResult.data.expires);
+            commit('setToken', loginResult.data.access);
+            commit('setRefreshToken', loginResult.data.refresh);
             commit('setLoggedInStatus', true);
         },
 
         async register({commit}, user) {
             console.log("register payload", user);
-            let registerResult = await axios.post(`${this.getters.getApi}/auth/accounts/`, user, this.getters.httpConfig);
-            commit('setToken', registerResult.data.token_response.token);
-            commit('setExpires', registerResult.data.token_response.expires);
+            let registerResult = await api.post(`${this.getters.getApi}/auth/accounts/`, user, this.getters.httpConfig);
+            commit('setToken', registerResult.data.token_response.access);
+            commit('setRefreshToken', registerResult.data.token_response.refresh);
             commit('setLoggedInStatus', true);
         },
 
         async edit({commit}, user) {
             console.log('update user with ', user);
-            let editResult = await axios.put(`${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}/`, user, this.getters.httpConfig);
+            let editResult = await api.put(`${this.getters.getApi}/auth/accounts/${this.getters.getUserInfo.id}/`, user, this.getters.httpConfig);
             console.log(editResult);
         },
 
@@ -150,11 +150,11 @@ export default new Vuex.Store({
         },
     },
     getters: {
-        isLoggedIn: state => !!state.token,
+        isLoggedIn: state => !!state.token && !!state.refreshToken,
 
         getToken: state => state.token,
 
-        getExpires: state => state.expires,
+        getRefreshToken: state => state.refreshToken,
 
         getUser: state => state.user,
 
@@ -171,10 +171,10 @@ export default new Vuex.Store({
         getMobileMenuShow: state => state.mobileMenuShow,
 
         httpConfig: state => {
-            if (state.token) {
+            if (state.token && state.refreshToken) {
                 return {
                     headers: {
-                        "Authorization": `JWT ${state.token}`,
+                        "Authorization": `Bearer ${state.token}`,
                         "Content-Type": "application/json",
                         "CLIENT-TIMEZONE": state.timezone,
                     },

@@ -89,7 +89,7 @@
             async editComment() {
                 try {
                     this.$loading(true);
-                    let result = await axios.put(
+                    let result = await this.$api.put(
                         `${this.$store.getters.getApi}/comment/comments/${this.comment.id}/`,
                         {consultant: this.consultant.id, message: this.editedCommentInput},
                             this.$store.getters.httpConfig
@@ -111,7 +111,7 @@
                 if (window.confirm('از حذف نظر خود مطمئنید ؟')) {
                     try {
                         this.$loading(true);
-                        let result = await axios.delete(
+                        let result = await this.$api.delete(
                             `${this.$store.getters.getApi}/comment/comments/${this.comment.id}/`,
                             this.$store.getters.httpConfig
                         );

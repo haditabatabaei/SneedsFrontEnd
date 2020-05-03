@@ -168,7 +168,7 @@
                                 "end_time": selecteDate.dateend,
                                 "price": this.selectedPrice
                             };
-                            let result = await axios.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
+                            let result = await this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,payload,this.$store.getters.httpConfig);
                             console.log(result);
                         }
 
@@ -248,7 +248,7 @@
                         this.$loading(true);
                         for (let selectedDate of this.selectedDatesToRemove) {
                             let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
-                            let result = await axios.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
+                            let result = await this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
                             console.log(result);
                         }
                         this.selectedDatesToRemove = [];
@@ -269,7 +269,7 @@
                 try {
                     this.$loading(true);
                     console.log('getting list of sold times');
-                    let result = await axios.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.soldSlots = result.data;
                 } catch (e) {
@@ -286,7 +286,7 @@
                 try {
                     this.$loading(true);
                     console.log('getting list of times by id ', id);
-                    let result = await axios.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${id}`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${id}`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.slots = result.data;
                 } catch (e) {

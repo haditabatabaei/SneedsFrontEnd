@@ -17,7 +17,7 @@
             </button>
         </div>
 
-        <div class="col-md-12 text-center" v-else>
+        <div class="col-md-12 text-center comment-login-needed" v-else>
             <router-link to="/auth/login" class=" isansFont">
                 برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
             </router-link>
@@ -76,7 +76,7 @@
                 console.log('calling get consultant comments');
                 try {
                     this.$loading(true);
-                    let result = await axios.get(
+                    let result = await this.$api.get(
                         `${this.$store.getters.getApi}/comment/comments/?consultant=${consultantId}`,
                         this.$store.getters.httpConfig
                     );
@@ -97,7 +97,7 @@
                     console.log('sending request');
                     try {
                         this.$loading(true);
-                        let result = await axios.post(
+                        let result = await this.$api.post(
                             `${this.$store.getters.getApi}/comment/comments/`,
                             {consultant: this.consultant.id, message: this.inputComment},
                             this.$store.getters.httpConfig
@@ -131,7 +131,7 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        padding: 15px;
+        padding: 60px 15px;
     }
 
     .commentSectionWrapper-title {
@@ -139,6 +139,14 @@
         color: #444;
         margin-top: 30px;
         font-weight: bold;
+        text-align: right;
+        width: 100%;
+    }
+
+    .comment-login-needed {
+        width: 100%;
+        text-align: right;
+        padding-right: 0;
     }
 
     .commentSectionWrapper-title-meta {
@@ -179,7 +187,7 @@
 
     @media only screen and (max-width : 991.2px) and (min-width: 0) {
         .commentsWrapper {
-            margin-top: 15px;
+            margin-top: 30px;
             width: 100%;
             padding-right: 0;
             padding-left: 0;

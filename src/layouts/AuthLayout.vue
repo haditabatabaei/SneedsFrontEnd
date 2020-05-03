@@ -19,7 +19,7 @@
 <style scoped>
     .authWrapper {
         width: 100%;
-        min-height: calc(100vh - 120px);
+        min-height: calc(100vh - 70px);
         margin-top: 70px;
         display: flex;
         align-items: center;

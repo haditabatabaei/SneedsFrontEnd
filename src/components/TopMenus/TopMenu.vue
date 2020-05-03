@@ -279,7 +279,6 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-
         padding-right: 0;
         padding-left: 0;
         height: 100%;
@@ -298,10 +297,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-
         margin-bottom: 0;
         padding-right: 0;
-
         list-style: none;
     }
 
@@ -397,7 +394,7 @@
         border-radius: 15px 15px 0 0;
     }
 
-    .profile-menu-list-item:last-child .profile-menu-list-link{
+    .profile-menu-list-item:last-child .profile-menu-list-link {
         border-radius: 0 0 15px 15px;
     }
 
@@ -421,7 +418,7 @@
         height: 100vh;
         top: 0;
         left: 0;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0, 0, 0, 0.3);
         z-index: 9;
     }
 
@@ -472,7 +469,6 @@
             width: 100%;
         }
 
-
         .mobileMenu {
             display: flex;
             align-items: flex-start;
@@ -480,8 +476,8 @@
             position: fixed;
             top: 0;
             right: 0;
-            height: calc(100vh - 120px);
-            margin-top: 120px;
+            height: calc(100vh - 70px);
+            margin-top: 70px;
             background-color: rgba(255, 255, 255, 1);
             width: 100%;
             z-index: 998;
@@ -498,15 +494,12 @@
             align-items: center;
             justify-content: flex-start;
             width: 100%;
-
             padding-right: 0;
             list-style: none;
         }
 
         .mobileMenuList--item {
             align-self: stretch;
-            /*border-bottom: 1px solid #333;*/
-
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -546,15 +539,6 @@
             display: flex;
             width: 50%;
             margin-top: 10px;
-        }
-
-        .cartTooltip {
-            background-color: #d9534f;
-            color: white;
-            border-radius: 5px;
-            font-size: 10px;
-            padding-right: 5px;
-            padding-left: 5px;
         }
     }
 </style>

@@ -176,6 +176,7 @@ router.beforeEach((to, from, next) => {
         if (store.getters.isLoggedIn) {
             next();
         } else {
+            store.dispatch('logout');
             next('/auth/login');
         }
     } else if (to.meta.auth === 'noReq') {

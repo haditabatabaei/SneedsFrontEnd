@@ -120,7 +120,7 @@
                 if (this.readyToCheckForRate || overrideConditions) {
                     try {
                         this.$loading(true);
-                        let rateResult = (await axios.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
+                        let rateResult = (await this.$api.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
                         console.log(`current session ${this.session.id} rate :`, rateResult);
                         this.rate = rateResult;
                     } catch (e) {
@@ -138,7 +138,7 @@
                 if (this.readyToCheckForRoom || overrideConditions) {
                     try {
                         this.$loading(true);
-                        let roomResult = (await axios.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
+                        let roomResult = (await this.$api.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
                         console.log(`current session ${this.session.id} room :`, roomResult);
                         this.room = roomResult;
                     } catch (e) {
@@ -156,7 +156,7 @@
                 console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
                     this.$loading(true);
-                    let result = await axios.post(
+                    let result = await this.$api.post(
                         `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
                         {"sold_time_slot": this.session.id, "rate": rate},
                         this.$store.getters.httpConfig

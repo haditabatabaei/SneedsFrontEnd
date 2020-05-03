@@ -60,8 +60,8 @@ api.interceptors.response.use(response => {
                     router.push(`/carts/${response.data.id}`);
                 }).catch(error => {
                     store.dispatch('logout');
-                    router.push('/auth/login');
                     window.alert('ظاهرا نشست شما منقضی شده است. دوباره وارد حساب کاربری خود شوید...')
+                    router.push('/auth/login');
                 });
             } else {
                 console.log('encountering normal retry mode, do')

@@ -28,7 +28,7 @@
             <img :src="consultant.profile_picture" class="consultantDescBlock--head-image"
                  :alt="consultant.first_name + ' ' + consultant.last_name">
 
-            <div class="consultantDescBlock--head_item">
+            <div class="consultantDescBlock--head_item" v-if="hasStudyInfo">
                 <i class="material-icons" v-if="studyInfo.university == undefined">account_balance</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.university.picture"
                      :alt="studyInfo.university.name" v-else/>
@@ -36,7 +36,7 @@
                 <p class="consultantDescBlock--head_item_text">{{studyInfo.university.name}}</p>
             </div>
 
-            <div class="consultantDescBlock--head_item">
+            <div class="consultantDescBlock--head_item" v-if="hasStudyInfo">
                 <i class="material-icons" v-if="studyInfo.country == undefined">house</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.country.picture"
                      :alt="studyInfo.country.name" v-else/>
@@ -44,7 +44,7 @@
                 <p class="consultantDescBlock--head_item_text">{{studyInfo.country.name}}</p>
             </div>
 
-            <div class="consultantDescBlock--head_item">
+            <div class="consultantDescBlock--head_item" v-if="hasStudyInfo">
                 <i class="material-icons" v-if="studyInfo.field_of_study == undefined">add</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.field_of_study.picture"
                      :alt="studyInfo.field_of_study.name" v-else/>
@@ -87,12 +87,17 @@
             }
         },
         computed: {
+
+            hasStudyInfo() {
+              return this.consultant.study_info.length > 0;
+            },
+
             studyInfo() {
                 return this.consultant.study_info[this.consultant.study_info.length - 1];
             },
 
             persianGrade() {
-                if (this.consultant != null) {
+                if (this.consultant != null && this.hasStudyInfo) {
                     switch (this.studyInfo.grade) {
                         case 'phd':
                             return 'دکترا';

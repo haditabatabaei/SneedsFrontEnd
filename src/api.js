@@ -54,6 +54,14 @@ api.interceptors.response.use(response => {
                 //just refresh the page
                 console.log('encountering /payment/verify situation, refreshing the page.');
                 router.go(0);
+            } else if (originalRequest.url.startsWith(`${store.getters.getApi}/cart/carts/`)) {
+                axios.request(originalRequest).then(response => {
+                    router.push(`/carts/${response.data.id}`);
+                }).catch(error => {
+                    store.dispatch('logout');
+                    router.push('/auth/login');
+                    window.alert('ظاهرا نشست شما منقضی شده است. دوباره وارد حساب کاربری خود شوید...')
+                });
             } else {
                 console.log('encountering normal retry mode, do')
                 axios.request(originalRequest).then(response => {

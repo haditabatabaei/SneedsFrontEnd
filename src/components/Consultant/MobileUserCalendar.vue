@@ -1,17 +1,20 @@
 <template>
     <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]">
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
-            <button class="cal-week-switcher-button" @click="showPrevWeek">
+            <button class="cal-week-switcher-button" @click="showPrevWeek"
+                    :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
                 <i class="material-icons">keyboard_arrow_right</i>
                 هفته قبل
             </button>
             <p class="cal-week-switcher-current isansFont" :class="[{'isansFont--faNum': isiran}]"
-               v-if="days.length > 0">
+               v-show="showCurrentSwitcher && days.length > 0">
                 {{days[0].format('DD MMMM')}}
                 تا
                 {{days[days.length -1].format('DD MMMM')}}
             </p>
-            <button class="cal-week-switcher-button" @click="showNextWeek">
+
+            <button class="cal-week-switcher-button" @click="showNextWeek"
+                    :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('next')}]">
                 هفته بعد
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
@@ -20,13 +23,12 @@
             <ul class="cal-days-list" :class="[{'cal-days-list--desktop' : desktopMode}]">
                 <li class="cal-days-item" v-for="(day, index) in days">
                     <button class="cal-days-toggler"
-                            :class="[{'cal-days-toggler--active': day.format() === activeDay.format()}]"
+                            :class="[{'cal-days-toggler--active': day.format() === activeDay.format(), 'cal-days-toggler--hasfree': hasFreeSlotsInDay(day)}]"
                             @click="showDay(day)">
-
                         {{day.format('dddd')}}
-                        <sup class="cal-days-toggler--hasTime" v-if="hasFreeSlotsInDay(day)">
-                            *
-                        </sup>
+                        <span class="cal-days-toggler-small" :class="[{'isansFont--faNum': isiran}]">
+                            {{day.format('MM/DD')}}
+                        </span>
                     </button>
                 </li>
             </ul>
@@ -57,7 +59,8 @@
                 class="calendar-reserve-button calendar-reserve-button--disabled">
             برای رزرو، حداقل یک جلسه انتخاب کنید.
         </button>
-        <button class="calendar-reserve-button isansFont--faNum" v-else-if="stash.length != 0 && !desktopMode" @click="addSelectedItemsToCart"
+        <button class="calendar-reserve-button isansFont--faNum" v-else-if="stash.length != 0 && !desktopMode"
+                @click="addSelectedItemsToCart"
                 v-else>
             رزرو {{stash.length}} جلسه انتخاب شده
         </button>
@@ -65,7 +68,6 @@
 </template>
 
 <script>
-    import axios from "axios";
     import jalali from 'jalali-moment';
 
     export default {
@@ -83,6 +85,8 @@
                 shownFreeSlots: [],
                 shownSoldSlots: [],
                 minutesOffsetFromTehran: 0,
+                activeWeekOffset: 0,
+                showCurrentSwitcher: true
             }
         },
         props: {
@@ -256,23 +260,43 @@
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            showWeek(numOfWeek, siblingStatus) {
-                if (siblingStatus === 'prev') {
-                    this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd'));
-                } else if (siblingStatus === 'next') {
-                    this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd'));
-                }
+            showWeek(numOfWeek) {
+                this.activeWeekOffset += numOfWeek;
+                this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd'));
+                console.log('active week offset:', this.activeWeekOffset);
+            },
+
+            returnWeek(numOfWeek) {
+                return this.generateWeek(this.justNowDate.clone().add(Number(numOfWeek) * 7, 'd'));
             },
 
             showPrevWeek() {
-                this.showWeek(1, 'prev');
+                if (true) {
+                    this.showWeek(-1);
+                } else {
+                    this.printMessage('نمیتوانید از هفته فعلی عقب تر بروید.', 'تقویم: اخطار', 'warn', 5000, 'notif');
+                }
             },
 
             showNextWeek() {
                 this.showWeek(1, 'next');
             },
 
+            generateWeek(now) {
+                let week = [];
+                week.push(this.generateSaturdayNew(now));
+                week.push(this.generateSundayNew(now));
+                week.push(this.generateMondayNew(now));
+                week.push(this.generateTuesdayNew(now));
+                week.push(this.generateWednesdayNew(now));
+                week.push(this.generateThursdayNew(now));
+                week.push(this.generateFridayNew(now));
+                return week;
+            },
+
+
             handleWeek(now) {
+                this.showCurrentSwitcher = false;
                 console.log('is iran?', this.isiran);
                 this.days = [];
                 this.days.push(this.generateSaturdayNew(now));
@@ -282,15 +306,21 @@
                 this.days.push(this.generateWednesdayNew(now));
                 this.days.push(this.generateThursdayNew(now));
                 this.days.push(this.generateFridayNew(now));
-                console.log(this.days);
-                for (let i = 0; i < this.days.length; i++) {
-                    console.log(this.days[i].format());
-                }
                 this.showDay(this.days[0]);
+                this.showCurrentSwitcher = true;
             },
 
             hasFreeSlotsInDay(day) {
                 return this.slotsDates.findIndex(slotDate => slotDate.start_time_date.isSame(day, 'day')) !== -1;
+            },
+
+            hasFreeSlotsInWeek(type) {
+                switch (type) {
+                    case 'prev':
+                        return this.returnWeek(this.activeWeekOffset - 1).some(day => this.hasFreeSlotsInDay(day));
+                    case 'next' :
+                        return this.returnWeek(this.activeWeekOffset + 1).some(day => this.hasFreeSlotsInDay(day));
+                }
             },
 
             isSlotSelected(slot) {
@@ -309,7 +339,7 @@
             isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
-            
+
             locale() {
                 return this.$store.getters.locale;
             }
@@ -335,6 +365,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        margin-top: 45px;
     }
 
     .cal-week-switcher--desktop {
@@ -344,12 +375,14 @@
     .cal-week-switcher-button {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         background-color: #F8F8F8;
         border: none;
         padding: 2px 8px;
         color: #585858;
         font-size: 12px;
+        max-width: 250px;
+        width: 100%;
     }
 
     .cal-week-switcher-button:first-child {
@@ -358,6 +391,11 @@
 
     .cal-week-switcher-button:not(:first-child) {
         border-radius: 0 15px 15px 0;
+    }
+
+    .cal-week-switcher-button--hasfree {
+        background-color: #3CAEA3;
+        color: white;
     }
 
     .cal-week-switcher-button i {
@@ -372,6 +410,8 @@
     .cal-week-switcher-current {
         margin: 0;
         font-size: 12px;
+        text-align: center;
+        width: 100%;
     }
 
     .cal-week-days {
@@ -382,9 +422,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 2px solid #ccc;
+        border-bottom: 2px solid #f7f7f7;
         list-style: none;
-        margin: 10px 0;
+        margin: 20px 0 15px 0;
         padding: 0;
     }
 
@@ -403,6 +443,16 @@
         border: none;
         padding: 5px;
         position: relative;
+        font-weight: 100;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cal-days-toggler--hasfree {
+        color: #3CAEA3;
+        font-weight: bold;
     }
 
     .cal-days-toggler--active {
@@ -410,7 +460,6 @@
         border-bottom: 3px solid #8C3DDB;
         padding-bottom: 2px;
     }
-
 
     .cal-week-days-slots {
         max-height: 150px;
@@ -425,11 +474,15 @@
 
     .days-slots-item {
         margin: 10px auto;
-        padding: 7px 10px;
+        padding: 7px 12px;
         background: none;
         border: none;
         font-size: 14px;
         border-radius: 20px;
+    }
+
+    .cal-days-toggler-small {
+        font-size: 12px;
     }
 
     .days-slots-item--desktop {
@@ -437,7 +490,7 @@
     }
 
     .days-slots-item--free {
-        border: 2px solid #3CAEA3;
+        border: 1.5px solid #3CAEA3;
         color: #3CAEA3;
     }
 
@@ -460,7 +513,7 @@
     }
 
     .days-slots-item--sold {
-        border: 2px solid #B82020;
+        border: 1.5px solid #B82020;
         color: #B82020;
         cursor: default;
     }
@@ -479,4 +532,31 @@
         cursor: not-allowed;
         background-color: #622593;
     }
+
+    @media only screen and (max-width: 767.8px) {
+        .cal-days-toggler-small {
+            margin-right: 0;
+        }
+    }
+
+    @media only screen and (max-width: 564.8px) {
+        .cal-days-toggler {
+            font-size: 12px;
+        }
+
+        .cal-days-toggler-small {
+            font-size: 10px;
+        }
+    }
+
+    @media only screen and (max-width: 360px) {
+        .cal-days-toggler {
+            font-size: 10px;
+        }
+
+        .cal-days-toggler-small {
+            font-size: 8px;
+        }
+    }
+
 </style>

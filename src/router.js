@@ -54,7 +54,7 @@ const router = new Router({
         },
         {
             path: '/consultants',
-            name : 'consultants',
+            name: 'consultants',
             component: () => import("@/layouts/ConsultantListLayout"),
             meta: {
                 auth: 'optional'
@@ -128,7 +128,14 @@ const router = new Router({
                     meta: {
                         auth: 'req'
                     }
-                }
+                },
+                {
+                    path: 'package/form',
+                    component: () => import("@/views/Package/PackageForm"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
             ]
         },
         {

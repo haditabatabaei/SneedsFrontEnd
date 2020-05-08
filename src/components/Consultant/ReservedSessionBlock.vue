@@ -73,7 +73,6 @@
 
 <script>
     import jalali from 'jalali-moment'
-    import axios from 'axios'
     import StarRating from 'vue-star-rating'
 
     export default {
@@ -99,14 +98,15 @@
                 room: null,
             }
         },
-        created() {
-            this.getMyRoom(true);
-            this.getMyRate(true);
-            this.interval = setInterval(() => {
-                this.currentTime.add('1', 'minutes');
-                this.getMyRate(false);
-                this.getMyRoom(false);
-            }, 1000 * 60);
+        async mounted() {
+            console.log('session mounted ', this.session.id);
+                this.getMyRoom(true);
+                this.getMyRate(true);
+                this.interval = setInterval(() => {
+                    this.currentTime.add('1', 'minutes');
+                    this.getMyRate(false);
+                    this.getMyRoom(false);
+                }, 1000 * 60);
         },
         beforeDestroy() {
             clearInterval(this.interval);

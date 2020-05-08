@@ -14,22 +14,30 @@
             </div>
         </div>
         <div class="session-items">
-            <p v-if="shownReservedSessions.length === 0" class="session-items--text isansFont">
+            <p v-if="(startedSessions.length === 0 && activeFilter.value === 'finished') || (notStartedSessions.length === 0 && activeFilter.value === 'notstarted')" class="session-items--text isansFont">
                 جلسه ای برای نمایش وجود ندارد.
             </p>
-            <reserved-session-block
-                    v-for="(session, index) in shownReservedSessions"
-                    :key="index"
-                    :currentTime="currentTime"
-                    :session="session"
-                    :isConsultant="isConsultant"
-            />
+            <div v-if="activeFilter.value === 'notstarted'">
+                <reserved-session-block
+                        v-for="session in notStartedSessions"
+                        :currentTime="currentTime"
+                        :session="session"
+                        :isConsultant="isConsultant"
+                />
+            </div>
+            <div v-else-if="activeFilter.value === 'finished'">
+                <reserved-session-block
+                        v-for="session in startedSessions"
+                        :currentTime="currentTime"
+                        :session="session"
+                        :isConsultant="isConsultant"
+                />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
     import jalali from 'jalali-moment'
     import ReservedSessionBlock from '@/components/Consultant/ReservedSessionBlock'
 
@@ -38,8 +46,8 @@
         components: {"reserved-session-block": ReservedSessionBlock},
         data() {
             return {
-                reservedSessions: [],
-                shownReservedSessions: [],
+                notStartedSessions: [],
+                startedSessions: [],
                 currentTime: null,
                 activeFilter: {name: 'برگزار نشده', value: "notstarted"},
                 availableFilters: [
@@ -64,9 +72,27 @@
             async getAllSessions() {
                 try {
                     this.$loading(true);
-                    this.reservedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time`, this.$store.getters.httpConfig)).data;
-                    console.log(this.reservedSessions);
-                    this.filterBy(this.activeFilter);
+                    this.startedSessions = [];
+                    this.notStartedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time&used=false`, this.$store.getters.httpConfig)).data;
+                    // console.log(this.reservedSessions);
+                    // this.filterBy(this.activeFilter);
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            async getUsedSessions() {
+                try {
+                    this.$loading(true);
+                    this.notStartedSessions  = [];
+                    this.startedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time&used=true`, this.$store.getters.httpConfig)).data;
+                    // console.log(this.reservedSessions);
+                    // this.filterBy(this.activeFilter);
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -98,10 +124,10 @@
                 this.activeFilter = filter;
                 switch (this.activeFilter.value) {
                     case 'notstarted' :
-                        this.shownReservedSessions = this.reservedSessions.filter(value => !value.used);
+                        this.getAllSessions();
                         break;
                     case 'finished' :
-                        this.shownReservedSessions = this.reservedSessions.filter(value => value.used);
+                        this.getUsedSessions();
                         break;
                 }
                 this.getCurrentTimeInTimezone();

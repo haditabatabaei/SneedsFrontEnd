@@ -1,5 +1,62 @@
 <template>
     <main class="main">
+        <transition name="fade">
+            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay" @click="hideAllModals">
+                <div class="consultant-modal consultant-modal--registerIntro" v-if="showRegisterIntro">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="consultantBlock-calendar-warn isansFont">
+                        <i class="material-icons consultantBlock-calendar-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>برای رزرو مشاوره نیاز به حساب کاربری دارید!</strong>
+                            <br>
+                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                        </p>
+                    </div>
+                    <div class="intro-content ">
+                        <h2 class="intro-content-head isansFont">
+                            چرا ثبت نام کنم ؟
+                        </h2>
+                        <ul class="intro-content-list isansFont">
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی لیست جلسات رزرو شده رو ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی بعد از جلسه مشاوره، امتیاز بدی
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
+                            ورود/ثبت نام و رزرو وقت
+                        </button>
+                        <button @click="hideAllModals" data-command="consultant-modal-close" class="intro-action-button intro-action-button--passive">
+                            بیخیال
+                        </button>
+                    </div>
+                </div>
+                <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+
+                </div>
+            </div>
+        </transition>
         <section class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -78,7 +135,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
     import MobileUserCalendar from "@/components/Consultant/MobileUserCalendar";
     import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
@@ -99,6 +155,8 @@
                 scrollListener: null,
                 showMobileCalendar: false,
                 showSidebarAvatar: false,
+                showRegisterIntro: true,
+                showRegisterModal: false
             }
         },
         computed: {
@@ -108,6 +166,9 @@
             stash() {
                 return this.$store.getters.getStash;
             },
+            showModalOverlay() {
+                return this.showRegisterIntro || this.showRegisterModal;
+            }
         },
         created() {
             document.addEventListener('scroll', this.scrollEnoughToShowAvatar, false);
@@ -155,10 +216,25 @@
                             this.$loading(false);
                         }
                     } else {
-                        this.printMessage("زمانی برای رزرو انتخاب نشده است.", "رزرو : اخطار", "warn", 7000, "notif")
+                        this.printMessage("زمانی برای رزرو انتخاب نشده است. از تقویم باید زمان مورد نظر خود را انتخاب کنید.", "رزرو : اخطار", "warn", 7000, "notif")
                     }
                 } else {
+                    //start modal flow
+                    this.showRegisterIntro = true;
                     this.printMessage(" برای رزرو باید در حساب کاربری خود وارد شوید(زمان های انتخاب شده برایتان ذخیره می شود).", "رزرو : اخطار", "warn", 10000, "notif")
+                }
+            },
+
+            continueRegisterFlow() {
+              this.showRegisterIntro = false;
+              this.showRegisterModal = true;
+            },
+
+            hideAllModals(event) {
+                let command = event.target.dataset.command;
+                if(command === 'consultant-modal-close') {
+                    this.showRegisterIntro = false;
+                    this.showRegisterModal = false;
                 }
             },
 
@@ -401,6 +477,123 @@
 
     .consultant-mobile-calendar {
         display: none;
+    }
+
+    .modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1013;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .consultant-modal {
+        width: 100%;
+        max-width: 400px;
+        height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        z-index: 1014;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .intro-head {
+        background-color: #FCFCFC;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .intro-head i {
+        color: #B3B3B3;
+        font-size: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .consultantBlock-calendar-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: flex-start;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    .consultantBlock-calendar-warn-icon {
+        color: #CAA53D;
+        margin-left: 10px;
+    }
+
+    .consultantBlock-calendar-warn p {
+        margin-bottom: 0;
+    }
+
+    .intro-content {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .intro-content-head {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #585858;
+        font-weight: bold;
+    }
+
+    .intro-content-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .intro-content-item {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #707070;
+    }
+
+    .intro-content-item i {
+        color: #00BFD6;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .intro-action {
+        margin: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .intro-action-button {
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        font-size: 12px;
+    }
+
+    .intro-action-button--active {
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .intro-action-button--passive {
+        background-color: white;
+        color: #707070;
     }
 
     @media only screen and (min-width: 0) and (max-width: 991.8px) {

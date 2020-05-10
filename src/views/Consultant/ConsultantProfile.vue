@@ -1,13 +1,14 @@
 <template>
     <main class="main">
         <transition name="fade">
-            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay" @click="hideAllModals">
+            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
+                 @click="hideAllModals">
                 <div class="consultant-modal consultant-modal--registerIntro" v-if="showRegisterIntro">
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="consultantBlock-calendar-warn isansFont">
-                        <i class="material-icons consultantBlock-calendar-warn-icon">
+                    <div class="modal-warn isansFont">
+                        <i class="material-icons modal-warn-icon">
                             info
                         </i>
                         <p>
@@ -47,13 +48,60 @@
                         <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
                             ورود/ثبت نام و رزرو وقت
                         </button>
-                        <button @click="hideAllModals" data-command="consultant-modal-close" class="intro-action-button intro-action-button--passive">
+                        <button @click="hideAllModals" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
                             بیخیال
                         </button>
                     </div>
                 </div>
                 <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+                    <div class="authFormWrapper-switcher isansFont">
+                        <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
+                            ورود
+                        </button>
+                        <button @click="showRegisterForm" class="switcher"
+                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                        </button>
+                    </div>
+                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                                v-if="loginForm"/>
+                    <register-form :customAction="true" @custom-action-call="registerFormAction"
+                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                </div>
 
+                <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn isansFont">
+                        <i class="material-icons modal-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <br>
+                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید.
+                        </p>
+                    </div>
+                    <label class="loginForm-label isansFont" for="phone">
+                        نام :
+                        <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
+<!--                        <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">-->
+<!--                لطفا یک شماره تلفن معتبر وارد کنید.-->
+<!--            </span>-->
+                    </label>
+                    <label class="loginForm-label isansFont" for="password">
+                        نام خانوادگی :
+                        <input class="loginForm-control" id="password" v-model.trim="last_name">
+<!--                        <span class="loginForm-meta error" v-if="passwordIsInvalid">-->
+<!--                لطفا یک رمز عبور معتبر وارد کنید.-->
+<!--            </span>-->
+                    </label>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
+                             ثبت و رزرو وقت
+                        </button>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -67,9 +115,9 @@
                             </div>
                             <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
                             <mobile-user-calendar
-                                v-if="consultant.id && windowWidth > 991.8"
-                                :consultant-id="consultant.id"
-                                :desktop-mode="true"
+                                    v-if="consultant.id && windowWidth > 991.8"
+                                    :consultant-id="consultant.id"
+                                    :desktop-mode="true"
                             />
                             <comment-section :consultant="consultant" v-if="consultant.id"/>
                         </div>
@@ -114,7 +162,8 @@
                 </div>
             </div>
 
-            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar" @click="toggleMobileCalendar" ></div>
+            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
+                 @click="toggleMobileCalendar"></div>
             <div class="consultant-mobile-calendar isansFont"
                  :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
                 <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
@@ -137,13 +186,17 @@
 <script>
     import CommentSection from '@/components/StandAlone/CommentSection'
     import MobileUserCalendar from "@/components/Consultant/MobileUserCalendar";
-    import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
+    import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock';
+    import RegisterForm from '@/components/StandAlone/RegisterForm';
+    import LoginForm from '@/components/StandAlone/LoginForm';
     import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, MobileUserCalendar
+            CommentSection, ConsultantDescBlock, MobileUserCalendar,
+            "login-form": LoginForm,
+            "register-form": RegisterForm
         },
         data() {
             return {
@@ -155,8 +208,13 @@
                 scrollListener: null,
                 showMobileCalendar: false,
                 showSidebarAvatar: false,
-                showRegisterIntro: true,
-                showRegisterModal: false
+                showRegisterIntro: false,
+                showRegisterModal: false,
+                showNameModal: false,
+                loginForm: true,
+                registerForm: false,
+                first_name: '',
+                last_name: ''
             }
         },
         computed: {
@@ -167,7 +225,7 @@
                 return this.$store.getters.getStash;
             },
             showModalOverlay() {
-                return this.showRegisterIntro || this.showRegisterModal;
+                return this.showRegisterIntro || this.showRegisterModal || this.showNameModal;
             }
         },
         created() {
@@ -190,17 +248,29 @@
                 this.showMobileCalendar = !this.showMobileCalendar;
             },
 
+            loginFormAction() {
+                this.showRegisterIntro = false;
+                this.showRegisterModal = false;
+                this.addSelectedTimesToCart();
+            },
+
+            registerFormAction() {
+                this.showRegisterModal = false;
+                this.showRegisterIntro = false;
+                this.showNameModal = true;
+            },
+
             async addSelectedTimesToCart() {
                 console.log(this.stash);
                 let payload = {"products": []};
                 this.stash.forEach(item => {
-                   payload.products.push(item.old_slot.id);
+                    payload.products.push(item.old_slot.id);
                 });
 
                 console.log(payload);
 
-                if (this.isLoggedIn) {
-                    if (this.stash.length > 0) {
+                if (this.stash.length > 0) {
+                    if (this.isLoggedIn) {
                         try {
                             this.$loading(true);
                             let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
@@ -216,25 +286,38 @@
                             this.$loading(false);
                         }
                     } else {
-                        this.printMessage("زمانی برای رزرو انتخاب نشده است. از تقویم باید زمان مورد نظر خود را انتخاب کنید.", "رزرو : اخطار", "warn", 7000, "notif")
+                        this.showRegisterIntro = true;
                     }
                 } else {
-                    //start modal flow
-                    this.showRegisterIntro = true;
-                    this.printMessage(" برای رزرو باید در حساب کاربری خود وارد شوید(زمان های انتخاب شده برایتان ذخیره می شود).", "رزرو : اخطار", "warn", 10000, "notif")
+                    this.printMessage("زمانی برای رزرو انتخاب نشده است. از تقویم باید زمان مورد نظر خود را انتخاب کنید.", "رزرو : اخطار", "warn", 7000, "notif")
                 }
             },
 
             continueRegisterFlow() {
-              this.showRegisterIntro = false;
-              this.showRegisterModal = true;
+                this.showRegisterIntro = false;
+                this.showRegisterModal = true;
+                this.showNameModal = false;
             },
 
             hideAllModals(event) {
                 let command = event.target.dataset.command;
-                if(command === 'consultant-modal-close') {
+                if (command === 'consultant-modal-close') {
                     this.showRegisterIntro = false;
                     this.showRegisterModal = false;
+                    this.showNameModal = false;
+                }
+            },
+
+            async setNameAndPay() {
+                try {
+                    let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,{"first_name": this.first_name, "last_name": this.last_name},this.$store.getters.httpConfig);
+                    console.log(editResult);
+                    this.addSelectedTimesToCart();
+                } catch (e) {
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
                 }
             },
 
@@ -247,6 +330,18 @@
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
                 }
+            },
+
+            showLoginForm() {
+                this.loginForm = true;
+                this.registerForm = false;
+                this.showNameModal = false;
+            },
+
+            showRegisterForm() {
+                this.registerForm = true;
+                this.loginForm = false;
+                this.showNameModal = false;
             },
 
             async getConsultantBySlug(consultantSlug) {
@@ -370,7 +465,6 @@
         display: flex;
         list-style: none;
         padding-right: 0;
-
         flex-direction: column;
         align-items: flex-start;
         justify-content: center;
@@ -486,7 +580,7 @@
         z-index: 1013;
         width: 100%;
         height: 100vh;
-        background: rgba(0,0,0,0.2);
+        background: rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -495,13 +589,14 @@
     .consultant-modal {
         width: 100%;
         max-width: 400px;
-        height: 450px;
+        min-height: 450px;
         background-color: white;
         border-radius: 10px;
         z-index: 1014;
         display: flex;
         flex-direction: column;
         align-items: stretch;
+        padding-bottom: 20px
     }
 
     .intro-head {
@@ -519,7 +614,7 @@
         cursor: pointer;
     }
 
-    .consultantBlock-calendar-warn {
+    .modal-warn {
         background-color: #FFFCF4;
         color: #8C6D1F;
         display: flex;
@@ -530,12 +625,12 @@
         font-size: 13px;
     }
 
-    .consultantBlock-calendar-warn-icon {
+    .modal-warn-icon {
         color: #CAA53D;
         margin-left: 10px;
     }
 
-    .consultantBlock-calendar-warn p {
+    .modal-warn p {
         margin-bottom: 0;
     }
 
@@ -595,6 +690,58 @@
         background-color: white;
         color: #707070;
     }
+
+    .authFormWrapper-switcher {
+        border-bottom: 3px solid #eee;
+        min-height: 50px;
+        margin: 30px 0 0 0;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .switcher {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: #aaa;
+        background: none;
+        border: none;
+    }
+
+    .switcher--active {
+        border-bottom: 3px solid #9038CC;
+        color: #9038CC;
+    }
+
+    .loginForm-label {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .loginForm-label:not(:first-child) {
+        margin-top: 0;
+    }
+
+    .loginForm-control {
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #F8F8F8;
+        margin-top: 10px;
+        color: #999;
+    }
+
+    .loginForm-meta {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+    .loginForm-meta.error {
+        color: #c9737c;
+    }
+
 
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
         .main {
@@ -669,7 +816,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             z-index: 1013;
         }
 

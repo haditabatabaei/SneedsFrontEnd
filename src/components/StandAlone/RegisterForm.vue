@@ -54,7 +54,9 @@
             submitLabel: {
                 type: String,
                 default: () => 'ثبت نام'
-            }
+            },
+            customAction: Boolean,
+            default: () => false
         },
         computed: {
             registerFormIsInvalid() {
@@ -105,8 +107,17 @@
                     try {
                         this.$loading(true);
                         await this.$store.dispatch('register', this.userToRegister);
-                        this.printMessage("شما با موفقیت ثبت نام کردید ، به پروفایل خود منتقل خواهید شد.", "ثبت نام :‌ موفق", "success", 3000, "notif");
-                        this.$router.push('/user');
+                        if(this.customAction) {
+                            this.printMessage("شما با موفقیت ثبت نام کردید ، در این مرحله نام و نام خانوادگی خود را وارد کنید.", "ثبت نام :‌ موفق", "success", 3000, "notif");
+
+                        } else {
+                            this.printMessage("شما با موفقیت ثبت نام کردید ، به پروفایل خود منتقل خواهید شد.", "ثبت نام :‌ موفق", "success", 3000, "notif");
+                        }
+                        if(this.customAction) {
+                            this.$emit('custom-action-call')
+                        } else {
+                            this.$router.push('/user');
+                        }
                     } catch (e) {
                         console.log(e.response);
                         if(e.response.data) {

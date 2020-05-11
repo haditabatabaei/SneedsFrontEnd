@@ -147,11 +147,8 @@
                     this.$loading(true);
                     this.slots = (await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
                     this.soldSlots = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    // this.justNowDate = jalali(((await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
-                    // this.shownDate = this.justNowDate.clone();
                     console.log('slots', this.slots);
                     console.log('sold slots', this.soldSlots);
-                    // console.log('just now date', this.justNowDate.format());
 
                     this.slotsDates = this.slots.map(slot => {
                         return {

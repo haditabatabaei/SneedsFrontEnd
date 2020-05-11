@@ -56,6 +56,7 @@ export default new Vuex.Store({
             state.refreshToken = '';
             state.user = {};
             state.inputUser = {};
+            state.stash = [];
             state.userInfo = {"id": '', "user_type": '', 'consultant': ''};
         },
 

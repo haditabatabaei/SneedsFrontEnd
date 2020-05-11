@@ -28,7 +28,6 @@
                             نام خانوادگی :
                             <input type="text" :placeholder="lastNamePlaceholder" v-model.trim="inputUser.last_name" id="lastName" class="info-input">
                             <span class="text-danger isansFont--faNum" v-if="lastNameIsInvalid">نام خانوادگی وارد شده معتبر نیست.</span>
-
                         </label>
                     </div>
 

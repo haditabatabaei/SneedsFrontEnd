@@ -87,16 +87,10 @@
                     <label class="loginForm-label isansFont" for="phone">
                         نام :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
-                        <!--                        <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">-->
-                        <!--                لطفا یک شماره تلفن معتبر وارد کنید.-->
-                        <!--            </span>-->
                     </label>
                     <label class="loginForm-label isansFont" for="password">
                         نام خانوادگی :
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
-                        <!--                        <span class="loginForm-meta error" v-if="passwordIsInvalid">-->
-                        <!--                لطفا یک رمز عبور معتبر وارد کنید.-->
-                        <!--            </span>-->
                     </label>
                     <div class="intro-action isansFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
@@ -177,7 +171,7 @@
                         </i>
                     </button>
                 </div>
-                <mobile-user-calendar :consultant-id="consultant.id" v-if="consultant.id && showMobileCalendar"/>
+                <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
             </div>
         </section>
     </main>
@@ -285,7 +279,7 @@
                 });
 
                 console.log(payload);
-
+                this.showMobileCalendar = false;
                 if (this.stash.length > 0) {
                     if (this.isLoggedIn) {
                         if (this.showNameModalAfterLogin) {

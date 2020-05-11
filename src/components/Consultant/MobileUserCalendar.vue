@@ -177,33 +177,34 @@
                 }
             },
 
-            async addSelectedItemsToCart() {
-                console.log(this.stash);
-                let payload = {"products": []};
-                this.stash.forEach(item => {
-                    payload.products.push(item.old_slot.id);
-                });
-
-                if (this.isLoggedIn) {
-                    if (this.stash.length > 0) {
-                        try {
-                            this.$loading(true);
-                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                            console.log(result);
-                            this.$store.commit('setStash', []);
-                            this.$router.push(`/carts/${result.data.id}`);
-                        } catch (e) {
-                            console.log(e);
-                            if (e.response) {
-                                console.log(e.response)
-                            }
-                        } finally {
-                            this.$loading(false);
-                        }
-                    }
-                } else {
-                    this.printMessage("برای رزرو باید در حساب خود وارد شوید.", "رزرو :‌اخطا", "warn", 3000, "notif");
-                }
+            addSelectedItemsToCart() {
+               this.$emit('add-times-to-cart');
+                // console.log(this.stash);
+                // let payload = {"products": []};
+                // this.stash.forEach(item => {
+                //     payload.products.push(item.old_slot.id);
+                // });
+                //
+                // if (this.isLoggedIn) {
+                //     if (this.stash.length > 0) {
+                //         try {
+                //             this.$loading(true);
+                //             let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                //             console.log(result);
+                //             this.$store.commit('setStash', []);
+                //             this.$router.push(`/carts/${result.data.id}`);
+                //         } catch (e) {
+                //             console.log(e);
+                //             if (e.response) {
+                //                 console.log(e.response)
+                //             }
+                //         } finally {
+                //             this.$loading(false);
+                //         }
+                //     }
+                // } else {
+                //     this.printMessage("برای رزرو باید در حساب خود وارد شوید.", "رزرو :‌اخطا", "warn", 3000, "notif");
+                // }
             },
 
             printMessage(text, title, type, duration, group) {

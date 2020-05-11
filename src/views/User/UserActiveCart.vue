@@ -1,5 +1,5 @@
 <template>
-        <div class="container activeCart">
+        <div class="container activeCart" style="padding-top: 15px;">
             <div class="row">
                 <div class="col-md-8" v-if="cart && cartTimeSlots.length > 0">
                     <div class="cartsWrapper">
@@ -287,7 +287,7 @@
 <style scoped>
 
     .activeCart {
-        margin-top: 100px;
+        margin-top: 115px;
         min-height: calc(100vh - 100px);
     }
 

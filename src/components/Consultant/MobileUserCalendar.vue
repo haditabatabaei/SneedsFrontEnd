@@ -147,11 +147,8 @@
                     this.$loading(true);
                     this.slots = (await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
                     this.soldSlots = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    // this.justNowDate = jalali(((await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`)).data).now);
-                    // this.shownDate = this.justNowDate.clone();
                     console.log('slots', this.slots);
                     console.log('sold slots', this.soldSlots);
-                    // console.log('just now date', this.justNowDate.format());
 
                     this.slotsDates = this.slots.map(slot => {
                         return {
@@ -180,33 +177,34 @@
                 }
             },
 
-            async addSelectedItemsToCart() {
-                console.log(this.stash);
-                let payload = {"products": []};
-                this.stash.forEach(item => {
-                    payload.products.push(item.old_slot.id);
-                });
-
-                if (this.isLoggedIn) {
-                    if (this.stash.length > 0) {
-                        try {
-                            this.$loading(true);
-                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                            console.log(result);
-                            this.$store.commit('setStash', []);
-                            this.$router.push(`/carts/${result.data.id}`);
-                        } catch (e) {
-                            console.log(e);
-                            if (e.response) {
-                                console.log(e.response)
-                            }
-                        } finally {
-                            this.$loading(false);
-                        }
-                    }
-                } else {
-                    this.printMessage("برای رزرو باید در حساب خود وارد شوید.", "رزرو :‌اخطا", "warn", 3000, "notif");
-                }
+            addSelectedItemsToCart() {
+               this.$emit('add-times-to-cart');
+                // console.log(this.stash);
+                // let payload = {"products": []};
+                // this.stash.forEach(item => {
+                //     payload.products.push(item.old_slot.id);
+                // });
+                //
+                // if (this.isLoggedIn) {
+                //     if (this.stash.length > 0) {
+                //         try {
+                //             this.$loading(true);
+                //             let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                //             console.log(result);
+                //             this.$store.commit('setStash', []);
+                //             this.$router.push(`/carts/${result.data.id}`);
+                //         } catch (e) {
+                //             console.log(e);
+                //             if (e.response) {
+                //                 console.log(e.response)
+                //             }
+                //         } finally {
+                //             this.$loading(false);
+                //         }
+                //     }
+                // } else {
+                //     this.printMessage("برای رزرو باید در حساب خود وارد شوید.", "رزرو :‌اخطا", "warn", 3000, "notif");
+                // }
             },
 
             printMessage(text, title, type, duration, group) {

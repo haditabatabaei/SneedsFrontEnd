@@ -1,5 +1,105 @@
 <template>
     <main class="main">
+        <transition name="fade">
+            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
+                 @click="hideAllModals">
+                <div class="consultant-modal consultant-modal--registerIntro" v-if="showRegisterIntro">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn isansFont">
+                        <i class="material-icons modal-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>برای رزرو مشاوره نیاز به حساب کاربری دارید!</strong>
+                            <br>
+                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                        </p>
+                    </div>
+                    <div class="intro-content ">
+                        <h2 class="intro-content-head isansFont">
+                            چرا ثبت نام کنم ؟
+                        </h2>
+                        <ul class="intro-content-list isansFont">
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی لیست جلسات رزرو شده رو ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی بعد از جلسه مشاوره، امتیاز بدی
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
+                            ورود/ثبت نام و رزرو وقت
+                        </button>
+                        <button @click="hideAllModals" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            بیخیال
+                        </button>
+                    </div>
+                </div>
+                <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+                    <div class="authFormWrapper-switcher isansFont">
+                        <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
+                            ورود
+                        </button>
+                        <button @click="showRegisterForm" class="switcher"
+                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                        </button>
+                    </div>
+                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                                v-if="loginForm"/>
+                    <register-form :customAction="true" @custom-action-call="registerFormAction"
+                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                </div>
+
+                <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn isansFont">
+                        <i class="material-icons modal-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <br>
+                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید.
+                            این اطلاعات از طریق پروفایلتان قابل ویرایش است.
+                        </p>
+                    </div>
+                    <label class="loginForm-label isansFont" for="phone">
+                        نام :
+                        <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
+                    </label>
+                    <label class="loginForm-label isansFont" for="password">
+                        نام خانوادگی :
+                        <input class="loginForm-control" id="password" v-model.trim="last_name">
+                    </label>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
+                            ثبت و رزرو وقت
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <section class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -10,9 +110,9 @@
                             </div>
                             <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
                             <mobile-user-calendar
-                                v-if="consultant.id && windowWidth > 991.8"
-                                :consultant-id="consultant.id"
-                                :desktop-mode="true"
+                                    v-if="consultant.id && windowWidth > 991.8"
+                                    :consultant-id="consultant.id"
+                                    :desktop-mode="true"
                             />
                             <comment-section :consultant="consultant" v-if="consultant.id"/>
                         </div>
@@ -57,7 +157,8 @@
                 </div>
             </div>
 
-            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar" @click="toggleMobileCalendar" ></div>
+            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
+                 @click="toggleMobileCalendar"></div>
             <div class="consultant-mobile-calendar isansFont"
                  :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
                 <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
@@ -70,7 +171,7 @@
                         </i>
                     </button>
                 </div>
-                <mobile-user-calendar :consultant-id="consultant.id" v-if="consultant.id && showMobileCalendar"/>
+                <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
             </div>
         </section>
     </main>
@@ -78,16 +179,19 @@
 </template>
 
 <script>
-    import axios from 'axios';
     import CommentSection from '@/components/StandAlone/CommentSection'
     import MobileUserCalendar from "@/components/Consultant/MobileUserCalendar";
-    import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock'
+    import ConsultantDescBlock from '@/components/Consultant/ConsultantDescBlock';
+    import RegisterForm from '@/components/StandAlone/RegisterForm';
+    import LoginForm from '@/components/StandAlone/LoginForm';
     import jalali from 'jalali-moment'
 
     export default {
         name: "ConsultantProfile",
         components: {
-            CommentSection, ConsultantDescBlock, MobileUserCalendar
+            CommentSection, ConsultantDescBlock, MobileUserCalendar,
+            "login-form": LoginForm,
+            "register-form": RegisterForm
         },
         data() {
             return {
@@ -99,6 +203,13 @@
                 scrollListener: null,
                 showMobileCalendar: false,
                 showSidebarAvatar: false,
+                showRegisterIntro: false,
+                showRegisterModal: false,
+                showNameModal: false,
+                loginForm: true,
+                registerForm: false,
+                first_name: '',
+                last_name: ''
             }
         },
         computed: {
@@ -108,6 +219,21 @@
             stash() {
                 return this.$store.getters.getStash;
             },
+            showModalOverlay() {
+                return this.showRegisterIntro || this.showRegisterModal || this.showNameModal;
+            },
+            user() {
+                return this.$store.getters.getUser;
+            },
+            showNameModalAfterLogin() {
+                if (this.user.first_name == null || this.user.last_name == null) {
+                    return true
+                } else if (this.user.first_name.trim().length === 0 || this.user.last_name.trim().length === 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         created() {
             document.addEventListener('scroll', this.scrollEnoughToShowAvatar, false);
@@ -129,37 +255,91 @@
                 this.showMobileCalendar = !this.showMobileCalendar;
             },
 
+            loginFormAction() {
+                this.showRegisterIntro = false;
+                this.showRegisterModal = false;
+                if (this.showNameModalAfterLogin) {
+                    this.showNameModal = true;
+                } else {
+                    this.addSelectedTimesToCart();
+                }
+            },
+
+            registerFormAction() {
+                this.showRegisterModal = false;
+                this.showRegisterIntro = false;
+                this.showNameModal = true;
+            },
+
             async addSelectedTimesToCart() {
                 console.log(this.stash);
                 let payload = {"products": []};
                 this.stash.forEach(item => {
-                   payload.products.push(item.old_slot.id);
+                    payload.products.push(item.old_slot.id);
                 });
 
                 console.log(payload);
-
-                if (this.isLoggedIn) {
-                    if (this.stash.length > 0) {
-                        try {
-                            this.$loading(true);
-                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                            console.log(result);
-                            this.$router.push(`/carts/${result.data.id}`);
-                        } catch (e) {
-                            console.log(e);
-                            if (e.response) {
-                                console.log(e.response)
+                this.showMobileCalendar = false;
+                if (this.stash.length > 0) {
+                    if (this.isLoggedIn) {
+                        if (this.showNameModalAfterLogin) {
+                            this.showNameModal = true;
+                        } else {
+                            try {
+                                this.$loading(true);
+                                let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                                console.log(result);
+                                this.$router.push(`/carts/${result.data.id}`);
+                            } catch (e) {
+                                console.log(e);
+                                if (e.response) {
+                                    console.log(e.response)
+                                }
+                                this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
+                            } finally {
+                                this.$loading(false);
                             }
-                            this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
-                        } finally {
-                            this.$loading(false);
                         }
                     } else {
-                        this.printMessage("زمانی برای رزرو انتخاب نشده است.", "رزرو : اخطار", "warn", 7000, "notif")
+                        this.showRegisterIntro = true;
                     }
                 } else {
-                    this.printMessage(" برای رزرو باید در حساب کاربری خود وارد شوید(زمان های انتخاب شده برایتان ذخیره می شود).", "رزرو : اخطار", "warn", 10000, "notif")
+                    this.printMessage("زمانی برای رزرو انتخاب نشده است. از تقویم باید زمان مورد نظر خود را انتخاب کنید.", "رزرو : اخطار", "warn", 7000, "notif")
                 }
+            },
+
+            continueRegisterFlow() {
+                this.showRegisterIntro = false;
+                this.showRegisterModal = true;
+                this.showNameModal = false;
+            },
+
+            hideAllModals(event) {
+                let command = event.target.dataset.command;
+                if (command === 'consultant-modal-close') {
+                    this.showRegisterIntro = false;
+                    this.showRegisterModal = false;
+                    this.showNameModal = false;
+                }
+            },
+
+            setNameAndPay() {
+                let requests = [];
+                let editReq = this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`, {
+                    "first_name": this.first_name,
+                    "last_name": this.last_name
+                }, this.$store.getters.httpConfig);
+                let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
+                requests.push(editReq);
+                requests.push(dispatchUser);
+                this.$loading(true);
+                Promise.all(requests).then(([editRes, dispatchRes]) => {
+                    this.addSelectedTimesToCart();
+                }).catch(error => {
+
+                }).finally(() => {
+                    this.$loading(false);
+                })
             },
 
             getJalali(date) {
@@ -171,6 +351,18 @@
                     if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
                         return this.slots[i].id;
                 }
+            },
+
+            showLoginForm() {
+                this.loginForm = true;
+                this.registerForm = false;
+                this.showNameModal = false;
+            },
+
+            showRegisterForm() {
+                this.registerForm = true;
+                this.loginForm = false;
+                this.showNameModal = false;
             },
 
             async getConsultantBySlug(consultantSlug) {
@@ -294,7 +486,6 @@
         display: flex;
         list-style: none;
         padding-right: 0;
-
         flex-direction: column;
         align-items: flex-start;
         justify-content: center;
@@ -403,6 +594,177 @@
         display: none;
     }
 
+    .modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1013;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .consultant-modal {
+        width: 100%;
+        max-width: 400px;
+        min-height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        z-index: 1014;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-bottom: 20px
+    }
+
+    .intro-head {
+        background-color: #FCFCFC;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .intro-head i {
+        color: #B3B3B3;
+        font-size: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .modal-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: flex-start;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    .modal-warn-icon {
+        color: #CAA53D;
+        margin-left: 10px;
+    }
+
+    .modal-warn p {
+        margin-bottom: 0;
+    }
+
+    .intro-content {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .intro-content-head {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #585858;
+        font-weight: bold;
+    }
+
+    .intro-content-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .intro-content-item {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #707070;
+    }
+
+    .intro-content-item i {
+        color: #00BFD6;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .intro-action {
+        margin: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .intro-action-button {
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        font-size: 12px;
+    }
+
+    .intro-action-button--active {
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .intro-action-button--passive {
+        background-color: white;
+        color: #707070;
+    }
+
+    .authFormWrapper-switcher {
+        border-bottom: 3px solid #eee;
+        min-height: 50px;
+        margin: 30px 0 0 0;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .switcher {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: #aaa;
+        background: none;
+        border: none;
+    }
+
+    .switcher--active {
+        border-bottom: 3px solid #9038CC;
+        color: #9038CC;
+    }
+
+    .loginForm-label {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .loginForm-label:not(:first-child) {
+        margin-top: 0;
+    }
+
+    .loginForm-control {
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #F8F8F8;
+        margin-top: 10px;
+        color: #999;
+    }
+
+    .loginForm-meta {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    .loginForm-meta.error {
+        color: #c9737c;
+    }
+
+
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
         .main {
             padding-bottom: 50px;
@@ -476,7 +838,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             z-index: 1013;
         }
 

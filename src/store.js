@@ -18,7 +18,12 @@ export default new Vuex.Store({
 
         inputUser: {},
 
-        user: {},
+        user: JSON.parse(localStorage.getItem('user')) || {
+            "email": '',
+            "first_name": '',
+            "last_name": '',
+            "phone_number": ''
+        },
 
         api: process.env.VUE_APP_ROOT_API,
 
@@ -55,6 +60,7 @@ export default new Vuex.Store({
         },
 
         setUser(state, newUser) {
+            localStorage.setItem('user', JSON.stringify(newUser));
             state.user = newUser;
         },
 
@@ -121,7 +127,7 @@ export default new Vuex.Store({
             commit('setInputUser', JSON.parse(JSON.stringify(result.data)));
         },
 
-        async login({commit}, user) {
+        async login({commit, dispatch}, user) {
             console.log("login payload :", user);
             console.log('http config', this.getters.httpConfig);
             let loginResult = await api.post(`${this.getters.getApi}/auth/jwt/token/`, user, this.getters.httpConfig);
@@ -129,14 +135,18 @@ export default new Vuex.Store({
             commit('setToken', loginResult.data.access);
             commit('setRefreshToken', loginResult.data.refresh);
             commit('setLoggedInStatus', true);
+            await dispatch('getUserMeta')
+            await dispatch('getUserWithId', this.getters.getUserInfo.id);
         },
 
-        async register({commit}, user) {
+        async register({commit, dispatch}, user) {
             console.log("register payload", user);
             let registerResult = await api.post(`${this.getters.getApi}/auth/accounts/`, user, this.getters.httpConfig);
             commit('setToken', registerResult.data.token_response.access);
             commit('setRefreshToken', registerResult.data.token_response.refresh);
             commit('setLoggedInStatus', true);
+            await dispatch('getUserMeta');
+            await dispatch('getUserWithId', this.getters.getUserInfo.id);
         },
 
         async edit({commit}, user) {

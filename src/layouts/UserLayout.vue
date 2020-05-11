@@ -147,9 +147,7 @@
             }
         },
         async created() {
-            this.$loading(true);
             try {
-                await this.$store.dispatch('getUserMeta');
                 await this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
             } catch (e) {
                 this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "خطا", "error", 3000, "notif")

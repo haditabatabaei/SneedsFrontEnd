@@ -81,25 +81,26 @@
                             <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
                             <br>
                             برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید.
+                            این اطلاعات از طریق پروفایلتان قابل ویرایش است.
                         </p>
                     </div>
                     <label class="loginForm-label isansFont" for="phone">
                         نام :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
-<!--                        <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">-->
-<!--                لطفا یک شماره تلفن معتبر وارد کنید.-->
-<!--            </span>-->
+                        <!--                        <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">-->
+                        <!--                لطفا یک شماره تلفن معتبر وارد کنید.-->
+                        <!--            </span>-->
                     </label>
                     <label class="loginForm-label isansFont" for="password">
                         نام خانوادگی :
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
-<!--                        <span class="loginForm-meta error" v-if="passwordIsInvalid">-->
-<!--                لطفا یک رمز عبور معتبر وارد کنید.-->
-<!--            </span>-->
+                        <!--                        <span class="loginForm-meta error" v-if="passwordIsInvalid">-->
+                        <!--                لطفا یک رمز عبور معتبر وارد کنید.-->
+                        <!--            </span>-->
                     </label>
                     <div class="intro-action isansFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
-                             ثبت و رزرو وقت
+                            ثبت و رزرو وقت
                         </button>
                     </div>
                 </div>
@@ -226,6 +227,18 @@
             },
             showModalOverlay() {
                 return this.showRegisterIntro || this.showRegisterModal || this.showNameModal;
+            },
+            user() {
+                return this.$store.getters.getUser;
+            },
+            showNameModalAfterLogin() {
+                if (this.user.first_name == null || this.user.last_name == null) {
+                    return true
+                } else if (this.user.first_name.trim().length === 0 || this.user.last_name.trim().length === 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         created() {
@@ -251,7 +264,11 @@
             loginFormAction() {
                 this.showRegisterIntro = false;
                 this.showRegisterModal = false;
-                this.addSelectedTimesToCart();
+                if (this.showNameModalAfterLogin) {
+                    this.showNameModal = true;
+                } else {
+                    this.addSelectedTimesToCart();
+                }
             },
 
             registerFormAction() {
@@ -271,19 +288,23 @@
 
                 if (this.stash.length > 0) {
                     if (this.isLoggedIn) {
-                        try {
-                            this.$loading(true);
-                            let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                            console.log(result);
-                            this.$router.push(`/carts/${result.data.id}`);
-                        } catch (e) {
-                            console.log(e);
-                            if (e.response) {
-                                console.log(e.response)
+                        if (this.showNameModalAfterLogin) {
+                            this.showNameModal = true;
+                        } else {
+                            try {
+                                this.$loading(true);
+                                let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
+                                console.log(result);
+                                this.$router.push(`/carts/${result.data.id}`);
+                            } catch (e) {
+                                console.log(e);
+                                if (e.response) {
+                                    console.log(e.response)
+                                }
+                                this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
+                            } finally {
+                                this.$loading(false);
                             }
-                            this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
-                        } finally {
-                            this.$loading(false);
                         }
                     } else {
                         this.showRegisterIntro = true;
@@ -308,17 +329,23 @@
                 }
             },
 
-            async setNameAndPay() {
-                try {
-                    let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,{"first_name": this.first_name, "last_name": this.last_name},this.$store.getters.httpConfig);
-                    console.log(editResult);
+            setNameAndPay() {
+                let requests = [];
+                let editReq = this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`, {
+                    "first_name": this.first_name,
+                    "last_name": this.last_name
+                }, this.$store.getters.httpConfig);
+                let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
+                requests.push(editReq);
+                requests.push(dispatchUser);
+                this.$loading(true);
+                Promise.all(requests).then(([editRes, dispatchRes]) => {
                     this.addSelectedTimesToCart();
-                } catch (e) {
-                    console.log(e);
-                    if(e.response) {
-                        console.log(e.response);
-                    }
-                }
+                }).catch(error => {
+
+                }).finally(() => {
+                    this.$loading(false);
+                })
             },
 
             getJalali(date) {
@@ -738,6 +765,7 @@
         font-size: 12px;
         margin-top: 10px;
     }
+
     .loginForm-meta.error {
         color: #c9737c;
     }

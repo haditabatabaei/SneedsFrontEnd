@@ -55,6 +55,9 @@
                     </div>
                 </div>
                 <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
                     <div class="authFormWrapper-switcher isansFont">
                         <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
                             ورود
@@ -73,18 +76,18 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn isansFont">
-                        <i class="material-icons modal-warn-icon">
+                    <div class="modal-warn modal--error isansFont">
+                        <i class="material-icons modal-warn-icon modal-icon--error">
                             info
                         </i>
                         <p>
                             <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
                             <br>
-                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید.
-                            این اطلاعات از طریق پروفایلتان قابل ویرایش است.
+                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
+                            این اطلاعات  همیشه از طریق پروفایلتان قابل ویرایش است.
                         </p>
                     </div>
-                    <label class="loginForm-label isansFont" for="phone">
+                    <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
                         نام :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
                     </label>
@@ -95,6 +98,10 @@
                     <div class="intro-action isansFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
                             ثبت و رزرو وقت
+                        </button>
+                        <button @click="addSelectedTimesToCart(true)" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            بعدا وارد میکنم
                         </button>
                     </div>
                 </div>
@@ -160,7 +167,7 @@
             <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
                  @click="toggleMobileCalendar"></div>
             <div class="consultant-mobile-calendar isansFont"
-                 :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]">
+                 :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]" v-if="!showModalOverlay">
                 <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
                     رزرو وقت مشاوره
                 </button>
@@ -170,6 +177,10 @@
                             close
                         </i>
                     </button>
+                    <h2 class="mobile-calendar-header-title isansFont">
+                        تقویم
+                        {{consultant.first_name + " " + consultant.last_name}}
+                    </h2>
                 </div>
                 <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
             </div>
@@ -271,7 +282,10 @@
                 this.showNameModal = true;
             },
 
-            async addSelectedTimesToCart() {
+            async addSelectedTimesToCart(forced = false) {
+                if(forced) {
+                    this.hideAllModals({target: {dataset: {command: 'consultant-modal-close'}}});
+                }
                 console.log(this.stash);
                 let payload = {"products": []};
                 this.stash.forEach(item => {
@@ -282,7 +296,7 @@
                 this.showMobileCalendar = false;
                 if (this.stash.length > 0) {
                     if (this.isLoggedIn) {
-                        if (this.showNameModalAfterLogin) {
+                        if (this.showNameModalAfterLogin && !forced) {
                             this.showNameModal = true;
                         } else {
                             try {
@@ -635,6 +649,18 @@
         cursor: pointer;
     }
 
+    .mobile-calendar-header {
+        display: flex;
+        align-items: center;
+        padding-top: 10px;
+        align-self: stretch;
+    }
+
+    .mobile-calendar-header-title {
+        margin: 0 10px;
+        font-size: 17px;
+    }
+
     .modal-warn {
         background-color: #FFFCF4;
         color: #8C6D1F;
@@ -655,6 +681,14 @@
         margin-bottom: 0;
     }
 
+    .modal--error {
+        color: #891B1B;
+        background-color: #FFECEC
+    }
+
+    .modal-icon--error {
+        color: #891B1B;
+    }
     .intro-content {
         margin: 15px;
         display: flex;
@@ -715,7 +749,7 @@
     .authFormWrapper-switcher {
         border-bottom: 3px solid #eee;
         min-height: 50px;
-        margin: 30px 0 0 0;
+        margin: 0;
         display: flex;
         align-items: stretch;
     }

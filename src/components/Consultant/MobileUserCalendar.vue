@@ -1,6 +1,6 @@
 <template>
     <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]"
-         v-if="this.justNowDate && this.slotsDates.length > 0">
+         v-if="this.justNowDate && this.slots.length > 0">
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek" v-if="canGoPrev"
                     :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
@@ -70,7 +70,7 @@
             رزرو {{stash.length}} جلسه انتخاب شده
         </button>
     </div>
-    <div class="consultantBlock-calendar-warn isansFont" v-else-if="this.slotsDates.length === 0">
+    <div class="consultantBlock-calendar-warn isansFont" v-else-if="this.slots.length === 0">
         <i class="material-icons consultantBlock-calendar-warn-icon">
             info
         </i>
@@ -91,9 +91,7 @@
             return {
                 days: [],
                 slots: [],
-                slotsDates: [],
                 soldSlots: [],
-                soldSlotsDates: [],
                 activeDay: {},
                 justNowDate: null,
                 shownDate: {},
@@ -102,12 +100,6 @@
                 minutesOffsetFromTehran: 0,
                 activeWeekOffset: 0,
                 showCurrentSwitcher: true,
-                calendarLoading: false,
-            }
-        },
-        watch: {
-            calendarLoading(newValue, oldValue) {
-                this.$loading(!!newValue);
             }
         },
         props: {
@@ -125,12 +117,12 @@
         methods: {
             showDay(day) {
                 this.activeDay = day;
-                this.shownFreeSlots = this.slotsDates.filter(slotDate => {
-                    return slotDate.start_time_date.isSame(this.activeDay, 'day');
+                this.shownFreeSlots = this.slots.filter(slot => {
+                    return slot.start_time_date.isSame(this.activeDay, 'day');
                 });
 
-                this.shownSoldSlots = this.soldSlotsDates.filter(slotDate => {
-                    return slotDate.start_time_date.isSame(this.activeDay, 'day');
+                this.shownSoldSlots = this.soldSlots.filter(soldSlot => {
+                    return soldSlot.start_time_date.isSame(this.activeDay, 'day');
                 });
 
                 console.log('shown free slots for day:', this.shownFreeSlots);
@@ -156,30 +148,25 @@
                 Promise
                     .all(reqs)
                     .then(([slotsResult, soldSlotResult]) => {
-                        this.slots = slotsResult.data;
-                        this.soldSlots = soldSlotResult.data;
-                        console.log('slots', this.slots);
-                        console.log('sold slots', this.soldSlots);
-
-                        this.slotsDates = this.slots.map(slot => {
+                        this.slots = slotsResult.data.map(slot => {
                             return {
                                 "old_slot": slot,
                                 "start_time_date": jalali(slot.start_time).locale(this.locale),
                                 "end_time_date": jalali(slot.end_time).locale(this.locale)
                             }
                         }).sort((slot1, slot2) => slot1.start_time_date.unix() - slot2.start_time_date.unix());
-                        this.soldSlotsDates = this.soldSlots.map(slot => {
+
+                        this.soldSlots = soldSlotResult.data.map(slot => {
                             return {
                                 "old_slot": slot,
                                 "start_time_date": jalali(slot.start_time).locale(this.locale),
                                 "end_time_date": jalali(slot.end_time).locale(this.locale)
                             }
                         });
-
-                        console.log('mapped slots:', this.slotsDates);
-                        console.log('mapped sold slots:', this.soldSlotsDates);
-                        this.justNowDate = this.slotsDates[0].start_time_date.clone();
-                        this.shownDate = this.slotsDates[0].start_time_date.clone();
+                        console.log('slots', this.slots);
+                        console.log('sold slots', this.soldSlots);
+                        this.justNowDate = this.slots[0].start_time_date.clone();
+                        this.shownDate = this.slots[0].start_time_date.clone();
                         this.handleWeek(this.shownDate);
                     })
                     .catch(error => {
@@ -271,11 +258,11 @@
             },
 
             showPrevWeek() {
-                if (true) {
+                // if (true) {
                     this.showWeek(-1);
-                } else {
-                    this.printMessage('نمیتوانید از هفته فعلی عقب تر بروید.', 'تقویم: اخطار', 'warn', 5000, 'notif');
-                }
+                // } else {
+                //     this.printMessage('نمیتوانید از هفته فعلی عقب تر بروید.', 'تقویم: اخطار', 'warn', 5000, 'notif');
+                // }
             },
 
             showNextWeek() {
@@ -319,7 +306,7 @@
             },
 
             hasFreeSlotsInDay(day) {
-                return this.slotsDates.findIndex(slotDate => slotDate.start_time_date.isSame(day, 'day')) !== -1;
+                return this.slots.some(slot => slot.start_time_date.isSame(day, 'day'));
             },
 
             hasFreeSlotsInWeek(type) {
@@ -332,7 +319,7 @@
             },
 
             isSlotSelected(slot) {
-                return this.stash.filter(stashSlot => stashSlot.old_slot.start_time === slot.old_slot.start_time && stashSlot.old_slot.end_time === slot.old_slot.end_time).length !== 0;
+                return this.stash.some(stashSlot => stashSlot.old_slot.start_time === slot.old_slot.start_time && stashSlot.old_slot.end_time === slot.old_slot.end_time);
             },
         },
         computed: {
@@ -353,7 +340,6 @@
             },
 
             canGoPrev() {
-                //last day of prev week
                 return this.activeWeekOffset > 0;
             },
         },

@@ -252,13 +252,12 @@
 
     .consultantDescBlock--main_bio {
         width: 100%;
-        padding: 0 30px 30px 30px;
+        padding: 30px;
     }
 
     .consultantDescBlock--main_bio p {
-        text-align: justify;
+        text-align: right;
         align-self: flex-start;
-        word-break: break-word;
     }
 
     .consultantDescBlock--main_video {

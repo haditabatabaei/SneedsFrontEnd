@@ -1,6 +1,6 @@
 <template>
     <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]"
-         v-if="this.justNowDate && this.slots.length > 0">
+         v-if="this.days.length !== 0 && activeDay.format">
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek" v-if="canGoPrev"
                     :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
@@ -70,7 +70,7 @@
             رزرو {{stash.length}} جلسه انتخاب شده
         </button>
     </div>
-    <div class="consultantBlock-calendar-warn isansFont" v-else-if="this.slots.length === 0">
+    <div class="consultantBlock-calendar-warn isansFont" v-else-if="showNoSlotError">
         <i class="material-icons consultantBlock-calendar-warn-icon">
             info
         </i>
@@ -100,6 +100,8 @@
                 minutesOffsetFromTehran: 0,
                 activeWeekOffset: 0,
                 showCurrentSwitcher: true,
+                showNoSlotError: false,
+                showCalendar: false,
             }
         },
         props: {
@@ -115,20 +117,6 @@
             this.initComp();
         },
         methods: {
-            showDay(day) {
-                this.activeDay = day;
-                this.shownFreeSlots = this.slots.filter(slot => {
-                    return slot.start_time_date.isSame(this.activeDay, 'day');
-                });
-
-                this.shownSoldSlots = this.soldSlots.filter(soldSlot => {
-                    return soldSlot.start_time_date.isSame(this.activeDay, 'day');
-                });
-
-                console.log('shown free slots for day:', this.shownFreeSlots);
-                console.log('shown sold slots for day:', this.shownSoldSlots);
-            },
-
             toggleSlotToStash(slot) {
                 if (this.isSlotSelected(slot)) {
                     this.$store.commit('removeItemFromStash', {'itemToRemove': slot, type: 'time-slot'});
@@ -147,7 +135,7 @@
                 ];
                 Promise
                     .all(reqs)
-                    .then(([slotsResult, soldSlotResult]) => {
+                    .then(async ([slotsResult, soldSlotResult]) => {
                         this.slots = slotsResult.data.map(slot => {
                             return {
                                 "old_slot": slot,
@@ -156,6 +144,9 @@
                             }
                         }).sort((slot1, slot2) => slot1.start_time_date.unix() - slot2.start_time_date.unix());
 
+                        if (this.slots.length === 0) {
+                            this.showNoSlotError = true;
+                        }
                         this.soldSlots = soldSlotResult.data.map(slot => {
                             return {
                                 "old_slot": slot,
@@ -167,90 +158,35 @@
                         console.log('sold slots', this.soldSlots);
                         this.justNowDate = this.slots[0].start_time_date.clone();
                         this.shownDate = this.slots[0].start_time_date.clone();
-                        this.handleWeek(this.shownDate);
+                        this.showWeek(0);
                     })
                     .catch(error => {
                         console.log(error);
                     })
                     .finally(() => {
-                        this.$loading(false);
+                        // this.$loading(false);
                     })
             },
 
-            addSelectedItemsToCart() {
-                this.$emit('add-times-to-cart');
-            },
-
-            printMessage(text, title, type, duration, group) {
-                this.$notify({
-                    group: group,
-                    text: text,
-                    title: title,
-                    type: type,
-                    duration: duration
-                })
-            },
-
-            generateSaturdayNew(date) {
-                let offset = -1;
+            generateDayByOffset(date, offset) {
                 if (this.isiran) {
-                    offset = 0;
+                    offset++;
                 }
                 return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
             },
 
-            generateSundayNew(date) {
-                let offset = 0;
-                if (this.isiran) {
-                    offset = 1;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
+            showDay(day) {
+                this.activeDay = day;
+                this.shownFreeSlots = this.slots.filter(slot => {
+                    return slot.start_time_date.isSame(this.activeDay, 'day');
+                });
 
-            generateMondayNew(date) {
-                let offset = 1;
-                if (this.isiran) {
-                    offset = 2;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
+                this.shownSoldSlots = this.soldSlots.filter(soldSlot => {
+                    return soldSlot.start_time_date.isSame(this.activeDay, 'day');
+                });
 
-            generateTuesdayNew(date) {
-                let offset = 2;
-                if (this.isiran) {
-                    offset = 3;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
-
-            generateWednesdayNew(date) {
-                let offset = 3;
-                if (this.isiran) {
-                    offset = 4;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
-
-            generateThursdayNew(date) {
-                let offset = 4;
-                if (this.isiran) {
-                    offset = 5;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
-
-            generateFridayNew(date) {
-                let offset = 5;
-                if (this.isiran) {
-                    offset = 6;
-                }
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).add(offset - date.weekday(), 'd').locale(this.locale);
-            },
-
-            showWeek(numOfWeek) {
-                this.activeWeekOffset += numOfWeek;
-                this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd'));
-                console.log('active week offset:', this.activeWeekOffset);
+                console.log('shown free slots for day:', this.shownFreeSlots);
+                console.log('shown sold slots for day:', this.shownSoldSlots);
             },
 
             returnWeek(numOfWeek) {
@@ -258,11 +194,7 @@
             },
 
             showPrevWeek() {
-                // if (true) {
-                    this.showWeek(-1);
-                // } else {
-                //     this.printMessage('نمیتوانید از هفته فعلی عقب تر بروید.', 'تقویم: اخطار', 'warn', 5000, 'notif');
-                // }
+                this.showWeek(-1);
             },
 
             showNextWeek() {
@@ -271,28 +203,20 @@
 
             generateWeek(now) {
                 let week = [];
-                week.push(this.generateSaturdayNew(now));
-                week.push(this.generateSundayNew(now));
-                week.push(this.generateMondayNew(now));
-                week.push(this.generateTuesdayNew(now));
-                week.push(this.generateWednesdayNew(now));
-                week.push(this.generateThursdayNew(now));
-                week.push(this.generateFridayNew(now));
+                for (let i = -1; i < 5; i++) {
+                    week.push(this.generateDayByOffset(now, i));
+                }
                 return week;
             },
-
 
             handleWeek(now) {
                 this.showCurrentSwitcher = false;
                 console.log('is iran?', this.isiran);
                 this.days = [];
-                this.days.push(this.generateSaturdayNew(now));
-                this.days.push(this.generateSundayNew(now));
-                this.days.push(this.generateMondayNew(now));
-                this.days.push(this.generateTuesdayNew(now));
-                this.days.push(this.generateWednesdayNew(now));
-                this.days.push(this.generateThursdayNew(now));
-                this.days.push(this.generateFridayNew(now));
+
+                for (let i = -1; i <= 5; i++) {
+                    this.days.push(this.generateDayByOffset(now, i));
+                }
 
                 let dayToStart = this.days[0];
                 for (let i = 0; i < 7; i++) {
@@ -303,6 +227,12 @@
                 }
                 this.showDay(dayToStart);
                 this.showCurrentSwitcher = true;
+            },
+
+            showWeek(numOfWeek) {
+                this.activeWeekOffset += numOfWeek;
+                this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd'));
+                this.$loading(false);
             },
 
             hasFreeSlotsInDay(day) {
@@ -320,6 +250,20 @@
 
             isSlotSelected(slot) {
                 return this.stash.some(stashSlot => stashSlot.old_slot.start_time === slot.old_slot.start_time && stashSlot.old_slot.end_time === slot.old_slot.end_time);
+            },
+
+            addSelectedItemsToCart() {
+                this.$emit('add-times-to-cart');
+            },
+
+            printMessage(text, title, type, duration, group) {
+                this.$notify({
+                    group: group,
+                    text: text,
+                    title: title,
+                    type: type,
+                    duration: duration
+                })
             },
         },
         computed: {

@@ -104,8 +104,10 @@ export default new Vuex.Store({
 
         removeItemFromStash(state, {itemToRemove, type}) {
             console.log('remove item fired by', {itemToRemove, type});
-            if (type == 'time-slot') {
-                state.stash = state.stash.filter(slot => slot.old_slot.start_time != itemToRemove.old_slot.start_time && slot.old_slot.end_time != itemToRemove.old_slot.end_time);
+            switch (type) {
+                case 'time-slot':
+                    state.stash = state.stash.filter(slot => slot.old_slot.start_time != itemToRemove.old_slot.start_time && slot.old_slot.end_time != itemToRemove.old_slot.end_time);
+                    break;
             }
         }
     },

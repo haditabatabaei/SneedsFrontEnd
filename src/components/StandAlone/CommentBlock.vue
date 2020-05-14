@@ -5,9 +5,8 @@
                 <h5 class="senderName isansFont"> {{comment.user.first_name}} </h5>
                 <h6 class="dateCreated isansFont">{{this.fromNow}}</h6>
             </div>
-
             <div class="commentMessage">
-                <p class="isansFont text-justify" v-if="!showEditPanel">{{comment.message}}</p>
+                <p class="isansFont" v-if="!showEditPanel">{{comment.message}}</p>
                 <form @submit.prevent="editComment()" v-else>
                     <div class="form-group form-rose is-empty editForm">
                         <label for="editComment" class="isansFont">نظر خود را ویرایش کنید :</label>
@@ -25,18 +24,6 @@
                     </div>
                 </form>
             </div>
-
-<!--            <div class="commentAction"-->
-<!--                 v-if="this.$store.getters.isLoggedIn && comment.user.id == this.$store.getters.getUserInfo.id">-->
-<!--                <button @click.prevent="deleteComment()" v-if="config.showRemove" title="حذف نظر"-->
-<!--                        class="btn btn-fab btn-fab-mini btn-simple isansFont btn-remove">-->
-<!--                    <i class="material-icons">delete_forever</i>-->
-<!--                </button>-->
-<!--                <button @click.prevent="toggleEditComment()" v-if="config.showEdit" title="ویرایش نظر"-->
-<!--                        class="btn btn-fab btn-fab-mini btn-simple btn-sm isansFont btn-edit">-->
-<!--                    <i class="material-icons">border_color</i>-->
-<!--                </button>-->
-<!--            </div>-->
         </div>
         <div class="commentWrapper adminWrapper" v-if="comment.admin_reply != null">
             <div class="commentSender">
@@ -54,7 +41,6 @@
 
 <script>
     import jalali from 'jalali-moment'
-    import axios from 'axios'
     import {required} from 'vuelidate/lib/validators'
 
     export default {
@@ -62,7 +48,7 @@
         validations: {
             editedCommentInput: {required}
         },
-        data: function () {
+        data() {
             return {
                 showEditPanel: false,
                 editedCommentInput: this.comment.message
@@ -81,11 +67,6 @@
             },
         },
         methods: {
-            toggleEditComment: function () {
-                this.showEditPanel = !this.showEditPanel;
-                this.editedCommentInput = this.comment.message;
-            },
-
             async editComment() {
                 try {
                     this.$loading(true);
@@ -106,34 +87,12 @@
                     this.$loading(false);
                 }
             },
-
-            async deleteComment() {
-                if (window.confirm('از حذف نظر خود مطمئنید ؟')) {
-                    try {
-                        this.$loading(true);
-                        let result = await this.$api.delete(
-                            `${this.$store.getters.getApi}/comment/comments/${this.comment.id}/`,
-                            this.$store.getters.httpConfig
-                        );
-                        console.log('edit delete result ', result);
-                        this.$emit('update-comments');
-                    } catch (e) {
-                        console.log(e);
-                        if(e.response) {
-                            console.log(e.response);
-                        }
-                    } finally {
-                        this.$loading(false);
-                    }
-                }
-
-            },
         },
         computed: {
-            fromNow: function () {
+            fromNow() {
                 return jalali(this.comment.created).locale('fa').fromNow();
             },
-            adminFromNow: function () {
+            adminFromNow() {
                 if (this.comment.admin_reply != null) {
                     return jalali(this.comment.admin_reply.created).locale('fa').fromNow();
                 } else return null;
@@ -167,14 +126,9 @@
         margin-right: 10px;
     }
 
-    .commentAction {
-        align-self: flex-end;
-    }
-
     .commentMessage p {
         padding: 10px 20px;
         font-size: 15px;
-        word-break: break-all;
         color: #868686;
     }
 
@@ -188,19 +142,6 @@
         margin: 5px 10px;
         font-weight: bold;
         color: #636363;
-    }
-
-    .editPanel {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
-    }
-
-    .loadingIcon {
-        width: 20px !important;
-        height: 20px !important;
     }
 
     .editForm {
@@ -222,14 +163,6 @@
 
     .adminWrapper .commentMessage {
         padding-right:10px;
-    }
-
-    .btn-edit:hover {
-        color: #9c27b0;
-    }
-
-    .btn-remove:hover {
-        color: #d9534f;
     }
 
     .editError {

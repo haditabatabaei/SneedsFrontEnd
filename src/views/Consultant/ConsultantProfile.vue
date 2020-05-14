@@ -148,11 +148,13 @@
                                     زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
                                     انتخاب شود.
                                 </li>
-                                <li v-for="(item, index) in stash" :key="index">
+                                <li v-for="item in stash">
                                     <i class="material-icons" role="button"
                                        @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
                                     <span v-if="$store.getters.isiran">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
-                                    <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
+                                    <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " till " + item.end_time_date.format('HH:mm') }}</span>
+                                    <br>
+                                    <span class="stash-item-consultant-name">{{item.old_slot.consultant.first_name + " " + item.old_slot.consultant.last_name}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -181,6 +183,23 @@
                         تقویم
                         {{consultant.first_name + " " + consultant.last_name}}
                     </h2>
+
+                    <div style="height: 100px;overflow:auto;border-top:1px solid #aaa;border-bottom:1px solid #aaa;width: 100%;">
+                        <ul class="consultantSidebarBlock--selectedItems_list">
+                            <li v-if="stash.length === 0">
+                                زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
+                                انتخاب شود.
+                            </li>
+                            <li v-for="item in stash">
+                                <i class="material-icons" role="button"
+                                   @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
+                                <span v-if="$store.getters.isiran">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
+                                <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " till " + item.end_time_date.format('HH:mm') }}</span>
+                                <br>
+                                <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.old_slot.consultant.first_name + " " + item.old_slot.consultant.last_name}}</strong>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
             </div>
@@ -354,10 +373,6 @@
                 }).finally(() => {
                     this.$loading(false);
                 })
-            },
-
-            getJalali(date) {
-                return jalali(date);
             },
 
             getSlotIdByDate(startDate, endDate) {
@@ -654,6 +669,7 @@
         align-items: center;
         padding-top: 10px;
         align-self: stretch;
+        flex-wrap: wrap;
     }
 
     .mobile-calendar-header-title {
@@ -796,6 +812,10 @@
 
     .loginForm-meta.error {
         color: #c9737c;
+    }
+
+    .stash-item-consultant-name {
+        font-size: 9px;
     }
 
 

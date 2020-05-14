@@ -164,7 +164,7 @@
                         console.log(error);
                     })
                     .finally(() => {
-                        // this.$loading(false);
+                        this.$loading(false);
                     })
             },
 
@@ -190,7 +190,12 @@
             },
 
             returnWeek(numOfWeek) {
-                return this.generateWeek(this.justNowDate.clone().add(Number(numOfWeek) * 7, 'd'));
+                let week = [];
+                for (let i = -1; i <= 5; i++) {
+                    week.push(this.generateDayByOffset(this.justNowDate.clone().add(Number(numOfWeek) * 7, 'd'), i));
+                }
+                console.log(week);
+                return week;
             },
 
             showPrevWeek() {
@@ -199,14 +204,6 @@
 
             showNextWeek() {
                 this.showWeek(1, 'next');
-            },
-
-            generateWeek(now) {
-                let week = [];
-                for (let i = -1; i < 5; i++) {
-                    week.push(this.generateDayByOffset(now, i));
-                }
-                return week;
             },
 
             handleWeek(now) {
@@ -232,7 +229,6 @@
             showWeek(numOfWeek) {
                 this.activeWeekOffset += numOfWeek;
                 this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd'));
-                this.$loading(false);
             },
 
             hasFreeSlotsInDay(day) {

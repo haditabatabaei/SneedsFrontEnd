@@ -880,6 +880,8 @@
             background-color: white;
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
             z-index: 1014;
+            max-height: calc(100vh - 70px);
+            overflow: auto;
         }
 
         .consultant-mobile-calendar--round {

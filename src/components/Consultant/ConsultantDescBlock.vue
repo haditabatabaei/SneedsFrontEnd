@@ -262,7 +262,7 @@
 
     .consultantDescBlock--main_video {
         width: calc(100% - 60px);
-        margin: 30px;
+        margin: 30px 30px 0 30px;
     }
 
     .consultantDescBlock--main_video iframe {

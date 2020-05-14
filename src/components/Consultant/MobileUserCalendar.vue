@@ -1,5 +1,6 @@
 <template>
-    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]" v-if="this.justNowDate && this.slotsDates.length > 0">
+    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]"
+         v-if="this.justNowDate && this.slotsDates.length > 0">
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek" v-if="canGoPrev"
                     :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
@@ -50,7 +51,8 @@
                     {{slot.end_time_date.format('HH:mm')}}
                 </button>
                 <button class="days-slots-item days-slots-item--sold"
-                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode}]" v-for="slot in shownSoldSlots">
+                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode}]"
+                        v-for="slot in shownSoldSlots">
                     {{slot.start_time_date.format('DD MMMM')}}-
                     {{slot.start_time_date.format('HH:mm')}}
                     <span v-if="isiran">تا</span> <span v-else>till</span>
@@ -99,7 +101,13 @@
                 shownSoldSlots: [],
                 minutesOffsetFromTehran: 0,
                 activeWeekOffset: 0,
-                showCurrentSwitcher: true
+                showCurrentSwitcher: true,
+                calendarLoading: false,
+            }
+        },
+        watch: {
+            calendarLoading(newValue, oldValue) {
+                this.$loading(!!newValue);
             }
         },
         props: {
@@ -115,9 +123,6 @@
             this.initComp();
         },
         methods: {
-            getJalali(date) {
-                return jalali(date);
-            },
             showDay(day) {
                 this.activeDay = day;
                 this.shownFreeSlots = this.slotsDates.filter(slotDate => {
@@ -142,43 +147,51 @@
                 console.log('current stash:', this.stash);
             },
 
-            async initComp() {
-                try {
-                    this.$loading(true);
-                    this.slots = (await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    this.soldSlots = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)).data;
-                    console.log('slots', this.slots);
-                    console.log('sold slots', this.soldSlots);
+            initComp() {
+                this.$loading(true);
+                let reqs = [
+                    this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig),
+                    this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)
+                ];
+                Promise
+                    .all(reqs)
+                    .then(([slotsResult, soldSlotResult]) => {
+                        this.slots = slotsResult.data;
+                        this.soldSlots = soldSlotResult.data;
+                        console.log('slots', this.slots);
+                        console.log('sold slots', this.soldSlots);
 
-                    this.slotsDates = this.slots.map(slot => {
-                        return {
-                            "old_slot": slot,
-                            "start_time_date": jalali(slot.start_time).locale(this.locale),
-                            "end_time_date": jalali(slot.end_time).locale(this.locale)
-                        }
-                    }).sort((slot1, slot2) => slot1.start_time_date.unix() - slot2.start_time_date.unix());
-                    this.soldSlotsDates = this.soldSlots.map(slot => {
-                        return {
-                            "old_slot": slot,
-                            "start_time_date": jalali(slot.start_time).locale(this.locale),
-                            "end_time_date": jalali(slot.end_time).locale(this.locale)
-                        }
-                    });
+                        this.slotsDates = this.slots.map(slot => {
+                            return {
+                                "old_slot": slot,
+                                "start_time_date": jalali(slot.start_time).locale(this.locale),
+                                "end_time_date": jalali(slot.end_time).locale(this.locale)
+                            }
+                        }).sort((slot1, slot2) => slot1.start_time_date.unix() - slot2.start_time_date.unix());
+                        this.soldSlotsDates = this.soldSlots.map(slot => {
+                            return {
+                                "old_slot": slot,
+                                "start_time_date": jalali(slot.start_time).locale(this.locale),
+                                "end_time_date": jalali(slot.end_time).locale(this.locale)
+                            }
+                        });
 
-                    console.log('mapped slots:', this.slotsDates);
-                    console.log('mapped sold slots:', this.soldSlotsDates);
-                    this.justNowDate = this.slotsDates[0].start_time_date.clone();
-                    this.shownDate = this.slotsDates[0].start_time_date.clone();
-                    this.handleWeek(this.shownDate)
-                } catch (e) {
-                    console.log(e);
-                } finally {
-                    this.$loading(false);
-                }
+                        console.log('mapped slots:', this.slotsDates);
+                        console.log('mapped sold slots:', this.soldSlotsDates);
+                        this.justNowDate = this.slotsDates[0].start_time_date.clone();
+                        this.shownDate = this.slotsDates[0].start_time_date.clone();
+                        this.handleWeek(this.shownDate);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .finally(() => {
+                        this.$loading(false);
+                    })
             },
 
             addSelectedItemsToCart() {
-               this.$emit('add-times-to-cart');
+                this.$emit('add-times-to-cart');
             },
 
             printMessage(text, title, type, duration, group) {
@@ -341,7 +354,7 @@
 
             canGoPrev() {
                 //last day of prev week
-                return this.justNowDate && this.returnWeek(this.activeWeekOffset - 1)[6].isAfter(this.justNowDate);
+                return this.activeWeekOffset > 0;
             },
         },
     }

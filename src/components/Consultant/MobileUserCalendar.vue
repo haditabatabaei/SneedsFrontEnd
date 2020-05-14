@@ -24,7 +24,7 @@
         </div>
         <div class="cal-week-days" :class="[{'isansFont': desktopMode}]">
             <ul class="cal-days-list" :class="[{'cal-days-list--desktop' : desktopMode}]">
-                <li class="cal-days-item" v-for="(day, index) in days">
+                <li class="cal-days-item" v-for="day in days">
                     <button class="cal-days-toggler"
                             :class="[{'cal-days-toggler--active': day.format() === activeDay.format(), 'cal-days-toggler--hasfree': hasFreeSlotsInDay(day)}]"
                             @click="showDay(day)">
@@ -41,7 +41,7 @@
                 <button class="days-slots-item days-slots-item--free"
                         :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode,  'days-slots-item--selected': isSlotSelected(slot)}]"
                         @click="toggleSlotToStash(slot)"
-                        v-for="(slot, index) in shownFreeSlots">
+                        v-for="slot in shownFreeSlots">
                     <span v-if="isiran">{{slot.start_time_date.format('DD MMMM')}}</span>
                     <span v-else>{{slot.start_time_date.format('MMMM DD')}}</span>
                     -
@@ -50,7 +50,7 @@
                     {{slot.end_time_date.format('HH:mm')}}
                 </button>
                 <button class="days-slots-item days-slots-item--sold"
-                        :class="[{'days-slots-item--desktop' : desktopMode}]" v-for="(slot, index) in shownSoldSlots">
+                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode}]" v-for="slot in shownSoldSlots">
                     {{slot.start_time_date.format('DD MMMM')}}-
                     {{slot.start_time_date.format('HH:mm')}}
                     <span v-if="isiran">تا</span> <span v-else>till</span>
@@ -179,32 +179,6 @@
 
             addSelectedItemsToCart() {
                this.$emit('add-times-to-cart');
-                // console.log(this.stash);
-                // let payload = {"products": []};
-                // this.stash.forEach(item => {
-                //     payload.products.push(item.old_slot.id);
-                // });
-                //
-                // if (this.isLoggedIn) {
-                //     if (this.stash.length > 0) {
-                //         try {
-                //             this.$loading(true);
-                //             let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
-                //             console.log(result);
-                //             this.$store.commit('setStash', []);
-                //             this.$router.push(`/carts/${result.data.id}`);
-                //         } catch (e) {
-                //             console.log(e);
-                //             if (e.response) {
-                //                 console.log(e.response)
-                //             }
-                //         } finally {
-                //             this.$loading(false);
-                //         }
-                //     }
-                // } else {
-                //     this.printMessage("برای رزرو باید در حساب خود وارد شوید.", "رزرو :‌اخطا", "warn", 3000, "notif");
-                // }
             },
 
             printMessage(text, title, type, duration, group) {

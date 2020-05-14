@@ -194,7 +194,6 @@
                 for (let i = -1; i <= 5; i++) {
                     week.push(this.generateDayByOffset(this.justNowDate.clone().add(Number(numOfWeek) * 7, 'd'), i));
                 }
-                console.log(week);
                 return week;
             },
 

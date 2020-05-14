@@ -45,16 +45,15 @@
                 </div>
                 <div v-for="day in days" class="calendar-day-column">
                     <div v-for="slot in day.slots" class="calendar-day-slot">
-                        <button class="slot-button slot-button--notavailable" disabled v-if="slotIsNotAvailable(slot)">
+                        <button class="slot-button slot-button--notavailable" disabled v-if="slot.where == 'disabled'">
                         </button>
                         <button class="slot-button slot-button--selectable slot-button--open"
-                                v-else-if="slotIsOpen(slot)" @click="slotClickHandler(slot)"
-                                :class="[{'slot-button--selected' : slotIsSelected(slot)}]">
+                                v-else-if="slot.where.startsWith('opened')" @click="slotClickHandler(slot)"
+                                :class="[{'slot-button--selected' : slot.where === 'opened-selected'}]">
                         </button>
                         <button class="slot-button slot-button--selectable" @click="slotClickHandler(slot)"
-                                :class="[{'slot-button--selected' : slotIsSelected(slot)}]" v-else>
+                                :class="[{'slot-button--selected' : slot.where === 'ready-selected'}]" v-else>
                         </button>
-
                     </div>
                 </div>
             </div>
@@ -244,61 +243,41 @@
                 for (let i = 0; i < 23; i++) {
                     slots.push({
                         "start_time_date": day.clone().hour(i).minute(this.minutesOffsetFromTehran),
-                        "end_time_date": day.clone().hour(i + 1).minute(this.minutesOffsetFromTehran)
-                    })
+                        "end_time_date": day.clone().hour(i + 1).minute(this.minutesOffsetFromTehran),
+                        "selected": false,
+                        "where": null
+                    });
+                    if (this.slotIsNotAvailable(slots[i])) {
+                        slots[i].where = 'disabled'
+                    } else if (this.slotIsOpen(slots[i])) {
+                        slots[i].where = 'opened'
+                    } else {
+                        slots[i].where = 'ready'
+                    }
                 }
+                console.log(slots);
                 return slots;
             },
 
             slotClickHandler(slot) {
-                if (this.slotIsOpen(slot)) {
-                    if (this.slotIsSelectedToRemove(slot)) {
-                        this.selectedSlotsToRemove.splice(this.getSlotIndexInSelectedToRemove(slot), 1);
-                    } else {
-                        this.selectedSlotsToRemove.push(slot)
-                    }
-                    console.log('to remove :', this.selectedSlotsToRemove);
-                } else {
-                    if (this.slotIsSelectedToOpen(slot)) {
-                        this.selectedSlotsToOpen.splice(this.getSlotIndexInSelectedToOpen(slot), 1);
-                    } else {
-                        this.selectedSlotsToOpen.push(slot)
-                    }
+                console.log(slot);
+                switch (slot.where) {
+                    case 'opened' :
+                        slot.where = 'opened-selected';
+                        break;
+                    case 'opened-selected':
+                        slot.where = 'opened';
+                        break;
+                    case 'ready':
+                        slot.where = 'ready-selected';
+                        break;
+                    case 'ready-selected':
+                        slot.where = 'ready';
+                        break;
+                    default:
+                        break;
                 }
-            },
-
-            slotIsSelected(slot) {
-                return this.slotIsSelectedToOpen(slot) || this.slotIsSelectedToRemove(slot);
-            },
-
-            getSlotIndexInSelectedToRemove(slot) {
-                return this.selectedSlotsToRemove.indexOf(this.selectedSlotsToRemove.find(s =>
-                    s.start_time_date.format() === slot.start_time_date.format()
-                    && s.end_time_date.format() === slot.end_time_date.format()
-                    )
-                )
-            },
-
-            getSlotIndexInSelectedToOpen(slot) {
-                return this.selectedSlotsToOpen.indexOf(this.selectedSlotsToOpen.find(s =>
-                    s.start_time_date.format() === slot.start_time_date.format()
-                    && s.end_time_date.format() === slot.end_time_date.format()
-                    )
-                )
-            },
-
-            slotIsSelectedToRemove(slot) {
-                return this.selectedSlotsToRemove.some(s =>
-                    s.start_time_date.format() === slot.start_time_date.format()
-                    && s.end_time_date.format() === slot.end_time_date.format()
-                );
-            },
-
-            slotIsSelectedToOpen(slot) {
-                return this.selectedSlotsToOpen.some(s =>
-                    s.start_time_date.format() === slot.start_time_date.format()
-                    && s.end_time_date.format() === slot.end_time_date.format()
-                )
+                console.log(slot);
             },
 
             getOpenedSlotId(slot) {
@@ -312,11 +291,15 @@
                 return slot.start_time_date.isSameOrBefore(this.justNowDate);
             },
 
-            slotIsOpen(slot) {
-                return this.slots.some(openedSlot =>
+            slotIndexInOpen(slot) {
+                return this.slots.findIndex(openedSlot =>
                     openedSlot.start_time_date.format() === slot.start_time_date.format()
                     && openedSlot.end_time_date.format() === slot.end_time_date.format()
                 )
+            },
+
+            slotIsOpen(slot) {
+                return this.slotIndexInOpen(slot) !== -1;
             },
 
             clearAll() {
@@ -327,22 +310,27 @@
             removeTimes() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     let removeReqs = [];
-                    this.selectedSlotsToRemove.forEach(s => {
-                        removeReqs.push(
-                            this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${this.getOpenedSlotId(s)}/`,
-                                this.$store.getters.httpConfig)
-                        )
+                    this.$loading(true);
+                    this.days.forEach(day => {
+                        day.slots.forEach(slot => {
+                            if (slot.where === 'opened-selected') {
+                                removeReqs.push(
+                                    this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${this.getOpenedSlotId(slot)}/`,
+                                        this.$store.getters.httpConfig)
+                                );
+                                slot.where = 'ready';
+                            }
+                        })
                     });
 
-                    this.$loading(true);
                     Promise
                         .all(removeReqs)
-                        .then(responses => {
-                            this.selectedSlotsToRemove = [];
+                        .then(() => {
                             this.initComp();
                         })
                         .catch(error => {
                             console.log(error);
+                            this.initComp();
                         })
                         .finally(() => {
                             this.$loading(false);
@@ -353,21 +341,24 @@
 
             addTimes() {
                 let openReqs = [];
-                this.selectedSlotsToOpen.forEach(s => {
-                    openReqs.push(
-                        this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
-                            {
-                                "start_time": s.start_time_date.clone().locale('en').format(),
-                                "end_time": s.start_time_date.clone().locale('en').format()
-                            },
-                            this.$store.getters.httpConfig)
-                    )
-                });
                 this.$loading(true);
+                this.days.forEach(day => {
+                    day.slots.forEach(slot => {
+                        if (slot.where === 'ready-selected') {
+                            openReqs.push(
+                                this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                                    {
+                                        "start_time": slot.start_time_date.clone().locale('en').format(),
+                                        "end_time": slot.start_time_date.clone().locale('en').format()
+                                    },
+                                    this.$store.getters.httpConfig)
+                            );
+                        }
+                    })
+                });
                 Promise
                     .all(openReqs)
-                    .then(responses => {
-                        this.selectedSlotsToOpen = [];
+                    .then(() => {
                         this.initComp();
                     })
                     .catch(error => {

@@ -5,7 +5,6 @@
                 <input type="text" placeholder="جستجو" class="chatroom-chats-search-input isansFont">
             </div>
 
-            <!-- DESKTOP VERSION  -->
             <div class="chatroom-chats-list" v-if="chats.length > 0">
                 <div @click="setSelectedChat(chat)"
                      class="chatroom-chats-item"
@@ -28,7 +27,6 @@
 
         </div>
         <div class="col-md-8 chatroom-messages">
-            <!-- DESKTOP VERSION -->
             <div class="chatroom-messages-title" v-if="windowWidth > 991.8">
                 <h4 class="isansFont--faNum" v-if="selectedChat">
                     {{this.selectedChat.other_person.first_name + " " + this.selectedChat.other_person.last_name}}
@@ -36,25 +34,26 @@
                 <h4 class="isansFont--faNum" v-else>
 
                 </h4>
-                <div class="chatroom-messages-title-icons">
-                    <button>
-                        <i class="material-icons">search</i>
-                    </button>
-                    <button>
-                        <i class="material-icons">alarm_on</i>
-                    </button>
-                </div>
             </div>
 
-            <div class="chatroom-messages-list" id="messagesBody" v-if="selectedChat">
-                <div class="chatroom-messages-item" v-for="(message, index) in selectedChatMessages" :key="index">
+            <div class="chatroom-messages-list" id="messagesBody" @scroll="messageBodyScroll" v-if="selectedChat">
+                <button class="new-messages-toggler" v-if="showScrollButton" @click="scrollDownMessages">
+                    <span class="isansFont--faNum">
+                        {{numberOfNewMessages}}
+                    </span>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </button>
+                <div class="chatroom-messages-item" v-for="(message, index) in selectedChatMessages"
+                     @mouseenter="mouseOnMessage(message)" :key="index">
                     <img draggable="false" :src="message.profile_img"
-                         class="chatroom-messages-item-avatar" alt="" v-if="message.profile_img && message.messageType != 'VoiceMessage'">
+                         class="chatroom-messages-item-avatar" alt=""
+                         v-if="message.profile_img && message.messageType != 'VoiceMessage'">
 
                     <img draggable="false" src="https://picsum.photos/id/0/75/75"
                          class="chatroom-messages-item-avatar" alt="" v-else-if="message.messageType != 'VoiceMessage'">
 
-                    <div class="chatroom-messages-item-content" :class="[{'content-other' : !message.is_sender_me}]"
+                    <div class="chatroom-messages-item-content"
+                         :class="[{'content-other' : !message.is_sender_me, 'chatroom-messages-item-content--unseen': messageInUnseen(message)}]"
                          v-if="message.messageType == 'TextMessage'">
                         <p class="chatroom-messages-item-content-text isansFont--faNum text-justify">
                             {{message.text_message}}
@@ -64,7 +63,7 @@
                         </span>
                     </div>
                     <div class="chatroom-messages-item-content"
-                         :class="[{'content-other' : !message.is_sender_me}]"
+                         :class="[{'content-other' : !message.is_sender_me, 'chatroom-messages-item-content--unseen': messageInUnseen(message)}]"
                          v-else-if="message.messageType == 'ImageMessage'">
                         <img class="chatroom-messages-item-content-image"
                              :src="message.image_field" alt="">
@@ -73,7 +72,7 @@
                         </span>
                     </div>
                     <div class="chatroom-messages-item-content content-file"
-                         :class="[{'content-other' : !message.is_sender_me}]"
+                         :class="[{'content-other' : !message.is_sender_me, 'chatroom-messages-item-content--unseen': messageInUnseen(message)}]"
                          v-else-if="message.messageType == 'FileMessage'">
                         <a :href="message.file_field" target="_blank">
                             <i class="material-icons">save</i>
@@ -91,22 +90,22 @@
                         </span>
                     </div>
 
-<!--                    <div class="chatroom-messages-item-content content-file"-->
-<!--                         :class="[{'content-other' : !message.is_sender_me}]"-->
-<!--                         v-else-if="message.messageType == 'VoiceMessage'">-->
-<!--                        <audio :src="message.file_field" controls/>-->
-<!--                        <p class="isansFont&#45;&#45;faNum">-->
-<!--                            <span>-->
-<!--                                filename.mp3-->
-<!--                            </span>-->
-<!--                            <span>-->
-<!--                                n مگابایت-->
-<!--                            </span>-->
-<!--                        </p>-->
-<!--                        <span class="chatroom-messages-item-time isansFont&#45;&#45;faNum">-->
-<!--                            {{getJalali(message.created).locale('fa').format('HH:mm')}}-->
-<!--                        </span>-->
-<!--                    </div>-->
+                    <!--                    <div class="chatroom-messages-item-content content-file"-->
+                    <!--                         :class="[{'content-other' : !message.is_sender_me}]"-->
+                    <!--                         v-else-if="message.messageType == 'VoiceMessage'">-->
+                    <!--                        <audio :src="message.file_field" controls/>-->
+                    <!--                        <p class="isansFont&#45;&#45;faNum">-->
+                    <!--                            <span>-->
+                    <!--                                filename.mp3-->
+                    <!--                            </span>-->
+                    <!--                            <span>-->
+                    <!--                                n مگابایت-->
+                    <!--                            </span>-->
+                    <!--                        </p>-->
+                    <!--                        <span class="chatroom-messages-item-time isansFont&#45;&#45;faNum">-->
+                    <!--                            {{getJalali(message.created).locale('fa').format('HH:mm')}}-->
+                    <!--                        </span>-->
+                    <!--                    </div>-->
                 </div>
             </div>
             <p class="isansFont--faNum text-center mt-100" v-if="!selectedChat">
@@ -117,7 +116,7 @@
                     <input id="fileUpload" type="file" style="display: none" @input="handleFile">
                     <i class="material-icons">attach_file</i>
                 </label>
-<!--                <vue-record-audio @result="onResult" />-->
+                <!--                <vue-record-audio @result="onResult" />-->
                 <input type="text" @keypress="sendMessageByKey" class="chatroom-messages-new-input isansFont--faNum"
                        placeholder="متن پیام..." v-model="inputMessage">
                 <button class="chatroom-messages-new-send" @click="sendMessage(null)">
@@ -137,14 +136,16 @@
     export default {
         name: "DesktopChatroom",
         validations: {},
-        data: function () {
+        data() {
             return {
                 chats: [],
                 selectedChat: null,
                 selectedChatMessages: [],
                 inputMessage: '',
                 showMobileMessages: false,
-                updateMessageInterval : null
+                updateMessageInterval: null,
+                showScrollButton: false,
+                numberOfNewMessages: 0
             }
         },
         computed: {
@@ -156,83 +157,109 @@
             },
             inMobile() {
                 return this.windowWidth < 991.8;
+            },
+            httpConfig() {
+                return this.$store.getters.httpConfig;
             }
         },
         created() {
             this.initComp();
             this.updateMessageInterval = setInterval(() => {
                 //remove false in production
-                if(this.selectedChat) {
-                   this.updateMessages();
+                if (this.selectedChat) {
+                    this.updateMessages();
                 }
             }, 5000)
         },
-        updated() {
-            if(this.selectedChat) {
-                window.document.getElementById("messagesBody").scroll(0, Number.MAX_SAFE_INTEGER);
-            }
-        },
+
         destroyed() {
             clearInterval(this.updateMessageInterval);
         },
         methods: {
-            getJalali: function (date) {
+            getJalali(date) {
                 return jalali(date);
             },
 
-            onResult (data) {
-                console.log('The blob data:', data);
-                console.log('Downloadable audio', window.URL.createObjectURL(data));
-                let payload = new FormData();
-                payload.append("messageType", "VoiceMessage");
-                payload.append("voice_field", new File([data], "voice.mp3", {lastModified: 1534584790000}));
-                payload.append("chat", this.selectedChat.id);
-                this.sendMessage(payload);
+            messageBodyScroll(event) {
+                // console.log(event);
             },
 
-            async updateMessages() {
-              if(this.selectedChatMessages.length > 0) {
-                  try {
-                      let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&tag=${this.selectedChatMessages[this.selectedChatMessages.length - 1].tag}&ordering=created`, this.$store.getters.httpConfig);
-                      console.log('update chats messages result ', result);
-                      this.selectedChatMessages = this.selectedChatMessages.concat(result.data);
-                      // console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
-                  } catch (e) {
-                      console.log(e);
-                      if (e.response) {
-                          console.log(e.response);
-                      }
-                  } finally {
+            scrollDownMessages() {
+                console.log('scroll down messages');
+                window.document.getElementById('messagesBody').scroll(0, Number.MAX_SAFE_INTEGER);
+                this.showScrollButton = false;
+            },
 
-                  }
-              } else {
-                  try {
-                      let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
-                      console.log('selected chats messages result ', result);
-                      this.selectedChatMessages = result.data;
-                      console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
-                  } catch (e) {
-                      console.log(e);
-                      if (e.response) {
-                          console.log(e.response);
-                      }
-                  } finally {
+            mouseOnMessage(message) {
+                if (this.messageInUnseen(message)) {
+                    message.seen = true;
+                    this.numberOfNewMessages--;
+                    if (this.numberOfNewMessages === 0) {
+                        this.showScrollButton = false;
+                    }
+                }
+            },
 
-                  }
-              }
+            messageInUnseen(message) {
+                return message.hasOwnProperty('seen') && !message.seen && !message.is_sender_me;
+            },
+
+            messageIsSeen(message) {
+                return message.hasOwnProperty('seen') && message.seen
+            },
+
+            async updateMessages(messageSendCause) {
+                if (this.selectedChatMessages.length > 0) {
+                    try {
+                        let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&tag=${this.selectedChatMessages[this.selectedChatMessages.length - 1].tag}&ordering=created`, this.httpConfig);
+                        console.log('update chats messages result ', result);
+                        if (result.data.length > 0) {
+                            if (!messageSendCause) {
+                                this.numberOfNewMessages += result.data.length;
+                                this.showScrollButton = true;
+                                result.data.forEach(item => item.seen = false);
+                                this.selectedChatMessages = this.selectedChatMessages.concat(result.data);
+                            } else {
+                                this.selectedChatMessages = this.selectedChatMessages.concat(result.data);
+                                this.scrollDownMessages();
+                            }
+                        }
+                    } catch (e) {
+                        console.log(e);
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+
+                    }
+                } else {
+                    try {
+                        let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.httpConfig);
+                        console.log('selected chats messages result ', result);
+                        this.selectedChatMessages = result.data;
+                        console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
+                    } catch (e) {
+                        console.log(e);
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+
+                    }
+                }
             },
 
             async handleFile(event) {
                 let file = event.target.files[0];
                 console.log(file);
                 let payload = new FormData();
-                if(file.type.startsWith("image")) {
+                if (file.type.startsWith("image")) {
                     payload.append("messageType", "ImageMessage");
                     payload.append("image_field", file);
-                } else if(file.type.startsWith("application")) {
+                } else if (file.type.startsWith("application")) {
                     payload.append("messageType", "FileMessage");
                     payload.append("file_field", file);
-                } else if(file.type.startsWith("audio")) {
+                } else if (file.type.startsWith("audio")) {
                     payload.append("messageType", "VoiceMessage");
                     payload.append("voice_field", file);
                 }
@@ -243,10 +270,9 @@
 
             async getChats() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/chats/`, this.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;
-                    // this.selectedChat = this.chats[0];
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -259,7 +285,8 @@
 
             async getMessagesForSelectedChat() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
+                    this.$loading(true);
+                    let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
                     console.log('SIZE==========' + (JSON.stringify(result.data)).length + "chars");
@@ -269,20 +296,23 @@
                         console.log(e.response);
                     }
                 } finally {
-
+                    this.$loading(false);
+                    this.scrollDownMessages();
                 }
             },
 
             async sendMessageByKey(event) {
-              if(event.key == 'Enter' && event.shiftKey == false) {
-                  this.sendMessage(null);
-              }
+                if (event.key === 'Enter' && event.shiftKey === false) {
+                    this.sendMessage(null);
+                }
             },
 
             async sendMessage(payload) {
                 console.log(payload);
                 try {
-                    if(!payload) {
+                    let config = this.httpConfig;
+                    config.headers['Content-Type'] = 'multipart/form-data';
+                    if (!payload) {
                         let localPayload = new FormData();
                         localPayload.append("chat", this.selectedChat.id);
                         localPayload.append("text_message", this.inputMessage);
@@ -290,29 +320,19 @@
                         let result = await this.$api.post(
                             `${this.$store.getters.getApi}/chat/messages/`,
                             localPayload,
-                            {
-                                headers: {
-                                    'Authorization': `JWT ${this.$store.getters.getToken}`,
-                                    "Content-Type": "multipart/form-data"
-                                },
-                            }
+                            config
                         );
                         console.log(result);
-                        this.updateMessages();
+                        this.updateMessages(true);
                         this.inputMessage = '';
                     } else {
                         let result = await this.$api.post(
                             `${this.$store.getters.getApi}/chat/messages/`,
                             payload,
-                            {
-                                headers: {
-                                    'Authorization': `JWT ${this.$store.getters.getToken}`,
-                                    "Content-Type": "multipart/form-data"
-                                },
-                            }
+                            config
                         );
                         console.log(result);
-                        this.getMessagesForSelectedChat();
+                        this.updateMessages(true);
                     }
                 } catch (e) {
                     console.log(e);
@@ -476,8 +496,8 @@
         justify-content: flex-start;
         position: relative;
         margin-top: 50px;
+        z-index: 1000;
     }
-
 
     .chatroom-messages-list::-webkit-scrollbar {
         width: 5px;
@@ -607,5 +627,28 @@
         background: none;
         border: none;
         color: #2EAFEC;
+    }
+
+    .new-messages-toggler {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: none;
+        color: white;
+        background-color: #8C3DDB;
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        bottom: 75px;
+        left: 10px;
+        z-index: 1001;
+    }
+
+    .chatroom-messages-item-content--unseen {
+        border: 2px solid #8C3DDB !important;
     }
 </style>

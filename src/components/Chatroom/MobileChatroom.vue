@@ -138,6 +138,7 @@
 
             async getMessagesForSelectedChat() {
                 try {
+                    this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
@@ -146,26 +147,23 @@
                     if (e.response) {
                         console.log(e.response);
                     }
+                } finally {
+                    this.$loading(false);
                 }
             },
 
             async sendMessage() {
                 try {
-                    this.$loading(true);
                     let payload = new FormData();
                     payload.append("chat", this.selectedChat.id);
                     payload.append("text_message", this.inputMessage);
                     payload.append("messageType", "TextMessage");
+                    let config = this.$store.getters.httpConfig;
+                    config.headers["Content-Type"] = 'multipart/form-data';
                     let result = await this.$api.post(
                         `${this.$store.getters.getApi}/chat/messages/`,
                         payload,
-                        {
-                            headers: {
-                                'Authorization': `JWT ${this.$store.getters.getToken}`,
-                                "Content-Type": "multipart/form-data"
-                            },
-                            timeout: 6000
-                        }
+                        config
                     );
                     console.log(result);
                     await this.getMessagesForSelectedChat();
@@ -176,7 +174,6 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
                 }
             },
 

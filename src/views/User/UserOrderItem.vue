@@ -5,17 +5,18 @@
                 <div class="cartsWrapper" v-if="order.hasOwnProperty('sold_time_slot_sales')">
                     <div class="cartsWrapper-title isansFont--faNum">
                         <div class="cartsWrapper-title-consultant">
-                            <img v-bind:src="order.sold_time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
+                            <img v-if="order.sold_time_slot_sales[0]" v-bind:src="order.sold_time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
                             <div class="cartsWrapper-title-consultant--info">
                                 <h5 class="isansFont--faNum">مشاوره آنلاین</h5>
-                                <h6 class="isansFont--faNum">{{`${order.sold_time_slot_sales[0].consultant.first_name} ${order.sold_time_slot_sales[0].consultant.last_name}`}}</h6>
+                                <h6 class="isansFont--faNum" v-if="order.sold_time_slot_sales[0]">{{`${order.sold_time_slot_sales[0].consultant.first_name} ${order.sold_time_slot_sales[0].consultant.last_name}`}}</h6>
+                                <h6 class="isansFont--faNum" v-else>نامشخص</h6>
                             </div>
                             <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum" v-if="order.status != 'paid'">
                                 موفق
                             </p>
                         </div>
 
-                        <div class="cartsWrapper-title-actions">
+                        <div class="cartsWrapper-title-actions" v-if="order.sold_time_slot_sales[0]">
                             <button>رزرو مجدد</button>
                             <router-link :to="`/consultants/${getConsultantSlugFromUrl(order.sold_time_slot_sales[0].consultant.url)}`">ثبت نظر</router-link>
                         </div>
@@ -71,16 +72,14 @@
                 return jalali(date);
             },
 
-            async initComp() {
-                await this.getOrder();
+            initComp() {
+                this.getOrder();
             },
 
             async getOrder() {
                 try {
                     this.$loading(true);
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig);
-                    console.log(result);
-                    this.order = result.data;
+                    this.order = (await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig)).data;
                     console.log('current order ', this.order);
                 } catch (e) {
                     console.log(e);

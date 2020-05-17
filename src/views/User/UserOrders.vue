@@ -22,8 +22,11 @@
                         <span>
                             مشاوره اپلای
                         </span>
-                        <span>
+                        <span v-if="order.sold_time_slot_sales[0]">
                             {{order.sold_time_slot_sales[0].consultant.first_name + " " + order.sold_time_slot_sales[0].consultant.last_name}}
+                        </span>
+                        <span v-else>
+                            نا مشخص
                         </span>
                     </p>
                 </div>

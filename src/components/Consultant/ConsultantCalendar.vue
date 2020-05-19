@@ -14,63 +14,52 @@
 
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                <span class="btn btn-round btn-sm btn-sample timeNotAvailable isansFont">بسته</span>
-                <span class="btn btn-round btn-sm btn-sample timeOpen isansFont">باز</span>
-                <span class="btn btn-round btn-sm btn-sample timeSelected isansFont">انتخاب شده</span>
-                <span class="btn btn-round btn-sm btn-sample timeReserved isansFont">رزرو شده</span>
+                <span class="btn btn-round btn-sm btn-sample slot-button--notavailable isansFont">بسته</span>
+                <span class="btn btn-round btn-sm btn-sample slot-button--open isansFont">باز</span>
+                <span class="btn btn-round btn-sm btn-sample slot-button--selected isansFont">انتخاب شده</span>
             </div>
         </div>
         <div class="myTable isansFont" v-if="days.length != 0">
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
-                <div class="myTableCell dayTitleCell" v-for="(day, index) in days" :key="index">
-                    <p v-if="isiran">{{day.clone().locale('fa').format('dddd')}}</p>
-                    <p v-else>{{day.format('dddd')}}</p>
-                    <p class="monthSmallText" v-if="isiran">{{day.clone().locale('fa').format('DD MMMM')}}</p>
-                    <p class="monthSmallText" v-else>{{day.format('DD MMMM')}}</p>
+                <div class="myTableCell dayTitleCell" v-for="day in days">
+                    <p v-if="isiran">{{day.day.format('dddd')}}</p>
+                    <p v-else>{{day.day.format('dddd')}}</p>
+                    <p class="monthSmallText" v-if="isiran">{{day.day.format('DD MMMM')}}</p>
+                    <p class="monthSmallText" v-else>{{day.day.format('DD MMMM')}}</p>
                 </div>
             </div>
-            <div v-for="index in 24" :key="index" class="myTableRow">
-                <div class="myTableCell firstCellInRow" v-if="minutesOffsetFromTehran.toString().length === 2">
-                    {{ (index - 1) + ":" + minutesOffsetFromTehran + " تا " + (index) + ":" + minutesOffsetFromTehran}}
+            <div class="calendar-wrapper">
+                <div class="calendar-hours-column isansFont" :class="[{'isansFont--faNum': isiran}]">
+                    <div v-for="hour in 24">
+                        <button class="calendar-inside-button calendar-inside-button--disabled" disabled
+                                v-if="minutesOffsetFromTehran.toString().length === 2">
+                            {{ (hour - 1) + ":" + minutesOffsetFromTehran + " تا " + (hour) + ":" +
+                            minutesOffsetFromTehran}}
+                        </button>
+                        <button class="calendar-inside-button calendar-inside-button--disabled" disabled v-else>
+                            {{ (hour - 1) + ":0" + minutesOffsetFromTehran + " تا " + (hour) + ":0" +
+                            minutesOffsetFromTehran}}
+                        </button>
+                    </div>
                 </div>
-                <div class="myTableCell firstCellInRow" v-else>
-                    {{ (index - 1) + ":0" + minutesOffsetFromTehran + " تا " + (index) + ":0" +
-                    minutesOffsetFromTehran}}
-                </div>
-
-                <div class="myTableLargerCell myTableSemiRow" v-for="rowIndex in 7" :key="rowIndex">
-                    <div
-                            v-if="days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).isBefore(justNowDate) &&
-                             !isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                            class="myTableSemiCell timeNotAvailable"
-                    ></div>
-                    <!-- Its not reserved ( not purple ) and its empty -->
-                    <div
-                            v-else-if="!isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran)) &&
-                       !isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                            @click="itemClickHandlerToOpen(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
-                            :class="[ {'timeSelected' : isDatePresentOnSelectedList(selectedDatesToOpen, days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(),
-                        days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
-                            class="myTableSemiCell timeOpenForManagerToSet"
-                    ></div>
-
-                    <!-- Its not reserved ( not purple ) but its available for users to choose -->
-                    <div
-                            v-else-if="isInConsultantTime(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                            :class="[{'timeSelected' : isDatePresentOnSelectedList(selectedDatesToRemove ,days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())}]"
-                            @click="itemClickHandlerToRemove(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran).format(), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran).format())"
-                            class="myTableSemiCell timeOpen"
-                    ></div>
-
-                    <div
-                            v-else-if="isInReservedTimes(days[rowIndex - 1].clone().hour(index - 1).minute(minutesOffsetFromTehran), days[rowIndex - 1].clone().hour(index).minute(minutesOffsetFromTehran))"
-                            class="myTableSemiCell timeReserved"
-                    ></div>
+                <div v-for="day in days" class="calendar-day-column">
+                    <div v-for="slot in day.slots" class="calendar-day-slot">
+                        <button class="slot-button slot-button--notavailable" disabled v-if="slot.where == 'disabled'">
+                        </button>
+                        <button class="slot-button slot-button--selectable slot-button--open"
+                                v-else-if="slot.where.startsWith('opened')" @click="slotClickHandler(slot)"
+                                :class="[{'slot-button--selected' : slot.where === 'opened-selected'}]">
+                        </button>
+                        <button class="slot-button slot-button--selectable" @click="slotClickHandler(slot)"
+                                :class="[{'slot-button--selected' : slot.where === 'ready-selected'}]" v-else>
+                        </button>
+                    </div>
                 </div>
             </div>
             <button @click="addTimes()" class="btn btn-success">آزاد کردن زمان های انتخاب شده</button>
             <button @click="removeTimes()" class="btn btn-danger">حذف زمان های انتخاب شده</button>
+            <button @click="clearAll()" class="btn btn-info">ریست انتخاب شده ها</button>
         </div>
     </div>
 </template>
@@ -95,24 +84,24 @@
                 slots: [],
                 soldSlots: [],
                 days: [],
-                selectedDates: [],
-                selectedDatesToRemove: [],
-                selectedDatesToOpen: [],
+                selectedSlots: [],
+                selectedSlotsToRemove: [],
+                selectedSlotsToOpen: [],
                 shownDate: {},
                 justNowDate: {},
-                calendarLocale: 'en',
-                minutesOffsetFromTehran: 0
+                minutesOffsetFromTehran: 0,
+                activeWeekOffset: 0,
             }
         },
         computed: {
-            isLoggedIn: function () {
+            isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
-            },
-            activeCart: function () {
-                return this.$store.getters.getCart;
             },
             isiran() {
                 return this.$store.getters.isiran;
+            },
+            locale() {
+                return this.$store.getters.locale;
             }
         },
         async created() {
@@ -120,24 +109,30 @@
         },
 
         methods: {
-            getJalali: function (date) {
-                return jalali(date);
-            },
-
             async initComp() {
-                try {
-                    this.$loading(true);
-                    console.log('active time zone', this.$store.getters.timezone);
-                    let slotsResult = await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let soldSlotsResult = await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                    let timezoneResult = await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
-                    console.log('all slots : ', slotsResult);
-                    console.log('sold slots : ', soldSlotsResult);
-                    this.slots = slotsResult.data;
-                    this.soldSlots = soldSlotsResult.data;
-                    this.shownDate = this.getJalali(timezoneResult.data.now);
-                    this.justNowDate = this.getJalali(timezoneResult.data.now);
-
+                console.log('active time zone', this.$store.getters.timezone);
+                let slotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                let soldSlotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
+                let timezoneRequest = this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
+                this.$loading(true);
+                Promise.all([slotsRequest, soldSlotsRequest, timezoneRequest]).then(([slotsResult, soldSlotsResult, timeZoneResult]) => {
+                    this.slots = slotsResult.data.map(slot => {
+                        return {
+                            "old_slot": slot,
+                            "start_time_date": jalali(slot.start_time).locale(this.locale),
+                            "end_time_date": jalali(slot.end_time).locale(this.locale),
+                        }
+                    });
+                    this.soldSlots = soldSlotsResult.data.map(slot => {
+                        return {
+                            "old_slot": slot,
+                            "start_time_date": jalali(slot.start_time).locale(this.locale),
+                            "end_time_date": jalali(slot.end_time).locale(this.locale),
+                        }
+                    });
+                    this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale);
+                    this.shownDate = this.justNowDate.clone();
+                    console.log(this.shownDate.format());
                     let timezone = this.shownDate.format('Z');
                     let sign = timezone[0];
                     let hour = Number(timezone.split(':')[0].split(sign)[1]);
@@ -148,20 +143,17 @@
                     console.log(Number("+" + 210));
                     this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
                     console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
-                    console.log(this.shownDate);
-                    this.handleWeek(this.shownDate);
-                } catch (e) {
-                    console.log(e);
-                    if (e.response)
-                        console.log(e.response);
-                } finally {
+                    console.log('slots', this.slots);
+                    this.showWeek(this.activeWeekOffset);
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() => {
                     this.$loading(false);
-                }
+                })
             },
 
 
             handleWeek(now) {
-                console.log('HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE')
                 console.log('is iran?', this.isiran);
                 this.days = [];
                 this.days.push(this.generateSaturdayNew(now));
@@ -172,203 +164,283 @@
                 this.days.push(this.generateThursdayNew(now));
                 this.days.push(this.generateFridayNew(now));
                 console.log(this.days);
-                for (let i = 0; i < this.days.length; i++) {
-                    console.log(this.days[i].format());
-                }
             },
 
-            itemClickHandler(datestart, dateend) {
-                //check see if this time is not added to the list
-                if (!this.isDatePresentOnSelectedList(this.$store.getters.getStash, datestart, dateend)) {
-                    this.$store.commit('addItemToStash', {'datestart': datestart, 'dateend': dateend})
-                }// else means that element is present in the list, so we will remove it from the list
-                else {
-                    this.$store.commit('removeItemFromStash', {'datestart': datestart, 'dateend': dateend});
-                }
-                console.log(this.$store.getters.getStash);
+
+            showWeek(numOfWeek) {
+                this.handleWeek(this.shownDate.clone().add(Number(numOfWeek) * 7, 'd'));
             },
 
-            itemClickHandlerToRemove(datestart, dateend) {
-                //check see if this time is not added to the list
-                if (!this.isDatePresentOnSelectedList(this.selectedDatesToRemove, datestart, dateend)) {
-                    console.log('add elements to selected dates to remove');
-                    this.selectedDatesToRemove.push({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }// else means that element is present in the list, so we will remove it from the list
-                else {
-                    console.log('remove element from selected dates to remove');
-                    this.removeElementFromToRemoveDates({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }
-                console.log(this.selectedDatesToRemove);
+            showPrevWeek() {
+                this.activeWeekOffset--;
+                this.showWeek(this.activeWeekOffset);
             },
 
-            itemClickHandlerToOpen(datestart, dateend) {
-                //check see if this time is not added to the list
-                if (!this.isDatePresentOnSelectedList(this.selectedDatesToOpen, datestart, dateend)) {
-                    console.log('add elements to selected dates to open');
-                    this.selectedDatesToOpen.push({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }// else means that element is present in the list, so we will remove it from the list
-                else {
-                    console.log('remove element from selected dates to open');
-                    this.removeElementFromToOpenDates({
-                        'datestart': datestart,
-                        'dateend': dateend
-                    });
-                }
-                console.log(this.selectedDatesToOpen);
-            },
-
-            isDatePresentOnSelectedList(listToCheck, datestart, dateend) {
-                for (let i = 0; i < listToCheck.length; i++) {
-                    if (listToCheck[i].datestart == datestart && listToCheck[i].dateend == dateend)
-                        return true;
-                }
-                return false;
-            },
-
-            showWeek: function (numOfWeek, siblingStatus) {
-                if (siblingStatus === 'prev') {
-                    this.handleWeek(this.shownDate.subtract(Number(numOfWeek) * 7, 'd').locale(this.calendarLocale));
-                } else if (siblingStatus === 'next') {
-                    this.handleWeek(this.shownDate.add(Number(numOfWeek) * 7, 'd').locale(this.calendarLocale));
-                }
-            },
-
-            showPrevWeek: function () {
-                this.showWeek(1, 'prev');
-            },
-
-            showNextWeek: function () {
-                this.showWeek(1, 'next');
+            showNextWeek() {
+                this.activeWeekOffset++;
+                this.showWeek(this.activeWeekOffset);
             },
 
             generateSaturdayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(0 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(0 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
             generateSundayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(1 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(1 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
             generateMondayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(2 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(2 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
+
             },
 
             generateTuesdayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(3 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(3 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
             generateWednesdayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(4 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(4 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
             generateThursdayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(5 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(5 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
             generateFridayNew(date) {
-                return date.clone().hour(0).minute(0).second(0).millisecond(0).clone().add(6 - date.weekday(), 'd');
+                let day = date.clone().hour(0).minute(0).second(0).millisecond(0).add(6 - date.weekday(), 'd');
+                return {
+                    day: day,
+                    slots: this.generateSlotsByDay(day)
+                };
             },
 
-            removeElementFromToOpenDates(value) {
-                this.selectedDatesToOpen = this.selectedDatesToOpen.filter(val => {
-                    return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
-                });
-            },
-
-            removeElementFromToRemoveDates(value) {
-                this.selectedDatesToRemove = this.selectedDatesToRemove.filter(val => {
-                    return val.datestart != value.datestart && val.datestart.dateend != value.dateend;
-                });
-            },
-
-            isInConsultantTime(cellStartDate, cellEndDate) {
-                for (let slot of this.slots) {
-                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
-                        return true;
+            generateSlotsByDay(day) {
+                let slots = [];
+                for (let i = 0; i < 23; i++) {
+                    slots.push({
+                        "start_time_date": day.clone().hour(i).minute(this.minutesOffsetFromTehran),
+                        "end_time_date": day.clone().hour(i + 1).minute(this.minutesOffsetFromTehran),
+                        "selected": false,
+                        "where": null
+                    });
+                    if (this.slotIsNotAvailable(slots[i])) {
+                        slots[i].where = 'disabled'
+                    } else if (this.slotIsOpen(slots[i])) {
+                        slots[i].where = 'opened'
+                    } else {
+                        slots[i].where = 'ready'
                     }
                 }
-                return false;
+                console.log(slots);
+                return slots;
             },
 
-            getSlotIdByDate(startDate, endDate) {
-                for (let i = 0; i < this.slots.length; i++) {
-                    if (jalali(this.slots[i].start_time).isSame(jalali(startDate), 'minute') && jalali(this.slots[i].end_time).isSame(jalali(endDate), 'minute'))
-                        return this.slots[i].id;
+            slotClickHandler(slot) {
+                console.log(slot);
+                switch (slot.where) {
+                    case 'opened' :
+                        slot.where = 'opened-selected';
+                        break;
+                    case 'opened-selected':
+                        slot.where = 'opened';
+                        break;
+                    case 'ready':
+                        slot.where = 'ready-selected';
+                        break;
+                    case 'ready-selected':
+                        slot.where = 'ready';
+                        break;
+                    default:
+                        break;
                 }
+                console.log(slot);
             },
 
-            async removeTimes() {
+            getOpenedSlotId(slot) {
+                return this.slots.find(s =>
+                    s.start_time_date.format() === slot.start_time_date.format()
+                    && s.end_time_date.format() === slot.end_time_date.format()
+                ).old_slot.id;
+            },
+
+            slotIsNotAvailable(slot) {
+                return slot.start_time_date.isSameOrBefore(this.justNowDate);
+            },
+
+            slotIndexInOpen(slot) {
+                return this.slots.findIndex(openedSlot =>
+                    openedSlot.start_time_date.format() === slot.start_time_date.format()
+                    && openedSlot.end_time_date.format() === slot.end_time_date.format()
+                )
+            },
+
+            slotIsOpen(slot) {
+                return this.slotIndexInOpen(slot) !== -1;
+            },
+
+            clearAll() {
+                this.selectedSlotsToOpen = [];
+                this.selectedSlotsToRemove = [];
+            },
+
+            removeTimes() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
-                    try {
-                        this.$loading(true);
-                        for (let selectedDate of this.selectedDatesToRemove) {
-                            let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
-                            let result = await this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
-                            console.log(result);
-                        }
-                        this.selectedDatesToRemove = [];
-                        await this.initComp();
-                    } catch (e) {
-                        console.log(e);
-                        if (e.response) {
-                            console.log(e.response);
-                        }
-                    } finally {
-                        this.$loading(false);
-                    }
-                }
-
-            },
-
-            isInReservedTimes(cellStartDate, cellEndDate) {
-                for (let slot of this.soldSlots) {
-                    if (cellStartDate.isSame(jalali(slot.start_time), 'minute') && cellEndDate.isSame(jalali(slot.end_time), 'minute')) {
-                        return true;
-                    }
-                }
-                return false;
-            },
-
-            async addTimes() {
-                console.log('selected dates to add open:', this.selectedDatesToOpen);
-                console.log('selected price:', this.price);
-                try {
+                    let removeReqs = [];
                     this.$loading(true);
-                    for (let selectedDate of this.selectedDatesToOpen) {
-                        let payload = {
-                            "start_time": selectedDate.datestart,
-                            "end_time": selectedDate.dateend,
-                        };
-                        let result = await this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`, payload, this.$store.getters.httpConfig);
-                        console.log(result);
-                    }
+                    this.days.forEach(day => {
+                        day.slots.forEach(slot => {
+                            if (slot.where === 'opened-selected') {
+                                removeReqs.push(
+                                    this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${this.getOpenedSlotId(slot)}/`,
+                                        this.$store.getters.httpConfig)
+                                );
+                                slot.where = 'ready';
+                            }
+                        })
+                    });
 
-                    await this.initComp();
-                    this.selectedDatesToOpen = [];
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
+                    Promise
+                        .all(removeReqs)
+                        .then(() => {
+                            this.initComp();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.initComp();
+                        })
+                        .finally(() => {
+                            this.$loading(false);
+                        })
                 }
-            }
-        },
 
+            },
+
+            addTimes() {
+                let openReqs = [];
+                this.$loading(true);
+                this.days.forEach(day => {
+                    day.slots.forEach(slot => {
+                        if (slot.where === 'ready-selected') {
+                            openReqs.push(
+                                this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                                    {
+                                        "start_time": slot.start_time_date.clone().locale('en').format(),
+                                        "end_time": slot.start_time_date.clone().locale('en').format()
+                                    },
+                                    this.$store.getters.httpConfig)
+                            );
+                        }
+                    })
+                });
+                Promise
+                    .all(openReqs)
+                    .then(() => {
+                        this.initComp();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .finally(() => {
+                        this.$loading(false);
+                    })
+            }
+        }
     }
 </script>
 
 <style scoped>
+
+    .calendar-wrapper {
+        display: flex;
+        align-self: stretch;
+        justify-content: space-between
+    }
+
+    .calendar-hours-column {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% / 8);
+    }
+
+    .calendar-day-column {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% / 8);
+    }
+
+    .calendar-day-slot {
+        width: 100%;
+    }
+
+    .calendar-inside-button {
+        margin: 5px 0;
+        padding: 0 20px;
+        height: 30px;
+        width: 100%;
+        border: none;
+        background: none;
+    }
+
+    .calendar-inside-button--disabled {
+        cursor: default;
+    }
+
+    .slot-button {
+        margin: 5px 0;
+        padding: 0 20px;
+        height: 30px;
+        font-size: 8px;
+        border: none;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 90px;
+    }
+
+
+    .slot-button--notavailable {
+        background-color: #9c9c9c;
+    }
+
+    .slot-button--open {
+        background-color: #4ee367;
+    }
+
+    .slot-button--open:hover {
+        background-color: #57d06d;
+    }
+
+    .slot-button--selected {
+        background-color: #ffca18;
+    }
+
+    .slot-button--selected:hover {
+        background-color: #ffca18;
+    }
+
 
     .userCalendarWrapper {
         width: 100%;
@@ -423,37 +495,11 @@
         color: #b3b3b3;
     }
 
-    .timeNotAvailable {
-        background-color: #9c9c9c;
-    }
-
-    .timeOpen {
-        background-color: #4ee367;
-        cursor: pointer;
-    }
-
-    .timeOpen:hover {
-        background-color: #57d06d;
-    }
-
-    .timeSelected {
-        background-color: #ffca18 !important;
-        cursor: pointer;
-    }
 
     .timeReserved {
         border: 2px solid #c9737c;
         color: #c9737c;
         background-color: white;
-    }
-
-    .timeOpenForManagerToSet {
-        background-color: #dfdfdf;
-        cursor: pointer;
-    }
-
-    .timeOpenForManagerToSet:hover {
-        background-color: #e6e6e6;
     }
 
     .calendarTopWrapper {
@@ -486,12 +532,6 @@
         justify-content: space-between;
         min-height: 50px;
         width: 100%;
-    }
-
-    .myTableLargerCell {
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .myTableRow > div {
@@ -532,30 +572,24 @@
         top: 115px;
     }
 
-    .firstCellInRow {
-        background-color: white;
-    }
-
-    .lastCellInRow {
-        background-color: white;
-    }
-
-    .btn-week {
-        color: #666666;
-    }
-
-    .btn-week:hover {
-        color: #3d3d3d;
-    }
-
-    p.text-danger {
-        font-size: 12px;
-    }
-
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .myTableCell {
             font-size: 10px;
         }
+
+        .calendar-inside-button {
+            font-size: 8px;
+        }
+
+        .slot-button {
+            margin: 5px;
+            width: auto;
+        }
+
+        .calendar-inside-button--disabled {
+            padding: initial;
+        }
+
     }
 
 </style>

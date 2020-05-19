@@ -18,6 +18,14 @@ const router = new Router({
             }
         },
         {
+            path: '/policy',
+            name: 'Policy',
+            component: () => import("@/views/Policy"),
+            meta: {
+                auth: 'optional'
+            }
+        },
+        {
             path: '/auth',
             name: 'auth',
             redirect: '/auth/login',

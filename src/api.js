@@ -13,13 +13,12 @@ api.interceptors.response.use(response => {
 }, error => {
     console.log('api interceptor catch error, printing input');
     console.dir(error);
-    console.dir(error.config);
     console.log(error.response.status);
     const originalRequest = error.config;
     const originalStatus = error.response.status;
     if (originalStatus != 401) {
         console.log('api interceptor catch error other than 401');
-        return error;
+        return Promise.reject(error);
     } else if (originalRequest.url != `${store.getters.getApi}/auth/jwt/token/`) {
         console.log('api error interceptor catch error 401 with url other than login, launching refresh token process');
         axios.post(`${store.getters.getApi}/auth/jwt/token/refresh/`, {'refresh': store.getters.getRefreshToken}).then(response => {
@@ -60,8 +59,8 @@ api.interceptors.response.use(response => {
                     router.push(`/carts/${response.data.id}`);
                 }).catch(error => {
                     store.dispatch('logout');
-                    router.push('/auth/login');
                     window.alert('ظاهرا نشست شما منقضی شده است. دوباره وارد حساب کاربری خود شوید...')
+                    router.push('/auth/login');
                 });
             } else {
                 console.log('encountering normal retry mode, do')
@@ -81,7 +80,7 @@ api.interceptors.response.use(response => {
             window.alert('ظاهرا نشست شما منقضی شده است. دوباره وارد حساب کاربری خود شوید...')
         })
     } else {
-        return error;
+        return Promise.reject(error);
     }
 });
 

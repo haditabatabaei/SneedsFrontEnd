@@ -230,6 +230,14 @@
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
+                    // {
+                    //     itemName: 'شرایط و ضوابط استفاده از وبسایت اسنیدز',
+                    //     target: '/policy',
+                    //     type: 'router',
+                    //     hasDropDown: false,
+                    //     dropdownItems: [],
+                    //     icon: 'supervisor_account'
+                    // },
                 ],
             }
         },

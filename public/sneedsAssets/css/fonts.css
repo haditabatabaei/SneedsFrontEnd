@@ -31,18 +31,9 @@
 
 .isansFont{
     font-family: 'isans' !important;
+    letter-spacing: normal;
 }
 
 .isansFont--faNum {
     font-family : 'isansFaNum' !important;
-}
-
-@media only screen and (max-width: 576.8px) {
-    .isansFont {
-        font-family: 'isansMobile' !important;
-    }
-
-    .isansFont--faNum {
-        font-family: 'isansMobile' !important;
-    }
 }

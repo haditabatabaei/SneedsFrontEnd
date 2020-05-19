@@ -50,7 +50,11 @@
             submitLabel: {
                 type: String,
                 default: () => 'ورود'
-            }
+            },
+            customAction: {
+                type: Boolean,
+                default: () => false
+            },
         },
         computed: {
             loginFormIsInvalid() {
@@ -102,7 +106,11 @@
                         this.$loading(true);
                         await this.$store.dispatch('login', this.userToLogin);
                         this.printMessage("شما با موفقیت وارد شدید.", "ورود: موفق", "success", 3000, "notif");
-                        this.$router.push('/user')
+                        if(this.customAction) {
+                            this.$emit('custom-action-call');
+                        } else {
+                            this.$router.push('/user')
+                        }
                     } catch (e) {
                         console.log(e.response);
                         if (e.response && e.response.data) {

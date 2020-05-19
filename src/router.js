@@ -136,7 +136,14 @@ const router = new Router({
                     meta: {
                         auth: 'req'
                     }
-                }
+                },
+                {
+                    path: 'package/form',
+                    component: () => import("@/views/Package/PackageForm"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
             ]
         },
         {

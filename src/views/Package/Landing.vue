@@ -225,6 +225,33 @@
                 </ul>
             </div>
         </section>
+        <section class="package-section package-section-faq">
+            <div class="section-sub section-sub-faq">
+                <section class="faq-box" v-for="faqBox in faqBoxes">
+                    <sup class="isansFont faq-box-title-sup">{{faqBox.sup}}</sup>
+                    <h1 class="isansFont faq-box-title">{{faqBox.title}}</h1>
+                    <div class="faq-divider divider--purple"></div>
+                    <div class="faq-question" v-for="question in faqBox.questions" @click="toggleQuestion(question)">
+                        <div class="faq-question-title">
+                            <h2 class="faq-question-title-text isansFont">
+                                {{question.title}}
+                            </h2>
+                            <button class="faq-question-title-toggler" :class="[{'toggler--open': question.isOpen}]">
+                                <transition name="fade">
+                                    <i class="material-icons" v-if="!question.isOpen">keyboard_arrow_down</i>
+                                    <i class="material-icons" v-else>keyboard_arrow_up</i>
+                                </transition>
+                            </button>
+                        </div>
+                        <transition name="fade">
+                            <p class="isansFont faq-question-answer" v-if="question.isOpen">
+                                {{question.answer}}
+                            </p>
+                        </transition>
+                    </div>
+                </section>
+            </div>
+        </section>
     </main>
 </template>
 
@@ -232,9 +259,92 @@
     export default {
         name: "Landing",
         data() {
-            return {}
+            return {
+                faqBoxes: [
+                    {
+                        sup: 'عمومی',
+                        title: 'سوالات متداول',
+                        questions: [
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: true,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            }
+                        ]
+                    },
+                    {
+                        sup: 'اسنیدز',
+                        title: 'سوالات متداول',
+                        questions: [
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: true,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            },
+                            {
+                                title: 'صورت سوال لورم ؟',
+                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
+                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
+                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
+                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                isOpen: false,
+                            }
+                        ]
+                    }
+                ]
+            }
         },
-        methods: {},
+        methods: {
+            toggleQuestion(question) {
+                question.isOpen = !question.isOpen;
+            }
+        },
         created() {
 
         }
@@ -261,6 +371,7 @@
     .section-sub {
         width: 100%;
         max-width: 1170px;
+        padding: 0 35px;
     }
 
     .section-sub-intro {
@@ -529,8 +640,10 @@
         color: white;
         border-radius: 30px;
         display: flex;
+        justify-content: center;
         align-items: center;
         margin-top: 40px;
+        padding: 0;
     }
 
     .smart-info-item {
@@ -582,7 +695,7 @@
         width: 100%;
         height: 300px;
         z-index: 1;
-        background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(31,31,31,1) 50%, rgba(84,84,84,1) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(31, 31, 31, 1) 50%, rgba(84, 84, 84, 1) 100%);
         opacity: 0.5;
     }
 
@@ -595,15 +708,14 @@
     }
 
     .support-items {
-        z-index: 3;
-        position: relative;
-    }
-
-    .support-items {
         list-style: none;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        z-index: 3;
+        position: relative;
+        padding: 0;
+        flex-wrap: wrap;
     }
 
     .support-item {
@@ -622,9 +734,225 @@
         margin-left: 5px;
     }
 
-    .item--hasLtr span{
+    .item--hasLtr span {
         direction: ltr !important;
     }
 
+    .package-section-faq {
+    }
 
+    .section-sub-faq {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+    }
+
+    .faq-box {
+        display: flex;
+        flex-direction: column;
+        padding: 0 40px;
+    }
+
+    .faq-box:not(:first-child) {
+        margin-top: 50px;
+    }
+
+    .faq-box-title {
+        color: #303143;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .faq-box-title-sup {
+        color: #303143;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .faq-divider {
+        width: 130px;
+        height: 3px;
+        border-radius: 20px;
+        background-color: black;
+        margin-top: 25px;
+    }
+
+    .divider--purple {
+        background-color: #8C3DDB;
+    }
+
+    .faq-question {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 50px;
+    }
+
+    .faq-question-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 40px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 5px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .faq-question-title:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+
+    .faq-question-title-text {
+        color: #585858;
+        font-size: 18px;
+        font-weight: bold;
+        position: relative;
+        padding-right: 15px;
+        margin: 0;
+    }
+
+    .faq-question-title-text:before {
+        content: " ";
+        background-color: #BD7AFF;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        position: absolute;
+        right: 0;
+        top: 10px;
+    }
+
+    .faq-question-title-toggler {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 2px solid #8E39CC;
+        background: none;
+        color: #8E39CC;
+    }
+
+    .faq-question-title-toggler.toggler--open {
+        border-color: #BD7AFF;
+        color: #BD7AFF;
+    }
+
+    .faq-question-answer {
+        color: #9B9999;
+        line-height: 26px;
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .section-intro-aparat {
+            width: 90%;
+        }
+
+        .section-sub-consultants {
+            flex-direction: column;
+        }
+
+        .section-consultants-info {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .section-consultants-avatars {
+            width: 100%;
+        }
+
+        .section-sub-smart {
+            flex-direction: column;
+        }
+
+        .smart-image {
+            width: 60%;
+        }
+
+        .smart-info {
+            width: 100%;
+        }
+
+        .about-info {
+            width: 100%;
+        }
+
+        .support-items {
+            justify-content: center;
+        }
+
+        .faq-box {
+            padding: 0;
+        }
+    }
+
+    @media only screen and (max-width: 567.8px) {
+        .section-intro-aparat {
+            width: 100%;
+        }
+
+        .section-sub-consultants {
+            flex-direction: column;
+        }
+
+        .section-consultants-info {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .section-consultants-avatars {
+            width: 100%;
+        }
+
+        .section-sub-smart {
+            flex-direction: column;
+            margin-top: 100px;
+        }
+
+        .smart-image {
+            width: 100%;
+            display: none;
+        }
+
+        .smart-info {
+            width: 100%;
+        }
+
+        .about-info {
+            width: 100%;
+        }
+
+        .smart-info-items {
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            padding: 0 5px;
+        }
+
+        .support-items {
+            justify-content: center;
+        }
+
+        .faq-box {
+            padding: 0;
+        }
+
+        .step {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .section-consultants-avatars {
+            display: none;
+        }
+
+        .faq-question {
+            padding: 10px 0;
+        }
+    }
 </style>

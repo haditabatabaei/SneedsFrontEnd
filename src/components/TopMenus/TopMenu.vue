@@ -55,7 +55,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
             <div class="profileWrapper">
@@ -94,6 +93,9 @@
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
                         </li>
+                        <li class="profile-menu-list-item" v-if="isConsultant">
+                            <router-link class="profile-menu-list-link" to="/user/discounts">تخفیفات اختصاصی</router-link>
+                        </li>
                         <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="profile-menu-list-item">
                             <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
@@ -101,7 +103,6 @@
                     </ul>
                 </div>
             </div>
-
 
             <transition name="slide-fade">
                 <div class="mobileMenu" v-if="mobileMenuShow">
@@ -193,6 +194,12 @@
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     مدیریت تقویم
                                 </router-link>
+                            </li>
+                            <li class="mobileMenuList--item" v-if="isConsultant">
+                                <router-link to="/user/discounts" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    تخفیفات اختصاصی
+                            </router-link>
                             </li>
                             <li class="mobileMenuList--item">
                                 <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">

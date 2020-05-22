@@ -98,6 +98,14 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'discounts',
+                    name: 'user-discounts',
+                    component: () => import("@/views/Consultant/ConsultantDiscount"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
                     path: 'sessions',
                     name: 'user-reserved-sessions',
                     component: () => import("@/views/UserReservedSessions"),

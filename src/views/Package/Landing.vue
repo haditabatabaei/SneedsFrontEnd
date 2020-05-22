@@ -846,6 +846,7 @@
     .faq-question-answer {
         color: #9B9999;
         line-height: 26px;
+        padding-top: 10px;
     }
 
     @media only screen and (max-width: 991.8px) {

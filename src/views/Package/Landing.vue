@@ -231,8 +231,8 @@
                     <sup class="isansFont faq-box-title-sup">{{faqBox.sup}}</sup>
                     <h1 class="isansFont faq-box-title">{{faqBox.title}}</h1>
                     <div class="faq-divider divider--purple"></div>
-                    <div class="faq-question" v-for="question in faqBox.questions" @click="toggleQuestion(question)">
-                        <div class="faq-question-title">
+                    <div class="faq-question" v-for="question in faqBox.questions">
+                        <div class="faq-question-title" @click="toggleQuestion(question)">
                             <h2 class="faq-question-title-text isansFont">
                                 {{question.title}}
                             </h2>

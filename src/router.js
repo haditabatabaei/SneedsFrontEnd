@@ -26,6 +26,14 @@ const router = new Router({
             }
         },
         {
+          path: '/packages',
+          name: 'Packages',
+          component: () => import("@/views/Package/Landing"),
+          meta: {
+              auth: 'optional'
+          }
+        },
+        {
             path: '/auth',
             name: 'auth',
             redirect: '/auth/login',
@@ -144,7 +152,14 @@ const router = new Router({
                     meta: {
                         auth: 'req'
                     }
-                }
+                },
+                {
+                    path: 'package/form',
+                    component: () => import("@/views/Package/PackageForm"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
             ]
         },
         {

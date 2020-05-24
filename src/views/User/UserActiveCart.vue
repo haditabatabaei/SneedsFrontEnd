@@ -1,107 +1,145 @@
 <template>
-        <div class="container activeCart" style="padding-top: 15px;">
-            <div class="row">
-                <div class="col-md-8" v-if="cart && cartTimeSlots.length > 0">
-                    <div class="cartsWrapper">
-                        <div class="cartsWrapper-title isansFont--faNum">
-                            <div class="cartsWrapper-title-consultant">
-                                <img v-bind:src="cartTimeSlots[0].consultant.profile_picture" draggable="false" alt="">
-                                <div class="cartsWrapper-title-consultant--info">
-                                    <h5 class="isansFont--faNum">رزرو مشاوره آنلاین</h5>
-                                    <h6 class="isansFont--faNum">{{`(${cartTimeSlots[0].consultant.first_name} ${cartTimeSlots[0].consultant.last_name})`}}</h6>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="cartsWrapper-item" v-for="(slot, index) in cartTimeSlots" :key="index">
-                            <p class="isansFont--faNum cartsWrapper-item--day">{{getJalali(slot.start_time).locale('fa').format('dddd DD MMMM')}}</p>
-                            <p class="isansFont--faNum cartsWrapper-item-length">
-                                <i class="material-icons">alarm_on</i>
-                                <span>{{getJalali(slot.start_time).locale('fa').format('HH:mm')}}</span>
-                                <span>{{getJalali(slot.end_time).locale('fa').format('HH:mm')}}</span>
-                            </p>
+    <div class="container activeCart" style="padding-top: 15px;">
+        <div class="row">
+            <div class="col-md-8" v-if="thereIsFactor">
+                <div class="cartsWrapper" v-if="thereIsTimeSlots">
+                    <div class="cartsWrapper-title isansFont--faNum">
+                        <img v-bind:src="cart.time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
+                        <div class="cartsWrapper-title-consultant--info">
+                            <h5 class="isansFont--faNum">رزرو مشاوره آنلاین</h5>
+                            <h6 class="isansFont--faNum">{{`(${cart.time_slot_sales[0].consultant.first_name}
+                                ${cart.time_slot_sales[0].consultant.last_name})`}}</h6>
                         </div>
                     </div>
-
-                    <div class="cartsWrapper">
-                        <p class="isansFont--faNum discount-title">
-                            <i class="material-icons">shopping_cart</i>
-                            کد تخفیف داری ؟
+                    <div class="cartsWrapper-item" v-for="slot in cart.time_slot_sales">
+                        <p class="isansFont--faNum cartsWrapper-item--day">
+                            {{getJalali(slot.start_time).locale($store.getters.locale).format('dddd DD MMMM')}}</p>
+                        <p class="isansFont--faNum cartsWrapper-item-length">
+                            <i class="material-icons">alarm_on</i>
+                            <span>{{getJalali(slot.start_time).locale($store.getters.locale).format('HH:mm')}}</span>
+                            <span>{{getJalali(slot.end_time).locale($store.getters.locale).format('HH:mm')}}</span>
                         </p>
-                        <div class="discount-wrapper">
-                            <form @submit.prevent="checkDiscountCode()" class="cartsWrapper-price--discount">
-                                <input type="text" placeholder="کد تخفیف" class="isansFont--faNum" :class="[codeStatus]" v-model.trim="inputCode">
-                                <button class="isansFont--faNum" :class="[codeStatus]">
-                                    <i class="material-icons" v-if="codeStatus === 'empty'">add</i>
-                                    <i class="material-icons" v-else-if="codeStatus === 'success'">done</i>
-                                    <i class="material-icons" v-else-if="codeStatus === 'error'">close</i>
+                    </div>
+                </div>
+                <div v-for="storePackage in cart.store_packages" class="cartsWrapper" v-if="thereIsPackage">
+                    <div class="cartsWrapper-title isansFont--faNum">
+                        <i class="material-icons plane-icon">airplanemode_active</i>
+                        <div class="cartsWrapper-title-consultant--info">
+                            <h5 class="isansFont">رزرو پکیج</h5>
+                            <h6 class="isansFont--faNum">
+                                ( {{storePackage.price}}
+                                تومان )
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="cartsWrapper-package-detail">
+                        <ul class="package-detail-list">
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>تضمین بازگشت هزینه رزرو در صورت عدم رضایت.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>بررسی رایگان فرم اطلاعات تحصیلی شما به دست مشاوران اسنیدز.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>امکان انجام مشاوره تصویری رایگان قبل از تایید با مشاورانی که پروژه شما رو قبول
+                                    کرده‌اند.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>بعد از تایید مشاور توسط شما، مبلغ ۱۵.۵ میلیون تومان در ۳ قسط جداگانه دریافت خواهد
+                                    شد.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cartsWrapper">
+                    <p class="isansFont--faNum discount-title">
+                        <i class="material-icons">shopping_cart</i>
+                        کد تخفیف داری ؟
+                    </p>
+                    <div class="discount-wrapper">
+                        <form @submit.prevent="checkDiscountCode()" class="cartsWrapper-price--discount">
+                            <input type="text" placeholder="کد تخفیف" class="isansFont--faNum" :class="[codeStatus]"
+                                   v-model.trim="inputCode">
+                            <button class="isansFont--faNum" :class="[codeStatus]">
+                                <i class="material-icons" v-if="codeStatus === 'empty'">add</i>
+                                <i class="material-icons" v-else-if="codeStatus === 'success'">done</i>
+                                <i class="material-icons" v-else-if="codeStatus === 'error'">close</i>
+                            </button>
+                        </form>
+
+                        <p v-if="codeStatus == 'success'" class="isansFont--faNum code-text code-text--success">
+                            کد تخفیف اعمال شد
+                        </p>
+
+                        <p v-else-if="codeStatus == 'error'" class="isansFont--faNum code-text code-text--error">
+                            کد تخفیف وارد شده صحیح نمی باشد!
+                        </p>
+
+                        <div class="cartsWrapper-discounts isansFont--faNum" v-if="discounts.length > 0">
+                            <p class="discounts-item" v-for="(discount, index) in discounts" :key="index">
+                                <button class="discounts-item-remove-button" @click="deleteDiscountById(discount.id)">
+                                    <i class="material-icons">close</i>
                                 </button>
-                            </form>
-
-                            <p v-if="codeStatus == 'success'" class="isansFont--faNum code-text code-text--success">
-                                کد تخفیف اعمال شد
+                                {{discount.code}}
                             </p>
-
-                            <p v-else-if="codeStatus == 'error'" class="isansFont--faNum code-text code-text--error">
-                                کد تخفیف وارد شده صحیح نمی باشد!
-                            </p>
-
-                            <div class="cartsWrapper-discounts isansFont--faNum" v-if="discounts.length > 0">
-                                <p class="discounts-item" v-for="(discount, index) in discounts" :key="index">
-                                    <button class="discounts-item-remove-button" @click="deleteDiscountById(discount.id)">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                    {{discount.code}}
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-12 cartsWrapper" v-else>
-                    <p class="isansFont--faNum">فاکتوری برای نمایش وجود ندارد</p>
-                </div>
+            <div class="col-md-12 cartsWrapper" v-else>
+                <p class="isansFont--faNum">فاکتوری برای نمایش وجود ندارد</p>
+            </div>
 
-                <div class="col-md-4 payWrapper" v-if="cart">
-                    <div class="cartsWrapper isansFont--faNum" style="position: relative">
-                        <p class="cartsWrapper-item-length-price-subtotal">
-                            <span> هزینه {{`(${cartTimeSlots.length} جلسه)`}}</span>
-                            <span>{{cart.subtotal}} تومان </span>
-                        </p>
-                        <p class="cartsWrapper-item-length-price-discount">
-                            <span >
+            <div class="col-md-4 payWrapper" v-if="thereIsFactor">
+                <div class="cartsWrapper isansFont--faNum" style="position: relative">
+                    <p class="cartsWrapper-item-length-price-subtotal" v-if="thereIsTimeSlots">
+                        <span> هزینه {{`(${cart.time_slot_sales.length} جلسه)`}}</span>
+                        <span>{{cart.subtotal}} تومان </span>
+                    </p>
+                    <p class="cartsWrapper-item-length-price-subtotal" v-else-if="thereIsPackage">
+                        <span>هزینه</span>
+                        <span>{{cart.subtotal}} تومان </span>
+                    </p>
+                    <p class="cartsWrapper-item-length-price-discount">
+                            <span>
                                 تخفیف خورده :
                                 {{`${cart.subtotal - cart.total} تومان`}}
                             </span>
-                        </p>
-                        <p class="cartsWrapper-item-length-price-total">
-                            <span>مجموع</span>
-                            <span>{{cart.total}} تومان </span>
-                        </p>
+                    </p>
+                    <p class="cartsWrapper-item-length-price-total">
+                        <span>مجموع</span>
+                        <span>{{cart.total}} تومان </span>
+                    </p>
 
-                        <p class="cartsWrapper-item-safe">
-                            <i class="material-icons">done</i>
-                            <span>
+                    <p class="cartsWrapper-item-safe">
+                        <i class="material-icons">done</i>
+                        <span>
                                 <strong>پرداخت امن</strong>
                                 <br>
                                 <span>از طریق کارت های عضو شتاب</span>
                             </span>
-                        </p>
+                    </p>
 
 
-                        <button class="cartsWrapper-item-paybutton" @click="requestPayment()">
-                            پرداخت |
-                            <span v-if="Number(cart.total) == 0">
+                    <button class="cartsWrapper-item-paybutton" @click="requestPayment()">
+                        پرداخت |
+                        <span v-if="Number(cart.total) == 0">
                                رایگان !
                             </span>
-                            <span v-else>
+                        <span v-else>
                                 {{cart.total}}
                             تومان
                             </span>
-                        </button>
-                    </div>
+                    </button>
                 </div>
             </div>
+        </div>
     </div>
 </template>
 
@@ -114,7 +152,6 @@
         data() {
             return {
                 cart: null,
-                cartTimeSlots: [],
                 discounts: [],
                 inputCode: '',
                 codeStatus: 'empty'
@@ -122,6 +159,30 @@
         },
         created() {
             this.initComp();
+        },
+        computed: {
+            api() {
+                return this.$store.getters.getApi;
+            },
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            },
+
+            thereIsFactor() {
+                return this.cart && (this.cart.time_slot_sales.length > 0 || this.cart.store_packages.length > 0);
+            },
+
+            thereIsTimeSlots() {
+                return this.cart && this.cart.time_slot_sales.length > 0;
+            },
+
+            thereIsPackage() {
+                return this.cart && this.cart.store_packages.length > 0;
+            },
+
+            packageToBuy() {
+                return this.cart.store_packages.length != 0 || false;
+            }
         },
         methods: {
             getJalali(date) {
@@ -131,7 +192,6 @@
             async initComp() {
                 await this.getCurrentCart();
                 if (this.cart) {
-                    this.getCartProducts();
                     this.getDiscountsOnThisCart();
                 }
             },
@@ -139,7 +199,7 @@
             async getCurrentCart() {
                 try {
                     this.$loading(true);
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/cart/carts/${this.$route.params.id}/`, this.$store.getters.httpConfig);
+                    let result = await this.$api.get(`${this.api}/cart/carts/${this.$route.params.id}/`, this.httpConfig);
                     this.cart = result.data;
                     console.log('current last cart ', this.cart);
                 } catch (e) {
@@ -152,23 +212,24 @@
                 }
             },
 
-            getCartProducts() {
-                this.$loading(true);
-                this.cartTimeSlots = [];
-                let slotReqs = [];
-                this.cart.time_slot_sales.forEach((slot) => {
-                    slotReqs.push(this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/${slot.id}/`, this.$store.getters.httpConfig))
-                });
-
-                Promise.all(slotReqs).then((responseArr) => {
-                    this.cartTimeSlots = responseArr.map((response) => response.data);
-                    console.log(this.cartTimeSlots);
-                }).catch((reject) => {
-                    console.log(reject);
-                }).finally(() => {
-                    this.$loading(false);
-                });
-            },
+            // getCartProducts() {
+            //     this.$loading(true);
+            //     this.cartTimeSlots = [];
+            //     let slotReqs = [];
+            //     let storePackageReqs = [];
+            //     this.cart.time_slot_sales.forEach((slot) => {
+            //         slotReqs.push(this.$api.get(`${this.api}/store/time-slot-sales/${slot.id}/`, this.httpConfig))
+            //     });
+            //
+            //     Promise.all(slotReqs).then((responsesArr) => {
+            //         this.cartTimeSlots = responsesArr.map((response) => response.data);
+            //         console.log(this.cartTimeSlots);
+            //     }).catch((reject) => {
+            //         console.log(reject);
+            //     }).finally(() => {
+            //         this.$loading(false);
+            //     });
+            // },
 
             async checkDiscountCode() {
                 try {
@@ -199,7 +260,7 @@
                     let result = await this.$api.get(`${this.$store.getters.getApi}/discount/cart-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
                     console.log('discounts for this cart :', result);
                     this.discounts = result.data;
-                    if(this.discounts.length > 0) {
+                    if (this.discounts.length > 0) {
                         this.codeStatus = 'success'
                     } else {
                         this.codeStatus = 'empty'
@@ -244,7 +305,7 @@
                     let result = await this.$api.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
                     console.log(result);
                     this.$store.commit('setStash', []);
-                    if(result.data.redirect) {
+                    if (result.data.redirect) {
                         window.location.replace(result.data.redirect);
                     } else {
                         this.$router.push('/user/payment/accept?refld=00000000');
@@ -253,10 +314,10 @@
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
-                        if(e.response.data.detail) {
-                            if(typeof e.response.data.detail == "object") {
+                        if (e.response.data.detail) {
+                            if (typeof e.response.data.detail == "object") {
                                 this.printMessage(e.response.data.detail.join(","), "پرداخت: خطا", "error", 5000, "notif");
-                            } else if(typeof e.response.data.detail == "string") {
+                            } else if (typeof e.response.data.detail == "string") {
                                 this.printMessage(e.response.data.detail, "پرداخت: خطا", "error", 5000, "notif");
                             } else {
                                 this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "پرداخت: خطا", "error", 5000, "notif");
@@ -306,16 +367,13 @@
         font-size: 18px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin: 10px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 20px;
     }
 
-    .cartsWrapper-title-consultant {
-        display: flex;
-        align-items: center;
-    }
-
-    .cartsWrapper-title-consultant img{
+    .cartsWrapper-title-consultant img {
         width: 90px;
         height: 90px;
         border-radius: 50%;
@@ -328,14 +386,14 @@
         justify-content: flex-start;
     }
 
-    .cartsWrapper-title-consultant--info h5,h6{
+    .cartsWrapper-title-consultant--info h5, h6 {
         margin: 0;
         font-weight: bold;
     }
 
     .cartsWrapper-title-consultant--info h6 {
         margin-right: 5px;
-        font-weight: normal ;
+        font-weight: normal;
     }
 
     .cartsWrapper-item {
@@ -346,15 +404,15 @@
 
     .cartsWrapper-item--day {
         font-size: 12px;
-        color : #A0A0A0;
+        color: #A0A0A0;
     }
 
     .cartsWrapper-item-length {
         display: flex;
         width: 100%;
-        align-items:center;
+        align-items: center;
         justify-content: space-between;
-        background-color : #F2F2F2;
+        background-color: #F2F2F2;
         border-radius: 10px;
         padding: 10px 10px;
         color: #767676;
@@ -367,7 +425,7 @@
 
     .cartsWrapper-title-user {
         border-radius: 10px;
-        border:2px solid #9038CC;
+        border: 2px solid #9038CC;
     }
 
     .cartsWrapper-item-length-price-total {
@@ -383,7 +441,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding:5px 10px;
+        padding: 5px 10px;
         color: #a1a1a1;
     }
 
@@ -417,8 +475,8 @@
         left: 0;
         bottom: 0;
         height: 50px;
-        border-radius:0 0 10px 10px;
-        border:none;
+        border-radius: 0 0 10px 10px;
+        border: none;
         background: #9038CC;
         color: white;
         font-weight: bold;
@@ -449,7 +507,7 @@
 
     .cartsWrapper-price--discount input {
         border-radius: 0 10px 10px 0;
-        border: none    ;
+        border: none;
         background-color: #F2F2F2;
         height: 35px;
         padding-right: 5px;
@@ -469,21 +527,21 @@
     }
 
     .cartsWrapper-price--discount button.success {
-        background-color : #3BAFA6;
+        background-color: #3BAFA6;
         color: white;
     }
 
     .cartsWrapper-price--discount input.success {
-        border:1px solid #3BAFA6;
+        border: 1px solid #3BAFA6;
     }
 
     .cartsWrapper-price--discount button.error {
-        background-color : #E46465;
+        background-color: #E46465;
         color: white;
     }
 
     .cartsWrapper-price--discount input.error {
-        border:1px solid #E46465;
+        border: 1px solid #E46465;
     }
 
 
@@ -495,15 +553,15 @@
 
     .discount-title {
         display: flex;
-        align-items:center;
+        align-items: center;
         font-weight: bold;
-        padding:10px;
+        padding: 10px;
     }
 
     .discount-wrapper {
         display: flex;
         width: 100%;
-        align-items:center;
+        align-items: center;
     }
 
     .discount-title i {
@@ -572,15 +630,16 @@
 
 
     .code-text {
-        margin-bottom:0;
+        margin-bottom: 0;
         margin-right: 30px
     }
 
     .code-text--success {
-        color : #22B473;
+        color: #22B473;
         background-color: inherit;
         font-weight: bold;
     }
+
     .code-text--error {
         color: #E46465;
     }
@@ -606,6 +665,44 @@
         font-size: 18px;
     }
 
+    .plane-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        margin-left: 15px;
+        color: #8C3DDB;
+        background-color: #ECD9FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+    }
+
+    .cartsWrapper-package-detail {
+        margin: 10px;
+    }
+
+    .package-detail-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .package-detail-item {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+    }
+
+    .package-detail-item p {
+        margin: 0 5px;
+        color: #585858;
+    }
+
+    .package-detail-item i {
+        color: #8C3DDB;
+        font-size: 16px;
+    }
+
     @media only screen and (max-width: 991.8px) and (min-width: 0) {
         .payWrapper {
             position: fixed;
@@ -626,12 +723,12 @@
         }
 
         .discount-wrapper {
-            flex-wrap : wrap;
+            flex-wrap: wrap;
             justify-content: center;
         }
 
         .cartsWrapper-title-consultant {
-            flex-wrap : wrap;
+            flex-wrap: wrap;
             justify-content: center;
         }
 

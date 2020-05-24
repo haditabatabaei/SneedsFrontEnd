@@ -19,8 +19,14 @@
                 <div class="order-item-title isansFont--faNum">
                     <i class="material-icons text-rose">alarm_on</i>
                     <p>
-                        <span>
-                            مشاوره اپلای
+                        <span v-if="order.sold_time_slot_sales.length > 0">
+                            مشاوره آنلاین
+                        </span>
+                        <span v-else-if="order.sold_store_paid_package_phases.length > 0">
+                            فاز پکیج
+                        </span>
+                        <span v-else>
+                            نا مشخص
                         </span>
                         <span v-if="order.sold_time_slot_sales[0]">
                             {{order.sold_time_slot_sales[0].consultant.first_name + " " + order.sold_time_slot_sales[0].consultant.last_name}}

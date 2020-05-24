@@ -7,7 +7,8 @@
                         <div class="cartsWrapper-title-consultant">
                             <img v-if="order.sold_time_slot_sales[0]" v-bind:src="order.sold_time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
                             <div class="cartsWrapper-title-consultant--info">
-                                <h5 class="isansFont--faNum">مشاوره آنلاین</h5>
+                                <h5 class="isansFont--faNum" v-if="order.sold_time_slot_sales.length > 0">مشاوره آنلاین</h5>
+                                <h5 class="isansFont--faNum" v-if="order.sold_store_paid_package_phases.length > 0">فاز پکیج</h5>
                                 <h6 class="isansFont--faNum" v-if="order.sold_time_slot_sales[0]">{{`${order.sold_time_slot_sales[0].consultant.first_name} ${order.sold_time_slot_sales[0].consultant.last_name}`}}</h6>
                                 <h6 class="isansFont--faNum" v-else>نامشخص</h6>
                             </div>
@@ -36,6 +37,16 @@
                         <p>
                             <span>تاریخ ثبت سفارش :</span>
                             <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(order.created).locale($store.getters.locale).format('YYYY/MM/DD HH:mm')}}</span>
+                        </p>
+                    </div>
+
+                    <div class="cartsWrapper-item" v-for="phase in order.sold_store_paid_package_phases">
+                        <p class="cartsWrapper-item--day isansFont" >{{phase.title}} | {{phase.detailed_title}}</p>
+                        <p class="isansFont--faNum cartsWrapper-item-length">
+                            <i class="material-icons">autorenew</i>
+                            <span>{{phase.status}}</span>
+<!--                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('HH:mm')}}</span>-->
+<!--                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.end_time).locale($store.getters.locale).format('HH:mm')}}</span>-->
                         </p>
                     </div>
 

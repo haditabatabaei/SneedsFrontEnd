@@ -225,6 +225,34 @@
                 </ul>
             </div>
         </section>
+
+        <section class="package-section package-section-buy">
+            <div class="section-sub section-sub-buy">
+                <div class="buy-box" v-for="storePackage in storePackages">
+                    <h1 class="buy-box-title isansFont">
+                        {{storePackage.title}}
+                    </h1>
+                    <ul class="buy-box-phases">
+                        <li class="buy-box-phase" v-for="phase in storePackage.store_package_phases">
+                            <p class="phase-title">
+                                {{phase.title}}
+                            </p>
+                            <span class="phase-price isansFont" :class="[{'isansFont--faNum': isiran}]">
+                                {{phase.price}}
+                                تومان
+                            </span>
+                        </li>
+                    </ul>
+                    <p class="isansFont" :class="[{'isansFont--faNum': isiran}]">
+                        هزینه کل :
+                        {{storePackage.total_price}}
+                        تومان
+                    </p>
+                    <button @click="buyPackage(storePackage)" class="isansFont">رزرو پکیج</button>
+                </div>
+            </div>
+        </section>
+
         <section class="package-section package-section-faq">
             <div class="section-sub section-sub-faq">
                 <section class="faq-box" v-for="faqBox in faqBoxes">
@@ -256,10 +284,13 @@
 </template>
 
 <script>
+    import store from "../../store";
+
     export default {
         name: "Landing",
         data() {
             return {
+                storePackages: [],
                 faqBoxes: [
                     {
                         sup: 'عمومی',
@@ -340,13 +371,60 @@
                 ]
             }
         },
+        computed: {
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            },
+            api() {
+                return this.$store.getters.getApi;
+            },
+            isiran() {
+                return this.$store.getters.isiran;
+            },
+            isLoggedIn() {
+                return this.$store.getters.isLoggedIn
+            }
+        },
         methods: {
             toggleQuestion(question) {
                 question.isOpen = !question.isOpen;
+            },
+            async buyPackage(storePackageToBuy) {
+                if (this.isLoggedIn) {
+                    console.log("User is logged in, adding package to cart ", storePackageToBuy.id);
+                    try {
+                        this.$loading(true);
+                        let payload = {products: [storePackageToBuy.id]};
+                        let result = (await this.$api.post(`${this.api}/cart/carts/`, payload, this.httpConfig));
+                        console.log(result);
+                        this.$router.push(`/carts/${result.data.id}`);
+                    } catch (e) {
+                        console.log(e);
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+                        this.$loading(false);
+                    }
+                } else {
+                    console.log('User is not logged in');
+                }
+
+            },
+
+            async getPackages() {
+                try {
+                    this.$loading(true);
+                    this.storePackages = (await this.$api.get(`${this.api}/store/packages/store-package-list/`, this.httpConfig)).data;
+                } catch (e) {
+
+                } finally {
+                    this.$loading(false);
+                }
             }
         },
         created() {
-
+            this.getPackages();
         }
     }
 </script>
@@ -847,6 +925,12 @@
         color: #9B9999;
         line-height: 26px;
         padding-top: 10px;
+    }
+
+    .section-sub-buy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     @media only screen and (max-width: 991.8px) {

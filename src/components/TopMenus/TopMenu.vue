@@ -80,9 +80,6 @@
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/sessions">جلسات مشاوره</router-link>
                         </li>
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/packages">پکیج ها</router-link>
-                        </li>
                         <li class="profile-menu-list-item" v-if="!isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/orders">پرداخت ها</router-link>
                         </li>
@@ -93,6 +90,9 @@
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
+                        </li>
+                        <li class="profile-menu-list-item" v-if="isConsultant">
+                            <router-link class="profile-menu-list-link" to="/user/packages/considering">پکیج های قابل بررسی</router-link>
                         </li>
                         <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="profile-menu-list-item">

@@ -152,6 +152,22 @@ const router = new Router({
                         auth: 'req'
                     }
                 },
+                {
+                    path: 'packages/considering',
+                    component: () => import("@/views/Package/PackagesToConsider"),
+                    name: 'user-packages-considering',
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'packages/considering/:id',
+                    name: 'user-packages-considering-detail',
+                    component: () => import("@/views/Package/ConsideringPackageDetail"),
+                    meta: {
+                        auth: 'req'
+                    }
+                }
             ]
         },
         {

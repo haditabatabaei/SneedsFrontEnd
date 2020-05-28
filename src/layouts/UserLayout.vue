@@ -143,6 +143,7 @@
                         submenu: []
                     },
                     {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "وضعیت پکیج ها", target: '/user/package/confirmation', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
                         name: "ویرایش رمز عبور",
                         target: "/user/password",
@@ -170,18 +171,19 @@
                         hasSubmenu: false,
                         submenu: []
                     },
+                    {name: "وضعیت پکیج ها", target: '/user/package/confirmation', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
-                        name: "پکیج های قابل بررسی",
-                        target: '/user/packages/considering',
+                        name: "مدیریت تقویم",
+                        target: '/user/calendar',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
-                        name: "مدیریت تقویم",
-                        target: '/user/calendar',
+                        name: "پکیج های قابل بررسی",
+                        target: '/user/packages/considering',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,

@@ -86,6 +86,9 @@
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
                         </li>
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/package/confirmation">وضعیت پکیج ها</router-link>
+                        </li>
                         <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
@@ -171,9 +174,9 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/packages" class="mobileMenuList--linkItem">
+                                <router-link to="/user/package/confirmation" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    پکیج ها
+                                    وضعیت پکیج ها
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item" v-if="!isConsultant">

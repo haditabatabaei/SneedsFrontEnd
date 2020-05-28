@@ -26,12 +26,12 @@ const router = new Router({
             }
         },
         {
-          path: '/packages',
-          name: 'Packages',
-          component: () => import("@/views/Package/Landing"),
-          meta: {
-              auth: 'optional'
-          }
+            path: '/packages',
+            name: 'Packages',
+            component: () => import("@/views/Package/Landing"),
+            meta: {
+                auth: 'optional'
+            }
         },
         {
             path: '/auth',
@@ -155,11 +155,36 @@ const router = new Router({
                 },
                 {
                     path: 'package/form',
+                    name: 'user-package-form',
                     component: () => import("@/views/Package/PackageForm"),
                     meta: {
                         auth: 'req'
                     }
                 },
+                {
+                    path: 'package/confirmation',
+                    component: () => import("@/views/Package/UserCurrentPackageConfirmation"),
+                    name: 'user-package-confirmation',
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'packages/considering',
+                    component: () => import("@/views/Package/PackagesToConsider"),
+                    name: 'user-packages-considering',
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'packages/considering/:id',
+                    name: 'user-packages-considering-detail',
+                    component: () => import("@/views/Package/ConsideringPackageDetail"),
+                    meta: {
+                        auth: 'req'
+                    }
+                }
             ]
         },
         {

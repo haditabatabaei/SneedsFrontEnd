@@ -79,19 +79,22 @@
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/sessions">جلسات مشاوره</router-link>
                         </li>
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/packages">پکیج ها</router-link>
-                        </li>
                         <li class="profile-menu-list-item" v-if="!isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/orders">پرداخت ها</router-link>
                         </li>
                         <li class="profile-menu-list-item">
                             <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
                         </li>
+                        <li class="profile-menu-list-item">
+                            <router-link class="profile-menu-list-link" to="/user/package/confirmation">وضعیت پکیج ها</router-link>
+                        </li>
                         <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
+                        </li>
+                        <li class="profile-menu-list-item" v-if="isConsultant">
+                            <router-link class="profile-menu-list-link" to="/user/packages/considering">پکیج های قابل بررسی</router-link>
                         </li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/discounts">تخفیفات اختصاصی</router-link>
@@ -172,9 +175,9 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/packages" class="mobileMenuList--linkItem">
+                                <router-link to="/user/package/confirmation" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    پکیج ها
+                                    وضعیت پکیج ها
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item" v-if="!isConsultant">
@@ -187,6 +190,12 @@
                                 <router-link to="/user/chatroom" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     چتروم
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item" v-if="isConsultant">
+                                <router-link to="/user/packages/considering" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    پکیج های قابل بررسی
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item" v-if="isConsultant">
@@ -253,7 +262,7 @@
                 return this.$store.getters.isLoggedIn;
             },
             isConsultant() {
-                return this.$store.getters.getUserInfo.user_type == 'consultant';
+                return this.$store.getters.isConsultant;
             },
             activeCart() {
                 return this.$store.getters.getCart;

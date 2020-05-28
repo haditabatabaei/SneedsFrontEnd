@@ -165,6 +165,8 @@ export default new Vuex.Store({
     getters: {
         isLoggedIn: state => !!state.token && !!state.refreshToken,
 
+        isConsultant: state => state.userInfo.user_type === 'consultant',
+
         getToken: state => state.token,
 
         getRefreshToken: state => state.refreshToken,

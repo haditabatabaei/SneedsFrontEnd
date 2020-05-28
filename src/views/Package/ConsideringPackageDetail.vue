@@ -236,6 +236,12 @@
             httpConfig() {
                 return this.$store.getters.httpConfig;
             },
+            isConsultant() {
+                return this.$store.getters.isConsultant;
+            },
+            userInfo() {
+                return this.$store.getters.getUserInfo;
+            }
         },
         methods: {
             async getPackage() {
@@ -251,7 +257,26 @@
             },
 
             async acceptCurrentPackage() {
+                console.log('is consultant?', this.isConsultant);
+                if (this.isConsultant) {
+                    try {
+                        this.$loading(true);
+                        let payload = {
+                            "sold_store_package": this.package.id,
+                            "consultant": this.userInfo.consultant.id
+                        };
+                        console.log('payload', payload);
+                        let result = await this.$api.post(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, payload ,this.httpConfig);
+                        console.log(result);
+                    } catch (e) {
 
+                    } finally {
+                        this.$loading(false);
+                    }
+
+                } else {
+                    console.log('User is not consultant to request for accept.');
+                }
             }
         },
         created() {

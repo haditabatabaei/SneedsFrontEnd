@@ -39,7 +39,7 @@
         name: "UserCurrentPackageStatus",
         data() {
             return {
-
+                requests: [],
             }
         },
         computed: {
@@ -50,9 +50,22 @@
                 return this.$store.getters.httpConfig;
             },
         },
-        methods: {},
-        created() {
+        methods: {
+            async getAvailableRequests() {
+                try {
+                    this.$loading(true);
+                    let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, this.httpConfig);
+                    console.log(result);
+                    this.requests = result.data;
+                } catch (e) {
 
+                } finally {
+                    this.$loading(false);
+                }
+            }
+        },
+        created() {
+            this.getAvailableRequests();
         }
     }
 </script>

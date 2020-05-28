@@ -192,6 +192,12 @@
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item" v-if="isConsultant">
+                                <router-link to="/user/packages/considering" class="mobileMenuList--linkItem">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                    پکیج های قابل بررسی
+                                </router-link>
+                            </li>
+                            <li class="mobileMenuList--item" v-if="isConsultant">
                                 <router-link to="/user/calendar" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
                                     مدیریت تقویم
@@ -249,7 +255,7 @@
                 return this.$store.getters.isLoggedIn;
             },
             isConsultant() {
-                return this.$store.getters.getUserInfo.user_type == 'consultant';
+                return this.$store.getters.isConsultant;
             },
             activeCart() {
                 return this.$store.getters.getCart;

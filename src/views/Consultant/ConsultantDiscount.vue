@@ -24,6 +24,9 @@
                 <tr class="discount-row--head isansFont">
                     <th>کد تخفیف</th>
                     <th>مقدار</th>
+                    <th>تاریخ ایجاد</th>
+                    <th>برای</th>
+                    <th>استفاده شده؟</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +37,18 @@
                     <td class="discount-price-col isansFont--faNum">
                         {{discount.amount}}
                     </td>
+                    <td class="isansFont" :class="[{'isansFont--faNum': $store.getters.isiran}]">
+                        {{getJalali(discount.created).locale($store.getters.locale).format('dddd DD MMMM YYYY')}}
+                    </td>
+                    <td>
+                        <span v-for="user in discount.users">
+                            {{`${user.first_name} ${user.last_name}`}}
+                        </span>
+                    </td>
+                    <td>
+                        <i class="material-icons" v-if="discount.is_used">done</i>
+                        <i class="material-icons" v-else>close</i>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -42,6 +57,7 @@
 </template>
 
 <script>
+    import jalali from 'jalali-moment';
     export default {
         name: "ConsultantDiscount",
         data() {
@@ -52,6 +68,10 @@
             }
         },
         methods: {
+            getJalali(date) {
+                return jalali(date);
+            },
+
             async getInteractingUsersRequest() {
                 return this.$api.get(`${this.api}/discount/consultant-interact-users/`, this.httpConfig);
             },

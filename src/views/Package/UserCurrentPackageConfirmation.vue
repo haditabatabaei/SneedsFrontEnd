@@ -15,7 +15,7 @@
                 شما یک هفته فرصت دارین با بررسی مشاوران مناسب ترین مشاور رو انتخاب کنید.
             </p>
         </div>
-        <div class="package-request-item isansFont">
+        <div class="package-request-item isansFont" v-for="request in requests">
             <div class="package-request-item-info">
                 <img class="request-item-info-image" src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg" alt="هادی طباطبایی ">
                 <div class="request-item-info-content">

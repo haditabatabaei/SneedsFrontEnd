@@ -6,21 +6,21 @@
                 بازگشت به پکیج ها
                 <i class="material-icons">keyboard_arrow_left</i>
             </router-link>
-            <section class="package-detail-box">
+            <section class="package-detail-box" v-if="userForm.id">
                 <div class="package-detail-box-title">
                     <h1 class="package-detail-box-title-text isansFont">درخواست پکیج طلایی</h1>
                 </div>
                 <div class="package-detail-box-intro">
                     <div class="detail-box-intro-personal">
                         <h2 class="isansFont detail-box-intro-personal-name">
-                            محمد علی جزئی
+                            {{`${userForm.user.first_name} ${userForm.user.last_name}`}}
                         </h2>
                         <h3 class="isansFont detail-box-intro-personal-info">
-                            دانشجوی ارشد رشته فلان دانشگاه فلان
+                            {{studentSmallDescription}}
                         </h3>
                     </div>
                     <div class="detail-box-intro-actions">
-                        <a href="#" class="isansFont detail-box-intro-actions-resume">
+                        <a download :href="userForm.resume" class="isansFont detail-box-intro-actions-resume">
                             دانلود رزومه
                         </a>
                         <button @click="acceptCurrentPackage" class="isansFont detail-box-intro-actions-accept">
@@ -34,68 +34,71 @@
                 <div class="package-detail-box-items isansFont--faNum">
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            add_location
                         </i>
                         <span class="detail-box-item-key">
                             کشور مقصد
                         </span>
                         <p class="detail-box-item-value">
-                            آمریکای جهانخوار
+                            {{userForm.apply_country.name}}
                         </p>
                     </div>
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            layers
                         </i>
                         <span class="detail-box-item-key">
                             مقطع مورد نظر
                         </span>
                         <p class="detail-box-item-value">
-                            پست دکتری
+                            {{userForm.apply_grade.name}}
                         </p>
                     </div>
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            bar_chart
                         </i>
                         <span class="detail-box-item-key">
                             معدل
                         </span>
                         <p class="detail-box-item-value">
-                            18.25
+                            {{userForm.total_average}}
                         </p>
                     </div>
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            format_bold
                         </i>
                         <span class="detail-box-item-key">
                             مدرک زبان
                         </span>
-                        <p class="detail-box-item-value">
-                            دارد - آیلتس
+                        <p class="detail-box-item-value" v-if="userForm.language_certificate">
+                            دارد - {{userForm.language_certificate.name}}
+                        </p>
+                        <p class="detail-box-item-value" v-else>
+                            ندارد
                         </p>
                     </div>
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            access_time
                         </i>
                         <span class="detail-box-item-key">
                             ترم مورد نظر
                         </span>
                         <p class="detail-box-item-value">
-                            زمستان 2020
+                            {{`${userForm.apply_semester_year.semester} ${userForm.apply_semester_year.year}`}}
                         </p>
                     </div>
                     <div class="detail-box-item">
                         <i class="material-icons">
-                            settings
+                            assignment
                         </i>
                         <span class="detail-box-item-key">
                             رشته مورد نظر
                         </span>
                         <p class="detail-box-item-value">
-                            آبیاری گیاهان دریایی در سواحل مدیترانه
+                            {{userForm.apply_major.name}}
                         </p>
                     </div>
                 </div>
@@ -103,7 +106,7 @@
                     <div class="package-detail-box-form-head">
                         <h2 class="box-form-head-text isansFont--faNum">
                             <i class="material-icons">
-                                settings
+                                account_circle
                             </i>
                             اطلاعات شخصی
                         </h2>
@@ -114,7 +117,7 @@
                                 نام و نام خانوادگی:
                             </span>
                             <span class="form-info-field-value">
-                                محمدل علی جزئی
+                                {{`${userForm.user.first_name} ${userForm.user.last_name}`}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -122,7 +125,7 @@
                                 وضعیت تاهل
                             </span>
                             <span class="form-info-field-value">
-                                مجرد
+                                {{userForm.marital_status.name}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -130,7 +133,7 @@
                                 سن
                             </span>
                             <span class="form-info-field-value">
-                                22
+                                {{userForm.age}}
                             </span>
                         </p>
                     </div>
@@ -139,7 +142,7 @@
                     <div class="package-detail-box-form-head">
                         <h2 class="box-form-head-text isansFont--faNum">
                             <i class="material-icons">
-                                settings
+                                assignment_ind
                             </i>
                             اطلاعات آخرین مقطع تحصیلی
                         </h2>
@@ -147,31 +150,68 @@
                     <div class="package-detail-box-form-info">
                         <p class="form-info-field">
                             <span class="form-info-field-key">
-                                نام و نام خانوادگی:
+                                مقطع:
                             </span>
                             <span class="form-info-field-value">
-                                محمدل علی جزئی
+                                {{userForm.grade.name}}
                             </span>
                         </p>
                         <p class="form-info-field">
                             <span class="form-info-field-key">
-                                وضعیت تاهل
+                                رشته:
                             </span>
                             <span class="form-info-field-value">
-                                مجرد
+                                {{userForm.major.name}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                دانشگاه:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{userForm.university.name}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                معدل کل:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{userForm.total_average}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                 عنوان پایان نامه:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{userForm.thesis_title}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                 سال فارغ التحصیلی:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{userForm.degree_conferral_year.name}}
                             </span>
                         </p>
                         <p class="form-info-field">
                             <span class="form-info-field-key">
                                 مدرک زبان:
                             </span>
-                            <span class="form-info-field-value">
+                            <span class="form-info-field-value" v-if="userForm.language_certificate">
                                 آیلتس
                             </span>
-                            <span class="form-info-field-multivalue isansFont">
-                                R:5 L:5 S:5 W:5
+                            <span class="form-info-field-multivalue isansFont" v-if="userForm.language_certificate">
+                                Reading: {{userForm.language_reading}} | Listening: {{userForm.language_listening}} | Speaking: {{userForm.language_speaking}} | Writing: {{userForm.language_writing}} | Overall: {{userForm.language_certificate_overall}}
                             </span>
-                            <a href="#" class="form-info-field-clickcablevalue">
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                فایل رزومه:
+                            </span>
+                            <a download :href="userForm.resume" class="form-info-field-clickcablevalue">
                                 دانلود رزومه
                                 <i class="material-icons">
                                     keyboard_arrow_down
@@ -184,7 +224,7 @@
                     <div class="package-detail-box-form-head">
                         <h2 class="box-form-head-text isansFont--faNum">
                             <i class="material-icons">
-                                settings
+                                flight_takeoff
                             </i>
                             اطلاعات مورد نیاز برای اپلای
                         </h2>
@@ -192,18 +232,34 @@
                     <div class="package-detail-box-form-info">
                         <p class="form-info-field">
                             <span class="form-info-field-key">
-                                نام و نام خانوادگی:
+                                کشور مقصد:
                             </span>
                             <span class="form-info-field-value">
-                                محمدل علی جزئی
+                                {{userForm.apply_country.name}}
                             </span>
                         </p>
                         <p class="form-info-field">
                             <span class="form-info-field-key">
-                                وضعیت تاهل
+                                دانشگاه مقصد:
                             </span>
                             <span class="form-info-field-value">
-                                مجرد
+                                {{userForm.apply_university.name}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                 رشته مورد نظر:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{userForm.apply_major.name}}
+                            </span>
+                        </p>
+                        <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                 ترم مورد نظر:
+                            </span>
+                            <span class="form-info-field-value">
+                                {{`${userForm.apply_semester_year.semester} ${userForm.apply_semester_year.year}`}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -211,7 +267,7 @@
                                 توضیحات:
                             </span>
                             <span class="form-info-field-longvalue">
-                                ادامه تحصیل همیشه از موضوعاتی بوده که درصد قابل توجهی از جوانان به آن فکر می‌کنند ولی اینکه شما تحصیلات خود را در داخل کشور یا خارج از آن ادامه دهید، تصمیمی سخت و سرنوشت‌ساز است. در صورتی که از بین این دو گزینه تحصیل در خارج از کشور را انتخاب کنید، در میان تمام کشورهایی که وجود دارد، استرالیا یکی از گزینه‌های محبوب و پرطرفدار برای شما خواهد بود. تحصیل در .استرالیا مزایا و همچنین شرایط خاصی دارد که در ادامه این مقاله به بررسی آن‌ها خواهیم پرداخت
+                                {{userForm.comment}}
                             </span>
                         </p>
                     </div>
@@ -226,7 +282,8 @@
         name: "ConsideringPackageDetail",
         data() {
             return {
-                package: {}
+                package: {},
+                userForm: {}
             }
         },
         computed: {
@@ -241,18 +298,34 @@
             },
             userInfo() {
                 return this.$store.getters.getUserInfo;
-            }
+            },
+            studentSmallDescription() {
+                if(this.userForm.id) {
+                    return `
+                        دانشجوی ${this.userForm.grade.name} رشته ${this.userForm.major.name} ${this.userForm.university.name}
+                    `
+                } else {
+                    return '';
+                }
+            },
         },
         methods: {
             async getPackage() {
                 try {
-                    let result = (await this.$api.get(`${this.api}/store/packages/marketplace-detail/${this.$route.params.id}/`, this.httpConfig));
-                    console.log(result);
-                    this.package = result.data;
+                    this.$loading(true);
+                    this.package = (await this.$api.get(`${this.api}/store/packages/marketplace-detail/${this.$route.params.id}/`, this.httpConfig)).data;
+                    this.userForm = (await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.package.sold_to.id}/`, this.httpConfig)).data;
+                    console.log(this.package);
+                    console.log(this.userForm);
+                    // this.package = result.data;
+                    // this.userForm =
                 } catch (e) {
-
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
                 } finally {
-
+                    this.$loading(false);
                 }
             },
 
@@ -266,7 +339,7 @@
                             "consultant": this.userInfo.consultant.id
                         };
                         console.log('payload', payload);
-                        let result = await this.$api.post(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, payload ,this.httpConfig);
+                        let result = await this.$api.post(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, payload, this.httpConfig);
                         console.log(result);
                     } catch (e) {
 

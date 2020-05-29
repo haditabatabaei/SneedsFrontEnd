@@ -38,45 +38,6 @@
                 type: Object,
             },
         },
-        computed: {
-            // studyText() {
-            //     if (this.consultant != null) {
-            //         return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
-            //     } else {
-            //         return " ";
-            //     }
-            // },
-
-            // studyTextMobile() {
-            //     if (this.consultant != null) {
-            //         return ` دانشجوی  ${this.studyInfo.field_of_study.name} در ${this.studyInfo.country.name} `
-            //     } else {
-            //         return " ";
-            //     }
-            // },
-
-            // studyInfo() {
-            //     return this.consultant.study_info[this.consultant.study_info.length - 1];
-            // },
-
-            // persianGrade() {
-            //     if (this.consultant != null) {
-            //         switch (this.studyInfo.grade) {
-            //             case 'phd':
-            //                 return 'دکترا';
-            //             case 'master':
-            //                 return 'کارشناسی ارشد';
-            //             case 'bachelor':
-            //                 return 'کارشناسی';
-            //             default :
-            //                 return ' ';
-            //         }
-            //     } else {
-            //         return ' ';
-            //     }
-            // }
-        }
-
     }
 </script>
 

@@ -372,7 +372,7 @@
         left: 0;
         width: 100%;
         height: 200px;
-        background-color: #8C3DDB;
+        background: transparent linear-gradient(270deg, #9C44F5 0%, #430B7C 100%) 0 0 no-repeat padding-box;
         z-index: 8;
         top: 70px;
     }

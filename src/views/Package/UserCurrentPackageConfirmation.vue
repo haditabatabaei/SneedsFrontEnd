@@ -21,7 +21,7 @@
                 <div class="request-item-info-content">
                     <h2 class="isansFont item-info-content-name">هادیه طباطبایی</h2>
                     <p class="item-info-content-description">دانشجوی مهندس پزشکی در ایران</p>
-                    <router-link to="/user/chats" class="info-content-chat">
+                    <router-link to="/user/chatroom" class="info-content-chat">
                         <i class="material-icons">message</i>
                         گفتگو با هادیه
                     </router-link>
@@ -57,8 +57,13 @@
                     let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, this.httpConfig);
                     console.log(result);
                     this.requests = result.data;
+                    let consultantsReqs = [];
+                    this.requests.forEach(request => this.$api.get(`${this.api}`))
                 } catch (e) {
-
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response);
+                    }
                 } finally {
                     this.$loading(false);
                 }

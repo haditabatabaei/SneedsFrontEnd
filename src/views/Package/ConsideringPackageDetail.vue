@@ -2,7 +2,7 @@
     <section class="package">
         <div class="package-overlay"></div>
         <div class="package-detail">
-            <router-link to="/user/packages/considering" class="package-detail-back isansFont">
+            <router-link to="/user/conspackages" class="package-detail-back isansFont">
                 بازگشت به پکیج ها
                 <i class="material-icons">keyboard_arrow_left</i>
             </router-link>

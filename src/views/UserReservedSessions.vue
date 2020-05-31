@@ -154,35 +154,6 @@
         flex-direction: column;
     }
 
-    .filterButtons {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        list-style: none;
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-
-    .filterButtons button {
-        margin-right: 10px;
-        margin-left: 10px;
-        border-radius: 30px;
-        border: none;
-        padding: 10px 20px;
-        color: #666;
-        background: none;
-        transition: all .1s ease-in;
-    }
-
-    .filterButtons button:hover {
-        background-color: #f3f3f3;
-    }
-
-    .filterButtons button.active {
-        background-color: white;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-
     .authFormWrapper-switcher {
         border-bottom: 3px solid #eee;
         min-height: 50px;

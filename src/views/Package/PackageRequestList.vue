@@ -17,17 +17,17 @@
         </div>
         <div class="package-request-item isansFont" v-for="request in requests">
             <div class="package-request-item-info">
-                <img class="request-item-info-image" src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg" alt="هادی طباطبایی ">
+                <img class="request-item-info-image" :src="request.consultant.profile_picture" :alt="`${request.consultant.first_name} ${request.consultant.last_name}`">
                 <div class="request-item-info-content">
-                    <h2 class="isansFont item-info-content-name">هادیه طباطبایی</h2>
-                    <p class="item-info-content-description">دانشجوی مهندس پزشکی در ایران</p>
+                    <h2 class="isansFont item-info-content-name">{{`${request.consultant.first_name} ${request.consultant.last_name}`}}</h2>
                     <router-link to="/user/chatroom" class="info-content-chat">
                         <i class="material-icons">message</i>
-                        گفتگو با هادیه
+                        گفتگو با
+                        {{request.consultant.first_name}}
                     </router-link>
                 </div>
             </div>
-            <router-link to="/" class="package-request-item-aboutaction">
+            <router-link :to="`/user/userpackages/requestlist/${request.sold_store_package}/${request.id}`" class="package-request-item-aboutaction">
                 درباره مشاور
             </router-link>
         </div>
@@ -36,7 +36,7 @@
 
 <script>
     export default {
-        name: "UserCurrentPackageStatus",
+        name: "PackageRequestList",
         data() {
             return {
                 requests: [],
@@ -54,11 +54,11 @@
             async getAvailableRequests() {
                 try {
                     this.$loading(true);
-                    let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, this.httpConfig);
+                    let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/?sold_store_package=${this.$route.params.packageId}`, this.httpConfig);
                     console.log(result);
                     this.requests = result.data;
                     let consultantsReqs = [];
-                    this.requests.forEach(request => this.$api.get(`${this.api}`))
+                    // this.requests.forEach(request => this.$api.get(`${this.api}`))
                 } catch (e) {
                     console.log(e);
                     if(e.response) {
@@ -191,12 +191,4 @@
         padding: 10px 40px;
         font-size: 14px;
     }
-
-
-
-
-
-
-
-
 </style>

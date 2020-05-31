@@ -86,7 +86,7 @@
                             <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
                         </li>
                         <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/package/confirmation" v-if="!isConsultant">وضعیت پکیج ها</router-link>
+                            <router-link class="profile-menu-list-link" to="/user/userpackages" v-if="!isConsultant">پکیج ها</router-link>
                         </li>
                         <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
@@ -94,7 +94,7 @@
                             <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
                         </li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
-                            <router-link class="profile-menu-list-link" to="/user/packages/considering">پکیج های قابل بررسی</router-link>
+                            <router-link class="profile-menu-list-link" to="/user/conspackages">پکیج ها</router-link>
                         </li>
                         <li class="profile-menu-list-item" v-if="isConsultant">
                             <router-link class="profile-menu-list-link" to="/user/discounts">تخفیفات اختصاصی</router-link>

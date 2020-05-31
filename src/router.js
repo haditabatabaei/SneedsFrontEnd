@@ -162,29 +162,61 @@ const router = new Router({
                     }
                 },
                 {
-                    path: 'package/confirmation',
-                    component: () => import("@/views/Package/UserCurrentPackageConfirmation"),
-                    name: 'user-package-confirmation',
+                    path: 'userpackages',
+                    name: 'user-userpackages',
+                    component: () => import("@/views/Package/UserPackages"),
+                    meta: {
+                        auth: 'req',
+                    }
+                },
+                {
+                    path: 'conspackages',
+                    name: 'user-conspackages',
+                    component: () => import("@/views/Package/ConsPackages"),
+                    meta: {
+                        auth: 'req',
+                    }
+                },
+                {
+                    path: 'userpackages/requestlist/:packageId',
+                    component: () => import("@/views/Package/PackageRequestList"),
+                    name: 'user-userpackages-requestlist',
                     meta: {
                         auth: 'req'
                     }
                 },
                 {
-                    path: 'packages/considering',
-                    component: () => import("@/views/Package/PackagesToConsider"),
-                    name: 'user-packages-considering',
+                    path: 'userpackages/requestlist/:packageId/:reqId',
+                    component: () => import("@/views/Package/PackageRequestListItem"),
+                    name: 'user-userpackages-requestlist-iteminfo',
                     meta: {
                         auth: 'req'
                     }
                 },
                 {
-                    path: 'packages/considering/:id',
-                    name: 'user-packages-considering-detail',
+                    path: 'userpackages/manager/:packageId',
+                    component: () => import("@/views/Package/UserPackagesManager"),
+                    name: 'user-userpackages-manager',
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
+                    path: 'conspackages/marketplace/:id',
+                    name: 'user-conspackages-marketplace-detail',
                     component: () => import("@/views/Package/ConsideringPackageDetail"),
                     meta: {
                         auth: 'req'
                     }
-                }
+                },
+                {
+                    path: 'conspackages/manager/:packageId',
+                    component: () => import("@/views/Package/ConsPackagesManager"),
+                    name: 'user-conspackages-manager',
+                    meta: {
+                        auth: 'req'
+                    }
+                },
             ]
         },
         {

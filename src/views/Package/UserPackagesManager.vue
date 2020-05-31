@@ -1,12 +1,12 @@
 <template>
-    <section class="package itemBlock">
-        current active package
+    <section>
+        user package manager with package id {{$route.params.packageId}}
     </section>
 </template>
 
 <script>
     export default {
-        name: "ActivePackage",
+        name: "UserPackagesManager",
         data() {
             return {}
         },

@@ -23,19 +23,18 @@
 
         <div class="consultantBlockAction col-md-4 text-center">
             <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-if="package.consultant == null">
-                مشاهده جزئیات پکیج و اعلام آمادگی
+                مشاهده درخواست های مشاورین
             </router-link>
             <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-else>
-               مدیریت پکیج
+                مشاهده وضعیت پکیج
             </router-link>
         </div>
-
     </router-link>
 </template>
 
 <script>
     export default {
-        name: "ConsultantConsideringPackageBlock",
+        name: "UserSoldPackageBlock",
         props: {
             package: {
                 type: Object,
@@ -44,9 +43,9 @@
         computed: {
             clickTarget() {
                 if(this.package.consultant == null) {
-                    return `/user/conspackages/marketplace/${this.package.id}`
+                    return `/user/userpackages/requestlist/${this.package.id}`
                 } else {
-                    return `/user/conspackages/manager/${this.package.id}`
+                    return `/user/userpackages/manager/${this.package.id}`
                 }
             }
         }

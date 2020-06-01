@@ -244,7 +244,7 @@
                         "status" : this.newTaskInput.status,
                         "title": this.newTaskInput.title,
                     };
-                    let result = await this.$api.put(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.httpConfig);
+                    let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.httpConfig);
                     this.newTaskInput = {status: "", title: ""};
                     this.hideNewTaskModal(null, true);
                     await this.getCurrentPhaseTasks();

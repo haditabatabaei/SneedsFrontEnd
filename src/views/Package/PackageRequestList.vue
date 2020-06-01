@@ -17,13 +17,13 @@
         </div>
         <div class="package-request-item isansFont" v-for="request in requests">
             <div class="package-request-item-info">
-                <img class="request-item-info-image" :src="request.consultant.profile_picture" :alt="`${request.consultant.first_name} ${request.consultant.last_name}`">
+                <img class="request-item-info-image" :src="request.consultant_info.profile_picture" :alt="`${request.consultant_info.first_name} ${request.consultant_info.last_name}`">
                 <div class="request-item-info-content">
-                    <h2 class="isansFont item-info-content-name">{{`${request.consultant.first_name} ${request.consultant.last_name}`}}</h2>
+                    <h2 class="isansFont item-info-content-name">{{`${request.consultant_info.first_name} ${request.consultant_info.last_name}`}}</h2>
                     <router-link to="/user/chatroom" class="info-content-chat">
                         <i class="material-icons">message</i>
                         گفتگو با
-                        {{request.consultant.first_name}}
+                        {{request.consultant_info.first_name}}
                     </router-link>
                 </div>
             </div>

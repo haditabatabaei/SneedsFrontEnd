@@ -150,7 +150,7 @@
 
             async getConsultant() {
                 try {
-                    let result = await this.$api.get(`${this.api}/account/consultant-profiles/${this.request.consultant.slug}/`, this.httpConfig);
+                    let result = await this.$api.get(`${this.api}/account/consultant-profiles/${this.request.consultant_info.slug}/`, this.httpConfig);
                     console.log(result);
                     this.consultant = result.data;
                 } catch (e) {

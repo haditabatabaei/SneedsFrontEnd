@@ -254,13 +254,16 @@
                 </div>
 
                 <div class="form-input">
-                    <label class="form-input-label" for="files">آپلود رزومه (اختیاری)</label>
-                    <input class="form-input-control" type="file" id="files">
+                    <label class="form-input-label" for="file">آپلود رزومه (اختیاری)</label>
+                    <input class="form-input-control" @change="inputFileChanged" ref="file" name="file" type="file" id="file">
                 </div>
             </div>
         </section>
-        <button class="package-form-submit isansFont" @click="updateForm">
-            تایید و ارسال برای مشاوران
+        <button class="package-form-submit isansFont" v-if="editPattern" @click="editForm">
+            ویرایش اطلاعات فرم
+        </button>
+        <button class="package-form-submit isansFont" v-else @click="createForm">
+            تایید و ثبت اطلاعات فرم
         </button>
     </section>
 </template>
@@ -302,7 +305,7 @@
                     field: {required, minLength: minLength(1), maxLength: maxLength(100)}
                 },
                 description: {maxLength: maxLength(1024)},
-                files: {maxLength: maxLength(1)}
+                file: {}
             }
         },
         data() {
@@ -325,7 +328,10 @@
 
                 semesterChoices: [],
 
+                editPattern: false,
+
                 packageForm: {
+                    id: '',
                     personal: {
                         firstName: '',
                         lastName: '',
@@ -346,7 +352,7 @@
                         speaking: '',
                         reading: '',
                         writing: '',
-                        overall : ''
+                        overall: ''
                     },
                     applyInfo: {
                         mainland: {},
@@ -356,7 +362,7 @@
                         field: ''
                     },
                     description: '',
-                    files: []
+                    resume: {}
                 }
             }
         },
@@ -398,12 +404,21 @@
                 this.packageForm.applyInfo.semester = this.semesterChoices[0];
             },
 
+            inputFileChanged() {
+                let currentFile = this.$refs.file.files[0];
+                if(currentFile && currentFile.type === "application/pdf") {
+                    this.packageForm.resume = currentFile
+                }
+            },
+
             async getCurrentFormData() {
                 try {
                     this.$loading(true);
                     let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                     console.log(result);
-                    if(result) {
+                    if (result) {
+                        this.packageForm.id = result.id;
+                        this.editPattern = true;
                         this.packageForm.personal.age = result.age;
                         this.packageForm.personal.firstName = result.user.first_name;
                         this.packageForm.personal.lastName = result.user.last_name;
@@ -431,10 +446,11 @@
 
                         this.packageForm.description = result.comment;
                     } else {
+                        this.editPattern = false;
                         if (this.user.first_name) {
                             this.packageForm.personal.firstName = this.user.first_name;
                         }
-                        if(this.user.last_name) {
+                        if (this.user.last_name) {
                             this.packageForm.personal.lastName = this.user.last_name;
                         }
                     }
@@ -448,7 +464,7 @@
                 }
             },
 
-            updateForm() {
+            editForm() {
                 this.submitted = true;
                 this.$v.$touch();
                 console.log(`form is invalid ${this.formIsInvalid}`);
@@ -465,7 +481,59 @@
                         text: 'لطفا اطلاعات فرم را به درست پر کنید. موارد خطا با رنگ قرمز مشخص شده اند.'
                     })
                 }
+            },
 
+            async createForm() {
+                this.submitted = true;
+                this.$v.$touch();
+                console.log(`form is invalid ${this.formIsInvalid}`);
+                console.log('update form:', this.$v.packageForm);
+                console.log('package form', this.packageForm);
+                if (!this.formIsInvalid) {
+                    //form is valid, continue
+                    let formData = new FormData();
+                    let payload = {
+                        "age": this.packageForm.personal.age,
+                        "marital_status": this.packageForm.personal.marriage.id,
+                        "grade": this.packageForm.education.grade.id,
+                        "university": 4,
+                        "degree_conferral_year": 2021,
+                        "major": 6,
+                        "total_average": this.packageForm.education.gpa,
+                        "thesis_title": this.packageForm.education.paperTitle,
+                        "language_certificate": this.packageForm.languageLevel.title.id,
+                        "language_certificate_overall": this.packageForm.languageLevel.overall,
+                        "language_speaking": this.packageForm.languageLevel.speaking,
+                        "language_listening": this.packageForm.languageLevel.listening,
+                        "language_writing": this.packageForm.languageLevel.writing,
+                        "language_reading": this.packageForm.languageLevel.reading,
+                        "apply_mainland": this.packageForm.applyInfo.mainland.id,
+                        "apply_country": this.packageForm.applyInfo.country.id,
+                        "apply_grade": this.packageForm.applyInfo.grade.id,
+                        "apply_major": 11,
+                        "apply_university": 12,
+                        "apply_semester_year": this.packageForm.applyInfo.semester.id,
+                        "comment": this.packageForm.description,
+                        "resume": this.packageForm.resume,
+                    };
+
+                    for(let item in payload) {
+                        console.log(item);
+                        formData.append(item, payload[item]);
+                    }
+                    console.log("payload", payload);
+                    console.log('formdata', formData);
+                    let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, formData, this.httpConfig);
+                    console.log(createResult);
+                } else {
+                    //form is invalid, show notification
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'فرم پکیج: اخطار',
+                        text: 'لطفا اطلاعات فرم را به درست پر کنید. موارد خطا با رنگ قرمز مشخص شده اند.'
+                    })
+                }
             },
             setFirstSelectedCountry() {
                 this.packageForm.applyInfo.country = this.countriesForCurrentContinent[0].name;

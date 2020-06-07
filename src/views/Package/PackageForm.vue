@@ -27,33 +27,39 @@
                 <div class="form-input">
                     <label class="form-input-label" for="personal.firstName">نام <span
                             class="form-input--required">*</span></label>
-                    <input class="form-input-control" :class="[{'form-input-control--invalid': firstNameIsInvalid}]" type="text" placeholder="نام" id="personal.firstName" v-model.trim="$v.packageForm.personal.firstName.$model">
+                    <input class="form-input-control" :class="[{'form-input-control--invalid': firstNameIsInvalid}]"
+                           type="text" placeholder="نام" id="personal.firstName"
+                           v-model.trim="$v.packageForm.personal.firstName.$model">
                 </div>
                 <div class="form-input">
                     <label class="form-input-label" for="personal.lastName">نام خانوادگی <span
                             class="form-input--required">*</span></label>
-                    <input class="form-input-control" type="text" :class="[{'form-input-control--invalid': lastNameIsInvalid}]" placeholder="نام خانوادگی" id="personal.lastName" v-model.trim="$v.packageForm.personal.lastName.$model">
+                    <input class="form-input-control" type="text"
+                           :class="[{'form-input-control--invalid': lastNameIsInvalid}]" placeholder="نام خانوادگی"
+                           id="personal.lastName" v-model.trim="$v.packageForm.personal.lastName.$model">
                 </div>
                 <div class="form-input form-input--smaller">
                     <label class="form-input-label" for="personal.age">سن <span
                             class="form-input--required">*</span></label>
-                    <input class="form-input-control" type="number" :class="[{'form-input-control--invalid': ageIsInvalid}]" placeholder="##" id="personal.age" v-model.trim="$v.packageForm.personal.age.$model">
+                    <input class="form-input-control" type="number"
+                           :class="[{'form-input-control--invalid': ageIsInvalid}]" placeholder="##" id="personal.age"
+                           v-model.trim="$v.packageForm.personal.age.$model">
                 </div>
                 <div class="form-input form-input--radio">
                     <p class="form-input--radio--title">وضعیت تاهل</p>
                     <div class="form-input-wrapper" :class="[{'form-input-wrapper--invalid': marriageIsInvalid}]">
-                        <input v-for="status in marriageStatus"
+                        <input v-for="status in maritalStatus"
                                class="form-input-control--radio"
                                type="radio"
-                               :id="`personal.marriage.${status.value}`"
+                               :id="`personal.marriage.${status.slug}`"
                                name="personal.marriage"
-                               :value="status.value"
+                               :value="status"
                                v-model="$v.packageForm.personal.marriage.$model">
                         <label class="form-input-label--radio"
-                               v-for="status in marriageStatus"
-                               :for="`personal.marriage.${status.value}`">
+                               v-for="status in maritalStatus"
+                               :for="`personal.marriage.${status.slug}`">
                         <span class="input-label--radio_box">
-                            <i class="material-icons" v-if="packageForm.personal.marriage === status.value">done</i>
+                            <i class="material-icons" v-if="packageForm.personal.marriage.slug === status.slug">done</i>
                         </span>
                             {{status.name}}
                         </label>
@@ -72,10 +78,11 @@
                 <div class="form-input">
                     <label class="form-input-label" for="education.gradLevel">مقطع تحصیلی <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="education.gradLevel" id="education.gradLevel" v-model="$v.packageForm.education.gradLevel.$model">
-                        <option class="form-input-select-option" :value="level.name"
-                                v-for="(level, index) in gradLevels" :key="index">
-                            {{level.name}}
+                    <select class="form-input-select" name="education.gradLevel" id="education.gradLevel"
+                            v-model="$v.packageForm.education.grade.$model">
+                        <option class="form-input-select-option" :value="grade"
+                                v-for="grade in grades">
+                            {{grade.name}}
                         </option>
                     </select>
                 </div>
@@ -83,63 +90,94 @@
                     <label class="form-input-label" for="education.university">دانشگاه محل تحصیل <span
                             class="form-input--required">*</span></label>
                     <input class="form-input-control" type="text" placeholder="نام کامل دانشگاه محل تحصیل"
-                           id="education.university" :class="[{'form-input-control--invalid': universityIsInvalid}]" v-model.trim="$v.packageForm.education.university.$model">
+                           id="education.university" :class="[{'form-input-control--invalid': universityIsInvalid}]"
+                           v-model.trim="$v.packageForm.education.university.$model">
                 </div>
                 <div class="form-input form-input--small">
                     <label class="form-input-label" for="education.gpa">معدل کل <span
                             class="form-input--required">*</span></label>
                     <input class="form-input-control" type="number" placeholder="##.##" id="education.gpa"
-                    v-model.trim="$v.packageForm.education.gpa.$model" :class="[{'form-input-control--invalid': gpaIsInvalid}]">
+                           v-model.trim="$v.packageForm.education.gpa.$model"
+                           :class="[{'form-input-control--invalid': gpaIsInvalid}]">
                 </div>
                 <div class="form-input form-input--medium">
                     <label class="form-input-label" for="education.gradYear"> سال فراغت از تحصیل <span
                             class="form-input--required">*</span></label>
                     <input class="form-input-control" type="number" placeholder="####" id="education.gradYear"
-                    v-model.trim="$v.packageForm.education.gradYear.$model" :class="[{'form-input-control--invalid': gradYearIsInvalid}]">
+                           v-model.trim="$v.packageForm.education.gradYear.$model"
+                           :class="[{'form-input-control--invalid': gradYearIsInvalid}]">
                 </div>
 
                 <div class="form-input">
                     <label class="form-input-label" for="education.field"> رشته <span
                             class="form-input--required">*</span></label>
                     <input class="form-input-control" type="text" placeholder="رشته" id="education.field"
-                    v-model.trim="$v.packageForm.education.field.$model" :class="[{'form-input-control--invalid': fieldInEducationIsInvalid}]">
+                           v-model.trim="$v.packageForm.education.field.$model"
+                           :class="[{'form-input-control--invalid': fieldInEducationIsInvalid}]">
                 </div>
 
                 <div class="form-input">
                     <label class="form-input-label" for="education.paperTitle">عنوان پایان نامه</label>
                     <input class="form-input-control" type="text" placeholder="عنوان پایان نامه"
-                           id="education.paperTitle" v-model.trim="$v.packageForm.education.paperTitle.$model" :class="[{'form-input-control--invalid': paperTitleIsInvalid}]">
+                           id="education.paperTitle" v-model.trim="$v.packageForm.education.paperTitle.$model"
+                           :class="[{'form-input-control--invalid': paperTitleIsInvalid}]">
                 </div>
 
                 <div class="form-input form-input--medium">
                     <label class="form-input-label" for="languageLevel.title">مدرک زبان <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="languageLevel.title" id="languageLevel.title" v-model="$v.packageForm.languageLevel.title.$model">
-                        <option class="form-input-select-option" :value="title.name"
-                                v-for="(title, index) in languageLevels" :key="index">
-                            {{title.name}}
+                    <select class="form-input-select" name="languageLevel.title" id="languageLevel.title"
+                            v-model="$v.packageForm.languageLevel.title.$model">
+                        <option class="form-input-select-option" :value="certificate"
+                                v-for="certificate in languageCertificates">
+                            {{certificate.name}}
                         </option>
                     </select>
                 </div>
 
-                <div class="form-input form-input--small" :class="[{'form-input--disabled': packageForm.languageLevel.title === 'ندارم'}]">
+                <div class="form-input form-input--small"
+                     :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
                     <label class="form-input-label" for="languageLevel.listening">Listening</label>
-                    <input v-model.trim="$v.packageForm.languageLevel.listening.$model" class="form-input-control" type="text" id="languageLevel.listening" :class="[{'form-input-control--invalid': listeningIsInvalid}]" :disabled="packageForm.languageLevel.title === 'ندارم'">
+                    <input v-model.trim="$v.packageForm.languageLevel.listening.$model" class="form-input-control"
+                           type="text" id="languageLevel.listening"
+                           :class="[{'form-input-control--invalid': listeningIsInvalid}]"
+                           :disabled="packageForm.languageLevel.title.slug === 'none'">
                 </div>
 
-                <div class="form-input form-input--small" :class="[{'form-input--disabled': packageForm.languageLevel.title === 'ندارم'}]">
+                <div class="form-input form-input--small"
+                     :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
                     <label class="form-input-label" for="languageLevel.speaking">Speaking</label>
-                    <input v-model.trim="$v.packageForm.languageLevel.speaking.$model" class="form-input-control" type="text" id="languageLevel.speaking" :class="[{'form-input-control--invalid': speakingIsInvalid}]" :disabled="packageForm.languageLevel.title === 'ندارم'">
+                    <input v-model.trim="$v.packageForm.languageLevel.speaking.$model" class="form-input-control"
+                           type="text" id="languageLevel.speaking"
+                           :class="[{'form-input-control--invalid': speakingIsInvalid}]"
+                           :disabled="packageForm.languageLevel.title.slug === 'none'">
                 </div>
 
-                <div class="form-input form-input--small" :class="[{'form-input--disabled': packageForm.languageLevel.title === 'ندارم'}]">
+                <div class="form-input form-input--small"
+                     :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
                     <label class="form-input-label" for="languageLevel.reading">Reading</label>
-                    <input v-model.trim="$v.packageForm.languageLevel.reading.$model" class="form-input-control" type="text" id="languageLevel.reading" :class="[{'form-input-control--invalid': readingIsInvalid}]" :disabled="packageForm.languageLevel.title === 'ندارم'">
+                    <input v-model.trim="$v.packageForm.languageLevel.reading.$model" class="form-input-control"
+                           type="text" id="languageLevel.reading"
+                           :class="[{'form-input-control--invalid': readingIsInvalid}]"
+                           :disabled="packageForm.languageLevel.title.slug === 'none'">
                 </div>
 
-                <div class="form-input form-input--small" :class="[{'form-input--disabled': packageForm.languageLevel.title === 'ندارم'}]">
+                <div class="form-input form-input--small"
+                     :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
                     <label class="form-input-label" for="languageLevel.writing">Writing</label>
-                    <input v-model.trim="$v.packageForm.languageLevel.writing.$model" class="form-input-control" type="text" id="languageLevel.writing" :class="[{'form-input-control--invalid': writingIsInvalid}]" :disabled="packageForm.languageLevel.title === 'ندارم'">
+                    <input v-model.trim="$v.packageForm.languageLevel.writing.$model" class="form-input-control"
+                           type="text" id="languageLevel.writing"
+                           :class="[{'form-input-control--invalid': writingIsInvalid}]"
+                           :disabled="packageForm.languageLevel.title.slug === 'none'">
+                </div>
+
+                <div class="form-input form-input--small"
+                     :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                    <label class="form-input-label" for="languageLevel.writing">Overall</label>
+                    <input v-model.trim="$v.packageForm.languageLevel.overall.$model" class="form-input-control"
+                           type="text" id="languageLevel.overall"
+                           :class="[{'form-input-control--invalid': writingIsInvalid}]"
+                           :disabled="packageForm.languageLevel.title.slug === 'none'">
                 </div>
             </div>
         </section>
@@ -154,19 +192,22 @@
                 <div class="form-input">
                     <label class="form-input-label" for="applyInfo.continent">قاره مورد نظر <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.continent" @change="setFirstSelectedCountry" v-model="$v.packageForm.applyInfo.continent.$model">
-                        <option class="form-input-select-option" :value="continent.name"
-                                v-for="continent in continents">
-                            {{continent.name}}
+                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.continent"
+                            v-model="$v.packageForm.applyInfo.mainland.$model">
+                        <option class="form-input-select-option" :value="mainland"
+                                v-for="mainland in applyMainlands">
+                            {{mainland.name}}
                         </option>
                     </select>
                 </div>
                 <div class="form-input">
                     <label class="form-input-label" for="applyInfo.country">کشور مورد نظر <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.country" v-model="$v.packageForm.applyInfo.country.$model" :class="[{'form-input-control--invalid': countryIsInvalid}]">
-                        <option class="form-input-select-option" :value="country.name"
-                                v-for="country in countriesForCurrentContinent">
+                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.country"
+                            v-model="$v.packageForm.applyInfo.country.$model"
+                            :class="[{'form-input-control--invalid': countryIsInvalid}]">
+                        <option class="form-input-select-option" :value="country"
+                                v-for="country in applyCountries">
                             {{country.name}}
                         </option>
                     </select>
@@ -175,10 +216,11 @@
                 <div class="form-input">
                     <label class="form-input-label" for="applyInfo.gradLevel">مقطع تحصیلی <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.gradLevel" v-model="$v.packageForm.applyInfo.gradLevel.$model">
-                        <option class="form-input-select-option" :value="level.name"
-                                v-for="level in gradLevels">
-                            {{level.name}}
+                    <select class="form-input-select" name="education.gradLevel" id="applyInfo.gradLevel"
+                            v-model="$v.packageForm.applyInfo.grade.$model">
+                        <option class="form-input-select-option" :value="grade"
+                                v-for="grade in applyGrades">
+                            {{grade.name}}
                         </option>
                     </select>
                 </div>
@@ -186,10 +228,11 @@
                 <div class="form-input">
                     <label class="form-input-label" for="applyInfo.semester">ترم مورد نظر <span
                             class="form-input--required">*</span></label>
-                    <select class="form-input-select" name="education.semester" id="applyInfo.semester" v-model="$v.packageForm.applyInfo.semester.$model">
-                        <option class="form-input-select-option" :value="semester.name"
-                                v-for="semester in semesters">
-                            {{semester.name}}
+                    <select class="form-input-select" name="education.semester" id="applyInfo.semester"
+                            v-model="$v.packageForm.applyInfo.semester.$model">
+                        <option class="form-input-select-option" :value="semester"
+                                v-for="semester in semesterChoices">
+                            {{`${semester.semester} ${semester.year}`}}
                         </option>
                     </select>
                 </div>
@@ -197,13 +240,16 @@
                 <div class="form-input">
                     <label class="form-input-label" for="applyInfo.field"> رشته مورد نظر <span
                             class="form-input--required">*</span></label>
-                    <input class="form-input-control" type="text" placeholder="رشته مورد نظر" id="applyInfo.field" v-model.trim="$v.packageForm.applyInfo.field.$model" :class="[{'form-input-control--invalid': fieldInApplyInfoIsInvalid}]">
+                    <input class="form-input-control" type="text" placeholder="رشته مورد نظر" id="applyInfo.field"
+                           v-model.trim="$v.packageForm.applyInfo.field.$model"
+                           :class="[{'form-input-control--invalid': fieldInApplyInfoIsInvalid}]">
                 </div>
 
                 <div class="form-input form-input--full">
                     <label class="form-input-label" for="description">توضیحات (اختیاری)</label>
                     <textarea rows="7" class="form-input-control form-input-control--noresize" type="text"
-                              id="description" v-model.trim="$v.packageForm.description.$model" :class="[{'form-input-control--invalid': descriptionIsInvalid}]">
+                              id="description" v-model.trim="$v.packageForm.description.$model"
+                              :class="[{'form-input-control--invalid': descriptionIsInvalid}]">
                     </textarea>
                 </div>
 
@@ -233,7 +279,7 @@
                     marriage: {required}
                 },
                 education: {
-                    gradLevel: {required},
+                    grade: {required},
                     university: {required, maxLength: maxLength(100)},
                     gpa: {required, decimal, between: between(0, 20)},
                     gradYear: {required, decimal, between: between(0, 9999)},
@@ -245,12 +291,13 @@
                     listening: {decimal, between: between(0, 1000)},
                     speaking: {decimal, between: between(0, 1000)},
                     reading: {decimal, between: between(0, 1000)},
-                    writing: {decimal, between: between(0, 1000)}
+                    writing: {decimal, between: between(0, 1000)},
+                    overall: {decimal, between: between(0, 1000)}
                 },
                 applyInfo: {
-                    continent: {required},
+                    mainland: {required},
                     country: {required},
-                    gradLevel: {required},
+                    grade: {required},
                     semester: {required},
                     field: {required, minLength: minLength(1), maxLength: maxLength(100)}
                 },
@@ -262,65 +309,31 @@
             return {
                 submitted: false,
 
-                marriageStatus: [
-                    {name: 'متاهل', value: 'married'},
-                    {name: 'مجرد', value: 'single'},
-                ],
+                maritalStatus: [],
 
-                gradLevels: [
-                    {name: 'کارشناسی', value: 'bs'},
-                    {name: 'کارشناسی ارشد', value: 'ms'},
-                    {name: 'دکترا', value: 'doc'},
-                    {name: 'پست دکتری', value: 'postDoc'},
-                    {name: 'کالج', value: 'college'},
-                ],
+                grades: [],
 
-                languageLevels: [
-                    {name: 'ندارم', value: 'none'},
-                    {name: 'آیلتس آکادمکی', value: 'ielts'},
-                    {name: 'آیلتس جنرال', value: 'ielts'},
-                    {name: 'تافل', value: 'toefl'},
-                    {name: 'دولینگو', value: 'duolingo'},
-                    {name: 'GRE', value: 'gre'},
-                    {name: 'IAESTE', value: 'iaeste'},
-                    {name: 'GMAT', value: 'gmat'},
-                ],
+                applyGrades: [],
 
-                continents: [
-                    {name: 'اروپا', value: 'europe', countries: [
-                            {name: 'آلمان', value: 'germany'},
-                            {name: 'ایتالیا', value: 'italy'},
-                            {name: 'فرانسه', value: 'france'},
-                            {name: 'اتریش', value: 'austria'},
-                            {name: 'هلند', value: 'netherlands'},
-                            {name: 'پرتغال', value: 'portugal'},
-                            {name: 'سوئد', value: 'sweden'},
-                            {name: 'اسپانیا', value: 'spain'},
-                            {name: 'استونی', value: 'estonia'}
-                        ]},
-                    {name: 'آمریکای شمالی', value: 'northAmerica', countries: [
-                            {name: 'کانادا', value: 'canada'},
-                            {name: 'آمریکا', value: 'us'}
-                        ]},
-                    {name: 'استرالیا', value: 'australia', countries: [
-                            {name: ' استرالیا', value: 'australia'}
-                        ]},
-                ],
+                applyMainlands: [],
 
-                semesters: [
-                    {name: 'پاییز 2020', value: 'fall2020'},
-                    {name: 'پاییز 2021', value: 'fall2021'},
-                ],
+                applyCountries: [],
+
+                languageCertificates: [],
+
+                degreeConferralYear: [],
+
+                semesterChoices: [],
 
                 packageForm: {
                     personal: {
                         firstName: '',
                         lastName: '',
                         age: '',
-                        marriage: ''
+                        marriage: {}
                     },
                     education: {
-                        gradLevel: 'کارشناسی',
+                        grade: {},
                         university: '',
                         gpa: '',
                         gradYear: '',
@@ -328,17 +341,18 @@
                         paperTitle: ''
                     },
                     languageLevel: {
-                        title: 'ندارم',
+                        title: {},
                         listening: '',
                         speaking: '',
                         reading: '',
-                        writing: ''
+                        writing: '',
+                        overall : ''
                     },
                     applyInfo: {
-                        continent: 'آمریکای شمالی',
-                        country: 'کانادا',
-                        gradLevel: 'کارشناسی ارشد',
-                        semester: 'پاییز 2020',
+                        mainland: {},
+                        country: {},
+                        grade: {},
+                        semester: {},
                         field: ''
                     },
                     description: '',
@@ -347,12 +361,100 @@
             }
         },
         methods: {
+            async getAllFormCategories() {
+                let reqs = [
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=grade`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=apply_grade`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=apply_country`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=apply_mainland`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=marital_status`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-fields-choices/?category=language_certificate`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/student-form-semester-year-choices/`, this.httpConfig)
+                ];
+                Promise
+                    .all(reqs)
+                    .then(responses => {
+                        console.log(responses);
+                        this.grades = responses[0].data;
+                        this.applyGrades = responses[1].data;
+                        this.applyCountries = responses[2].data;
+                        this.applyMainlands = responses[3].data;
+                        this.maritalStatus = responses[4].data;
+                        this.languageCertificates = responses[5].data;
+                        this.semesterChoices = responses[6].data;
+                        this.initSelectableInputs();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            },
+
+            initSelectableInputs() {
+                this.packageForm.education.grade = this.grades[0];
+                this.packageForm.applyInfo.grade = this.applyGrades[0];
+                this.packageForm.applyInfo.country = this.applyCountries[0];
+                this.packageForm.applyInfo.mainland = this.applyMainlands[0];
+                this.packageForm.languageLevel.title = this.languageCertificates.find(cert => cert.slug === 'none');
+                this.packageForm.applyInfo.semester = this.semesterChoices[0];
+            },
+
+            async getCurrentFormData() {
+                try {
+                    this.$loading(true);
+                    let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                    console.log(result);
+                    if(result) {
+                        this.packageForm.personal.age = result.age;
+                        this.packageForm.personal.firstName = result.user.first_name;
+                        this.packageForm.personal.lastName = result.user.last_name;
+                        this.packageForm.personal.marriage = result.marital_status;
+
+                        this.packageForm.education.grade = result.grade;
+                        this.packageForm.education.university = result.university.name;
+                        this.packageForm.education.gpa = result.total_average;
+                        this.packageForm.education.gradYear = result.degree_conferral_year.name;
+                        this.packageForm.education.field = result.major.name;
+                        this.packageForm.education.paperTitle = result.thesis_title;
+
+                        this.packageForm.languageLevel.title = result.language_certificate;
+                        this.packageForm.languageLevel.listening = result.language_listening;
+                        this.packageForm.languageLevel.speaking = result.language_speaking;
+                        this.packageForm.languageLevel.writing = result.language_writing;
+                        this.packageForm.languageLevel.reading = result.language_reading;
+                        this.packageForm.languageLevel.overall = result.language_certificate_overall;
+
+                        this.packageForm.applyInfo.mainland = result.apply_mainland;
+                        this.packageForm.applyInfo.country = result.apply_country;
+                        this.packageForm.applyInfo.grade = result.apply_grade;
+                        this.packageForm.applyInfo.field = result.apply_major.name;
+                        this.packageForm.applyInfo.semester = result.apply_semester_year;
+
+                        this.packageForm.description = result.comment;
+                    } else {
+                        if (this.user.first_name) {
+                            this.packageForm.personal.firstName = this.user.first_name;
+                        }
+                        if(this.user.last_name) {
+                            this.packageForm.personal.lastName = this.user.last_name;
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
             updateForm() {
                 this.submitted = true;
                 this.$v.$touch();
                 console.log(`form is invalid ${this.formIsInvalid}`);
                 console.log('update form:', this.$v.packageForm);
-                if(!this.formIsInvalid) {
+                console.log('package form', this.packageForm);
+                if (!this.formIsInvalid) {
                     //form is valid, continue
                 } else {
                     //form is invalid, show notification
@@ -369,7 +471,27 @@
                 this.packageForm.applyInfo.country = this.countriesForCurrentContinent[0].name;
             }
         },
+        async created() {
+            await this.getCurrentFormData();
+            this.getAllFormCategories();
+        },
         computed: {
+            api() {
+                return this.$store.getters.getApi;
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            },
+
+            user() {
+                return this.$store.getters.getUser;
+            },
+
+            userInfo() {
+                return this.$store.getters.getUserInfo;
+            },
+
             //Personal invalidity
             firstNameIsInvalid() {
                 return this.submitted && this.$v.packageForm.personal.firstName.$error;

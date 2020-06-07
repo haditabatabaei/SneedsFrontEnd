@@ -143,7 +143,8 @@
                         submenu: []
                     },
                     {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name: "پکیج ها", target: '/user/userpackages/', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "پکیج ها", target: '/user/userpackages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "فرم اطلاعات اپلای", target: '/user/package/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
                         name: "ویرایش رمز عبور",
                         target: "/user/password",

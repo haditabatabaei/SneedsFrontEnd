@@ -33,8 +33,7 @@
                             :
                         </span>
                             <select name="taskStatus" id="taskStatus" class="newTaskModal-body-input" v-model="newTaskInput.status">
-                                <option value="in_progress" class="newTaskModal-body-input-option">درحال انجام</option>
-                                <option value="in_progress" class="newTaskModal-body-input-option">انجام شده</option>
+                                <option :value="status.value" class="newTaskModal-body-input-option" v-for="status in availableStatuses">{{status.name}}</option>
                             </select>
                         </label>
                     </div>
@@ -132,8 +131,8 @@
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
                     <p class="body-tab-row-text">
-                        <mark class="row-text-status status--done">
-                            در حال انجام
+                        <mark class="row-text-status" :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
+                            {{getTaskStatusName(task)}}
                         </mark>
                     </p>
                     <p class="body-tab-row-text">
@@ -180,6 +179,12 @@
                     title: '',
                     status: 'in_progress'
                 },
+                availableStatuses: [
+                    {value: 'in_progress', name: 'در حال انجام'},
+                    {value: 'done', name: 'انجام شد'},
+                    {value: 'finished', name: 'دریافت نتیجه'},
+                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
+                ]
             }
         },
         computed: {
@@ -210,6 +215,10 @@
 
             showNewTaskModal() {
                 this.isShowingNewTaskModal = true;
+            },
+
+            getTaskStatusName(task) {
+                return (this.availableStatuses.find(status => status.value === task.status)).name;
             },
 
             hideNewTaskModal(event, forced = false) {
@@ -244,6 +253,7 @@
                         "status" : this.newTaskInput.status,
                         "title": this.newTaskInput.title,
                     };
+                    console.log(payload)
                     let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.httpConfig);
                     this.newTaskInput = {status: "", title: ""};
                     this.hideNewTaskModal(null, true);

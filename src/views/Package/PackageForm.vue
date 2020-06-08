@@ -543,11 +543,22 @@
                     conf.headers['Content-Type'] = 'multipart/form-data';
                     try {
                         this.$loading(true)
-                        let createResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.packageForm.id}/`, payload, conf);
-                        console.log(createResult);
+                        let editResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.packageForm.id}/`, payload, conf);
+                        console.log(editResult);
                         await this.getCurrentFormData();
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'فرم پکیج: موفق',
+                            text: 'اطلاعات شما با موفقیت ویرایش شد.'
+                        })
                     } catch (e) {
-
+                        this.$notify({
+                            group: 'notif',
+                            type: 'error',
+                            title: 'فرم پکیج: خطا',
+                            text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
+                        })
                     } finally {
                         this.$loading(false);
                     }
@@ -579,8 +590,20 @@
                         let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, payload, conf);
                         await this.getCurrentFormData();
                         console.log(createResult);
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'فرم پکیج: موفق',
+                            text: 'اطلاعات شما با موفقیت ثبت شد.'
+                        })
                     } catch (e) {
                         console.log(e.response);
+                        this.$notify({
+                            group: 'notif',
+                            type: 'error',
+                            title: 'فرم پکیج: خطا',
+                            text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
+                        })
                     } finally {
                         this.$loading(false);
                     }

@@ -5,12 +5,12 @@
                 done
             </i>
             <i v-else class="material-icons payment-icon payment-icons--error">
-            close
+                close
             </i>
             <p v-if="isSuccess" class="payment-text payment-text--success isansFont">
                 سفارش شما با موفقیت ثبت شد!
                 <br>
-                <span v-if="this.refld == '00000000'">
+                <span v-if="wasFree">
                     سفارش شما رایگان لحاظ شده است.
                 </span>
             </p>
@@ -25,7 +25,7 @@
 
             <p v-else class="payment-result payment-result--error">
                 <span class="payment-result-info isansFont--faNum">
-                    خطایی هنگام احراز پرداخت شما رخ داد و یا توسط شما کنسل شد. اگر تا 5 دقیقه دیگر پیامک موفق بودن خرید برایتان نیامد و مبلغی از حسابتان کم شده، جای نگرانی نیست و ظرف 72 ساعت به حسابتان بر می گردد. در صورتی که مبلغ مورد نظر بعد از 72 ساعت به حسابتان بازنگشت، با پشتیبانی اسنیدز تماس بگیرید.
+                    خطایی هنگام احراز پرداخت شما رخ داد و یا توسط شما کنسل شد. اگر تا 5 دقیقه دیگر پیامک موفق بودن خرید برایتان نیامد ولی مبلغی از حسابتان کم شده، جای نگرانی نیست و ظرف 72 ساعت مبلغ کسر شده به حسابتان باز می گردد. در صورتی که مبلغ مورد نظر بعد از 72 ساعت به حسابتان بازنگشت، با پشتیبانی اسنیدز تماس بگیرید.
                     <mark class="payment-result-info--marked">برای پیگیری های بعدی لطفاً کد زیر را همراه خود داشته باشید.</mark>
                 </span>
                 <span class="payment-result-code payment-result-code--error gadugiFont">
@@ -33,11 +33,49 @@
                 </span>
             </p>
 
+            <div class="payment-result-box isansFont" v-if="hasTimeSlot">
+                <p class="payment-result-data">
+                    جلسه شما با موفقیت رزرو شده است. می توانید برای مشاهده جلسات خود به صفحه "جلسات رزرو شده" مراجعه
+                    کنید.
+                </p>
+                <router-link to="/user/sessions" class="payment-action payment-action--success">
+                    مشاهده جلسات رزرو شده <i class="material-icons">keyboard_arrow_left</i>
+                </router-link>
+            </div>
 
-            <router-link v-if="isSuccess" to="/user/sessions" class="payment-action payment-action--success isansFont">
-                مشاهده جلسات رزرو شده <i class="material-icons">keyboard_arrow_left</i></router-link>
+            <div class="payment-result-box isansFont" v-if="hasPackage">
+                <p class="payment-result-data" v-if="isPackageFormFilled">
+                    پکیج شما با موفقیت رزرو شده است.
+                    شما قبلاً "فرم اطلاعات اپلای" را پر کرده اید. در این مرحله اطلاعات پکیج شما برای مشاورین ما ارسال می شود و
+                    شما می توانید از بین مشاورانی که برای انجام پکیج شما اعلام آمادگی کرده اند، یکی را انتخاب کنید.
+                    اطلاعات موجود در این فرم، توسط شما در هر زمان قابل ویرایش است. اما به جهت جلوگیری از بوجود آمدن ناهماهنگی های
+                    احتمالی، از تغییر آن حین پروسه اپلای، خودداری فرمایید.
+                </p>
+                <p class="payment-result-data" v-else>
+                    پکیج شما با موفقیت رزرو شده است. برای ادامه مسیر، لازم است "فرم اطلاعات اپلای" خود را تکمیل کنید.
+                    توجه داشته باشید که اگر این فرم را تکمیل نکنید، در این مرحله برای هیچ یک از مشاوران ما، درخواست شما
+                    نشان داده نمی شود و پروسه اپلای شما در این مرحله تا زمانی که فرم اطلاعات اپلای خود را کامل کنید،
+                    متوقف می شود.
+                    با تکمیل فرم، به طور اتوماتیک، فرآیند ادامه پیدا می کند.
+                    اطلاعات موجود در این فرم، توسط شما در هر زمان قابل ویرایش است. اما به جهت جلوگیری از ناهماهنگی های
+                    احتمالی، از تغییر آن حین پروسه اپلای، خودداری فرمایید.
+                </p>
+                <router-link to="/user/userpackages" class="payment-action payment-action--success" v-if="isPackageFormFilled">
+                    مشاهده پکیج های رزرو شده<i class="material-icons">keyboard_arrow_left</i>
+                </router-link>
+                <router-link to="/user/package/form" class="payment-action payment-action--success" v-else>
+                    تکمیل فرم اطلاعات اپلای<i class="material-icons">keyboard_arrow_left</i>
+                </router-link>
+            </div>
 
-            <router-link v-else to="/" class="payment-action payment-action--error isansFont">بازگشت به صفحه نخست</router-link>
+            <div class="payment-result-box isansFont" v-if="hasPhase">
+                <p class="payment-result-data">
+                    هزینه مرحله پکیج شما با موفقی انجام شد.
+                </p>
+                <router-link :to="`/user/userpackages/manager/${orderStorePackageId}`" class="payment-action payment-action--success">
+                    مشاهده پکیج <i class="material-icons">keyboard_arrow_left</i>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -46,19 +84,33 @@
 
     export default {
         name: "Payment",
+        data() {
+            return {
+                refld: '',
+                detail: '',
+                order: null,
+                showResult: false,
+                isPackageFormFilled: false
+            }
+        },
         methods: {
             async verifyPayment() {
                 try {
                     this.$loading(true);
                     this.showResult = false;
                     let result = await this.$api.post(
-                        `${this.$store.getters.getApi}/payment/verify/`,
+                        `${this.api}/payment/verify/`,
                         {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
-                        this.$store.getters.httpConfig
+                        this.httpConfig
                     );
                     this.detail = result.data.detail;
                     this.refld = result.data.ReflD;
-                    console.log(result);
+                    if (result.order) {
+                        let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.order}/`, this.httpConfig);
+                        let currentUserPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                        this.order = paidOrderResult.data;
+                        this.isPackageFormFilled = !!currentUserPackageForm;
+                    }
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -72,16 +124,48 @@
         },
         computed: {
             isSuccess() {
-                if(this.detail.length != 0) {
+                if (this.detail.length != 0) {
                     return this.detail.toLowerCase() === 'success';
                 } else {
                     return false;
                 }
             },
+
+            api() {
+                return this.$store.getters.getApi;
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            },
+
+            hasPackage() {
+                return this.order && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number == 1;
+            },
+
+            hasPhase() {
+                return this.order && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number != 1;
+            },
+
+            wasFree() {
+                this.$route.query.refld && this.$route.query.refld === "00000000";
+            },
+
+            orderStorePackageId() {
+                if(this.hasPackage || this.hasPhase) {
+                    let splitted = this.sold_store_paid_package_phases[0].sold_store_package.split("/");
+                    splitted.pop();
+                    return splitted[splitted.length - 1];
+                }
+            },
+
+            hasTimeSlot() {
+                return this.order && this.order.sold_time_slot_sales.length > 0;
+            }
         },
         created() {
             console.log(this.$route.query);
-            if(this.$route.query.refld && this.$route.query.refld == "00000000") {
+            if (this.wasFree) {
                 console.log("REFLD 00000000 & payment is good");
                 this.refld = this.$route.query.refld;
                 this.showResult = true;
@@ -90,14 +174,6 @@
                 console.log(this.showResult);
             } else {
                 this.verifyPayment();
-            }
-        },
-
-        data() {
-            return {
-                refld: '',
-                detail: '',
-                showResult: false,
             }
         },
     }
@@ -178,6 +254,22 @@
         flex-direction: column;
         align-items: center;
     }
+
+    .payment-result-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 15px 30px;
+    }
+
+    .payment-result-data {
+        color: #707070;
+        font-weight: bold;
+        line-height: 25px;
+        margin: 0;
+    }
+
     .payment-result-info {
         color: #707070;
         font-weight: bold;
@@ -206,6 +298,7 @@
         transition: box-shadow 0.1s ease-in-out;
         padding: 15px 20px;
         border-radius: 15px;
+        margin-top: 15px;
     }
 
     .payment-action i {

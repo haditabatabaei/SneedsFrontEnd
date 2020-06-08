@@ -1,6 +1,19 @@
 <template>
     <section class="package-form itemBlock">
-        <div class="warn">
+        <div class="warn" v-if="editPattern">
+            <i class="material-icons warn-icon">
+                info
+            </i>
+            <div class="warn-content">
+                <h1 class="warn-content-title isansFont--faNum">
+                    لطفاً اطلاعات این فرم را به طور دقیق پر کنید.
+                </h1>
+                <h5 class="warn-content-text isansFont--faNum">
+                    در صورتی که پکیجی رزرو کرده باشید، از اطلاعات این فرم برای مشخص شدن اطلاعات اپلای شما استفاده خواهد شد.
+                </h5>
+            </div>
+        </div>
+        <div class="warn" v-else>
             <i class="material-icons warn-icon">
                 info
             </i>
@@ -245,6 +258,12 @@
                            :class="[{'form-input-control--invalid': fieldInApplyInfoIsInvalid}]">
                 </div>
 
+                <div class="form-input">
+                    <label class="form-input-label" for="applyInfo.university"> دانشگاه مورد نظر </label>
+                    <input class="form-input-control" type="text" placeholder="رشته مورد نظر" id="applyInfo.university"
+                           v-model.trim="$v.packageForm.applyInfo.university.$model">
+                </div>
+
                 <div class="form-input form-input--full">
                     <label class="form-input-label" for="description">توضیحات (اختیاری)</label>
                     <textarea rows="7" class="form-input-control form-input-control--noresize" type="text"
@@ -256,6 +275,9 @@
                 <div class="form-input">
                     <label class="form-input-label" for="file">آپلود رزومه (اختیاری)</label>
                     <input class="form-input-control" @change="inputFileChanged" ref="file" name="file" type="file" id="file">
+                    <a target="_blank" download :href="packageForm.currentResumeLink" v-if="packageForm.currentResumeLink">
+                        دانلود فایل آپلود شده فعلی
+                    </a>
                 </div>
             </div>
         </section>
@@ -302,7 +324,8 @@
                     country: {required},
                     grade: {required},
                     semester: {required},
-                    field: {required, minLength: minLength(1), maxLength: maxLength(100)}
+                    field: {required, minLength: minLength(1), maxLength: maxLength(100)},
+                    university: {}
                 },
                 description: {maxLength: maxLength(1024)},
                 file: {}
@@ -359,10 +382,12 @@
                         country: {},
                         grade: {},
                         semester: {},
-                        field: ''
+                        field: '',
+                        university: ''
                     },
                     description: '',
-                    resume: {}
+                    resume: null,
+                    currentResumeLink: '',
                 }
             }
         },
@@ -408,6 +433,8 @@
                 let currentFile = this.$refs.file.files[0];
                 if(currentFile && currentFile.type === "application/pdf") {
                     this.packageForm.resume = currentFile
+                } else {
+                    this.packageForm.resume = null
                 }
             },
 
@@ -415,6 +442,7 @@
                 try {
                     this.$loading(true);
                     let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                    console.log('has form?', !!result);
                     console.log(result);
                     if (result) {
                         this.packageForm.id = result.id;
@@ -425,10 +453,10 @@
                         this.packageForm.personal.marriage = result.marital_status;
 
                         this.packageForm.education.grade = result.grade;
-                        this.packageForm.education.university = result.university.name;
+                        this.packageForm.education.university = result.university;
                         this.packageForm.education.gpa = result.total_average;
-                        this.packageForm.education.gradYear = result.degree_conferral_year.name;
-                        this.packageForm.education.field = result.major.name;
+                        this.packageForm.education.gradYear = result.degree_conferral_year;
+                        this.packageForm.education.field = result.major;
                         this.packageForm.education.paperTitle = result.thesis_title;
 
                         this.packageForm.languageLevel.title = result.language_certificate;
@@ -441,10 +469,12 @@
                         this.packageForm.applyInfo.mainland = result.apply_mainland;
                         this.packageForm.applyInfo.country = result.apply_country;
                         this.packageForm.applyInfo.grade = result.apply_grade;
-                        this.packageForm.applyInfo.field = result.apply_major.name;
+                        this.packageForm.applyInfo.field = result.apply_major;
+                        this.packageForm.applyInfo.university = result.apply_university;
                         this.packageForm.applyInfo.semester = result.apply_semester_year;
 
                         this.packageForm.description = result.comment;
+                        this.packageForm.currentResumeLink = result.resume;
                     } else {
                         this.editPattern = false;
                         if (this.user.first_name) {
@@ -464,14 +494,63 @@
                 }
             },
 
-            editForm() {
+            getPayload() {
+                let formData = new FormData();
+                let payload = {
+                    "age": this.packageForm.personal.age,
+                    "marital_status": this.packageForm.personal.marriage.id,
+                    "grade": this.packageForm.education.grade.id,
+                    "university": this.packageForm.education.university,
+                    "degree_conferral_year": this.packageForm.education.gradYear,
+                    "major": this.packageForm.education.field,
+                    "total_average": this.packageForm.education.gpa,
+                    "thesis_title": this.packageForm.education.paperTitle,
+                    "language_certificate": this.packageForm.languageLevel.title.id,
+                    "language_certificate_overall": this.packageForm.languageLevel.overall,
+                    "language_speaking": this.packageForm.languageLevel.speaking,
+                    "language_listening": this.packageForm.languageLevel.listening,
+                    "language_writing": this.packageForm.languageLevel.writing,
+                    "language_reading": this.packageForm.languageLevel.reading,
+                    "apply_mainland": this.packageForm.applyInfo.mainland.id,
+                    "apply_country": this.packageForm.applyInfo.country.id,
+                    "apply_grade": this.packageForm.applyInfo.grade.id,
+                    "apply_major": this.packageForm.applyInfo.field,
+                    "apply_university": this.packageForm.applyInfo.university,
+                    "apply_semester_year": this.packageForm.applyInfo.semester.id,
+                    "comment": this.packageForm.description,
+                };
+
+                for(let item in payload) {
+                    console.log(item);
+                    formData.append(item, payload[item]);
+                }
+                if(this.packageForm.resume) {
+                    formData.append("resume", this.packageForm.resume);
+                }
+                return formData;
+            },
+
+            async editForm() {
                 this.submitted = true;
                 this.$v.$touch();
                 console.log(`form is invalid ${this.formIsInvalid}`);
                 console.log('update form:', this.$v.packageForm);
                 console.log('package form', this.packageForm);
                 if (!this.formIsInvalid) {
-                    //form is valid, continue
+                    let payload = this.getPayload();
+                    let conf = {};
+                    Object.assign(conf, this.httpConfig);
+                    conf.headers['Content-Type'] = 'multipart/form-data';
+                    try {
+                        this.$loading(true)
+                        let createResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.packageForm.id}/`, payload, conf);
+                        console.log(createResult);
+                        await this.getCurrentFormData();
+                    } catch (e) {
+
+                    } finally {
+                        this.$loading(false);
+                    }
                 } else {
                     //form is invalid, show notification
                     this.$notify({
@@ -491,40 +570,20 @@
                 console.log('package form', this.packageForm);
                 if (!this.formIsInvalid) {
                     //form is valid, continue
-                    let formData = new FormData();
-                    let payload = {
-                        "age": this.packageForm.personal.age,
-                        "marital_status": this.packageForm.personal.marriage.id,
-                        "grade": this.packageForm.education.grade.id,
-                        "university": 4,
-                        "degree_conferral_year": 2021,
-                        "major": 6,
-                        "total_average": this.packageForm.education.gpa,
-                        "thesis_title": this.packageForm.education.paperTitle,
-                        "language_certificate": this.packageForm.languageLevel.title.id,
-                        "language_certificate_overall": this.packageForm.languageLevel.overall,
-                        "language_speaking": this.packageForm.languageLevel.speaking,
-                        "language_listening": this.packageForm.languageLevel.listening,
-                        "language_writing": this.packageForm.languageLevel.writing,
-                        "language_reading": this.packageForm.languageLevel.reading,
-                        "apply_mainland": this.packageForm.applyInfo.mainland.id,
-                        "apply_country": this.packageForm.applyInfo.country.id,
-                        "apply_grade": this.packageForm.applyInfo.grade.id,
-                        "apply_major": 11,
-                        "apply_university": 12,
-                        "apply_semester_year": this.packageForm.applyInfo.semester.id,
-                        "comment": this.packageForm.description,
-                        "resume": this.packageForm.resume,
-                    };
-
-                    for(let item in payload) {
-                        console.log(item);
-                        formData.append(item, payload[item]);
+                    let payload = this.getPayload();
+                    let conf = {};
+                    Object.assign(conf, this.httpConfig);
+                    conf.headers['Content-Type'] = 'multipart/form-data';
+                    try {
+                        this.$loading(true);
+                        let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, payload, conf);
+                        await this.getCurrentFormData();
+                        console.log(createResult);
+                    } catch (e) {
+                        console.log(e.response);
+                    } finally {
+                        this.$loading(false);
                     }
-                    console.log("payload", payload);
-                    console.log('formdata', formData);
-                    let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, formData, this.httpConfig);
-                    console.log(createResult);
                 } else {
                     //form is invalid, show notification
                     this.$notify({
@@ -535,13 +594,10 @@
                     })
                 }
             },
-            setFirstSelectedCountry() {
-                this.packageForm.applyInfo.country = this.countriesForCurrentContinent[0].name;
-            }
         },
         async created() {
-            await this.getCurrentFormData();
-            this.getAllFormCategories();
+            await this.getAllFormCategories();
+            this.getCurrentFormData();
         },
         computed: {
             api() {

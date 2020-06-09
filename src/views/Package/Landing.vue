@@ -225,33 +225,345 @@
                 </ul>
             </div>
         </section>
-
         <section class="package-section package-section-buy">
-            <div class="section-sub section-sub-buy">
-                <div class="buy-box" v-for="storePackage in storePackages">
-                    <h1 class="buy-box-title isansFont">
-                        {{storePackage.title}}
-                    </h1>
-                    <ul class="buy-box-phases">
-                        <li class="buy-box-phase" v-for="phase in storePackage.store_package_phases">
-                            <p class="phase-title">
-                                {{phase.title}}
+            <div class="section-sub section-sub-buy" :class="[{'section-sub-buy--full': showComparePackages}]">
+                <div class="buy-box buy-box--noborder">
+                    <h2 class="buy-box-title-price title-price--brown isansFont--faNum">
+                        8
+                        <span class="buy-box-title-price-sup">
+                            میلیون تومان
+                        </span>
+                    </h2>
+                    <div class="buy-box-title ">
+                        <h1 class="box-title-text isansFont">پکیج برنزی کالج</h1>
+                        <h3 class="box-title-meta isansFont">!اخذ تضمینی پذیرش کالج به وسیله مشاوران اسنیدز</h3>
+                    </div>
+                    <ul class="buy-box-features isansFont">
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                پرداخت در
+                                <mark class="buy-box-feature-mark isansFont--faNum">
+                                    5 قست
+                                    <span class="buy-box-feature-mark-modal">
+                                        <span class="box-feature-mark-modal-prices">
+                                            <span>
+                                                500 هزار تومان
+                                            </span>
+                                            <span>
+                                                5.5 میلیون تومان
+                                            </span>
+                                            <span>
+                                                1 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                        </span>
+                                        <span class="box-feature-mark-modal-infos">
+                                            <span>
+                                                رزرو پکیج
+                                            </span>
+                                            <span>
+                                                عقد قرارداد
+                                            </span>
+                                            <span>
+                                                جواب اپلای
+                                            </span>
+                                            <span>
+                                                مدارک ویزا
+                                            </span>
+                                            <span>
+                                                جواب ویزا
+                                            </span>
+                                        </span>
+                                    </span>
+                                </mark>
                             </p>
-                            <span class="phase-price isansFont" :class="[{'isansFont--faNum': isiran}]">
-                                {{phase.price}}
-                                تومان
-                            </span>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره اپلای
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                نگارش کامل مدارک
+                            </p>
                         </li>
                     </ul>
-                    <p class="isansFont" :class="[{'isansFont--faNum': isiran}]">
-                        هزینه کل :
-                        {{storePackage.total_price}}
-                        تومان
-                    </p>
-                    <button @click="buyPackage(storePackage)" class="isansFont">رزرو پکیج</button>
+                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
                 </div>
+                <div class="buy-box">
+                    <h2 class="buy-box-title-price title-price--gray isansFont--faNum">
+                        12
+                        <span class="buy-box-title-price-sup">
+                            میلیون تومان
+                        </span>
+                    </h2>
+                    <div class="buy-box-title ">
+                        <h1 class="box-title-text isansFont">پکیج  نقره ای کالج</h1>
+                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک .مشاوران اسنیدز حداقل کنن</h3>
+                    </div>
+                    <ul class="buy-box-features isansFont">
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                پرداخت در
+                                <mark class="buy-box-feature-mark isansFont--faNum">
+                                    5 قست
+                                    <span class="buy-box-feature-mark-modal">
+                                        <span class="box-feature-mark-modal-prices">
+                                            <span>
+                                                500 هزار تومان
+                                            </span>
+                                            <span>
+                                                5.5 میلیون تومان
+                                            </span>
+                                            <span>
+                                                1 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                        </span>
+                                        <span class="box-feature-mark-modal-infos">
+                                            <span>
+                                                رزرو پکیج
+                                            </span>
+                                            <span>
+                                                عقد قرارداد
+                                            </span>
+                                            <span>
+                                                جواب اپلای
+                                            </span>
+                                            <span>
+                                                مدارک ویزا
+                                            </span>
+                                            <span>
+                                                جواب ویزا
+                                            </span>
+                                        </span>
+                                    </span>
+                                </mark>
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره اپلای
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره ویزا
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                نگارش کامل مدارک
+                            </p>
+                        </li>
+                    </ul>
+                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                </div>
+                <div class="buy-box buy-box--noborder">
+                    <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
+                        16
+                        <span class="buy-box-title-price-sup">
+                            میلیون تومان
+                        </span>
+                    </h2>
+                    <div class="buy-box-title ">
+                        <h1 class="box-title-text isansFont">پکیج طلایی کالج</h1>
+                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور !مقصد رو از خودشون دور کنن</h3>
+                    </div>
+                    <ul class="buy-box-features isansFont">
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                پرداخت در
+                                <mark class="buy-box-feature-mark isansFont--faNum">
+                                    5 قست
+                                    <span class="buy-box-feature-mark-modal">
+                                        <span class="box-feature-mark-modal-prices">
+                                            <span>
+                                                500 هزار تومان
+                                            </span>
+                                            <span>
+                                                5.5 میلیون تومان
+                                            </span>
+                                            <span>
+                                                1 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                        </span>
+                                        <span class="box-feature-mark-modal-infos">
+                                            <span>
+                                                رزرو پکیج
+                                            </span>
+                                            <span>
+                                                عقد قرارداد
+                                            </span>
+                                            <span>
+                                                جواب اپلای
+                                            </span>
+                                            <span>
+                                                مدارک ویزا
+                                            </span>
+                                            <span>
+                                                جواب ویزا
+                                            </span>
+                                        </span>
+                                    </span>
+                                </mark>
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره اپلای
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره ویزا
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                نگارش کامل مدارک
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                اجاره خانه پیش از رسیدن
+                            </p>
+                        </li>
+                    </ul>
+                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                </div>
+                <button class="buy-box-compare-toggler isansFont" @click="toggleComparePackages">
+                    مقایسه کامل پکیج ها
+                    <i class="material-icons buy-box-compare-toggler-icon" v-if="showComparePackages">
+                        keyboard_arrow_up
+                    </i>
+                    <i class="material-icons buy-box-compare-toggler-icon" v-else>
+                        keyboard_arrow_down
+                    </i>
+                </button>
             </div>
         </section>
+        <transition name="fade">
+            <section class="package-section package-section-compare" v-if="showComparePackages">
+                <div class="section-sub section-sub-compare">
+                    <div class="compare-title isansFont">
+                        <p class="compare-title-item">
+                            پکیج برنزی کالج
+                        </p>
+                        <p class="compare-title-item">
+                            پکیج نقره ای کالج
+                            <mark class="compare-title-item-marked">
+                                پر فروش ترین!
+                            </mark>
+                        </p>
+                        <p class="compare-title-item">
+                            پکیج طلایی کالج
+                        </p>
+                    </div>
+                    <div class="compare-item isansFont--faNum">
+                        <h3 class="compare-item-title isansFont">
+                            قیمت
+                        </h3>
+                        <div class="compare-item-values">
+                            <p class="compare-item-value">
+                                1200$ -> 4قسط
+                            </p>
+                            <p class="compare-item-value compare-item-value--bordered">
+                                1200$ -> 4قسط
+                            </p>
+                            <p class="compare-item-value">
+                                1200$ -> 4قسط
+                            </p>
+                        </div>
+                    </div>
+                    <div class="compare-item isansFont--faNum">
+                        <h3 class="compare-item-title isansFont">
+                            مشاوره اپلای
+                        </h3>
+                        <div class="compare-item-values">
+                            <p class="compare-item-value">
+                                <i class="material-icons compare-item-hasIcon">done</i>
+                            </p>
+                            <p class="compare-item-value compare-item-value--bordered">
+                                <i class="material-icons compare-item-hasIcon">done</i>
+                            </p>
+                            <p class="compare-item-value">
+                                <i class="material-icons compare-item-hasIcon">done</i>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="compare-item isansFont--faNum">
+                        <h3 class="compare-item-title isansFont">
+                            مشاوره ویزا
+                        </h3>
+                        <div class="compare-item-values">
+                            <p class="compare-item-value">
+                                <i class="material-icons compare-item-noHasIcon">close</i>
+                            </p>
+                            <p class="compare-item-value compare-item-value--bordered">
+                                <i class="material-icons compare-item-hasIcon">done</i>
+                            </p>
+                            <p class="compare-item-value">
+                                <i class="material-icons compare-item-hasIcon">done</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </transition>
 
         <section class="package-section package-section-faq">
             <div class="section-sub section-sub-faq">
@@ -291,6 +603,7 @@
         data() {
             return {
                 storePackages: [],
+                showComparePackages: false,
                 faqBoxes: [
                     {
                         sup: 'عمومی',
@@ -389,12 +702,18 @@
             toggleQuestion(question) {
                 question.isOpen = !question.isOpen;
             },
+
+            toggleComparePackages() {
+                this.showComparePackages = !this.showComparePackages;
+            },
+
             async buyPackage(storePackageToBuy) {
                 if (this.isLoggedIn) {
                     console.log("User is logged in, adding package to cart ", storePackageToBuy.id);
                     try {
                         this.$loading(true);
                         let payload = {products: [storePackageToBuy.id]};
+                        console.log('payload ', payload);
                         let result = (await this.$api.post(`${this.api}/cart/carts/`, payload, this.httpConfig));
                         console.log(result);
                         this.$router.push(`/carts/${result.data.id}`);
@@ -927,10 +1246,313 @@
         padding-top: 10px;
     }
 
+    .package-section-buy {
+        background-color: #F6F7FA;
+        z-index: 28;
+    }
+
     .section-sub-buy {
         display: flex;
         justify-content: center;
+        align-items: stretch;
+        flex-wrap: wrap;
+        background-color: #FFFFFF;
+        border: 1px solid #F6F6F6;
+        box-shadow: 0 18px 26px #5E5E5E29;
+        border-radius: 15px;
+        margin: 40px 0;
+        padding: 40px 0 60px 0;
+        position: relative;
+    }
+
+    .section-sub-buy--full {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-bottom: 0;
+    }
+
+    .buy-box {
+        max-width: 350px;
+        min-width: 300px;
+        border-right: 2px solid #F2F2F2;
+        border-left: 2px solid #F2F2F2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .buy-box--noborder {
+        border: none;
+    }
+
+    .buy-box-title-price {
+        position: relative;
+        display: flex;
         align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 40px;
+        font-weight: bold;
+        width: 55px;
+        height: 55px;
+        margin: 30px;
+    }
+
+    .buy-box-title-price-sup {
+        position: absolute;
+        font-size: 14px;
+        font-weight: normal;
+        right: 45px;
+        top: -5px;
+        width: 120px;
+    }
+
+    .title-price--brown {
+        color: #6C2C10;
+        background-color: #FFECEC;
+    }
+
+    .title-price--gray {
+        color: #707070;
+        background-color: #F2F2F2;
+    }
+
+    .title-price--gold {
+        color: #CAA53D;
+        background-color: #FBF8DE;
+    }
+
+    .buy-box-title {
+        margin: 30px;
+    }
+
+    .box-title-text {
+        color: #303143;
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .box-title-meta {
+        color: #9B9999;
+        font-size: 13px;
+        margin: 20px 0 0 0;
+        line-height: 26px;
+        height: 60px;
+    }
+
+    .buy-box-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 30px;
+        display: flex;
+        flex-direction: column;
+        height: 150px;
+    }
+
+    .buy-box-feature {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+
+    .buy-box-feature-icon {
+        font-size: 13px;
+        border-radius: 50%;
+        border: 1px solid #8C3DDB;
+        padding: 1.5px;
+        margin-left: 10px;
+        color: #8C3DDB;
+    }
+
+    .buy-box-feature-text {
+        margin: 0 5px;
+        color: #585858;
+        font-size: 13px;
+    }
+
+    .buy-box-action {
+        border-radius: 15px;
+        border: 2px solid #A347FF;
+        color: #A347FF;
+        background-color: white;
+        padding: 10px;
+        margin: 50px 30px 0 30px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .buy-box-action:hover {
+        color: white;
+        background-color: #A347FF;
+    }
+
+    .buy-box-feature-mark {
+        padding: 0;
+        background: none;
+        border-bottom: 1px dashed #A347FF;
+        margin-right: 5px;
+        color: #585858;
+        cursor: pointer;
+        position: relative;
+        transition: display 0.2s ease-in-out;
+    }
+
+    .buy-box-feature-mark:hover > .buy-box-feature-mark-modal {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .buy-box-feature-mark-modal {
+        position: absolute;
+        top: 20px;
+        right: 0;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 -4px 7px #00000017;
+        z-index: 999;
+        border-radius: 15px;
+        display: none;
+        min-width: 270px;
+        transition: display 0.2s ease-in-out;
+    }
+
+    .box-feature-mark-modal-prices {
+        display: flex;
+        flex-direction: column;
+        background-color: #EFF8FF;
+        border-radius: 15px;
+        color: #20639B;
+        padding: 15px;
+    }
+
+    .box-feature-mark-modal-infos {
+        display: flex;
+        flex-direction: column;
+        border-radius: 15px;
+        color: #585858;
+        padding: 15px;
+    }
+
+    .box-feature-mark-modal-prices span {
+        margin: 5px 0;
+    }
+
+    .box-feature-mark-modal-infos span {
+        margin: 5px 0;
+    }
+
+
+    .buy-box-compare-toggler {
+        position: absolute;
+        bottom: -23px;
+        box-shadow: 0 4px 16px #00000021;
+        background: #FFFFFF;
+        border: none;
+        border-radius: 15px;
+        padding: 10px 25px;
+        color: #8C3DDB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+        z-index: 30;
+    }
+
+    .buy-box-compare-toggler-icon {
+        font-size: 13px;
+        border-radius: 50%;
+        border: 1px solid #8C3DDB;
+        padding: 1.5px;
+        margin-right: 5px;
+        transition: border-color 0.2s ease-in-out;
+    }
+
+    .buy-box-compare-toggler:hover {
+        color: white;
+        background-color: #8C3DDB;
+    }
+
+    .buy-box-compare-toggler:hover > .buy-box-compare-toggler-icon {
+        border-color: white;
+    }
+
+    .package-section-compare {
+        background-color: #F6F7FA;
+        z-index: 26;
+        margin-top: -10px;
+    }
+
+    .section-sub-compare {
+        background: white;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-title {
+        margin: 50px 50px 20px 50px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 40px;
+        background-color: #A347FF;
+        color: white;
+    }
+
+    .compare-title-item {
+        margin: 0;
+    }
+
+    .compare-title-item-marked {
+        font-size: 11px;
+        padding: 1px 8px;
+        border-radius: 20px;
+        color: #8C3DDB;
+        background-color: #F0E6FA;
+        margin-right: 5px;
+    }
+
+    .compare-item {
+        margin: 15px 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .compare-item-title {
+        font-size: 15px;
+        color: #707070;
+        align-self: center;
+        background-color: #F8F8F8;
+        border-radius: 10px;
+        padding: 2px 15px;
+    }
+
+    .compare-item-values {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 20px 0;
+    }
+
+    .compare-item-value {
+        color: #585858;
+        width: 33%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .compare-item-hasIcon {
+        color: #00BFD6;
+    }
+
+    .compare-item-noHasIcon {
+        color: #9B9999;
+    }
+
+    .compare-item-value--bordered {
+        border-right: 2px solid #E3E3E3;
+        border-left: 2px solid #E3E3E3;
     }
 
     @media only screen and (max-width: 991.8px) {

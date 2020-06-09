@@ -98,7 +98,7 @@
                             رشته مورد نظر
                         </span>
                         <p class="detail-box-item-value">
-                            {{userForm.apply_major.name}}
+                            {{userForm.apply_major}}
                         </p>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                                 رشته:
                             </span>
                             <span class="form-info-field-value">
-                                {{userForm.major.name}}
+                                {{userForm.major}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -169,7 +169,7 @@
                                 دانشگاه:
                             </span>
                             <span class="form-info-field-value">
-                                {{userForm.university.name}}
+                                {{userForm.university}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -193,7 +193,7 @@
                                  سال فارغ التحصیلی:
                             </span>
                             <span class="form-info-field-value">
-                                {{userForm.degree_conferral_year.name}}
+                                {{userForm.degree_conferral_year}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -201,7 +201,7 @@
                                 مدرک زبان:
                             </span>
                             <span class="form-info-field-value" v-if="userForm.language_certificate">
-                                آیلتس
+                                {{userForm.language_certificate.name}}
                             </span>
                             <span class="form-info-field-multivalue isansFont" v-if="userForm.language_certificate">
                                 Reading: {{userForm.language_reading}} | Listening: {{userForm.language_listening}} | Speaking: {{userForm.language_speaking}} | Writing: {{userForm.language_writing}} | Overall: {{userForm.language_certificate_overall}}
@@ -243,7 +243,7 @@
                                 دانشگاه مقصد:
                             </span>
                             <span class="form-info-field-value">
-                                {{userForm.apply_university.name}}
+                                {{userForm.apply_university}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -251,7 +251,7 @@
                                  رشته مورد نظر:
                             </span>
                             <span class="form-info-field-value">
-                                {{userForm.apply_major.name}}
+                                {{userForm.apply_major}}
                             </span>
                         </p>
                         <p class="form-info-field">
@@ -300,9 +300,9 @@
                 return this.$store.getters.getUserInfo;
             },
             studentSmallDescription() {
-                if(this.userForm.id) {
+                if (this.userForm.id) {
                     return `
-                        دانشجوی ${this.userForm.grade.name} رشته ${this.userForm.major.name} ${this.userForm.university.name}
+                        دانشجوی ${this.userForm.grade.name} رشته ${this.userForm.major} ${this.userForm.university}
                     `
                 } else {
                     return '';
@@ -317,8 +317,6 @@
                     this.userForm = (await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.package.sold_to.id}/`, this.httpConfig)).data;
                     console.log(this.package);
                     console.log(this.userForm);
-                    // this.package = result.data;
-                    // this.userForm =
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -332,23 +330,58 @@
             async acceptCurrentPackage() {
                 console.log('is consultant?', this.isConsultant);
                 if (this.isConsultant) {
-                    try {
-                        this.$loading(true);
-                        let payload = {
-                            "sold_store_package": this.package.id,
-                            "consultant": this.userInfo.consultant.id
-                        };
-                        console.log('payload', payload);
-                        let result = await this.$api.post(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, payload, this.httpConfig);
-                        console.log(result);
-                    } catch (e) {
+                    if (window.confirm("آیا برای اعلام آمادگی برای انجام این پکیج مطمئنید ؟")) {
+                        try {
+                            this.$loading(true);
+                            let payload = {
+                                "sold_store_package": this.package.id,
+                                "consultant": this.userInfo.consultant.id
+                            };
+                            console.log('payload', payload);
+                            let result = await this.$api.post(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/`, payload, this.httpConfig);
+                            console.log(result);
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'آمادگی پکیج: موفق',
+                                text: 'شما با موفقیت برای انجام این پکیج اعلام آمادگی کردید.'
+                            })
+                        } catch (e) {
+                            console.log(e.response);
+                            this.$notify({
+                                group: 'notif',
+                                type: 'error',
+                                title: 'آمادگی پکیج: خطا',
+                                text: this.extractReadableError(e.response)
+                            })
 
-                    } finally {
-                        this.$loading(false);
+                        } finally {
+                            this.$loading(false);
+                        }
+
                     }
-
                 } else {
                     console.log('User is not consultant to request for accept.');
+                }
+            },
+
+            extractReadableError(errorResponse) {
+                if (errorResponse) {
+                    // let readableError = '';
+                    // let data = errorResponse.data;
+                    // for(let dataField in data) {
+                    //     console.log(dataField + ' ' + data[dataField]);
+                    //     if((typeof data[dataField]).toLowerCase() === 'array') {
+                    //         for(let i = 0; i < data[dataField].length; i++) {
+                    //             readableError += `${data[dataField][i]}<br>`
+                    //         }
+                    //     }
+                    // }
+                    // console.log(readableError);
+                    // return readableError;
+                    return 'خطایی هنگام ارتباط با سرور رخ داد و یا شما قبلا اعلام آمادگی کرده اید.'
+                } else {
+                    return 'خطایی هنگام ارتباط با سرور رخ داد و یا شما قبلا اعلام آمادگی کرده اید.'
                 }
             }
         },

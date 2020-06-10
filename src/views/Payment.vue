@@ -44,7 +44,7 @@
             </div>
 
             <div class="payment-result-box isansFont" v-if="hasPackage">
-                <p class="payment-result-data" v-if="isPackageFormFilled">
+                <p class="payment-result-data" v-if="hasFilledPackageForm">
                     پکیج شما با موفقیت رزرو شده است.
                     شما قبلاً "فرم اطلاعات اپلای" را پر کرده اید. در این مرحله اطلاعات پکیج شما برای مشاورین ما ارسال می شود و
                     شما می توانید از بین مشاورانی که برای انجام پکیج شما اعلام آمادگی کرده اند، یکی را انتخاب کنید.
@@ -90,7 +90,7 @@
                 detail: '',
                 order: null,
                 showResult: false,
-                isPackageFormFilled: false
+                currentPackageForm: null,
             }
         },
         methods: {
@@ -103,32 +103,17 @@
                         {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
                         this.httpConfig
                     );
+                    this.order = (await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig)).data;
+                    this.currentPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                     this.detail = result.data.detail;
                     this.refld = result.data.ReflD;
-                    if (result.data.order) {
-                        try {
-                            let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig);
-                            let currentUserPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
-                            this.order = paidOrderResult.data;
-                            this.isPackageFormFilled = !!currentUserPackageForm;
-                        } catch (e) {
-                            if(e.response) {
-                                console.log(e.response);
-                            }
-                        } finally {
-                            this.$loading(false);
-                            this.showResult = true;
-                        }
-                    } else {
-                        this.$loading(false);
-                        this.showResult = true;
-                    }
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
                     }
                 } finally {
+                    this.$loading(false);
                     this.showResult = true;
                 }
             }
@@ -136,7 +121,7 @@
         computed: {
             isSuccess() {
                 if (this.detail.length != 0) {
-                    return this.detail.toLowerCase() === 'success';
+                    return this.detail.toLowerCase() === 'success' && this.hasOrder;
                 } else {
                     return false;
                 }
@@ -150,16 +135,20 @@
                 return this.$store.getters.httpConfig;
             },
 
+            hasOrder() {
+                return !!this.order;
+            },
+
             hasPackage() {
-                return this.order && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number == 1;
+                return this.hasOrder && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number == 1;
             },
 
             hasPhase() {
-                return this.order && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number != 1;
+                return this.hasOrder && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number != 1;
             },
 
             wasFree() {
-                this.$route.query.refld && this.$route.query.refld === "00000000";
+                !!this.$route.query.refld && this.$route.query.refld === "00000000";
             },
 
             orderStorePackageId() {
@@ -171,7 +160,11 @@
             },
 
             hasTimeSlot() {
-                return this.order && this.order.sold_time_slot_sales.length > 0;
+                return this.hasOrder && this.order.sold_time_slot_sales.length > 0;
+            },
+
+            hasFilledPackageForm() {
+                return !!this.currentPackageForm;
             }
         },
         created() {

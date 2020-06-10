@@ -212,25 +212,6 @@
                 }
             },
 
-            // getCartProducts() {
-            //     this.$loading(true);
-            //     this.cartTimeSlots = [];
-            //     let slotReqs = [];
-            //     let storePackageReqs = [];
-            //     this.cart.time_slot_sales.forEach((slot) => {
-            //         slotReqs.push(this.$api.get(`${this.api}/store/time-slot-sales/${slot.id}/`, this.httpConfig))
-            //     });
-            //
-            //     Promise.all(slotReqs).then((responsesArr) => {
-            //         this.cartTimeSlots = responsesArr.map((response) => response.data);
-            //         console.log(this.cartTimeSlots);
-            //     }).catch((reject) => {
-            //         console.log(reject);
-            //     }).finally(() => {
-            //         this.$loading(false);
-            //     });
-            // },
-
             async checkDiscountCode() {
                 try {
                     this.$loading(true);

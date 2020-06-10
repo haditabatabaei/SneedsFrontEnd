@@ -303,7 +303,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
                 </div>
                 <div class="buy-box">
                     <h2 class="buy-box-title-price title-price--gray isansFont--faNum">
@@ -389,7 +389,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
                 </div>
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
@@ -483,7 +483,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage(storePackage)" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
                 </div>
                 <button class="buy-box-compare-toggler isansFont" @click="toggleComparePackages">
                     مقایسه کامل پکیج ها
@@ -596,8 +596,6 @@
 </template>
 
 <script>
-    import store from "../../store";
-
     export default {
         name: "Landing",
         data() {

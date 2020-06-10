@@ -106,10 +106,22 @@
                     this.detail = result.data.detail;
                     this.refld = result.data.ReflD;
                     if (result.data.order) {
-                        let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig);
-                        let currentUserPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
-                        this.order = paidOrderResult.data;
-                        this.isPackageFormFilled = !!currentUserPackageForm;
+                        try {
+                            let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig);
+                            let currentUserPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                            this.order = paidOrderResult.data;
+                            this.isPackageFormFilled = !!currentUserPackageForm;
+                        } catch (e) {
+                            if(e.response) {
+                                console.log(e.response);
+                            }
+                        } finally {
+                            this.$loading(false);
+                            this.showResult = true;
+                        }
+                    } else {
+                        this.$loading(false);
+                        this.showResult = true;
                     }
                 } catch (e) {
                     console.log(e);
@@ -117,7 +129,6 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
                     this.showResult = true;
                 }
             }

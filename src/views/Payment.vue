@@ -105,8 +105,8 @@
                     );
                     this.detail = result.data.detail;
                     this.refld = result.data.ReflD;
-                    if (result.order) {
-                        let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.order}/`, this.httpConfig);
+                    if (result.data.order) {
+                        let paidOrderResult = await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig);
                         let currentUserPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                         this.order = paidOrderResult.data;
                         this.isPackageFormFilled = !!currentUserPackageForm;

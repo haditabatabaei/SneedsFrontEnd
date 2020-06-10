@@ -140,11 +140,11 @@
             },
 
             hasPackage() {
-                return this.hasOrder && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number == 1;
+                return this.hasOrder && this.order.sold_store_paid_package_phases[0] && this.order.sold_store_paid_package_phases[0].phase_number == 1;
             },
 
             hasPhase() {
-                return this.hasOrder && this.sold_store_paid_package_phases[0] && this.sold_store_paid_package_phases[0].phase_number != 1;
+                return this.hasOrder && this.order.sold_store_paid_package_phases[0] && this.order.sold_store_paid_package_phases[0].phase_number != 1;
             },
 
             wasFree() {
@@ -153,7 +153,7 @@
 
             orderStorePackageId() {
                 if(this.hasPackage || this.hasPhase) {
-                    let splitted = this.sold_store_paid_package_phases[0].sold_store_package.split("/");
+                    let splitted = this.order.sold_store_paid_package_phases[0].sold_store_package.split("/");
                     splitted.pop();
                     return splitted[splitted.length - 1];
                 }

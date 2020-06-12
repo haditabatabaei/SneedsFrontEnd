@@ -49,7 +49,7 @@
                          class="chatroom-messages-item-avatar" alt=""
                          v-if="message.profile_img && message.messageType != 'VoiceMessage'">
 
-                    <img draggable="false" src="https://picsum.photos/id/0/75/75"
+                    <img draggable="false" src="/sneedsAssets/img/profile.png"
                          class="chatroom-messages-item-avatar" alt="" v-else-if="message.messageType != 'VoiceMessage'">
 
                     <div class="chatroom-messages-item-content"

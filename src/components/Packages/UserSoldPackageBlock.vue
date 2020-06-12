@@ -1,28 +1,32 @@
 <template>
     <router-link class="consultantBlock row" :to="clickTarget">
         <div class="consultantBlockData col-md-8">
-            <img src="" class="consultantBlockImage"/>
+            <img src="/sneedsAssets/img/plane.jpg" class="consultantBlockImage"/>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">
-                        {{package.title}} (بودجه : {{package.total_price}} تومان)
+                        {{package.title}}
                     </router-link>
                 </div>
                 <div class="consultantBlockInfoItem">
-                    <p class="isansFont consultantBio">
-                        رزرو توسط:
-                        {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
+                    <p class="isansFont--faNum consultantBio" v-if="hasConsultant">
+                        وضعیت:
+                        مشاور تایید شده. در حال انجام.
                     </p>
-                    <p class="isansFont consultantBio--mobile">
-                        رزرو توسط:
-                        {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
+                    <p class="isansFont--faNum consultantBio" v-else>
+                        وضعیت:
+                        منتظر تایید یکی از مشاوران توسط شما.
+                    </p>
+                    <p class="isansFont--faNum consultantBio">
+                        آخرین تغییر:
+                        {{getJalali(package.updated).locale($store.getters.locale).format('dddd DD MMMM YYYY HH:mm')}}
                     </p>
                 </div>
             </div>
         </div>
 
         <div class="consultantBlockAction col-md-4 text-center">
-            <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-if="package.consultant == null">
+            <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-if="!hasConsultant">
                 مشاهده درخواست های مشاورین
             </router-link>
             <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-else>
@@ -33,12 +37,18 @@
 </template>
 
 <script>
+    import jalali from 'jalali-moment'
     export default {
         name: "UserSoldPackageBlock",
         props: {
             package: {
                 type: Object,
             },
+        },
+        methods: {
+            getJalali(date) {
+                return jalali(date);
+            }
         },
         computed: {
             clickTarget() {
@@ -47,6 +57,9 @@
                 } else {
                     return `/user/userpackages/manager/${this.package.id}`
                 }
+            },
+            hasConsultant() {
+                return !!this.package.consultant;
             }
         }
     }
@@ -103,7 +116,8 @@
 
     .consultantBlockInfoItem {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
         justify-content: center;
         flex-wrap: wrap;
     }
@@ -172,12 +186,14 @@
     }
 
     .consultantShowButton {
-        border: 1px solid #333333;
-        color: #333;
+        border: 1px solid #8E39CC;
+        color: #8E39CC;
         padding: 10px 35px;
         border-radius: 10px;
         transition: all 0.2s ease;
         background-color: white;
+        font-size: 12px;
+        text-align: center;
     }
 
     .consultantCalendarLink i {
@@ -186,7 +202,7 @@
     }
 
     .consultantShowButton:hover {
-        background-color: #333;
+        background-color: #8E39CC;
         color: white;
     }
 

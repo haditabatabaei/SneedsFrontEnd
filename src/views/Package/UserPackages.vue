@@ -50,16 +50,13 @@
                 this.activeFilter = filter;
                 switch (this.activeFilter.value) {
                     case 'marketplace' :
-                        // this.getAllSessions();
                         console.log('market place switch');
-                        // this.getConsideringPackages();
                         break;
                     case 'soldpackage' :
                         console.log('sold package switch');
-                        // this.getUsedSessions();
+                        this.getSoldPackages();
                         break;
                 }
-                // this.getCurrentTimeInTimezone();
             },
             async getSoldPackages() {
                 try {

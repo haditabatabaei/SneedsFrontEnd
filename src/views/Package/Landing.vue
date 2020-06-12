@@ -70,40 +70,68 @@
                 </div>
                 <div class="section-services-items">
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
+                        <img class="services-item-image" src="/sneedsAssets/img/destchoose.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                1.
+                            </mark>
+                            پیدا کردن کالج
+                        </h3>
+                        <p class="services-item-text">
+                            مشاوران اسنیدز بعد از صحبت با شما ،بهترین کالج ممکن رو بر اساس بودجه علایق و رزومه شما
+                            براتون انتخاب می‌کنند و دیگه لازم نیست توی یه لیست طولانی !اطلاعات کلی کالج رو زیر و رو کنی
+                        </p>
                     </div>
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
+                        <img class="services-item-image" src="/sneedsAssets/img/docs.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                2.
+                            </mark>
+                            تکمیل مدارک
+                        </h3>
+                        <p class="services-item-text">
+                            بلد نیستی چطوری رزومه یا انگیزه‌نامه بنویسی؟ یا هیچ ایده‌ای نسبت به مدارکی که برای اپلای
+                            لازمه نداری؟ مهم نیست همه این کارا با مشاوران با تجربه اسنیدزه.
+                        </p>
                     </div>
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
+                        <img class="services-item-image" src="/sneedsAssets/img/submit.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                3.
+                            </mark>
+                            سابمیت اپلیکیشن
+                        </h3>
+                        <p class="services-item-text">
+                            شاید در نگاه اول کار ساده‌ای به نظر بیاد ولی یکی از زمان‌بر ترین کار‌ها سابمیت اپلیکیشنه...
+                        </p>
                     </div>
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
+                        <img class="services-item-image" src="/sneedsAssets/img/conversations.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                4.
+                            </mark>
+                            انجام مکاتبات
+                        </h3>
+                        <p class="services-item-text">
+                            زبانت خوب نیست؟ فکر می‌کنی ممکنه به خاطر اشتباه در مکاتبات پذیرشت رو به خطر بندازی؟ بسپرش به
+                            مشاورانی که تو کشور مقصد تحصیل کردن!
+                        </p>
                     </div>
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
-                    </div>
-                    <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
-                    </div>
-                    <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
-                    </div>
-                    <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
-                    </div>
-                    <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/landing-item.png" alt="">
-                        <p class="services-item-meta">نگارش مدرک</p>
+                        <img class="services-item-image" src="/sneedsAssets/img/payment.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                5.
+                            </mark>
+                            انجام پرداخت‌ها
+                        </h3>
+                        <p class="services-item-text">
+                            برای پرداخت شهریه، اپلیکشین‌فی و نیاز به کمک داری؟ اسنیدز با کمترین کارمزد و در کمترین
+                            زمان ممکن بدون واسطه برات پرداخت‌ها رو انجام می‌ده.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -303,7 +331,9 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000
+                        تومان
+                    </button>
                 </div>
                 <div class="buy-box">
                     <h2 class="buy-box-title-price title-price--gray isansFont--faNum">
@@ -313,8 +343,9 @@
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج  نقره ای کالج</h1>
-                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک .مشاوران اسنیدز حداقل کنن</h3>
+                        <h1 class="box-title-text isansFont">پکیج نقره ای کالج</h1>
+                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک .مشاوران
+                            اسنیدز حداقل کنن</h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -400,7 +431,8 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج طلایی کالج</h1>
-                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور !مقصد رو از خودشون دور کنن</h3>
+                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور !مقصد
+                            رو از خودشون دور کنن</h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -564,7 +596,6 @@
                 </div>
             </section>
         </transition>
-
         <section class="package-section package-section-faq">
             <div class="section-sub section-sub-faq">
                 <section class="faq-box" v-for="faqBox in faqBoxes">
@@ -904,37 +935,58 @@
         width: 100px;
         height: 4px;
         border-radius: 30px;
-        background-color: #8C3DDB;
+        background-color: #00BFD6;
         margin: 20px 0;
     }
 
     .section-services-items {
         display: flex;
-        align-items: center;
-        justify-content: space-evenly;
+        justify-content: center;
         width: 100%;
         flex-wrap: wrap;
     }
 
     .services-item {
-        width: calc(100% / 3);
-        min-width: 150px;
+        width: 250px;
+        margin: 15px;
+        min-height: 300px;
         display: flex;
         position: relative;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        background-color: white;
+        box-shadow: 0 8px 46px #6E6E6E29;
+        border-radius: 15px;
     }
 
     .services-item-image {
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
+        margin: 30px auto;
     }
 
     .services-item-meta {
-        margin: 5px 0 25px;
+        margin: 0 15px 10px 0;
         color: #303143;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+    .services-item-meta-number {
+        padding: 0;
+        background: none;
+        color: #00BFD6;
+        font-size: 32px;
+        margin-left: 5px;
+    }
+
+    .services-item-text {
+        color: #707070;
+        padding: 15px;
+        font-size: 13px;
+        line-height: 24px;
     }
 
     .section-sub-steps {

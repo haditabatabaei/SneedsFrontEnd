@@ -7,22 +7,22 @@
                             @click="filterBy(filter)"
                             class="switcher"
                             :class="[{'switcher--active' : activeFilter.value === filter.value}]">
-            {{filter.name}}
-            </button>
-        </div>
-        </div>
+                        {{filter.name}}
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="package-items">
             <div v-if="activeFilter.value === 'marketplace'">
                 <considering-package v-for="marketPackage in packages" :package="marketPackage"/>
-                <p class="isansFont--faNum" v-if="packages.length === 0">
-                    پکیجی در این دسته برای شما وجود ندارد
+                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                    پکیجی در این دسته برای شما وجود ندارد.
                 </p>
             </div>
             <div v-else-if="activeFilter.value === 'soldpackage'">
                 <considering-package v-for="marketPackage in packages" :package="marketPackage"/>
-                <p class="isansFont--faNum" v-if="packages.length === 0">
-                    پکیجی در این دسته برای شما وجود ندارد
+                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                    پکیجی در این دسته برای شما وجود ندارد.
                 </p>
             </div>
         </div>
@@ -60,7 +60,6 @@
                 this.activeFilter = filter;
                 switch (this.activeFilter.value) {
                     case 'marketplace' :
-                        // this.getAllSessions();
                         console.log('market place switch');
                         this.getConsideringPackages();
                         break;
@@ -69,7 +68,6 @@
                         this.getAcceptedPackages();
                         break;
                 }
-                // this.getCurrentTimeInTimezone();
             },
 
             async getAcceptedPackages() {
@@ -77,6 +75,13 @@
                     this.$loading(true);
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/sold-store-package-list/`, this.httpConfig));
                     console.log(packagesResult);
+                    let packagesFormsReqs = [];
+                    packagesResult.data.forEach(soldPackage => {
+                        packagesFormsReqs.push(
+                            this.$api.get(`${this.api}/account/user-student-detailed-info/${soldPackage.sold_to.id}/`, this.httpConfig)
+                        )
+                    });
+                    await this.getPackagesForms(packagesFormsReqs, packagesResult.data);
                     this.packages = packagesResult.data;
                 } catch (e) {
                     console.log(e);
@@ -88,11 +93,39 @@
                 }
             },
 
+            getPackagesForms(packagesFormsReqs, currentPackages) {
+                return new Promise((resolve, reject) => {
+                    Promise
+                        .all(packagesFormsReqs)
+                        .then(packagesFormsResponses => {
+                            for (let i = 0; i < currentPackages.length; i++) {
+                                currentPackages[i].userDetailedInfo = packagesFormsResponses[i].data;
+                            }
+                            console.log('packages after user detailed forms', currentPackages);
+                            resolve();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            if (error.response) {
+                                console.log(error.response);
+                            }
+                            reject();
+                        })
+                })
+            },
+
             async getConsideringPackages() {
                 try {
                     this.$loading(true);
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/marketplace-list/`, this.httpConfig));
+                    let packagesFormsReqs = [];
                     console.log(packagesResult);
+                    packagesResult.data.forEach(soldPackage => {
+                        packagesFormsReqs.push(
+                            this.$api.get(`${this.api}/account/user-student-detailed-info/${soldPackage.sold_to.id}/`, this.httpConfig)
+                        )
+                    });
+                    await this.getPackagesForms(packagesFormsReqs, packagesResult.data);
                     this.packages = packagesResult.data;
                 } catch (e) {
                     console.log(e);
@@ -161,6 +194,15 @@
     .package-items--text {
         text-align: center;
         margin-top: 30px;
+    }
+
+    .package-items-noresult {
+        text-align: center;
+        width: 100%;
+        border-radius: 0 0 10px 10px;
+        background-color: white;
+        padding: 5px 0;
+        font-size: 13px;
     }
 
 </style>

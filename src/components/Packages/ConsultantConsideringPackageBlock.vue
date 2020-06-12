@@ -1,17 +1,31 @@
 <template>
     <router-link class="consultantBlock row" :to="clickTarget">
         <div class="consultantBlockData col-md-8">
-            <img src="" class="consultantBlockImage"/>
+            <div class="package-image-wrapper">
+                <p class="package-budget isansFont--faNum" v-if="!hasConsultant">
+                    بودجه :
+                    {{package.total_price}}
+                    تومان
+                </p>
+            </div>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
+                    <p class="package-title-country isansFont" v-if="hasUserDetailedInfo">
+                        {{package.userDetailedInfo.apply_country.name}}
+                    </p>
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">
-                        {{package.title}} (بودجه : {{package.total_price}} تومان)
+                        {{package.title}}
                     </router-link>
                 </div>
                 <div class="consultantBlockInfoItem">
                     <p class="isansFont consultantBio">
                         رزرو توسط:
                         {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
+                        <br>
+                        <span v-if="hasUserDetailedInfo">
+                            برای رشته :
+                            {{package.userDetailedInfo.apply_major}}
+                        </span>
                     </p>
                     <p class="isansFont consultantBio--mobile">
                         رزرو توسط:
@@ -22,11 +36,11 @@
         </div>
 
         <div class="consultantBlockAction col-md-4 text-center">
-            <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-if="package.consultant == null">
+            <router-link :to="clickTarget" class="consultantShowButton isansFont" v-if="!hasConsultant">
                 مشاهده جزئیات پکیج و اعلام آمادگی
             </router-link>
-            <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-else>
-               مدیریت پکیج
+            <router-link :to="clickTarget" class="consultantShowButton isansFont" v-else>
+                مدیریت پکیج
             </router-link>
         </div>
 
@@ -43,11 +57,18 @@
         },
         computed: {
             clickTarget() {
-                if(this.package.consultant == null) {
+                if(!this.hasConsultant) {
                     return `/user/conspackages/marketplace/${this.package.id}`
                 } else {
                     return `/user/conspackages/manager/${this.package.id}`
                 }
+            },
+            hasUserDetailedInfo() {
+                return !!this.package.userDetailedInfo;
+            },
+
+            hasConsultant() {
+               return !!this.package.consultant;
             }
         }
     }
@@ -82,7 +103,7 @@
         border-color: #82eafb;
     }
 
-    .consultantBlockImage {
+    .package-image-wrapper {
         width: 150px !important;
         height: 150px !important;
         min-width: 150px;
@@ -90,6 +111,20 @@
         min-height: 150px;
         max-height: 150px;
         border-radius: 10px;
+        background: url("/sneedsAssets/img/plane.jpg") no-repeat center center;
+        position: relative;
+    }
+
+    .package-budget {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 3px 5px;
+        border-radius: 10px;
+        background-color: #8E39CC;
+        color: white;
+        font-size: 10px;
     }
 
     .consultantBlockInfo {
@@ -104,9 +139,9 @@
 
     .consultantBlockInfoItem {
         display: flex;
-        align-items: center;
         justify-content: center;
         flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .consultantName {
@@ -115,70 +150,25 @@
         font-weight: bold;
     }
 
-    .consultantCalendarLink {
-        color: #BD79C9;
-        font-size: 10px;
-        font-weight: bold;
-        margin-right: 5px;
-        border-right: 1px solid #f2f2f2;
-        padding-right: 5px;
-    }
-
     .consultantBio {
         color: #666;
         font-size: 12px;
         line-height: 25px;
     }
 
-    .rate {
-        padding: 5px 15px;
-        border-radius: 50px;
-        color: white;
-        font-size: 12px;
-        position: relative;
-        z-index: 2;
-        top: -2px;
-    }
-
-    .comments {
-        font-size: 12px;
-        background-color: #f2f2f2;
-        color: #808080;
-        padding: 5px 20px;
-        border-radius: 50px 0 0 50px;
-        position: relative;
-        top: -2px;
-        margin-right: -12px;
-        z-index: 1;
-    }
-
-    .comments:hover {
-        background-color: #e9e9e9;
-    }
-
-    .goodRate {
-        background-color: #68BD6B;
-    }
-
-    .normalRate {
-        background-color: orange;
-    }
-
-    .badRate {
-        background-color: #9d0000;
-    }
-
-    .noRate {
-        background-color: #ccc;
+    .field-icon {
+        font-size: 16px;
     }
 
     .consultantShowButton {
-        border: 1px solid #333333;
-        color: #333;
+        border: 1px solid #8E39CC;
+        color: #8E39CC;
         padding: 10px 35px;
         border-radius: 10px;
         transition: all 0.2s ease;
         background-color: white;
+        font-size: 12px;
+        text-align: center;
     }
 
     .consultantCalendarLink i {
@@ -187,7 +177,7 @@
     }
 
     .consultantShowButton:hover {
-        background-color: #333;
+        background-color: #8E39CC;
         color: white;
     }
 
@@ -200,7 +190,7 @@
     }
 
     @media only screen and (max-width: 576.8px) and (min-width: 0) {
-        .consultantBlockImage {
+        .package-image-wrapper {
             width: 100px !important;
             height: 100px !important;
             min-width: 100px;

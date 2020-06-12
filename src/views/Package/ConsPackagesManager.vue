@@ -44,7 +44,7 @@
                         <button class="newTaskModal-footer-cancel" v-if="!editTaskPattern" id="closable-action" @click="hideNewTaskModal">
                             بیخیال
                         </button>
-                        <button class="newTaskModal-footer-delete" v-if="editTaskPattern">
+                        <button class="newTaskModal-footer-delete" @click="deleteTask" v-if="editTaskPattern">
                             <i class="material-icons">delete_forever</i>
                             حذف این کار
                         </button>
@@ -137,11 +137,6 @@
                     </p>
                     <p class="body-tab-row-text">
                         ندارد
-                        <!--                        <a class="row-text-file" href="#">-->
-                        <!--                            <i class="material-icons">-->
-                        <!--                                folder-->
-                        <!--                            </i>-->
-                        <!--                        </a>-->
                     </p>
                 </div>
             </div>
@@ -244,6 +239,23 @@
             async toggleCurrentPhase(phase) {
                 this.currentPhase = phase;
                 this.getCurrentPhaseTasks();
+            },
+
+            async deleteTask() {
+                try {
+                    this.$loading(true);
+                    let result = await this.$api.delete(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, this.httpConfig);
+                    console.log(result);
+                    this.hideNewTaskModal(null, true);
+                    await this.getCurrentPhaseTasks();
+                } catch (e) {
+                    console.log(e);
+                    if (e.response) {
+                        console.log(e.response);
+                    }
+                } finally {
+                    this.$loading(false);
+                }
             },
 
             async performEditTask() {

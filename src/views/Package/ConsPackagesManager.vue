@@ -65,12 +65,10 @@
         </div>
         <div class="package-head">
             <div class="package-head-info">
-                <img class="package-head-info-image" src="" alt="">
+                <img class="package-head-info-image" src="/sneedsAssets/img/profile.png" alt="">
                 <div class="package-head-info-text isansFont--faNum">
                     <p class="package-head-info-namerate">
                         {{`${soldPackage.sold_to.first_name} ${soldPackage.sold_to.last_name}`}}
-                    </p>
-                    <p class="package-head-info-study">
                     </p>
                 </div>
             </div>

@@ -1,64 +1,5 @@
 <template>
     <section class="itemBlock">
-        <transition name="fade">
-            <div class="modal-overlay" v-if="isShowingNewTaskModal" id="closable-overlay" @click="hideNewTaskModal">
-                <div class="newTaskModal">
-                    <div class="newTaskModal-head">
-                        <h2 class="newTaskModal-head-title isansFont" v-if="editTaskPattern">
-                            <button class="newTaskModal-head-title-close">
-                                <i id="closable-modal" class="material-icons" @click="hideNewTaskModal">close</i>
-                            </button>
-                            ویرایش کار
-                        </h2>
-                        <h2 class="newTaskModal-head-title isansFont" v-else>
-                            <button class="newTaskModal-head-title-close">
-                                <i id="closable-modal" class="material-icons" @click="hideNewTaskModal">close</i>
-                            </button>
-                            ایجاد کار جدید
-                        </h2>
-                    </div>
-                    <div class="newTaskModal-body isansFont">
-                        <label for="taskTitle" class="newTaskModal-body-label">
-                        <span class="newTaskModal-body-label-name">
-                            عنوان کار
-                            <mark>*</mark>
-                            :
-                        </span>
-                            <input type="text" class="newTaskModal-body-input" id="taskTitle" name="taskTitle" v-model="newTaskInput.title">
-                        </label>
-                        <label for="taskStatus" class="newTaskModal-body-label">
-                        <span class="newTaskModal-body-label-name">
-                            وضعیت فعلی
-                            <mark>*</mark>
-                            :
-                        </span>
-                            <select name="taskStatus" id="taskStatus" class="newTaskModal-body-input" v-model="newTaskInput.status">
-                                <option value="in_progress" class="newTaskModal-body-input-option">درحال انجام</option>
-                                <option value="in_progress" class="newTaskModal-body-input-option">انجام شده</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="newTaskModal-footer isansFont">
-                        <p class="package-empty-tab-warn">
-                            .توجه داشته باشید که کاربر قادر به مشاهده تمام جزئیات کارها می‌باشد
-                        </p>
-                        <button class="newTaskModal-footer-cancel" v-if="!editTaskPattern" id="closable-action" @click="hideNewTaskModal">
-                            بیخیال
-                        </button>
-                        <button class="newTaskModal-footer-delete" v-if="editTaskPattern">
-                            <i class="material-icons">delete_forever</i>
-                            حذف این کار
-                        </button>
-                        <button class="newTaskModal-footer-create" @click="performEditTask" v-if="editTaskPattern">
-                            اعمال تغییرات
-                        </button>
-                        <button v-else class="newTaskModal-footer-create" @click="createNewTask">
-                            ایجاد کار جدید
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </transition>
         <div class="package-title">
             <h1 class="package-title-text isansFont">
                 مدیریت پکیج اپلای کاربر
@@ -130,11 +71,6 @@
                     </p>
                     <p class="body-tab-row-text">
                         ندارد
-                        <!--                        <a class="row-text-file" href="#">-->
-                        <!--                            <i class="material-icons">-->
-                        <!--                                folder-->
-                        <!--                            </i>-->
-                        <!--                        </a>-->
                     </p>
                 </div>
             </div>
@@ -147,6 +83,7 @@
                 </p>
             </div>
         </div>
+        <button @click="payCurrentPhase" class="payCurrentPhase isansFont" v-if="currentPhase.active">پرداخت قسط {{currentPhase.title}}</button>
     </section>
 </template>
 
@@ -161,12 +98,6 @@
                 consultant: {},
                 currentPhase: {},
                 currentPhaseTasks: [],
-                isShowingNewTaskModal: false,
-                editTaskPattern: false,
-                newTaskInput: {
-                    title: '',
-                    status: 'in_progress'
-                },
             }
         },
         computed: {
@@ -195,79 +126,9 @@
                 return jalali(date).locale(this.$store.getters.locale);
             },
 
-            showNewTaskModal() {
-                this.isShowingNewTaskModal = true;
-            },
-
-            hideNewTaskModal(event, forced = false) {
-                if(forced) {
-                    this.isShowingNewTaskModal = false;
-                    this.editTaskPattern = false;
-                } else {
-                    if(event.target.id.startsWith('closable')) {
-                        this.isShowingNewTaskModal = false;
-                        this.editTaskPattern = false;
-                    }
-                }
-            },
-
-            editTask(task) {
-                this.showNewTaskModal();
-                this.editTaskPattern = true;
-                this.newTaskInput.title = task.title;
-                this.newTaskInput.status = task.status;
-                this.newTaskInput.id = task.id;
-            },
-
             async toggleCurrentPhase(phase) {
                 this.currentPhase = phase;
                 this.getCurrentPhaseTasks();
-            },
-
-            async performEditTask() {
-                try {
-                    this.$loading(true);
-                    let payload = {
-                        "status" : this.newTaskInput.status,
-                        "title": this.newTaskInput.title,
-                    };
-                    let result = await this.$api.put(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.httpConfig);
-                    this.newTaskInput = {status: "", title: ""};
-                    this.hideNewTaskModal(null, true);
-                    await this.getCurrentPhaseTasks();
-                    console.log(result);
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
-                }
-            },
-
-            async createNewTask() {
-                try {
-                    this.$loading(true);
-                    let payload = {
-                        "status" : this.newTaskInput.status,
-                        "title": this.newTaskInput.title,
-                        "object_id": this.currentPhase.id,
-                        "content_type": this.getPhaseContentType(this.currentPhase)
-                    };
-                    let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.httpConfig);
-                    this.newTaskInput = {status: "", title: ""};
-                    this.hideNewTaskModal(null, true);
-                    await this.getCurrentPhaseTasks();
-                    console.log(result);
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-                    this.$loading(false);
-                }
             },
 
             getPhaseContentType(phase) {
@@ -311,6 +172,25 @@
                     }
                 } finally {
                     this.$loading(false);
+                }
+            },
+
+            async payCurrentPhase() {
+                if(!!this.currentPhase.active) {
+                    try {
+                        this.$loading(true);
+                        let result = (await this.$api.post(`${this.api}/cart/carts/`, {"products": [this.currentPhase.id]}, this.httpConfig))
+                        console.log(result);
+                        this.$router.push(`/carts/${result.data.id}`)
+                    } catch (e) {
+                        if(e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+                        this.$loading(false);
+                    }
+                } else {
+
                 }
             }
         },
@@ -479,23 +359,6 @@
         font-size: 20px;
     }
 
-    .package-empty-addtask {
-        padding: 0;
-        margin: 10px 0;
-        color: #8C3DDB;
-        border-radius: 50%;
-        border: 1px solid #8C3DDB;
-        background: none;
-        display: flex;
-        align-items: center;
-    }
-
-    .package-empty-addtask i {
-        padding: 0;
-        margin: 0;
-        font-size: 20px;
-    }
-
     .package-body-tab-title {
         margin-top: 30px;
         display: flex;
@@ -546,103 +409,6 @@
         font-size: 20px;
     }
 
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1016;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .newTaskModal {
-        width: 80%;
-        background-color: white;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        padding-bottom: 15px;
-    }
-
-    .newTaskModal-head-title {
-        color: #9B9999;
-        display: flex;
-        align-items: center;
-        margin: 10px;
-        font-size: 18px;
-    }
-
-    .newTaskModal-head-title-close {
-        padding: 0;
-        margin: 0 0 0 5px;
-        background: none;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .newTaskModal-body {
-        display: flex;
-        align-items: center;
-        margin: 20px;
-    }
-
-    .newTaskModal-body-label {
-        display: flex;
-        flex-direction: column;
-        color: #707070;
-    }
-
-    .newTaskModal-body-label:not(:first-child) {
-        margin-right: 15px;
-    }
-
-    .newTaskModal-body-input {
-        margin-top: 10px;
-        border-radius: 5px;
-        padding: 5px 5px 5px 15px;
-        min-width: 250px;
-        min-height: 40px;
-        border: 1px solid #F2F2F2;
-        background-color: #F8F8F8;
-    }
-
-    .newTaskModal-body-label-name mark {
-        padding: 0;
-        margin: 0;
-        background: none;
-        color: #E46464;
-    }
-
-    .newTaskModal-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        margin: 0 15px;
-    }
-
-    .newTaskModal-footer-cancel {
-        color: #9B9999;
-        background: none;
-        border: none;
-        margin: 10px;
-    }
-
-    .newTaskModal-footer-create {
-        color: #FCFCFC;
-        border: none;
-        border-radius: 10px;
-        padding: 7px 25px;
-        background-color: #3CAEA3;
-        margin: 10px;
-    }
-
     .tab-row-edit {
         margin: 0;
         padding: 0;
@@ -655,20 +421,14 @@
         color: #707070;
     }
 
-    .newTaskModal-footer-delete {
-        color: #DC3030;
-        border: none;
+    .payCurrentPhase {
+        align-self: flex-start;
+        margin: 15px 30px 0 0;
+        color: white;
+        background-color: #1B655E;
         border-radius: 10px;
+        border: none;
         padding: 7px 25px;
-        background-color: #FFECEC;
-        margin: 10px;
-        display: flex;
-        align-items: center;
+        font-size: 14px;
     }
-
-    .newTaskModal-footer-delete i {
-        margin-left: 5px;
-        font-size: 20px;
-    }
-
 </style>

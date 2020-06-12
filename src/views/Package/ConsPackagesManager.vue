@@ -73,6 +73,9 @@
                 </div>
             </div>
             <div class="package-head-action isansFont">
+                <router-link class="package-head-action-chat" to="/user/chatroom">
+                    <i class="material-icons">mail</i>
+                </router-link>
                 <button class="package-head-action-profileview" @click="showNewTaskModal">
                     <i class="material-icons">add</i>
                     افزودن کار جدید به این مرحله
@@ -405,13 +408,8 @@
         font-weight: bold;
     }
 
-    .package-head-info-study {
-        margin: 10px 0 0 0;
-    }
-
-    .package-head-info-study {
-        color: #9B9999;
-        font-size: 14px;
+    .package-head-action {
+        display: flex;
     }
 
     .package-head-action-profileview {
@@ -425,12 +423,40 @@
         margin-left: 10px;
         display: flex;
         align-items: center;
+        justify-content: center;
     }
 
     .package-head-action-profileview i {
-        color: #8C3DDB;
         font-size: 16px;
         margin-left: 5px;
+    }
+
+    .package-head-action-profileview:hover {
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .package-head-action-chat {
+        background-color: white;
+        border: 1px solid #8C3DDB;
+        color: #8C3DDB;
+        border-radius: 50%;
+        padding: 2px;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+    }
+
+    .package-head-action-chat i{
+        font-size: 16px;
+    }
+
+    .package-head-action-chat:hover {
+        background-color: #8C3DDB;
+        color: white;
     }
 
     .package-body {
@@ -524,6 +550,11 @@
         padding: 0;
         margin: 0;
         font-size: 20px;
+    }
+
+    .package-empty-addtask:hover {
+        background-color: #8C3DDB;
+        color: white;
     }
 
     .package-body-tab-title {

@@ -6,13 +6,17 @@
             </h1>
         </div>
         <div class="package-head">
-            <div class="package-head-info">
-                <img class="package-head-info-image" src="" alt="">
+            <div class="package-head-info" v-if="hasConsultant">
+                <img class="package-head-info-image" :src="consultant.profile_picture" :alt="`${consultant.first_name} ${consultant.last_name}`">
                 <div class="package-head-info-text isansFont--faNum">
                     <p class="package-head-info-namerate">
                         {{`${consultant.first_name} ${consultant.last_name}`}}
                     </p>
-                    <p class="package-head-info-study">
+                    <p class="package-head-info-study" v-if="hasStudyInfo">
+                        {{studyText}}
+                    </p>
+                    <p class="package-head-info-study" v-else>
+                        بدون خلاصه تحصیلات
                     </p>
                 </div>
             </div>
@@ -95,7 +99,7 @@
         data() {
             return {
                 soldPackage: {},
-                consultant: {},
+                consultant: null,
                 currentPhase: {},
                 currentPhaseTasks: [],
             }
@@ -120,6 +124,43 @@
                     return []
                 }
             },
+
+            hasConsultant() {
+                return !!this.consultant;
+            },
+
+            hasStudyInfo() {
+                return this.consultant && this.consultant.study_info.length > 0;
+            },
+
+            studyInfo() {
+                return this.hasStudyInfo && this.consultant.study_info[this.consultant.study_info.length - 1];
+            },
+
+            studyText() {
+                if (this.hasStudyInfo) {
+                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                } else {
+                    return " ";
+                }
+            },
+
+            persianGrade() {
+                if (this.hasStudyInfo) {
+                    switch (this.studyInfo.grade) {
+                        case 'phd':
+                            return 'دکترا';
+                        case 'master':
+                            return 'کارشناسی ارشد';
+                        case 'bachelor':
+                            return 'کارشناسی';
+                        default :
+                            return ' ';
+                    }
+                } else {
+                    return ' ';
+                }
+            }
         },
         methods: {
             getJalali(date) {
@@ -161,10 +202,9 @@
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;
-                    let consultantResult = await this.$api.get(this.soldPackage.consultant_url, this.httpConfig);
-                    this.consultant = consultantResult.data;
+                    this.consultant = (await this.$api.get(this.soldPackage.consultant_url, this.httpConfig)).data;
                     console.log('consultant:', this.consultant);
-                    this.toggleCurrentPhase(this.allPhases[0]);
+                    await this.toggleCurrentPhase(this.allPhases[0]);
                 } catch (e) {
                     console.log(e);
                     if (e.response) {

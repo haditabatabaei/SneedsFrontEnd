@@ -21,15 +21,11 @@
                         </p>
                     </div>
                 </div>
-                <div v-for="storePackage in cart.store_packages" class="cartsWrapper" v-if="thereIsPackage">
+                <div class="cartsWrapper" v-if="thereIsPackage" v-for="storePackage in cart.store_packages" >
                     <div class="cartsWrapper-title isansFont--faNum">
                         <i class="material-icons plane-icon">airplanemode_active</i>
                         <div class="cartsWrapper-title-consultant--info">
-                            <h5 class="isansFont">رزرو پکیج</h5>
-                            <h6 class="isansFont--faNum">
-                                ( {{storePackage.price}}
-                                تومان )
-                            </h6>
+                            <h5 class="isansFont">رزرو {{storePackage.title}}</h5>
                         </div>
                     </div>
                     <div class="cartsWrapper-package-detail">
@@ -51,6 +47,35 @@
                                 <i class="material-icons">done</i>
                                 <p>بعد از تایید مشاور توسط شما، مبلغ ۱۵.۵ میلیون تومان در ۳ قسط جداگانه دریافت خواهد
                                     شد.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cartsWrapper" v-if="thereIsUnpaidPhase" v-for="phase in cart.sold_store_unpaid_package_phases">
+                    <div class="cartsWrapper-title isansFont--faNum">
+                        <i class="material-icons plane-icon">airplanemode_active</i>
+                        <div class="cartsWrapper-title-consultant--info">
+                            <h5 class="isansFont">پرداخت {{phase.title}}</h5>
+                        </div>
+                    </div>
+                    <div class="cartsWrapper-package-detail">
+                        <ul class="package-detail-list">
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>تضمین بازگشت هزینه رزرو در صورت عدم رضایت.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>بررسی رایگان فرم اطلاعات تحصیلی شما به دست مشاوران اسنیدز.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">done</i>
+                                <p>امکان انجام مشاوره تصویری رایگان قبل از تایید با مشاورانی که پروژه شما رو قبول
+                                    کرده‌اند.</p>
+                            </li>
+                            <li class="package-detail-item isansFont">
+                                <i class="material-icons">info</i>
+                                <p>توضیحات {{phase.title}}: {{phase.detailed_title}}</p>
                             </li>
                         </ul>
                     </div>
@@ -169,7 +194,7 @@
             },
 
             thereIsFactor() {
-                return this.cart && (this.cart.time_slot_sales.length > 0 || this.cart.store_packages.length > 0);
+                return this.thereIsPackage || this.thereIsTimeSlots || this.thereIsUnpaidPhase;
             },
 
             thereIsTimeSlots() {
@@ -178,6 +203,10 @@
 
             thereIsPackage() {
                 return this.cart && this.cart.store_packages.length > 0;
+            },
+
+            thereIsUnpaidPhase() {
+                return this.cart && this.cart.sold_store_unpaid_package_phases.length > 0;
             },
 
             packageToBuy() {

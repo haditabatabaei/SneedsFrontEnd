@@ -2,19 +2,29 @@
     <main class="landing">
         <section class="package-section section-intro">
             <div class="section-sub section-sub-intro">
-                <h1 class="section-intro-title isansFont">با اسنیدز سخت اپلای نکن</h1>
-                <p class="section-intro-text isansFont">
-                    خیلی خوب می‌شه وقتی می‌خوای اپلای کنی یکی که تمام این مسیر رو طی کرده و با موانعش.آشنایی داره کنارت
-                    <br>
-                    باشه تا با خیال راحت بتونی جایی که دوست داری درس بخونی
-                </p>
+                <div class="section-intro-title-box">
+                    <h1 class="section-intro-title isansFont">
+                        <span class="intro-title-span span-blue">
+                        با اسنیدز،
+                        </span>
+                        <span class="intro-title-span span-blue">
+                        لازم نیس سخت
+                        </span>
+                        <br>
+                        <br>
+                        <span class="intro-title-span span-black">اپلای کنی!</span>
+                    </h1>
+                    <p class="section-intro-text isansFont">
+                        خیلی خوب می‌شه وقتی می‌خوای برای کالج اپلای کنی یکی که تمام این مسیر رو طی کرده و با
+                        موانعشآشنایی داره کنارت باشه تا با خیال راحت بتونی کشور، رشته .و کالجی که دوست داری درس بخونی
+                    </p>
+                </div>
                 <iframe class="section-intro-aparat"
                         src="https://www.aparat.com/video/video/embed/videohash/5FlGf/vt/frame"
                         allowFullScreen="true"
                         webkitallowfullscreen="true"
                         mozallowfullscreen="true">
                 </iframe>
-                <img class="intro-clouds" src="/sneedsAssets/img/clouds.png" alt="">
             </div>
         </section>
         <section class="package-section section-consultants">
@@ -886,14 +896,32 @@
 
     .section-sub-intro {
         display: flex;
-        flex-direction: column;
         align-items: center;
+        justify-content: space-between;
+    }
+
+    .section-intro-title-box {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+    }
+
+    .intro-title-span {
+        font-weight: 900;
+        border-bottom: 3px solid #00BFD6;
+        padding-bottom: 2px;
+    }
+
+    .span-blue {
+        color: #00BFD6;
+    }
+
+    .span-black {
+        color: #303143
     }
 
     .section-intro {
-        background: rgb(0, 148, 234);
-        background: linear-gradient(180deg, rgba(0, 148, 234, 1) 0%, rgba(0, 223, 234, 1) 100%);
-        position: relative;
+        background: linear-gradient(90deg, #A347FF 50%, #FFF 50%);
     }
 
     .intro-clouds {
@@ -908,18 +936,16 @@
     .section-intro-title {
         color: white;
         font-size: 28px;
-        margin-top: 55px;
+        margin: 10px;
         z-index: 5;
     }
 
     .section-intro-text {
-        color: white;
+        color: #707070;
         font-size: 16px;
         margin: 30px 0;
-        text-align: center;
         line-height: 25px;
         z-index: 5;
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     }
 
     .section-intro-aparat {

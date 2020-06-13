@@ -596,6 +596,33 @@
                 </div>
             </section>
         </transition>
+        <section class="package-section package-section-college">
+            <div class="section-sub section-sub-college">
+                <h1 class="college-title isansFont">
+                    چرا کالج؟
+                </h1>
+                <p class="college-info isansFont">
+                    کالج یه موسسه آموزشیه مثل دانشگاه، اما با یه سری تفاوت‌ها که اونو به انتخاب راحت‌ و منطقی‌تری
+                    برای افرادی که بیشتر از تحصیلات آکادمیک به کارکردن علاقه دارن می‌کنه.
+                    <br>
+                    <br>
+                    شهریه کالج‌ها معمولا نسبتا به دانشگاه‌ها کمتره و این مسئله کالج رو تبدیل به یه انتخاب ایده‌آل
+                    برای افرادی که نمی‌خوان بودجه زیادی برای شهریه بپردازن می‌کنه.
+                    <br>
+                    <br>
+                    آموزش‌هایی که توی کالج دریافت خواهید کرد Skill based هستند
+                    این مسئله به این معناست که به بعد از گرفتن مدرک به راحتی می‌تونید با توانایی‌هایی که دارید
+                    وارد بازار کار بشین
+                    و بعد از دریافت ویزای کار می‌تونید راحت تر اون رو تبدیل به ویزای اقامت دائم بکنید!
+                    <br>
+                    <br>
+                    شرایط پذیرش در کالج بسیار راحت‌تر از دانشگاه بوده و نیاز به رزومه و زبان خیلی قوی برای اپلای به کالج
+                    نخواهید داشت
+                    علاوه بر اون با توجه به زمان آزاد بیشتری که به دست خواهید آورد می‌تونید در کنار کالج به راحتی کار
+                    کنید که همچین شرایطی برای دانشجویان در حال تحصیل در دانشگاه فراهم نیست.
+                </p>
+            </div>
+        </section>
         <section class="package-section package-section-faq">
             <div class="section-sub section-sub-faq">
                 <section class="faq-box" v-for="faqBox in faqBoxes">
@@ -1659,6 +1686,40 @@
     .compare-item-value--bordered {
         border-right: 2px solid #E3E3E3;
         border-left: 2px solid #E3E3E3;
+    }
+
+    .section-sub-college {
+        justify-self: center;
+        margin: 10px 120px;
+    }
+
+    .college-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 30px;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    .college-title:before {
+        content: " ";
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: #14D5EA;
+        position: absolute;
+        right: 0;
+        top: 10px;
+        margin-left: 5px;
+    }
+
+    .college-info {
+        margin-top: 30px;
+        padding: 10px;
+        border-right: 2px solid #14D5EA;
+        margin-right: 2px;
+        color: #707070;
+        line-height: 26px;
     }
 
     @media only screen and (max-width: 991.8px) {

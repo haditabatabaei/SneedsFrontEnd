@@ -4,6 +4,7 @@
             <div class="section-sub section-sub-intro">
                 <div class="section-intro-title-box">
                     <h1 class="section-intro-title isansFont">
+                        <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots">
                         <span class="intro-title-span span-blue">
                         با اسنیدز،
                         </span>
@@ -633,6 +634,44 @@
                 </p>
             </div>
         </section>
+        <section class="package-section package-section-trust">
+            <div class="section-sub section-sub-trust">
+                <div class="trust-title-box">
+                    <div class="trust-title-meta">
+                        <span class="trust-title-meta-line"></span>
+
+                        <i class="material-icons trust-title-meta-icon">
+                            help_outline
+                        </i>
+                    </div>
+                    <h1 class="isansFont trust-title-text">چرا به شما اعتماد کنم؟</h1>
+                    <h3 class="isansFont trust-title-sub">نظرات کاربران مارو ببینید</h3>
+                </div>
+                <div class="trust-comments isansFont">
+                    <button class="trust-comments-action">
+                        <i class="material-icons">keyboard_arrow_right</i>
+                    </button>
+                    <div class="trust-comment-box">
+                        <div class="trust-comments-content">
+                            <img class="trusts-comments-sender-avatar" src="/sneedsAssets/img/profile.png" alt="comment-sender">
+                            <h3 class="trusts-comments-sender-name isansFont">سید محمد هادی طباطبایی</h3>
+                            <p class="trusts-comments-sender-text isansFont--faNum">
+                                خیلیی خوشحالم...پذیرش فول فاندم همین دیروز اومد .و بینهایت به اسنیدز و مشاوراش مدیونم
+                            </p>
+                        </div>
+                        <img class="trust-comments-box-topicon"
+                             src="/sneedsAssets/img/comments-circle.svg"
+                             alt="comments svg">
+                        <div class="trust-comments-box-rightrect"></div>
+                        <div class="trust-comments-box-leftrect"></div>
+
+                    </div>
+                    <button class="trust-comments-action">
+                        <i class="material-icons">keyboard_arrow_left</i>
+                    </button>
+                </div>
+            </div>
+        </section>
         <section class="package-section package-section-awards">
             <p class="awards-sup isansFont--faNum">
                 در 2 سال گذشته
@@ -938,6 +977,15 @@
         font-size: 28px;
         margin: 10px;
         z-index: 5;
+        position: relative;
+    }
+
+    .intro-title-dots {
+        position: absolute;
+        right: -225px;
+        top: 10px;
+        width: 200px;
+        color: #929493;
     }
 
     .section-intro-text {
@@ -1810,6 +1858,146 @@
         text-align: center;
         color: #9B9999;
         font-size: 13px;
+    }
+
+    .section-sub-trust {
+        flex-direction: column;
+    }
+
+    .trust-title-box {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .trust-title-meta {
+        position: absolute;
+        right: -160px;
+        top: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .trust-title-meta-icon {
+        color: white;
+        background-color: #00BFD6;
+        border-radius: 50%;
+        border: 2px solid #BAEEF4;
+    }
+
+    .trust-title-meta-line {
+        width: 100px;
+        height: 5px;
+        border-radius: 5px;
+        background-color: #BAEEF4;
+        margin-left: 10px;
+    }
+
+    .trust-title-text {
+        font-size: 18px;
+        color: #303143;
+        margin: 10px 0;
+    }
+
+    .trust-title-sub {
+        color: #9B9999;
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    .trust-comments {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .trust-comments-action {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        margin: 0;
+        border-radius: 50%;
+        background: none;
+        color: #8E39CC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #8C3DDB;
+    }
+
+    .trust-comments-box-topicon {
+        position: absolute;
+        top: -50px;
+        z-index: 9;
+        width: 150px;
+        height: 150px;
+    }
+
+    .trust-comments-box-rightrect {
+        position: absolute;
+        right: -30px;
+        border-radius: 8px;
+        height: 150px;
+        width: 40px;
+        background-color: #20639B;
+        z-index: 9;
+    }
+
+    .trust-comments-box-leftrect {
+        position: absolute;
+        left: -30px;
+        border-radius: 8px;
+        height: 150px;
+        width: 40px;
+        background-color: #20639B;
+        z-index: 9;
+    }
+
+    .trust-comment-box {
+        position: relative;
+        width: 550px;
+        height: 350px;
+        border-radius: 25px;
+        background-color: #173F5F;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        box-shadow: 0 3px 6px #00000029;
+    }
+
+    .trust-comments-content {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top:0 ;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #173F5F;
+        border-radius: 25px;
+    }
+
+    .trusts-comments-sender-avatar {
+        width: 85px;
+        height: 85px;
+    }
+
+    .trusts-comments-sender-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #00BFD6;
+        margin: 10px;
+    }
+
+    .trusts-comments-sender-text {
+        padding: 15px;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 25px;
     }
 
     @media only screen and (max-width: 991.8px) {

@@ -1426,8 +1426,6 @@
     }
 
     .section-sub-buy--full {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
         margin-bottom: 0;
     }
 
@@ -1642,7 +1640,6 @@
     }
 
     .section-sub-compare {
-        background: white;
         flex-direction: column;
         align-items: stretch;
     }
@@ -1656,6 +1653,8 @@
         border-radius: 40px;
         background-color: #A347FF;
         color: white;
+        position: sticky;
+        top: 80px;
     }
 
     .compare-title-item {

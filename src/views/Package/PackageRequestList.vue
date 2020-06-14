@@ -191,4 +191,28 @@
         padding: 10px 40px;
         font-size: 14px;
     }
+
+    @media only screen and (max-width: 567.8px) {
+        .request-item-info-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .package-request-item-info {
+            flex-wrap: wrap;
+        }
+
+        .item-info-content-name {
+            font-size: 12px;
+        }
+
+        .info-content-chat {
+            display: none;
+        }
+
+        .package-request-item-aboutaction {
+            font-size: 12px;
+            padding: 5px 20px;
+        }
+    }
 </style>

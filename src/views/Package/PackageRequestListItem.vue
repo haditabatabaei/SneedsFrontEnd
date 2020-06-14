@@ -365,4 +365,27 @@
         margin-right: 5px;
         font-size: 20px;
     }
+
+    @media only screen and (max-width: 567.8px) {
+        .request-head {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .request-head-action {
+            display: flex;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .request-footer {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .request-footer-action {
+            margin-top: 20px;
+        }
+    }
 </style>

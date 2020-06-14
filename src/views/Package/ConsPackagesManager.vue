@@ -24,7 +24,8 @@
                             <mark>*</mark>
                             :
                         </span>
-                            <input type="text" class="newTaskModal-body-input" id="taskTitle" name="taskTitle" v-model="newTaskInput.title">
+                            <input type="text" class="newTaskModal-body-input" id="taskTitle" name="taskTitle"
+                                   v-model="newTaskInput.title">
                         </label>
                         <label for="taskStatus" class="newTaskModal-body-label">
                         <span class="newTaskModal-body-label-name">
@@ -32,16 +33,20 @@
                             <mark>*</mark>
                             :
                         </span>
-                            <select name="taskStatus" id="taskStatus" class="newTaskModal-body-input" v-model="newTaskInput.status">
-                                <option :value="status.value" class="newTaskModal-body-input-option" v-for="status in availableStatuses">{{status.name}}</option>
+                            <select name="taskStatus" id="taskStatus" class="newTaskModal-body-input"
+                                    v-model="newTaskInput.status">
+                                <option :value="status.value" class="newTaskModal-body-input-option"
+                                        v-for="status in availableStatuses">{{status.name}}
+                                </option>
                             </select>
                         </label>
                     </div>
                     <div class="newTaskModal-footer isansFont">
                         <p class="package-empty-tab-warn">
-                            .توجه داشته باشید که کاربر قادر به مشاهده تمام جزئیات کارها می‌باشد
+                            توجه داشته باشید که کاربر قادر به مشاهده تمام جزئیات کارها می‌باشد.
                         </p>
-                        <button class="newTaskModal-footer-cancel" v-if="!editTaskPattern" id="closable-action" @click="hideNewTaskModal">
+                        <button class="newTaskModal-footer-cancel" v-if="!editTaskPattern" id="closable-action"
+                                @click="hideNewTaskModal">
                             بیخیال
                         </button>
                         <button class="newTaskModal-footer-delete" @click="deleteTask" v-if="editTaskPattern">
@@ -67,7 +72,7 @@
             <div class="package-head-info">
                 <img class="package-head-info-image" src="/sneedsAssets/img/profile.png" alt="">
                 <div class="package-head-info-text isansFont--faNum">
-                    <p class="package-head-info-namerate">
+                    <p class="package-head-info-namerate" v-if="soldPackage.sold_to">
                         {{`${soldPackage.sold_to.first_name} ${soldPackage.sold_to.last_name}`}}
                     </p>
                 </div>
@@ -78,46 +83,52 @@
                 </router-link>
                 <button class="package-head-action-profileview" @click="showNewTaskModal">
                     <i class="material-icons">add</i>
-                    افزودن کار جدید به این مرحله
+                    <span class="action-profilevew-holder">
+                        افزودن کار جدید به این مرحله
+                    </span>
                 </button>
             </div>
         </div>
         <div class="package-body isansFont--faNum">
-            <div class="package-body-switcher">
+            <div class="package-body-switcher no--mobile">
                 <ul class="package-body-switcher-items">
-                    <li class="package-body-switcher-item" v-for="phase in allPhases ">
+                    <li class=" package-body-switcher-item" v-for="phase in allPhases ">
                         <button class="switcher-item-button"
                                 :class="[{'switcher-item-button--active': currentPhase === phase}]"
-                                @click="toggleCurrentPhase(phase)">
+                                @click="currentPhase = phase">
                             {{phase.title}}
                             <i class="material-icons" v-if="currentPhase === phase">done</i>
                         </button>
                     </li>
                 </ul>
             </div>
+            <select class="mobile-switcher" v-model="currentPhase">
+                <option :value="phase" v-for="phase in allPhases">{{phase.title}}</option>
+            </select>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
-                    <p class="body-tab-title-text">
+                    <p class="body-tab-title-text no--mobile">
 
                     </p>
                     <p class="body-tab-title-text">
                         عنوان
                     </p>
-                    <p class="body-tab-title-text">
+                    <p class="body-tab-title-text no--mobile">
                         تاریخ ایجاد
                     </p>
-                    <p class="body-tab-title-text">
+                    <p class="body-tab-title-text no--mobile">
                         تاریخ آخرین تغییر
                     </p>
                     <p class="body-tab-title-text">
                         وضعیت
                     </p>
                     <p class="body-tab-title-text">
-                        فایل
+                        <span v-if="isOnMobile">اطلاعات بیشتر</span>
+                        <span v-else>فایل</span>
                     </p>
                 </div>
                 <div class="package-body-tab-row" v-for="task in currentPhaseTasks">
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text no--mobile">
                         <button class="tab-row-edit" title="ویرایش این کار" @click="editTask(task)">
                             <i class="material-icons">settings</i>
                         </button>
@@ -125,20 +136,33 @@
                     <p class="body-tab-row-text row-text--dark">
                         {{task.title}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text no--mobile">
                         {{getJalali(task.created).format('YY/MM/DD')}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text no--mobile">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
                     <p class="body-tab-row-text">
-                        <mark class="row-text-status" :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
+                        <mark class="row-text-status"
+                              :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
                             {{getTaskStatusName(task)}}
                         </mark>
                     </p>
-                    <p class="body-tab-row-text">
-                        ندارد
-                    </p>
+                    <div class="body-tab-row-text more-info-row">
+                        <button class="row-more-info-button" v-if="isOnMobile">
+                            <i class="material-icons">info</i>
+                        </button>
+                        <div class="row-more-info-box" v-if="isOnMobile">
+                            <p class="more-info-item">
+                                <span>تاریخ ایجاد</span>
+                                {{getJalali(task.created).format('YY/MM/DD')}}
+                            </p>
+                            <p class="more-info-item">
+                                <span>تاریخ آخرین تغییر</span>
+                                {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="package-body-tab body-tab--empty" v-else>
@@ -203,6 +227,14 @@
                     return []
                 }
             },
+            isOnMobile() {
+                return this.windowWidth <= 568;
+            }
+        },
+        watch: {
+            currentPhase(newVal) {
+                this.toggleCurrentPhase(newVal)
+            }
         },
         methods: {
             getJalali(date) {
@@ -218,11 +250,11 @@
             },
 
             hideNewTaskModal(event, forced = false) {
-                if(forced) {
+                if (forced) {
                     this.isShowingNewTaskModal = false;
                     this.editTaskPattern = false;
                 } else {
-                    if(event.target.id.startsWith('closable')) {
+                    if (event.target.id.startsWith('closable')) {
                         this.isShowingNewTaskModal = false;
                         this.editTaskPattern = false;
                     }
@@ -237,8 +269,8 @@
                 this.newTaskInput.id = task.id;
             },
 
+
             async toggleCurrentPhase(phase) {
-                this.currentPhase = phase;
                 this.getCurrentPhaseTasks();
             },
 
@@ -263,7 +295,7 @@
                 try {
                     this.$loading(true);
                     let payload = {
-                        "status" : this.newTaskInput.status,
+                        "status": this.newTaskInput.status,
                         "title": this.newTaskInput.title,
                     };
                     console.log(payload)
@@ -286,7 +318,7 @@
                 try {
                     this.$loading(true);
                     let payload = {
-                        "status" : this.newTaskInput.status,
+                        "status": this.newTaskInput.status,
                         "title": this.newTaskInput.title,
                         "object_id": this.currentPhase.id,
                         "content_type": this.getPhaseContentType(this.currentPhase)
@@ -336,7 +368,7 @@
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;
-                    this.toggleCurrentPhase(this.allPhases[0]);
+                    this.currentPhase = this.allPhases[0];
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -450,7 +482,7 @@
         height: 35px;
     }
 
-    .package-head-action-chat i{
+    .package-head-action-chat i {
         font-size: 16px;
     }
 
@@ -730,6 +762,149 @@
     .newTaskModal-footer-delete i {
         margin-left: 5px;
         font-size: 20px;
+    }
+
+    .mobile-switcher {
+        display: none;
+    }
+
+    .row-more-info-button {
+        display: none;
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .itemBlock {
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .package-empty-tab-warn {
+            margin-bottom: 0;
+        }
+
+        .newTaskModal-body {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newTaskModal-footer {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .newTaskModal-body-label:not(:first-child) {
+            margin-right: 0;
+        }
+
+        .newTaskModal-body-label {
+            width: 100%;
+        }
+
+        .newTaskModal-body-input {
+            width: 100%;
+            min-width: initial;
+        }
+    }
+
+    @media only screen and (max-width: 567.8px) {
+        .package-head-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .package-head-info-image {
+            margin-bottom: 15px;
+        }
+
+        .package-head-action-chat {
+            margin-left: 0;
+            border-radius: 0 10px 10px 0;
+            border-color: #F0E6FA;
+            color: #8C3DDB;
+        }
+
+        .package-head-action-profileview {
+            margin-left: 0;
+            width: 35px;
+            height: 35px;
+            border-right: 0;
+            border-color: #F0E6FA;
+            color: #8C3DDB;
+            border-radius: 10px 0 0 10px;
+            padding: 5px 20px;
+        }
+
+        .package-head-action-profileview i {
+            margin-left: 0;
+        }
+
+        .action-profilevew-holder {
+            display: none;
+        }
+
+        .no--mobile {
+            display: none;
+        }
+
+        .mobile-switcher {
+            display: flex;
+            background-color: #F2F2F2;
+            margin: 10px;
+            border-radius: 15px;
+            height: 35px;
+            color: #8C3DDB;
+            padding: 0 15px;
+            border: none;
+        }
+
+        .more-info-row {
+            position: relative;
+        }
+
+        .row-more-info-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9B9999;
+            background: none;
+            font-size: 18px;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .row-more-info-button:active ~ .row-more-info-box {
+            color: #8C3DDB;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row-more-info-box {
+            position: absolute;
+            display: none;
+            top: 10px;
+            left: 10px;
+            box-shadow: -2px 0 10px #00000029;
+            border-radius: 15px;
+            background-color: white;
+            z-index: 11;
+            min-width: 130px;
+        }
+
+        .more-info-item {
+            display: flex;
+            flex-direction: column;
+            color: #707070;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .more-info-item span {
+            color: #9B9999;
+            font-size: 10px;
+        }
     }
 
 </style>

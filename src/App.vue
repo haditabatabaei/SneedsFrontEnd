@@ -21,7 +21,7 @@
         },
         computed: {
             showFooter() {
-                return this.$route.name.startsWith('landing') || true
+                return true
             }
         }
     }

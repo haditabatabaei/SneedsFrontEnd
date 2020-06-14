@@ -23,7 +23,9 @@
             <div class="package-head-action isansFont">
                 <router-link to="/user/chatroom" class="package-head-action-profileview">
                     <i class="material-icons">mail</i>
-                    گفتگو با مشاور
+                    <span class="no--mobile">
+                        گفتگو با مشاور
+                    </span>
                 </router-link>
             </div>
         </div>
@@ -33,39 +35,43 @@
                     <li class="package-body-switcher-item" v-for="phase in allPhases ">
                         <button class="switcher-item-button"
                                 :class="[{'switcher-item-button--active': currentPhase === phase}]"
-                                @click="toggleCurrentPhase(phase)">
+                                @click="currentPhase = phase">
                             {{phase.title}}
                             <i class="material-icons" v-if="currentPhase === phase">done</i>
                         </button>
                     </li>
                 </ul>
             </div>
+            <select class="mobile-switcher" v-model="currentPhase">
+                <option :value="phase" v-for="phase in allPhases">{{phase.title}}</option>
+            </select>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
                     <p class="body-tab-title-text">
                         عنوان
                     </p>
-                    <p class="body-tab-title-text">
+                    <p class="body-tab-title-text no--mobile">
                         تاریخ ایجاد
                     </p>
-                    <p class="body-tab-title-text">
+                    <p class="body-tab-title-text no--mobile">
                         تاریخ آخرین تغییر
                     </p>
                     <p class="body-tab-title-text">
                         وضعیت
                     </p>
                     <p class="body-tab-title-text">
-                        فایل
+                        <span v-if="isOnMobile">اطلاعات بیشتر</span>
+                        <span v-else>فایل</span>
                     </p>
                 </div>
                 <div class="package-body-tab-row" v-for="task in currentPhaseTasks">
                     <p class="body-tab-row-text row-text--dark">
                         {{task.title}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text no--mobile">
                         {{getJalali(task.created).format('YY/MM/DD')}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text no--mobile">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
                     <p class="body-tab-row-text">
@@ -73,9 +79,22 @@
                             در حال انجام
                         </mark>
                     </p>
-                    <p class="body-tab-row-text">
-                        ندارد
-                    </p>
+                    <div class="body-tab-row-text more-info-row">
+                        <span v-if="!isOnMobile">ندارد</span>
+                        <button class="row-more-info-button" v-if="isOnMobile">
+                            <i class="material-icons">info</i>
+                        </button>
+                        <div class="row-more-info-box" v-if="isOnMobile">
+                            <p class="more-info-item">
+                                <span>تاریخ ایجاد</span>
+                                {{getJalali(task.created).format('YY/MM/DD')}}
+                            </p>
+                            <p class="more-info-item">
+                                <span>تاریخ آخرین تغییر</span>
+                                {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="package-body-tab body-tab--empty" v-else>
@@ -160,6 +179,14 @@
                 } else {
                     return ' ';
                 }
+            },
+            isOnMobile() {
+                return this.windowWidth <= 568;
+            },
+        },
+        watch: {
+            currentPhase(newVal) {
+                this.toggleCurrentPhase(newVal);
             }
         },
         methods: {
@@ -168,7 +195,6 @@
             },
 
             async toggleCurrentPhase(phase) {
-                this.currentPhase = phase;
                 this.getCurrentPhaseTasks();
             },
 
@@ -204,7 +230,7 @@
                     this.soldPackage = result.data;
                     this.consultant = (await this.$api.get(this.soldPackage.consultant_url, this.httpConfig)).data;
                     console.log('consultant:', this.consultant);
-                    await this.toggleCurrentPhase(this.allPhases[0]);
+                    this.currentPhase = this.allPhases[0];
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
@@ -470,5 +496,101 @@
         border: none;
         padding: 7px 25px;
         font-size: 14px;
+    }
+
+    .mobile-switcher {
+        display: none;
+    }
+
+    .row-more-info-button {
+        display: none;
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .itemBlock {
+            box-shadow: none;
+            border-radius: 0;
+        }
+    }
+
+
+    @media only screen and (max-width: 567.8px) {
+        .no--mobile {
+            display: none;
+        }
+
+        .package-head-action-profileview {
+            padding: 0;
+            margin: 0;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+        }
+
+        .package-head-action-profileview i {
+            margin: auto;
+        }
+
+        .package-body-switcher {
+            display: none;
+        }
+
+        .mobile-switcher {
+            display: flex;
+            background-color: #F2F2F2;
+            margin: 10px;
+            border-radius: 15px;
+            height: 35px;
+            color: #8C3DDB;
+            padding: 0 15px;
+            border: none;
+        }
+
+        .more-info-row {
+            position: relative;
+        }
+
+        .row-more-info-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9B9999;
+            background: none;
+            font-size: 18px;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .row-more-info-button:active ~ .row-more-info-box {
+            color: #8C3DDB;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row-more-info-box {
+            position: absolute;
+            display: none;
+            top: 10px;
+            left: 10px;
+            box-shadow: -2px 0 10px #00000029;
+            border-radius: 15px;
+            background-color: white;
+            z-index: 11;
+            min-width: 130px;
+        }
+
+        .more-info-item {
+            display: flex;
+            flex-direction: column;
+            color: #707070;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .more-info-item span {
+            color: #9B9999;
+            font-size: 10px;
+        }
     }
 </style>

@@ -107,7 +107,7 @@
             </select>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
-                    <p class="body-tab-title-text no--mobile">
+                    <p class="body-tab-title-text">
 
                     </p>
                     <p class="body-tab-title-text">
@@ -128,7 +128,7 @@
                     </p>
                 </div>
                 <div class="package-body-tab-row" v-for="task in currentPhaseTasks">
-                    <p class="body-tab-row-text no--mobile">
+                    <p class="body-tab-row-text">
                         <button class="tab-row-edit" title="ویرایش این کار" @click="editTask(task)">
                             <i class="material-icons">settings</i>
                         </button>
@@ -149,6 +149,7 @@
                         </mark>
                     </p>
                     <div class="body-tab-row-text more-info-row">
+                        <span v-if="!isOnMobile">ندارد</span>
                         <button class="row-more-info-button" v-if="isOnMobile">
                             <i class="material-icons">info</i>
                         </button>

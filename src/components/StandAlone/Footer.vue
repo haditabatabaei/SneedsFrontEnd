@@ -8,8 +8,8 @@
             </p>
             <span class="footer-overlay-divider"></span>
             <div class="footer-overlay-socials">
-                <a href="#" class="footer-overlay-socials-link">
-                    <i class="material-icons">done</i>
+                <a v-for="social in socials" :href="social.target" target="_blank" class="footer-overlay-socials-link">
+                    <img class="footer-overlay-socials-link-img" :src="`/sneedsAssets/img/${social.img}`" :alt="social.alt">
                 </a>
             </div>
         </div>
@@ -125,6 +125,13 @@
                         ]
                     }
                 ],
+                socials: [
+                    {name: 'telegram', alt: 'تلگرام اسنیدز', target: 'http://bit.ly/2FPshaR', img: 'teleg.svg'},
+                    {name: 'instagram', alt: 'اینستاگرام اسنیدز', target: 'http://bit.ly/3581UUU', img: 'ins.svg'},
+                    {name: 'youtube', alt: 'یوتیوب اسنیدز', target: 'http://bit.ly/2O1cnNm', img: 'you.svg'},
+                    {name: 'linkedin', alt: 'لینکداین اسنیدز', target: 'https://www.linkedin.com/company/sneeds/', img: 'linked.svg'},
+                    {name: 'aparat', alt: 'آپارات اسنیدز', target: 'https://bit.ly/3fpBq6X', img: 'aparat.svg'}
+                ]
             }
         },
         methods: {
@@ -198,14 +205,15 @@
     }
 
     .footer-overlay-socials-link {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         background-color: #F8F8F8;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #303143;
+        margin: 0 10px;
     }
 
     .footer-content {

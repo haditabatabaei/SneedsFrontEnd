@@ -1,95 +1,82 @@
 <template>
-    <footer class="footer footer-big footer-black">
-        <div class="container mainContainer">
-            <div class="content">
-                <div class="row">
-                    <div class="col-md-12 text-center isansFont goUpWrapper">
-                        <a @click.prevent="smoothScrollToTop()" class="btn btn-info btn-fab btn-fab-mini">
-                            <i class="material-icons">keyboard_arrow_up</i>
-                        </a>
-                    </div>
+    <footer class="footer">
+        <div class="footer-overlay isansFont">
+            <p class="footer-overlay-text">
+                برای به دست آوردن کلی اطلاعات به درد بخور در مورد اپلای اسنیدز رو توی
+                <mark class="footer-overlay-text-marked">شبکه‌های اجتماعی</mark>
+                دنبال کن!
+            </p>
+            <span class="footer-overlay-divider"></span>
+            <div class="footer-overlay-socials">
+                <a href="#" class="footer-overlay-socials-link">
+                    <i class="material-icons">done</i>
+                </a>
+            </div>
+        </div>
+        <div class="footer-content">
+            <div class="footer-desc isansFont--faNum">
+                <h1 class="desc-title isansFont">
+                    اسنیدز - اولین پلتفرم آنلاین مهاجرتی
+                </h1>
+                <p class="desc-text">
+                    اسنیدز یک شرکت مهاجرتی نیست! به دنبال وصل کردن شما به دانشجویانی که با شرایط شما یک بار اپلای کردن
+                    هستیم سیستم کاری ما به این صورته که بلد نیستم بیشتر از این تفت بدم دیگه
+                </p>
+                <p class="desc-about">
+                    درباره ما
+                </p>
+                <div class="desc-about-box">
+                    <i class="material-icons desc-about-box-icon">
+                        location_on
+                    </i>
+                    <p class="desc-about-box-text">
+                        ،تهران، چهار راه ولیعصر، خیابان ولیعصر ،ساختمان مرکز رشد دانشگاه امیرکبیر شتابدهنده سامسونگ
+                    </p>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3">
-                        <router-link to="/">
-                            <h5 class="isansFont text-right">
-                                <img class="brand-image" src="../../../public/sneedsAssets/img/sneedsLogo.png"
-                                     alt="لوگو اسنیدز">
-                                اسنیدز
-                            </h5>
-                        </router-link>
-                        <p class="isansFont text-justify sneedsDescription">
-                            اسنیدز یک گروه دانشجویی متشکل از دانشجویان دانشگاه صنعتی امیرکبیر است. هدف ما ارائه خدمات
-                            آموزشی برای دانشجویان و آگاهی بخشی در مورد اپلای از طریق مصاحبه با دانشجویان پذیرش گرفته
-                            می‌باشد.
-                        </p>
-                    </div>
-                    <div class="col-md-3">
-                        <router-link to="/">
-                            <h5 class="isansFont text-right">خدمات مشتریان</h5>
-                        </router-link>
-                        <ul class="links-vertical text-right isansFont">
-                            <li v-for="(serviceItem, index) in customerServiceMenuItems" :key="index">
-                                <router-link :to="serviceItem.target">{{serviceItem.itemName}}</router-link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <router-link to="/">
-                            <h5 class="isansFont text-right">همراه با اسنیدز</h5>
-                        </router-link>
-                        <ul class="links-vertical text-right isansFont">
-                            <li v-for="(inTouchItem, index) in withSneedsMenuItems" :key="index">
-                                <router-link :to="inTouchItem.target">{{inTouchItem.itemName}}</router-link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <router-link to="/">
-                            <h5 class="isansFont text-right">راهنمای استفاده از اسنیدز</h5>
-                        </router-link>
-                        <ul class="links-vertical text-right isansFont">
-                            <li v-for="(guideItem, index) in guideMenuItems" :key="index">
-                                <router-link :to="guideItem.target">{{guideItem.itemName}}</router-link>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="desc-about-box">
+                    <i class="material-icons desc-about-box-icon">
+                        call
+                    </i>
+                    <p class="desc-about-box-text box-text--number isansFont--faNum">
+                        <span>021 - 2285 0721</span>
+                        <br>
+                        <mark class="desc-about-box-text-marked">
+                            (هر روز هفته ساعت ۹ تا ۱۰)
+                        </mark>
+                    </p>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6 text-right">
-                        <h4 class="isansFont">
-                            از آخرین های اسنیدز با خبر باشید :
-                        </h4>
-                        <a href="http://instagram.com/sneeds_ir" target="_blank"
-                           class="btn btn-rose isansFont instaButton">
-                            اینستاگرام اسنیدز
-                        </a>
-                        <a href="https://t.me/sneeds_ir" target="_blank" class="btn btn-info isansFont">
-                            تلگرام اسنیدز
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <h4 class="isansFont text-center">
-                            نماد های اعتماد الکترونیک :
-                        </h4>
-                        <div class="gallery-feed">
-                            <img src="../../../public/sneedsAssets/img/samandehi.png" alt="نماد ساماندهی" class="img img-raised">
-                        </div>
-                    </div>
+                <div class="desc-about-box desc-about-box--centered">
+                    <i class="material-icons desc-about-box-icon">
+                        email
+                    </i>
+                    <p class="desc-about-box-text gadugiFont">
+                        info@sneeds.ir
+                    </p>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <div class="copyright pull-center">
-                            <strong class="isansFont">
-                                © تمامی حقوق برای
-                                <router-link to="/">شرکت نوآوران نوین پرداز برازمان ( اسنیدز )</router-link>
-                                محفوظ است.
-                            </strong>
-                        </div>
-                    </div>
+            </div>
+            <div v-for="link in links" class="footer-links isansFont">
+                <h2 class="footer-links-title isansFont">
+                    {{link.title}}
+                </h2>
+                <ul class="footer-links-items">
+                    <li v-for="item in link.items" class="footer-links-item">
+                        <router-link :to="item.target"   class="footer-links-item-link">{{item.name}}</router-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="footer-copyright-container">
+                <button class="footer-container-upbutton" @click="smoothScrollToTop">
+                    <i class="material-icons">keyboard_arrow_up</i>
+                </button>
+                <p class="copyright-text isansFont">
+                    تمامی حقوق برای شرکت نوآوران نوین پرداز برازمان محفوظ است © |
+                    <router-link to="/policy" class="copyright-text-policy">قوانین و مقررات</router-link>
+                </p>
+                <div class="footer-copyright-certs">
+                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />
+                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />
                 </div>
             </div>
         </div>
@@ -99,23 +86,49 @@
 <script>
     export default {
         name: "Footer",
-        data: function () {
+        data() {
             return {
-                customerServiceMenuItems: [
-                    {itemName: 'پرسش های متداول', target: '/services/faq', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'شرایط استفاده', target: '/services/terms', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'حریم خصوصی', target: '/services/privacy', hasDropdown: false, dropdownItems: []},
-                ], withSneedsMenuItems: [
-                    {itemName: 'تماس با اسنیدز', target: '/contact', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'فرصت های شغلی', target: '/jobs', hasDropdown: false, dropdownItems: []},
-                    {itemName: 'درباره اسنیدز', target: '/about', hasDropdown: false, dropdownItems: []},
-                ], guideMenuItems: [
-                    {itemName: 'رزرو مشاور', target: '/guide/reservation', hasDropdown: false, dropdownItems: []},
-                ]
+                links: [
+                    {
+                        title: 'خدمات اسنیدز',
+                        items: [
+                            {name: 'صفحه اصلی', target: '/'},
+                            {name: 'مشاوره آنلاین اپلای', target: '/consultants'},
+                            {name: 'صفر تا صد اپلای', target: '/'},
+                            {name: 'پذیرش کالج', target: '/packages'},
+                            {name: 'نگارش و تصحیح انگیز‌نامه', target: '/'},
+                            {name: 'نگارش و تصحیح رزومه', target: '/'},
+                            {name: 'پکیج اخذ ویزا', target: '/'},
+                            {name: 'نگارش و تصحیح کاورلتر', target: '/'},
+                            {name: 'وبینار‌ و همایش‌های آنلاین', target: '/'},
+                            {name: 'کلاس‌های آنلاین اپلای', target: '/'}
+                        ]
+                    },
+                    {
+                        title: 'منابع رایگان',
+                        items: [
+                            {name: 'مصاحبه‌های اپلای', target: '/'},
+                            {name: 'بلاگ اسنیدز', target: '/'},
+                            {name: 'لایو‌های اینستاگرامی', target: '/'},
+                            {name: 'وبینار‌های رایگان', target: '/'},
+                        ]
+                    },
+                    {
+                        title: 'بیشتر بخوانید',
+                        items: [
+                            {name: 'آموزش رزرو مشاوره', target: '/'},
+                            {name: 'آموزش شرکت در وبینار', target: '/'},
+                            {name: 'رزرو مشاوره آنلاین', target: '/'},
+                            {name: 'درباره‌ ما', target: '/'},
+                            {name: 'تماس با ما', target: '/'},
+                            {name: 'فرصت های شغلی', target: '/'},
+                        ]
+                    }
+                ],
             }
         },
         methods: {
-            smoothScrollToTop: function () {
+            smoothScrollToTop() {
                 const scrollToTop = () => {
                     const c = document.documentElement.scrollTop || document.body.scrollTop;
                     if (c > 0) {
@@ -130,36 +143,280 @@
 </script>
 
 <style scoped>
-    .goUpWrapper {
-        padding: 5px 10px;
+    .footer {
+        background-color: #303143;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: 0;
     }
 
-    .sneedsDescription {
-        line-height: 25px;
+    .footer-overlay {
+        width: 100%;
+        max-width: 1140px;
+        background-color: white;
+        border-radius: 15px;
+        position: absolute;
+        top: -100px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 0;
     }
 
-    .instaButton {
-        background: #f09433;
-        background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+    .footer-overlay-text {
+        text-align: center;
+        color: #202425;
+        display: flex;
+        align-items: center;
     }
 
-    i.fa-instagram {
-        margin-left: 5px;
+    .footer-overlay-text-marked {
+        padding: 0;
+        background: none;
+        margin: 0 5px;
+        color: #8C3DDB;
+        font-weight: bold;
     }
 
-    i.fa-telegram {
-        margin-left: 5px;
+    .footer-overlay-divider {
+        width: 50px;
+        height: 4px;
+        border-radius: 10px;
+        background-color: #8C3DDB;
+        margin: 20px;
     }
 
-    .gallery-feed img {
-        max-width: 70px;
-        max-height: 70px;
+    .footer-overlay-socials {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .mainContainer {
-        padding-top: 0;
+    .footer-overlay-socials-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #F8F8F8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #303143;
     }
+
+    .footer-content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: static;
+        margin-top: 120px;
+        width: 100%;
+        max-width: 1140px;
+    }
+
+    .footer-desc {
+        display: flex;
+        flex-direction: column;
+        max-width: 350px;
+    }
+
+    .desc-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #00D3EC;
+        position: relative;
+        padding-right: 20px;
+        margin: 15px 0;
+        display: flex;
+    }
+
+    .desc-title:before {
+        content: " ";
+        position: absolute;
+        right: 0;
+        top: 5px;
+        margin: 0;
+        padding: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #00D3EC;
+    }
+
+    .desc-text {
+        color: #FAFDFF;
+        text-align: right;
+        margin: 10px 0;
+        font-size: 13px;
+        line-height: 26px;
+    }
+
+    .desc-about {
+        margin: 10px 0;
+        background-color: #262738;
+        border: 1px solid #00BFD6;
+        color: #E3E3E3;
+        border-radius: 5px;
+        padding: 5px 17px;
+        align-self: flex-start;
+    }
+
+    .desc-about-box {
+        display: flex;
+        margin: 10px 0;
+    }
+
+    .desc-about-box--centered {
+        align-items: center;
+    }
+
+    .desc-about-box--centered .desc-about-box-text {
+        margin-bottom: 0;
+    }
+
+    .desc-about-box-icon {
+        border-radius: 50%;
+        border: 2px solid #00D3EC;
+        color: #00D3EC;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desc-about-box-text {
+        margin-right: 10px;
+        text-align: right;
+        color: #FFFEFA;
+        width: calc(100% - 30px);
+    }
+
+    .box-text--number {
+        direction: ltr !important;
+    }
+
+    .desc-about-box-text-marked {
+        padding: 0;
+        margin: 5px 0 0 0;
+        background: none;
+        color: #00BFD6;
+        font-size: 12px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-links-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #00D3EC;
+        margin: 15px 0;
+        display: flex;
+    }
+
+    .footer-links-items {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        list-style: none;
+        margin: 0;
+    }
+
+    .footer-links-item {
+        display: flex;
+        justify-content: stretch;
+        align-items: stretch;
+        margin: 2.5px;
+    }
+
+    .footer-links-item-link {
+        padding: 2.5px 10px;
+        width: 100%;
+        text-align: right;
+        color: #FCFCFC;
+        border-radius: 10px;
+    }
+
+    .footer-links-item-link:hover {
+        background-color: #00D3EC;
+        color: #303143;
+    }
+
+    .footer-copyright {
+        background-color: #262738;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding-bottom: 15px;
+    }
+
+    .footer-copyright-container {
+        width: 100%;
+        max-width: 1140px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .copyright-text {
+        color: #9B9999;
+        margin-top: 15px;
+        text-align: right;
+    }
+
+    .copyright-text-policy {
+        color: #E3E3E3;
+    }
+
+    .copyright-text-policy:hover {
+        color: white;
+    }
+
+    .footer-copyright-certs {
+        display: flex;
+        align-items: center;
+    }
+
+    .cert-image {
+        width: 75px;
+        height: 75px;
+        border-radius: 10px;
+        margin: 10px;
+    }
+
+    .cert-image:first-child {
+        margin-right: 0;
+    }
+
+    .footer-container-upbutton {
+        position: absolute;
+        left: 0;
+        top: -25px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #00D3EC;
+        background: none;
+        border: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .footer-container-upbutton:hover {
+        box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+    }
+
 </style>

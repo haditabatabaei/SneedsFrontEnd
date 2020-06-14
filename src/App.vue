@@ -3,18 +3,21 @@
         <notifications group="notif" position="bottom right" classes="notif isansFont"/>
         <top-menu/>
         <transition name="fade" mode="out-in">
-            <router-view style="margin-top:70px;" :key="$route.fullPath"/>
+            <router-view style="margin-top:70px;padding-bottom:200px;" :key="$route.fullPath"/>
         </transition>
+        <sneeds-footer />
     </div>
 
 </template>
 
 <script>
     import TopMenu from "@/components/TopMenus/TopMenu";
+    import Footer from "@/components/StandAlone/Footer";
     export default {
         name: 'App',
         components: {
             "top-menu": TopMenu,
+            "sneeds-footer": Footer
         },
     }
 </script>

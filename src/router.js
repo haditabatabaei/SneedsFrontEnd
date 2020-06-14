@@ -26,8 +26,8 @@ const router = new Router({
             }
         },
         {
-            path: '/packages',
-            name: 'Packages',
+            path: '/packages/college',
+            name: 'landing-packages-college',
             component: () => import("@/views/Package/Landing"),
             meta: {
                 auth: 'optional'

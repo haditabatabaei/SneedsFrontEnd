@@ -173,6 +173,7 @@
         align-items: center;
         justify-content: center;
         padding: 30px 0;
+        z-index: 10;
     }
 
     .footer-overlay-text {
@@ -225,6 +226,7 @@
         margin-top: 120px;
         width: 100%;
         max-width: 1140px;
+        padding: 0 20px;
     }
 
     .footer-desc {
@@ -375,6 +377,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        padding: 0 20px;
     }
 
     .copyright-text {

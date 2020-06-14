@@ -648,15 +648,16 @@
                     <h3 class="isansFont trust-title-sub">نظرات کاربران مارو ببینید</h3>
                 </div>
                 <div class="trust-comments isansFont">
-                    <button class="trust-comments-action">
+                    <button class="trust-comments-action" @click="showPrevComment">
                         <i class="material-icons">keyboard_arrow_right</i>
                     </button>
                     <div class="trust-comment-box">
                         <div class="trust-comments-content">
-                            <img class="trusts-comments-sender-avatar" src="/sneedsAssets/img/profile.png" alt="comment-sender">
-                            <h3 class="trusts-comments-sender-name isansFont">سید محمد هادی طباطبایی</h3>
+                            <img class="trusts-comments-sender-avatar" :src="currentComment.sender.avatar"
+                                 :alt="currentComment.sender.name">
+                            <h3 class="trusts-comments-sender-name isansFont">{{currentComment.sender.name}}</h3>
                             <p class="trusts-comments-sender-text isansFont--faNum">
-                                خیلیی خوشحالم...پذیرش فول فاندم همین دیروز اومد .و بینهایت به اسنیدز و مشاوراش مدیونم
+                                {{currentComment.text}}
                             </p>
                         </div>
                         <img class="trust-comments-box-topicon"
@@ -666,7 +667,7 @@
                         <div class="trust-comments-box-leftrect"></div>
 
                     </div>
-                    <button class="trust-comments-action">
+                    <button class="trust-comments-action" @click="showNextComment">
                         <i class="material-icons">keyboard_arrow_left</i>
                     </button>
                 </div>
@@ -749,6 +750,31 @@
             return {
                 storePackages: [],
                 showComparePackages: false,
+                commentsSliderInterval: null,
+                currentCommentIndex: 0,
+                comments: [
+                    {
+                        sender: {
+                            name: 'مینا',
+                            avatar: 'https://sneeds.ir/wp-content/uploads/2019/10/%D9%85%DB%8C%D9%86%D8%A7-128x128.png'
+                        },
+                        text: 'فوق‌العاده بود\n' +
+                            'همه چی عالی و پرفکت.\n' +
+                            'خانم حقیقتی عزیز ماشاالله با حوصله و جزییات تمام برامون وقت گذاشتن.\n' +
+                            'خیلی راهنمایی هاشون خوب بود.\n' +
+                            'از خودشون و شما خیلی تشکر می‌کنیم🙏'
+                    },
+                    {
+                        sender: {
+                            name: 'علیرضا',
+                            avatar: 'https://sneeds.ir/wp-content/uploads/2019/10/photo_2019-08-29_01-20-06-128x128.jpg'
+                        },
+                        text: 'عالي بود واقعا\n' +
+                            'ممنونم ازتون واقعا و بسيار زياد از سركار خانم حقيقتي\n' +
+                            'و خيلي خيلي قابل احترام هست براي من اين امكان كه فراهم كرديد شما دوستان\n' +
+                            'و ضمنا مجددا تشكر ميكنم حتي از جناب امراللهي نسب، دوست عزيزم كه سري قبل باهاشون صحبت داشتم و همچنان مديونشون هستم'
+                    }
+                ],
                 faqBoxes: [
                     {
                         sup: 'عمومی',
@@ -858,9 +884,40 @@
             },
             isLoggedIn() {
                 return this.$store.getters.isLoggedIn
+            },
+            currentComment() {
+                return this.comments[this.currentCommentIndex]
             }
         },
+
+        mounted() {
+            this.commentsSliderInterval = setInterval(() => {
+                this.showNextComment();
+            }, 10000)
+            console.log('interval created');
+        },
+
+        beforeDestroy() {
+            clearInterval(this.commentsSliderInterval);
+        },
+
         methods: {
+            showPrevComment() {
+                if (this.currentCommentIndex === 0) {
+                    this.currentCommentIndex = this.comments.length - 1;
+                } else {
+                    this.currentCommentIndex--;
+                }
+            },
+
+            showNextComment() {
+                if (this.currentCommentIndex === this.comments.length - 1) {
+                    this.currentCommentIndex = 0;
+                } else {
+                    this.currentCommentIndex++;
+                }
+            },
+
             toggleQuestion(question) {
                 question.isOpen = !question.isOpen;
             },
@@ -1971,7 +2028,7 @@
         height: 100%;
         position: absolute;
         left: 0;
-        top:0 ;
+        top: 0;
         z-index: 20;
         display: flex;
         flex-direction: column;
@@ -1984,6 +2041,7 @@
     .trusts-comments-sender-avatar {
         width: 85px;
         height: 85px;
+        border-radius: 50%;
     }
 
     .trusts-comments-sender-name {

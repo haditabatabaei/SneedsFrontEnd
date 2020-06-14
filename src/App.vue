@@ -3,9 +3,9 @@
         <notifications group="notif" position="bottom right" classes="notif isansFont"/>
         <top-menu/>
         <transition name="fade" mode="out-in">
-            <router-view style="margin-top:70px;padding-bottom:200px;" :key="$route.fullPath"/>
+            <router-view style="margin-top:70px;padding-bottom:200px" :key="$route.fullPath"/>
         </transition>
-        <sneeds-footer />
+        <sneeds-footer v-if="showFooter" />
     </div>
 
 </template>
@@ -19,6 +19,11 @@
             "top-menu": TopMenu,
             "sneeds-footer": Footer
         },
+        computed: {
+            showFooter() {
+                return this.$route.name.startsWith('landing') || true
+            }
+        }
     }
 </script>
 

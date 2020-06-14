@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <section>
         <div class="section">
             <div class="container">
                 <div class="row">
@@ -266,7 +266,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -518,7 +518,6 @@
 
 <style scoped>
     .section {
-        background-color: #eeeeee;
         min-height: 100vh;
         position: relative;
         padding-top: 0;

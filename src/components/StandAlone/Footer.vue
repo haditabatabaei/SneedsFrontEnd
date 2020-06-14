@@ -179,7 +179,6 @@
     .footer-overlay-text {
         text-align: center;
         color: #202425;
-        display: flex;
         align-items: center;
     }
 
@@ -428,6 +427,30 @@
 
     .footer-container-upbutton:hover {
         box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .footer-overlay-socials-link {
+            width: auto;
+            height: auto;
+        }
+
+        .footer-overlay-socials-link-img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    @media only screen and (max-width: 567.8px) {
+        .footer-overlay-socials-link-img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .footer-overlay-text {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
     }
 
 </style>

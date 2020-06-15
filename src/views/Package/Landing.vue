@@ -8,7 +8,7 @@
                         <span class="intro-title-span span-blue">
                         با اسنیدز،
                         </span>
-                        <span class="intro-title-span span-blue">
+                        <span class="intro-title-span span-black">
                         لازم نیس سخت
                         </span>
                         <br>
@@ -74,7 +74,7 @@
         <section class="package-section package-section-services">
             <div class="section-sub section-sub-services">
                 <div class="section-services-title">
-                    <h1 class="services-title-text isansFont">!به این کارها فکر نکن</h1>
+                    <h1 class="services-title-text isansFont">به این کارها فکر نکن!</h1>
                     <h2 class="services-title-subtext isansFont">با پکیج کامل اپلای اسنیدز همه این کارا با مشاوران
                         اسنیدزه.</h2>
                     <div class="services-title-divider"></div>
@@ -250,15 +250,15 @@
                 <h1 class="support-title isansFont--faNum">پاسخگوی شما هستیم 24 ساعته و 7 روز هفته</h1>
                 <ul class="support-items isansFont--faNum">
                     <li class="support-item item--hasLtr">
-                        <i class="material-icons">done</i>
+                        <i class="material-icons">call</i>
                         <span>۰۲۱ - ۲۲۸۵ ۳۲۳۱</span>
                     </li>
                     <li class="support-item item--hasLtr">
-                        <i class="material-icons">done</i>
+                        <i class="material-icons">chat</i>
                         <span>@sneeds_admin</span>
                     </li>
                     <li class="support-item item--hasLtr">
-                        <i class="material-icons">done</i>
+                        <i class="material-icons">picture_in_picture</i>
                         <span>@sneeds_admin</span>
                     </li>
                 </ul>
@@ -981,6 +981,7 @@
         width: 100%;
         min-height: calc(100vh - 70px);
         display: flex;
+        align-items: center;
         justify-content: center;
     }
 
@@ -1518,7 +1519,7 @@
 
     .section-sub-buy {
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: stretch;
         flex-wrap: wrap;
         background-color: #FFFFFF;
@@ -1535,7 +1536,7 @@
     }
 
     .buy-box {
-        max-width: 350px;
+        width: 33%;
         min-width: 300px;
         border-right: 2px solid #F2F2F2;
         border-left: 2px solid #F2F2F2;
@@ -2060,7 +2061,32 @@
 
     @media only screen and (max-width: 991.8px) {
         .section-intro-aparat {
-            width: 90%;
+            width: 100%;
+        }
+
+        .section-intro {
+            background: white;
+        }
+
+        .section-sub-intro {
+            flex-direction: column;
+        }
+
+        .section-intro-title-box {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .section-intro-title {
+            text-align: center;
+        }
+
+        .section-intro-text {
+            text-align: center;
+        }
+
+        .section-consultants-title {
+            text-align: center;
         }
 
         .section-sub-consultants {
@@ -2072,8 +2098,33 @@
             margin-top: 30px;
         }
 
+
+        .section-consultants-divider {
+            margin: 20px auto;
+        }
+
         .section-consultants-avatars {
             width: 100%;
+        }
+
+        .section-steps-title {
+            text-align: center;
+        }
+
+        .section-steps-title-divider {
+            margin: 5px auto;
+        }
+
+        .smart-info-suptitle {
+            text-align: center;
+        }
+
+        .smart-info-title {
+            text-align: center;
+        }
+
+        .smart-info-divider {
+            margin: 20px auto;
         }
 
         .section-sub-smart {
@@ -2099,6 +2150,17 @@
         .faq-box {
             padding: 0;
         }
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .buy-box {
+            border: none;
+        }
+
+        .trust-comment-box {
+            width: calc(100% - 150px);
+        }
+
     }
 
     @media only screen and (max-width: 567.8px) {
@@ -2168,5 +2230,78 @@
         .section-sub-college {
             margin: 10px 0;
         }
+
+        .buy-box {
+            width: 100%;
+            min-width: auto;
+        }
+
+        .compare-item {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .compare-title {
+            margin-right: 0;
+            margin-left: 0;
+            flex-wrap: wrap;
+            border-radius: 0;
+        }
+
+        .compare-title-item {
+            font-size: 10px;
+        }
+
+        .compare-title-item-marked {
+            font-size: 8px;
+        }
+
+        .section-sub-compare {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .trusts-comments-sender-text {
+            font-size: 12px;
+            line-height: 26px;
+        }
+        .trust-comments-box-rightrect {
+            display: none;
+        }
+
+        .trust-comments-box-leftrect {
+            display: none;
+        }
+
+
+        .trust-comment-box {
+            width: 100%;
+            order: -1;
+            margin-bottom: 15px;
+            border-radius: 0;
+        }
+
+        .trust-comments {
+            flex-wrap: wrap;
+            justify-content: center;
+            border-radius: 0;
+        }
+
+        .trust-comments-action {
+            margin: 0 5px;
+        }
+
+        .section-sub-trust {
+            padding: 0;
+        }
+
+        .trust-title-text {
+            text-align: center;
+        }
+
+        .trust-title-sub {
+            text-align: center;
+        }
+
     }
 </style>

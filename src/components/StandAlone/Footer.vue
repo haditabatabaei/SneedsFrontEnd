@@ -58,8 +58,9 @@
                     {{link.title}}
                 </h2>
                 <ul class="footer-links-items">
-                    <li v-for="item in link.items" class="footer-links-item">
-                        <router-link :to="item.target"   class="footer-links-item-link">{{item.name}}</router-link>
+                    <li v-for="item in link.items" class="footer-links-item" v-if="!item.hidden">
+                        <router-link v-if="item.type === 'router'" :to="item.target" class="footer-links-item-link">{{item.name}}</router-link>
+                        <a v-else-if="item.type === 'hyper'" target="_blank" :href="item.target" class="footer-links-item-link">{{item.name}}</a>
                     </li>
                 </ul>
             </div>
@@ -91,36 +92,36 @@
                     {
                         title: 'خدمات اسنیدز',
                         items: [
-                            {name: 'صفحه اصلی', target: '/'},
-                            {name: 'مشاوره آنلاین اپلای', target: '/consultants'},
-                            {name: 'صفر تا صد اپلای', target: '/'},
-                            {name: 'پذیرش کالج', target: '/packages'},
-                            {name: 'نگارش و تصحیح انگیز‌نامه', target: '/'},
-                            {name: 'نگارش و تصحیح رزومه', target: '/'},
-                            {name: 'پکیج اخذ ویزا', target: '/'},
-                            {name: 'نگارش و تصحیح کاورلتر', target: '/'},
-                            {name: 'وبینار‌ و همایش‌های آنلاین', target: '/'},
-                            {name: 'کلاس‌های آنلاین اپلای', target: '/'}
+                            {name: 'صفحه اصلی', target: 'https://sneeds.ir/', type: 'hyper', hidden: false},
+                            {name: 'مشاوره آنلاین اپلای', target: '/consultants', type: 'router', hidden: false},
+                            {name: 'صفر تا صد اپلای', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d8%b5%d9%81%d8%b1-%d8%aa%d8%a7-%d8%b5%d8%af/', type: 'hyper', hidden: false},
+                            {name: 'پذیرش کالج', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%da%a9%d8%a7%d9%84%d8%ac/', type: 'hyper', hidden: false},
+                            {name: 'نگارش و تصحیح انگیز‌نامه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-sop-%d8%a7%d9%86%da%af%db%8c%d8%b2%d9%87%e2%80%8c%d9%86%d8%a7%d9%85%d9%87/', type: 'hyper', hidden: false},
+                            {name: 'نگارش و تصحیح رزومه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-cv-%d8%b1%d8%b2%d9%88%d9%85%d9%87/', type: 'hyper', hidden: false},
+                            {name: 'پکیج اخذ ویزا', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d9%88%db%8c%d8%b2%d8%a7/', type: 'hyper', hidden: false},
+                            {name: 'نگارش و تصحیح کاورلتر', target: 'https://sneeds.ir/%d8%aa%d8%b5%d8%ad%db%8c%d8%ad-%da%a9%d8%a7%d9%88%d8%b1%d9%84%d8%aa%d8%b1/', type: 'hyper', hidden: false},
+                            {name: 'وبینار‌ و همایش‌های آنلاین', target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%87%D8%A7%DB%8C-%D8%AE%D9%88%D8%AF-%D8%A2%D9%85%D9%88%D8%B2-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/', type: 'hyper', hidden: false},
+                            {name: 'کلاس‌های آنلاین اپلای', target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3%e2%80%8c%D9%87%D8%A7%DB%8C-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/', type: 'hyper', hidden: false}
                         ]
                     },
                     {
                         title: 'منابع رایگان',
                         items: [
-                            {name: 'مصاحبه‌های اپلای', target: '/'},
-                            {name: 'بلاگ اسنیدز', target: '/'},
-                            {name: 'لایو‌های اینستاگرامی', target: '/'},
-                            {name: 'وبینار‌های رایگان', target: '/'},
+                            {name: 'مصاحبه‌های اپلای', target: 'https://sneeds.ir/category/conversation/', type: 'hyper', hidden: false},
+                            {name: 'بلاگ اسنیدز', target: 'https://sneeds.ir/%D8%A8%D9%84%D8%A7%DA%AF/', type: 'hyper', hidden: false},
+                            {name: 'لایو‌های اینستاگرامی', target: 'https://sneeds.ir/category/conversation/%d9%84%d8%a7%db%8c%d9%88-%d8%a7%db%8c%d9%86%d8%b3%d8%aa%d8%a7%da%af%d8%b1%d8%a7%d9%85%db%8c/', type: 'hyper', hidden: false},
+                            {name: 'وبینار‌های رایگان', target: 'https://sneeds.ir/%d8%ab%d8%a8%d8%aa%e2%80%8c%d9%86%d8%a7%d9%85-%d8%b1%d8%a7%db%8c%da%af%d8%a7%d9%86-%d9%88%d8%a8%db%8c%d9%86%d8%a7%d8%b1-%d8%a7%d9%86%d8%aa%d8%ae%d8%a7%d8%a8-%d8%a7%d8%b3%d8%aa%d8%a7%d8%af-%d9%88/', type: 'hyper', hidden: false},
                         ]
                     },
                     {
                         title: 'بیشتر بخوانید',
                         items: [
-                            {name: 'آموزش رزرو مشاوره', target: '/'},
-                            {name: 'آموزش شرکت در وبینار', target: '/'},
-                            {name: 'رزرو مشاوره آنلاین', target: '/'},
-                            {name: 'درباره‌ ما', target: '/'},
-                            {name: 'تماس با ما', target: '/'},
-                            {name: 'فرصت های شغلی', target: '/'},
+                            {name: 'آموزش رزرو مشاوره', target: 'http://sneeds.ir/%D9%85%D8%B4%D8%A7%D9%88%D8%B1%D9%87-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/', type: 'hyper', hidden: false},
+                            {name: 'آموزش شرکت در وبینار', target: '/', hidden: true},
+                            {name: 'رزرو مشاوره آنلاین', target: '/', hidden: true},
+                            {name: 'درباره‌ ما', target: 'https://sneeds.ir/%D8%AF%D8%B1%D8%A8%D8%A7%D8%B1%D9%87-%D9%85%D8%A7/', type: 'hyper', hidden: false},
+                            {name: 'تماس با ما', target: 'https://sneeds.ir/%D8%AA%D9%85%D8%A7%D8%B3/', type: 'hyper', hidden: false},
+                            {name: 'فرصت های شغلی', target: 'https://jobinja.ir/companies/sneeds/jobs', type: 'hyper', hidden: false},
                         ]
                     }
                 ],

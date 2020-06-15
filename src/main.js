@@ -12,10 +12,10 @@ import * as Sentry from '@sentry/browser';
 import api from './api';
 import { Vue as VueIntegration } from '@sentry/integrations';
 
-// Sentry.init({
-//     dsn: 'https://cf45074bfa2d4151acd120f061285fbe@o379552.ingest.sentry.io/5204566',
-//     integrations: [new VueIntegration({Vue, attachProps: true})],
-// });
+Sentry.init({
+    dsn: 'https://cf45074bfa2d4151acd120f061285fbe@o379552.ingest.sentry.io/5204566',
+    integrations: [new VueIntegration({Vue, attachProps: true})],
+});
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(Notifications);

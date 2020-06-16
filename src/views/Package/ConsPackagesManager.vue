@@ -161,10 +161,13 @@
                             <a v-if="task.file" :href="task.file" target="_blank">دانلود</a>
                             <span v-else>ندارد</span>
                         </span>
-                        <button class="row-more-info-button" v-if="isOnMobile">
+                        <button class="row-more-info-button" v-if="isOnMobile" @click="toggleTaskMoreInfo(task)">
                             <i class="material-icons">info</i>
                         </button>
-                        <div class="row-more-info-box" v-if="isOnMobile">
+                        <div class="row-more-info-box" v-if="isOnMobile && showTaskMobileMoreInfo && taskToShowMoreInfo === task">
+                            <button @click="toggleTaskMoreInfo(task)" class="more-info-box-close">
+                                <i class="material-icons">close</i>
+                            </button>
                             <p class="more-info-item">
                                 <span>تاریخ ایجاد</span>
                                 {{getJalali(task.created).format('YY/MM/DD')}}
@@ -222,7 +225,9 @@
                     {value: 'done', name: 'انجام شد'},
                     {value: 'finished', name: 'دریافت نتیجه'},
                     {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
-                ]
+                ],
+                showTaskMobileMoreInfo: false,
+                taskToShowMoreInfo: null
             }
         },
         computed: {
@@ -304,6 +309,28 @@
                 this.newTaskInput.status = task.status;
                 this.newTaskInput.id = task.id;
                 this.newTaskInput.file = task.file;
+            },
+
+            toggleTaskMoreInfo(task) {
+                if(this.showTaskMobileMoreInfo) {
+                    if(this.taskToShowMoreInfo === task) {
+                        this.hideTaskMoreInfo();
+                    } else {
+                        this.showTaskMoreInfo(task);
+                    }
+                } else {
+                    this.showTaskMoreInfo(task);
+                }
+            },
+
+            showTaskMoreInfo(task) {
+                this.taskToShowMoreInfo = task;
+                this.showTaskMobileMoreInfo = true;
+            },
+
+            hideTaskMoreInfo() {
+                this.taskToShowMoreInfo = null;
+                this.showTaskMobileMoreInfo = false;
             },
 
 
@@ -914,15 +941,10 @@
             border: none;
         }
 
-        .row-more-info-button:active ~ .row-more-info-box {
-            color: #8C3DDB;
-            display: flex;
-            flex-direction: column;
-        }
-
         .row-more-info-box {
             position: absolute;
-            display: none;
+            display: flex;
+            flex-direction: column;
             top: 10px;
             left: 10px;
             box-shadow: -2px 0 10px #00000029;
@@ -943,6 +965,21 @@
         .more-info-item span {
             color: #9B9999;
             font-size: 10px;
+        }
+
+        .more-info-box-close {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: none;
+            margin: 10px;
+        }
+
+        .more-info-box-close i {
+            font-size: 16px;
         }
     }
 

@@ -80,7 +80,10 @@
                         </mark>
                     </p>
                     <div class="body-tab-row-text more-info-row">
-                        <span v-if="!isOnMobile">ندارد</span>
+                        <span v-if="!isOnMobile">
+                            <a v-if="task.file" :href="task.file" target="_blank">دانلود</a>
+                            <span v-else>ندارد</span>
+                        </span>
                         <button class="row-more-info-button" v-if="isOnMobile">
                             <i class="material-icons">info</i>
                         </button>
@@ -92,6 +95,10 @@
                             <p class="more-info-item">
                                 <span>تاریخ آخرین تغییر</span>
                                 {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
+                            </p>
+                            <p class="more-info-item" v-if="task.file">
+                                <span>فایل</span>
+                                <a :href="task.file" target="_blank">دانلود فایل</a>
                             </p>
                         </div>
                     </div>

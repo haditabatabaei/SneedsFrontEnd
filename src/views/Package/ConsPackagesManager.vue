@@ -40,6 +40,14 @@
                                 </option>
                             </select>
                         </label>
+                        <label for="taskFile" class="newTaskModal-body-label">
+                            <span class="newTaskModal-body-label-name">
+                                فایل :
+                            </span>
+                            <input type="file" id="taskFile" class="newTaskModal-body-input" name="taskFile" ref="file"
+                                   @input="taskFileHandler">
+                            <a :href="newTaskInput.file" v-if="editTaskPattern && newTaskInput.file" target="_blank">دانلود فایل فعلی</a>
+                        </label>
                     </div>
                     <div class="newTaskModal-footer isansFont">
                         <p class="package-empty-tab-warn">
@@ -149,7 +157,10 @@
                         </mark>
                     </p>
                     <div class="body-tab-row-text more-info-row">
-                        <span v-if="!isOnMobile">ندارد</span>
+                        <span v-if="!isOnMobile">
+                            <a v-if="task.file" :href="task.file" target="_blank">دانلود</a>
+                            <span v-else>ندارد</span>
+                        </span>
                         <button class="row-more-info-button" v-if="isOnMobile">
                             <i class="material-icons">info</i>
                         </button>
@@ -161,6 +172,10 @@
                             <p class="more-info-item">
                                 <span>تاریخ آخرین تغییر</span>
                                 {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
+                            </p>
+                            <p class="more-info-item" v-if="task.file">
+                                <span>فایل</span>
+                                <a :href="task.file" target="_blank">دانلود فایل</a>
                             </p>
                         </div>
                     </div>
@@ -198,8 +213,10 @@
                 editTaskPattern: false,
                 newTaskInput: {
                     title: '',
-                    status: 'in_progress'
+                    status: 'in_progress',
+                    file: null
                 },
+                newTaskInputFile: null,
                 availableStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'done', name: 'انجام شد'},
@@ -215,6 +232,11 @@
             httpConfig() {
                 return this.$store.getters.httpConfig;
             },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig;
+            },
+
             isConsultant() {
                 return this.$store.getters.isConsultant;
             },
@@ -254,12 +276,25 @@
                 if (forced) {
                     this.isShowingNewTaskModal = false;
                     this.editTaskPattern = false;
+                    this.resetInputTaskModel();
                 } else {
                     if (event.target.id.startsWith('closable')) {
                         this.isShowingNewTaskModal = false;
                         this.editTaskPattern = false;
+                        this.resetInputTaskModel();
                     }
                 }
+            },
+
+            resetInputTaskModel() {
+                this.newTaskInput.title = '';
+                this.newTaskInput.status = 'in_progress';
+                this.newTaskInputFile = null;
+                this.newTaskInput.file = null;
+            },
+
+            taskFileHandler(event) {
+                this.newTaskInputFile = this.$refs.file.files[0];
             },
 
             editTask(task) {
@@ -268,6 +303,7 @@
                 this.newTaskInput.title = task.title;
                 this.newTaskInput.status = task.status;
                 this.newTaskInput.id = task.id;
+                this.newTaskInput.file = task.file;
             },
 
 
@@ -295,13 +331,14 @@
             async performEditTask() {
                 try {
                     this.$loading(true);
-                    let payload = {
-                        "status": this.newTaskInput.status,
-                        "title": this.newTaskInput.title,
-                    };
-                    console.log(payload)
-                    let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.httpConfig);
-                    this.newTaskInput = {status: "", title: ""};
+                    let payload = new FormData();
+                    payload.append("status", this.newTaskInput.status);
+                    payload.append("title", this.newTaskInput.title);
+                    if(this.newTaskInputFile) {
+                        payload.append("file", this.newTaskInputFile);
+                    }
+
+                    let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.multipartHttpConfig);
                     this.hideNewTaskModal(null, true);
                     await this.getCurrentPhaseTasks();
                     console.log(result);
@@ -318,14 +355,16 @@
             async createNewTask() {
                 try {
                     this.$loading(true);
-                    let payload = {
-                        "status": this.newTaskInput.status,
-                        "title": this.newTaskInput.title,
-                        "object_id": this.currentPhase.id,
-                        "content_type": this.getPhaseContentType(this.currentPhase)
-                    };
-                    let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.httpConfig);
-                    this.newTaskInput = {status: "", title: ""};
+                    let payload = new FormData();
+                    payload.append("status", this.newTaskInput.status);
+                    payload.append("title", this.newTaskInput.title);
+                    payload.append("object_id", this.currentPhase.id);
+                    payload.append("content_type", this.getPhaseContentType(this.currentPhase));
+                    if(this.newTaskInputFile) {
+                        payload.append("file", this.newTaskInputFile);
+                    }
+
+                    let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.multipartHttpConfig);
                     this.hideNewTaskModal(null, true);
                     await this.getCurrentPhaseTasks();
                     console.log(result);
@@ -683,7 +722,6 @@
 
     .newTaskModal-body {
         display: flex;
-        align-items: center;
         margin: 20px;
     }
 

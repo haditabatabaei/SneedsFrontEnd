@@ -185,6 +185,27 @@ export default new Vuex.Store({
 
         getMobileMenuShow: state => state.mobileMenuShow,
 
+        multipartHttpConfig: state => {
+            if (state.token && state.refreshToken) {
+                return {
+                    headers: {
+                        "Authorization": `Bearer ${state.token}`,
+                        "Content-Type": "multipart/form-data",
+                        "CLIENT-TIMEZONE": state.timezone,
+                    },
+                    timeout: 10000,
+                }
+            } else {
+                return {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "CLIENT-TIMEZONE": state.timezone,
+                    },
+                    timeout: 10000,
+                }
+            }
+        },
+
         httpConfig: state => {
             if (state.token && state.refreshToken) {
                 return {
@@ -203,7 +224,6 @@ export default new Vuex.Store({
                     },
                     timeout: 10000,
                 }
-
             }
         },
 

@@ -33,6 +33,11 @@
                                 ثبت نظر
                             </router-link>
                         </div>
+                        <div class="cartsWrapper-title-actions" v-if="hasSoldStorePaidPackagePhase">
+                            <router-link :to="`/user/userpackages/`">
+                                مشاهده پکیج ها
+                            </router-link>
+                        </div>
                     </div>
 
                     <div class="cartsWrapper-meta isansFont--faNum">

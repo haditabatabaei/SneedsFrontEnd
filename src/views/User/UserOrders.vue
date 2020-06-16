@@ -15,21 +15,24 @@
                     وضعیت پرداخت
                 </p>
             </div>
-            <div class="order-item" @click="$router.push(`/user/orders/${order.id}`)" v-for="(order, index) in orders" :key="index" :class="[{'success' : order.status == 'paid'}, {'failed' : order.status != 'paid'}]">
+            <div class="order-item" @click="$router.push(`/user/orders/${order.id}`)" v-for="order in orders" :class="[{'success' : order.status == 'paid'}, {'failed' : order.status != 'paid'}]">
                 <div class="order-item-title isansFont--faNum">
                     <i class="material-icons text-rose">alarm_on</i>
                     <p>
                         <span v-if="order.sold_time_slot_sales.length > 0">
-                            مشاوره آنلاین
+                            جلسه مشاوره آنلاین
                         </span>
                         <span v-else-if="order.sold_store_paid_package_phases.length > 0">
-                            فاز پکیج
+                            {{order.sold_store_paid_package_phases[0].title}}
                         </span>
                         <span v-else>
                             نا مشخص
                         </span>
                         <span v-if="order.sold_time_slot_sales[0]">
                             {{order.sold_time_slot_sales[0].consultant.first_name + " " + order.sold_time_slot_sales[0].consultant.last_name}}
+                        </span>
+                        <span v-else-if="order.sold_store_paid_package_phases.length > 0">
+                            {{order.sold_store_paid_package_phases[0].detailed_title}}
                         </span>
                         <span v-else>
                             نا مشخص

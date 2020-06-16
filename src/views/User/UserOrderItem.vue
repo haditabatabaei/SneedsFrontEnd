@@ -2,36 +2,58 @@
     <div class="container-fluid activeCart">
         <div class="row">
             <div class="col-md-12">
-                <div class="cartsWrapper" v-if="order.hasOwnProperty('sold_time_slot_sales')">
+                <div class="cartsWrapper" v-if="showOrder">
                     <div class="cartsWrapper-title isansFont--faNum">
                         <div class="cartsWrapper-title-consultant">
-                            <img v-if="order.sold_time_slot_sales[0]" v-bind:src="order.sold_time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
+                            <img
+                                 v-if="hasTimeSlot"
+                                 :src="firstTimeSlot.consultant.profile_picture" draggable="false"
+                                 alt="">
                             <div class="cartsWrapper-title-consultant--info">
-                                <h5 class="isansFont--faNum" v-if="order.sold_time_slot_sales.length > 0">مشاوره آنلاین</h5>
-                                <h5 class="isansFont--faNum" v-if="order.sold_store_paid_package_phases.length > 0">فاز پکیج</h5>
-                                <h6 class="isansFont--faNum" v-if="order.sold_time_slot_sales[0]">{{`${order.sold_time_slot_sales[0].consultant.first_name} ${order.sold_time_slot_sales[0].consultant.last_name}`}}</h6>
-                                <h6 class="isansFont--faNum" v-else>نامشخص</h6>
+                                <h5 class="isansFont--faNum" v-if="hasTimeSlot">
+                                    جلسه مشاوره آنلاین
+                                </h5>
+                                <h5 class="isansFont--faNum" v-if="hasSoldStorePaidPackagePhase">
+                                    {{soldPackagePhase.title}}
+                                </h5>
+                                <h6 class="isansFont--faNum" v-if="hasTimeSlot">
+                                    {{`${firstTimeSlot.consultant.first_name}
+                                    ${firstTimeSlot.consultant.last_name}`}}</h6>
+                                <h6 class="isansFont--faNum" v-if="hasSoldStorePaidPackagePhase">{{soldPackagePhase.detailed_title}}</h6>
                             </div>
-                            <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum" v-if="order.status != 'paid'">
+                            <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum"
+                               v-if="order.status != 'paid'">
                                 موفق
                             </p>
                         </div>
 
-                        <div class="cartsWrapper-title-actions" v-if="order.sold_time_slot_sales[0]">
-                            <button>رزرو مجدد</button>
-                            <router-link :to="`/consultants/${getConsultantSlugFromUrl(order.sold_time_slot_sales[0].consultant.url)}`">ثبت نظر</router-link>
+                        <div class="cartsWrapper-title-actions" v-if="hasTimeSlot">
+                            <router-link
+                                    :to="`/consultants/${getConsultantSlugFromUrl(firstTimeSlot.consultant.url)}`">
+                                ثبت نظر
+                            </router-link>
                         </div>
                     </div>
 
                     <div class="cartsWrapper-meta isansFont--faNum">
                         <p>
                             <span>شماره سفارش :</span>
-                            <span class="isansFont">{{order.order_id}}</span>
+                            <span class="gadugiFont">{{order.order_id}}</span>
                         </p>
 
                         <p>
                             <span>مبلغ سفارش :</span>
                             <span :classs="[{'isansFont' : !$store.getters.isiran}]">{{`${order.total} تومان`}}</span>
+                        </p>
+
+                        <p v-if="order.used_discount">
+                            <span>تخفیف :</span>
+                            <span :classs="[{'isansFont' : !$store.getters.isiran}]">{{`${order.used_discount.amount} تومان`}}</span>
+                        </p>
+
+                        <p v-if="order.used_discount">
+                            <span>با کد تخفیف :</span>
+                            <span class="gadugiFont">{{order.used_discount.code}}</span>
                         </p>
 
                         <p>
@@ -41,17 +63,17 @@
                     </div>
 
                     <div class="cartsWrapper-item" v-for="phase in order.sold_store_paid_package_phases">
-                        <p class="cartsWrapper-item--day isansFont" >{{phase.title}} | {{phase.detailed_title}}</p>
+                        <p class="cartsWrapper-item--day isansFont">{{phase.title}} | {{phase.detailed_title}}</p>
                         <p class="isansFont--faNum cartsWrapper-item-length">
                             <i class="material-icons">autorenew</i>
                             <span>{{phase.status}}</span>
-<!--                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('HH:mm')}}</span>-->
-<!--                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.end_time).locale($store.getters.locale).format('HH:mm')}}</span>-->
                         </p>
                     </div>
 
                     <div class="cartsWrapper-item" v-for="(product, index) in order.sold_time_slot_sales" :key="index">
-                        <p class="cartsWrapper-item--day" :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('dddd DD MMMM')}}</p>
+                        <p class="cartsWrapper-item--day"
+                           :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran}]">
+                            {{getJalali(product.start_time).locale($store.getters.locale).format('dddd DD MMMM')}}</p>
                         <p class="isansFont--faNum cartsWrapper-item-length">
                             <i class="material-icons">alarm_on</i>
                             <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('HH:mm')}}</span>
@@ -72,11 +94,40 @@
         name: "UserOrderItem",
         data() {
             return {
-                order : {},
+                order: null,
             }
         },
         created() {
             this.initComp();
+        },
+        computed: {
+            hasTimeSlot() {
+                return this.order && this.order.sold_time_slot_sales.length > 0;
+            },
+
+            hasSoldStorePaidPackagePhase() {
+                return this.order && this.order.sold_store_paid_package_phases.length > 0;
+            },
+
+            showOrder() {
+                return this.hasTimeSlot || this.hasSoldStorePaidPackagePhase;
+            },
+
+            firstTimeSlot() {
+                if(this.hasTimeSlot) {
+                    return this.order.sold_time_slot_sales[0]
+                } else {
+                    return null;
+                }
+            },
+
+            soldPackagePhase() {
+                if(this.hasSoldStorePaidPackagePhase) {
+                    return this.order.sold_store_paid_package_phases[0]
+                } else {
+                    return null;
+                }
+            },
         },
         methods: {
             getJalali(date) {
@@ -91,6 +142,7 @@
                 try {
                     this.$loading(true);
                     this.order = (await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig)).data;
+
                     console.log('current order ', this.order);
                 } catch (e) {
                     console.log(e);
@@ -103,7 +155,7 @@
             },
             getConsultantSlugFromUrl(url) {
                 let splitted = url.split("/");
-                if(splitted[splitted.length - 1] == "") {
+                if (splitted[splitted.length - 1] == "") {
                     return splitted[splitted.length - 2];
                 } else {
                     return splitted[splitted.length - 1];
@@ -147,7 +199,7 @@
     .cartsWrapper-discounts-title-consultant--status.failed {
         background-color: #FCECED;
         border-radius: 15px;
-        padding:5px 25px;
+        padding: 5px 25px;
         color: #894E50;
     }
 
@@ -156,7 +208,7 @@
         align-items: center;
     }
 
-    .cartsWrapper-title-consultant img{
+    .cartsWrapper-title-consultant img {
         width: 90px;
         height: 90px;
         border-radius: 50%;
@@ -168,14 +220,14 @@
         flex-direction: column;
     }
 
-    .cartsWrapper-title-consultant--info h5,h6{
+    .cartsWrapper-title-consultant--info h5, h6 {
         margin: 0;
         font-weight: bold;
     }
 
     .cartsWrapper-title-consultant--info h6 {
         margin-right: 5px;
-        font-weight: normal ;
+        font-weight: normal;
     }
 
     .cartsWrapper-item {
@@ -186,15 +238,15 @@
 
     .cartsWrapper-item--day {
         font-size: 12px;
-        color : #A0A0A0;
+        color: #A0A0A0;
     }
 
     .cartsWrapper-item-length {
         display: flex;
         width: 100%;
-        align-items:center;
+        align-items: center;
         justify-content: space-between;
-        background-color : #F2F2F2;
+        background-color: #F2F2F2;
         border-radius: 10px;
         padding: 10px 10px;
         color: #767676;
@@ -209,6 +261,7 @@
         color: #50bc81;
         font-weight: bold;
     }
+
     .cartsWrapper-item-safe i {
         margin-left: 10px;
     }
@@ -254,13 +307,14 @@
         margin: 0;
         padding: 10px;
     }
+
     .code-text {
-        margin-bottom:0;
+        margin-bottom: 0;
         margin-right: 30px
     }
 
     .code-text.success mark {
-        color : #4cc26c;
+        color: #4cc26c;
         background-color: inherit;
         font-weight: bold;
     }
@@ -274,20 +328,20 @@
         align-items: center;
     }
 
-    .cartsWrapper-title-actions button{
+    .cartsWrapper-title-actions button {
         margin-left: 20px;
-        padding:8px 30px;
-        border:none;
+        padding: 8px 30px;
+        border: none;
         border-radius: 15px;
         background-color: #9038CC;
         color: white;
         font-size: 14px;
     }
 
-    .cartsWrapper-title-actions a{
+    .cartsWrapper-title-actions a {
         margin-right: 20px;
-        padding:8px 30px;
-        border:none;
+        padding: 8px 30px;
+        border: none;
         color: #9038CC;
         font-size: 14px;
     }
@@ -300,6 +354,7 @@
         justify-content: space-evenly;
         padding-right: 20px;
         padding-left: 20px;
+        flex-wrap: wrap;
     }
 
     .cartsWrapper-meta p span:first-child {
@@ -314,7 +369,7 @@
         }
 
         .cartsWrapper-title-consultant {
-            flex-wrap : wrap;
+            flex-wrap: wrap;
             justify-content: center;
         }
 
@@ -335,7 +390,7 @@
         }
 
         .cartsWrapper-title-consultant {
-            flex-wrap : wrap;
+            flex-wrap: wrap;
             justify-content: center;
         }
 

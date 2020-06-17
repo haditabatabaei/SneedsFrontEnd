@@ -21,10 +21,12 @@
                 <p class="desc-text">
                     اسنیدز یک شرکت مهاجرتی نیست! ما به دنبال اتصال دانشجویانی که اپلای کردن، به دانشجویانی که به تجربه این افراد نیاز دارن، توی یه فضای امن هستیم
                 </p>
-                <p class="desc-about">
-                    درباره ما
+                <p class="desc-about-switcher-tabs">
+                    <button @click="activeFooterItem = item.value" v-for="item in footerSwitcherItems" class="desc-about-switcher-button" :class="[{'about-switcher-button--active': item.value === activeFooterItem}]">
+                        {{item.name}}
+                    </button>
                 </p>
-                <div class="desc-about-box">
+                <div class="desc-about-box" v-if="activeFooterItem === 'aboutus'">
                     <i class="material-icons desc-about-box-icon">
                         location_on
                     </i>
@@ -32,7 +34,7 @@
                         ،تهران، چهار راه ولیعصر، خیابان ولیعصر ،ساختمان مرکز رشد دانشگاه امیرکبیر شتابدهنده سامسونگ
                     </p>
                 </div>
-                <div class="desc-about-box">
+                <div class="desc-about-box" v-if="activeFooterItem === 'aboutus'">
                     <i class="material-icons desc-about-box-icon">
                         call
                     </i>
@@ -40,11 +42,11 @@
                         <span>021 - 2285 0721</span>
                         <br>
                         <mark class="desc-about-box-text-marked">
-                            (هر روز هفته ساعت ۹ تا ۱۰)
+                            (هر روز هفته ساعت ۹ تا 22)
                         </mark>
                     </p>
                 </div>
-                <div class="desc-about-box desc-about-box--centered">
+                <div class="desc-about-box desc-about-box--centered" v-if="activeFooterItem === 'aboutus'">
                     <i class="material-icons desc-about-box-icon">
                         email
                     </i>
@@ -131,7 +133,12 @@
                     {name: 'youtube', alt: 'یوتیوب اسنیدز', target: 'http://bit.ly/2O1cnNm', img: 'you.svg'},
                     {name: 'linkedin', alt: 'لینکداین اسنیدز', target: 'https://www.linkedin.com/company/sneeds/', img: 'linked.svg'},
                     {name: 'aparat', alt: 'آپارات اسنیدز', target: 'https://bit.ly/3fpBq6X', img: 'aparat.svg'}
-                ]
+                ],
+                footerSwitcherItems: [
+                    {name: 'درباره ما', value: 'aboutus'},
+                    {name: 'تماس با ما', value: 'contactus'}
+                ],
+                activeFooterItem: 'aboutus'
             }
         },
         methods: {
@@ -265,14 +272,29 @@
         line-height: 26px;
     }
 
-    .desc-about {
-        margin: 10px 0;
+    .desc-about-switcher-tabs {
+        align-self: flex-start;
+        display: flex;
+        align-items: center;
+    }
+
+    .desc-about-switcher-button {
+        background: none;
+        padding: 5px 17px;
+        color: #E3E3E3;
+        border: none;
+        margin: 0 10px;
+        border-radius: 5px;
+    }
+
+    .desc-about-switcher-button:first-child {
+        margin-right: 0;
+    }
+
+    .about-switcher-button--active {
         background-color: #262738;
         border: 1px solid #00BFD6;
         color: #E3E3E3;
-        border-radius: 5px;
-        padding: 5px 17px;
-        align-self: flex-start;
     }
 
     .desc-about-box {

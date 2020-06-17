@@ -74,10 +74,10 @@
                     تمامی حقوق برای شرکت نوآوران نوین پرداز برازمان محفوظ است © |
                     <router-link to="/policy" class="copyright-text-policy">قوانین و مقررات</router-link>
                 </p>
-                <div class="footer-copyright-certs">
-                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />
-                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />
-                </div>
+<!--                <div class="footer-copyright-certs">-->
+<!--                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />-->
+<!--                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />-->
+<!--                </div>-->
             </div>
         </div>
     </footer>
@@ -367,7 +367,7 @@
         display: flex;
         align-items: stretch;
         justify-content: center;
-        padding-bottom: 15px;
+        padding: 15px 0;
     }
 
     .footer-copyright-container {
@@ -381,7 +381,7 @@
 
     .copyright-text {
         color: #9B9999;
-        margin-top: 15px;
+        margin: 15px 0;
         text-align: right;
     }
 
@@ -412,7 +412,7 @@
     .footer-container-upbutton {
         position: absolute;
         left: 0;
-        top: -25px;
+        top: -40px;
         width: 50px;
         height: 50px;
         display: flex;

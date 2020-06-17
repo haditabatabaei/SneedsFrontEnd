@@ -60,10 +60,10 @@
                     اطلاعات موجود در این فرم، توسط شما در هر زمان قابل ویرایش است. اما به جهت جلوگیری از ناهماهنگی های
                     احتمالی، از تغییر آن حین پروسه اپلای، خودداری فرمایید.
                 </p>
-                <router-link to="/user/userpackages" class="payment-action payment-action--success" v-if="hasFilledPackageForm">
+                <router-link to="/user/userpackages" class="payment-action payment-action--success isansFont" v-if="hasFilledPackageForm">
                     مشاهده پکیج های رزرو شده<i class="material-icons">keyboard_arrow_left</i>
                 </router-link>
-                <router-link to="/user/package/form" class="payment-action payment-action--success" v-else>
+                <router-link to="/user/package/form?comingfrompayment=true&success=true" class="payment-action payment-action--success isansFont" v-else>
                     تکمیل فرم اطلاعات اپلای<i class="material-icons">keyboard_arrow_left</i>
                 </router-link>
             </div>

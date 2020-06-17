@@ -552,12 +552,24 @@
                         let editResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.packageForm.id}/`, payload, conf);
                         console.log(editResult);
                         await this.getCurrentFormData();
-                        this.$notify({
-                            group: 'notif',
-                            type: 'success',
-                            title: 'فرم پکیج: موفق',
-                            text: 'اطلاعات شما با موفقیت ویرایش شد.'
-                        })
+                        console.log('has coming from payment', this.comingFromPayment);
+                        if(this.comingFromPayment) {
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'فرم پکیج: موفق',
+                                text: 'اطلاعات شما با موفقیت ویرایش شد. باتشکر از رزرو این پکیج، شما به صفحه پکیج هایتان برده می شوید.',
+                                duration: 10000
+                            });
+                            this.$router.push('/user/userpackages/')
+                        } else {
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'فرم پکیج: موفق',
+                                text: 'اطلاعات شما با موفقیت ویرایش شد.'
+                            })
+                        }
                     } catch (e) {
                         this.$notify({
                             group: 'notif',
@@ -596,12 +608,24 @@
                         let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, payload, conf);
                         await this.getCurrentFormData();
                         console.log(createResult);
-                        this.$notify({
-                            group: 'notif',
-                            type: 'success',
-                            title: 'فرم پکیج: موفق',
-                            text: 'اطلاعات شما با موفقیت ثبت شد.'
-                        })
+                        if(this.comingFromPayment) {
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'فرم پکیج: موفق',
+                                text: 'اطلاعات شما با موفقیت ثبت شد. باتشکر از رزرو این پکیج، شما به صفحه پکیج هایتان برده می شوید.',
+                                duration: 10000
+                            });
+                            this.$router.push('/user/userpackages/')
+                        } else {
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'فرم پکیج: موفق',
+                                text: 'اطلاعات شما با موفقیت ثبت شد.'
+                            })
+                        }
+
                     } catch (e) {
                         console.log(e.response);
                         this.$notify({
@@ -722,6 +746,10 @@
 
             formIsInvalid() {
                 return this.submitted && this.$v.packageForm.$invalid;
+            },
+
+            comingFromPayment() {
+                return this.$route.query.comingfrompayment && this.$route.query.comingfrompayment == "true";
             },
 
             countriesForCurrentContinent() {

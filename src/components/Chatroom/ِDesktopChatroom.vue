@@ -9,9 +9,10 @@
                 <div @click="setSelectedChat(chat)"
                      class="chatroom-chats-item"
                      :class="[{'active' : selectedChat && selectedChat.id === chat.id}]"
-                     v-for="(chat, index) in chats"
-                     :key="index">
-                    <img :src="chat.profile_img" alt="" class="chatroom-chats-item-image">
+                     v-for="chat in chats"
+                     >
+                    <img v-if="chat.profile_img" :src="chat.profile_img" :alt="`${chat.other_person.first_name} ${chat.other_person.last_name}`" class="chatroom-chats-item-image">
+                    <img v-else src="/sneedsAssets/img/profile.png" :alt="`${chat.other_person.first_name} ${chat.other_person.last_name}`" class="chatroom-chats-item-image">
                     <div class="chatroom-chats-item-info">
                         <h4 class="isansFont--faNum">
                             {{chat.other_person.first_name + " " + chat.other_person.last_name}}

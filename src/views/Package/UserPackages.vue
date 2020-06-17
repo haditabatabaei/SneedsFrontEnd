@@ -15,6 +15,9 @@
         <div class="package-items">
             <div v-if="activeFilter.value === 'soldpackages'">
                 <user-sold-package-block v-for="soldPackage in packages" :package="soldPackage" />
+                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                    پکیجی در این دسته برای شما وجود ندارد.
+                </p>
             </div>
         </div>
     </section>
@@ -131,5 +134,14 @@
     .package-items--text {
         text-align: center;
         margin-top: 30px;
+    }
+
+    .package-items-noresult {
+        text-align: center;
+        width: 100%;
+        border-radius: 0 0 10px 10px;
+        background-color: white;
+        padding: 5px 0;
+        font-size: 13px;
     }
 </style>

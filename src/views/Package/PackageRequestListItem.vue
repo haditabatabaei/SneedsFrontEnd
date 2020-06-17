@@ -68,7 +68,7 @@
         <div class="request-footer isansFont">
             <h2 class="request-footer-title isansFont">عملیات روی درخواست:</h2>
             <button class="request-footer-action" @click="pickCurrentConsultantForPackage">
-                تایید مشاور و شروع فرآیند اپلای
+                تایید {{consultant.first_name + " " + consultant.last_name}} و شروع فرآیند اپلای
                 <i class="material-icons">done</i>
             </button>
         </div>
@@ -145,6 +145,8 @@
                     if (e.response) {
                         console.log(e.response);
                     }
+                } finally {
+                    this.$loading(false);
                 }
             },
 
@@ -172,14 +174,38 @@
                             {"consultant": this.consultant.id},
                             this.httpConfig);
                         console.log(result);
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'قبول مشاور: موفق',
+                            text: `شما با موفقیت ${this.consultant.first_name + " " + this.consultant.last_name} را برای انجام روند پکیج خود انتخاب کردید`,
+                            duration: 10000,
+                        });
+                        this.$router.push(`/user/userpackages/`)
+
                     } catch (e) {
                         console.log(e);
                         if (e.response) {
                             console.log(e.response);
                         }
+                        this.$notify({
+                            group: 'notif',
+                            type: 'error',
+                            title: 'قبول مشاور: خطا',
+                            text: `خطایی هنگام ارتباط با سرور رخ داد.`,
+                            duration: 5000,
+                        })
                     } finally {
                         this.$loading(false);
                     }
+                } else {
+                    this.$notify({
+                        group: 'notif',
+                        type: 'warn',
+                        title: 'قبول مشاور: اخطار',
+                        text: `برای تایید این مشاور باید اطمینان داشته باشید.`,
+                        duration: 7000,
+                    })
                 }
             }
         },

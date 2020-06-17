@@ -31,6 +31,9 @@
                 درباره مشاور
             </router-link>
         </div>
+        <p class="package-request--empty isansFont" v-if="requests.length === 0">
+            هنوز مشاوری برای انجام پکیج شما اعلام آمادگی نکرده است.
+        </p>
     </section>
 </template>
 
@@ -190,6 +193,12 @@
         border-radius: 15px;
         padding: 10px 40px;
         font-size: 14px;
+    }
+
+    .package-request--empty {
+        text-align: center;
+        font-size: 13px;
+        color: #707070;
     }
 
     @media only screen and (max-width: 567.8px) {

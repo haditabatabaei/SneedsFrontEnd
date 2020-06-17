@@ -1,6 +1,6 @@
 <template>
     <div>
-        <notifications group="notif" position="bottom right" classes="notif isansFont"/>
+        <notifications group="notif" position="top right" classes="notif isansFont"/>
         <top-menu/>
         <transition name="fade" mode="out-in">
             <router-view style="margin-top:70px;padding-bottom:200px" :key="$route.fullPath"/>

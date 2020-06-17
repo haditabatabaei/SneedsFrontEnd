@@ -75,8 +75,9 @@
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
                     <p class="body-tab-row-text">
-                        <mark class="row-text-status status--done">
-                            در حال انجام
+                        <mark class="row-text-status"
+                              :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
+                            {{getTaskStatusName(task)}}
                         </mark>
                     </p>
                     <div class="body-tab-row-text more-info-row">
@@ -132,7 +133,13 @@
                 currentPhase: {},
                 currentPhaseTasks: [],
                 showTaskMobileMoreInfo: false,
-                taskToShowMoreInfo: null
+                taskToShowMoreInfo: null,
+                availableStatuses: [
+                    {value: 'in_progress', name: 'در حال انجام'},
+                    {value: 'done', name: 'انجام شد'},
+                    {value: 'finished', name: 'دریافت نتیجه'},
+                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
+                ],
             }
         },
         computed: {
@@ -204,6 +211,10 @@
         methods: {
             getJalali(date) {
                 return jalali(date).locale(this.$store.getters.locale);
+            },
+
+            getTaskStatusName(task) {
+                return (this.availableStatuses.find(status => status.value === task.status)).name;
             },
 
             async toggleCurrentPhase(phase) {

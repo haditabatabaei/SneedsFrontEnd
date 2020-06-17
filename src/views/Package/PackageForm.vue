@@ -59,7 +59,10 @@
                            v-model.trim="$v.packageForm.personal.age.$model">
                 </div>
                 <div class="form-input form-input--radio">
-                    <p class="form-input--radio--title">وضعیت تاهل</p>
+                    <p class="form-input--radio--title">
+                        وضعیت تاهل
+                        <span class="form-input--required">*</span>
+                    </p>
                     <div class="form-input-wrapper" :class="[{'form-input-wrapper--invalid': marriageIsInvalid}]">
                         <input v-for="status in maritalStatus"
                                class="form-input-control--radio"
@@ -217,8 +220,7 @@
                     <label class="form-input-label" for="applyInfo.country">کشور مورد نظر <span
                             class="form-input--required">*</span></label>
                     <select class="form-input-select" name="education.gradLevel" id="applyInfo.country"
-                            v-model="$v.packageForm.applyInfo.country.$model"
-                            :class="[{'form-input-control--invalid': countryIsInvalid}]">
+                            v-model="$v.packageForm.applyInfo.country.$model">
                         <option class="form-input-select-option" :value="country"
                                 v-for="country in applyCountries">
                             {{country.name}}
@@ -259,9 +261,13 @@
                 </div>
 
                 <div class="form-input">
-                    <label class="form-input-label" for="applyInfo.university"> دانشگاه مورد نظر </label>
+                    <label class="form-input-label" for="applyInfo.university"> دانشگاه مورد نظر
+                        <span class="form-input--required">*</span>
+                    </label>
                     <input class="form-input-control" type="text" placeholder="رشته مورد نظر" id="applyInfo.university"
-                           v-model.trim="$v.packageForm.applyInfo.university.$model">
+                           v-model.trim="$v.packageForm.applyInfo.university.$model"
+                           :class="[{'form-input-control--invalid': applyUniversityIsInvalid}]"
+                    >
                 </div>
 
                 <div class="form-input form-input--full">
@@ -325,7 +331,7 @@
                     grade: {required},
                     semester: {required},
                     field: {required, minLength: minLength(1), maxLength: maxLength(100)},
-                    university: {}
+                    university: {required, minLength: minLength(1), maxLength: maxLength(100)}
                 },
                 description: {maxLength: maxLength(1024)},
                 file: {}
@@ -694,23 +700,16 @@
             },
 
             //Applu Info invalidity
-            continentIsInvalid() {
-                return this.submitted && this.$v.packageForm.applyInfo.continent.$error;
-            },
             countryIsInvalid() {
                 return this.submitted && this.$v.packageForm.applyInfo.country.$error;
             },
-            gradLevelInApplyInfoIsInvalid() {
-                return this.submitted && this.$v.packageForm.applyInfo.gradLevel.$error;
-            },
-            semesterIsInvalid() {
-                return this.submitted && this.$v.packageForm.applyInfo.semester.$error;
-            },
-            applyFieldIsInvalid() {
-                return this.submitted && this.$v.packageForm.applyInfo.field.$error;
-            },
+
             fieldInApplyInfoIsInvalid() {
                 return this.submitted && this.$v.packageForm.applyInfo.field.$error;
+            },
+
+            applyUniversityIsInvalid() {
+                return this.submitted && this.$v.packageForm.applyInfo.university.$error;
             },
 
             descriptionIsInvalid() {

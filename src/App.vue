@@ -1,6 +1,6 @@
 <template>
     <div>
-        <notifications group="notif" position="top right" classes="notif isansFont"/>
+        <notifications group="notif" position="bottom left" classes="notif isansFont"/>
         <top-menu/>
         <transition name="fade" mode="out-in">
             <router-view style="margin-top:70px;padding-bottom:200px" :key="$route.fullPath"/>
@@ -44,8 +44,9 @@
         color: white;
         direction: rtl;
         flex-direction: column;
-        border-right: 4px solid;
-        border-radius: 5px 0 0 5px;
+        border-left: 4px solid;
+        border-right: 5px solid;
+        border-radius: 0;
         padding: 10px;
         text-align: right !important;
         margin-top: 5px;
@@ -55,21 +56,25 @@
 
     .notif.error {
         background-color: #d9534f;
-        border-right-color: #963a38;
+        border-left-color: #963a38;
+        border-left-color: #963a38;
     }
 
     .notif.warn {
         background-color: #f0ad4e;
+        border-left-color: #a77836;
         border-right-color: #a77836;
     }
 
     .notif.success {
         background-color: #5cb85c;
+        border-left-color: #428342;
         border-right-color: #428342;
     }
 
     .notif.info {
         background-color: #5bc0de;
+        border-left-color: #418a9f;
         border-right-color: #418a9f;
     }
 

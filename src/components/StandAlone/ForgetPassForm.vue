@@ -2,7 +2,7 @@
     <form class="loginForm" @submit.prevent="requestReset()" v-if="!$route.query.token">
         <label class="loginForm-label isansFont" for="email">
             ایمیل :
-            <input class="loginForm-control" id="email" type="text" v-model.trim="$v.email.$model">
+            <input class="loginForm-control control--ltr" id="email" type="text" v-model.trim="$v.email.$model">
             <span class="loginForm-meta error" v-if="emailIsInvalid">
                 لطفا یک ایمیل معتبر وارد کنید.
             </span>
@@ -14,14 +14,14 @@
     <form class="loginForm" @submit.prevent="updatePassword()" v-else>
         <label class="loginForm-label isansFont" for="password">
             رمز عبور جدید :
-            <input class="loginForm-control" id="password" type="password" v-model.trim="$v.newPassword.$model">
+            <input class="loginForm-control control--ltr" id="password" type="password" v-model.trim="$v.newPassword.$model">
             <span class="loginForm-meta error" v-if="newPasswordIsInvalid">
                 لطفا یک رمز عبور معتبر وارد کنید.
             </span>
         </label>
         <label class="loginForm-label isansFont" for="confirmPassword">
             تکرار رمز عبور جدید :
-            <input class="loginForm-control" id="confirmPassword" type="password" v-model.trim="$v.confirmNewPassword.$model">
+            <input class="loginForm-control control--ltr" id="confirmPassword" type="password" v-model.trim="$v.confirmNewPassword.$model">
             <span class="loginForm-meta error" v-if="confirmNewPasswordIsInvalid">
                 لطفا تکرار رمز عبور معتبر وارد کنید.
             </span>
@@ -174,6 +174,10 @@
         background-color: #F8F8F8;
         margin-top: 10px;
         color: #999;
+    }
+
+    .loginForm-control.control--ltr {
+        direction: ltr !important;
     }
 
     .loginForm-meta {

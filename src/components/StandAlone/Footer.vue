@@ -39,7 +39,7 @@
                         call
                     </i>
                     <p class="desc-about-box-text box-text--number isansFont--faNum">
-                        <span>021 - 2285 0721</span>
+                        <span>021 - 2842 8353</span>
                         <br>
                         <mark class="desc-about-box-text-marked">
                             (هر روز هفته ساعت ۹ تا 22)

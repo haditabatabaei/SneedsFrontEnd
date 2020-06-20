@@ -244,6 +244,14 @@ const router = new Router({
             }
         },
         {
+            path: '/webinars',
+            name: 'webinars',
+            component: () => import("@/views/WebinarsClasses/WebinarsClasses"),
+            meta: {
+                auth: 'optional'
+            }
+        },
+        {
             path: '/404',
             name: 'Error404',
             component: () => import("@/views/Error404"),

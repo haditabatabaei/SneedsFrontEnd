@@ -162,6 +162,14 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'userpackages/staging/form',
+                    name: 'user-userpackages-staging-form',
+                    component: () => import("@/views/Package/PackageStagingForm"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
                     path: 'userpackages',
                     name: 'user-userpackages',
                     component: () => import("@/views/Package/UserPackages"),

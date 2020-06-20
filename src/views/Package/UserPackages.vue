@@ -1,35 +1,41 @@
 <template>
-    <section class="infoBlock">
-        <div class="authWrapper">
-            <div class="authFormWrapper">
-                <div class="authFormWrapper-switcher isansFont">
-                    <button v-for="filter in availableFilters"
-                            @click="filterBy(filter)"
-                            class="switcher"
-                            :class="[{'switcher--active' : activeFilter.value === filter.value}]">
-                        {{filter.name}}
-                    </button>
+    <section class="userpackages-wrapper">
+        <package-staging current-stage-value="choosecons"  v-if="isFromStaging"/>
+        <section class="infoBlock" :class="[{'no-top': !isFromStaging}]">
+            <div class="authWrapper">
+                <div class="authFormWrapper">
+                    <div class="authFormWrapper-switcher isansFont">
+                        <button v-for="filter in availableFilters"
+                                @click="filterBy(filter)"
+                                class="switcher"
+                                :class="[{'switcher--active' : activeFilter.value === filter.value}]">
+                            {{filter.name}}
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="package-items">
-            <div v-if="activeFilter.value === 'soldpackages'">
-                <user-sold-package-block v-for="soldPackage in packages" :package="soldPackage" />
-                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
-                    پکیجی در این دسته برای شما وجود ندارد.
-                </p>
+            <div class="package-items">
+                <div v-if="activeFilter.value === 'soldpackages'">
+                    <user-sold-package-block v-for="soldPackage in packages" :package="soldPackage" />
+                    <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                        پکیجی در این دسته برای شما وجود ندارد.
+                    </p>
+                </div>
             </div>
-        </div>
+        </section>
     </section>
+
 </template>
 
 <script>
     import UserSoldPackageBlock from "@/components/Packages/UserSoldPackageBlock";
+    import PackageStaging from "@/components/Packages/PackageStaging";
     export default {
         name: "UserPackages",
         components: {
             UserSoldPackageBlock,
-            'sold-package-block': UserSoldPackageBlock
+            'sold-package-block': UserSoldPackageBlock,
+            'package-staging': PackageStaging
         },
         data() {
             return {
@@ -46,6 +52,9 @@
             },
             httpConfig() {
                 return this.$store.getters.httpConfig;
+            },
+            isFromStaging() {
+                return this.$route.query.hasOwnProperty('fromstaging') && this.$route.query["fromstaging"] == "true";
             }
         },
         methods: {
@@ -84,6 +93,12 @@
 </script>
 
 <style scoped>
+    .userpackages-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+    }
+
     .infoBlock {
         display: flex;
         align-items: stretch;
@@ -91,6 +106,10 @@
         flex-direction: column;
         margin-top: 30px;
         padding-bottom: 15px;
+    }
+
+    .infoBlock.no-top {
+        margin-top: 0;
     }
 
     .authFormWrapper-switcher {

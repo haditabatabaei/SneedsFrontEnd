@@ -7,7 +7,8 @@
         </div>
         <div class="package-head">
             <div class="package-head-info" v-if="hasConsultant">
-                <img class="package-head-info-image" :src="consultant.profile_picture" :alt="`${consultant.first_name} ${consultant.last_name}`">
+                <img class="package-head-info-image" :src="consultant.profile_picture"
+                     :alt="`${consultant.first_name} ${consultant.last_name}`">
                 <div class="package-head-info-text isansFont--faNum">
                     <p class="package-head-info-namerate">
                         {{`${consultant.first_name} ${consultant.last_name}`}}
@@ -17,6 +18,10 @@
                     </p>
                     <p class="package-head-info-study" v-else>
                         بدون خلاصه تحصیلات
+                    </p>
+                    <p class="package-head-info-phasestatus">
+                        <span>وضعیت {{currentPhase.title}}: </span>
+                        <span :class="[{'phasestatus--notstarted': currentPhase.status == 'not_started', 'phasestatus--inprogress': currentPhase.status == 'in_progress', 'phasestatus--paytostart': currentPhase.status == 'pay_to_start'}]">{{currentPhaseStatusName}}</span>
                     </p>
                 </div>
             </div>
@@ -45,6 +50,20 @@
             <select class="mobile-switcher" v-model="currentPhase">
                 <option :value="phase" v-for="phase in allPhases">{{phase.title}}</option>
             </select>
+            <div class="package-body-desc">
+                <div class="package-body-desc-title" :class="[{'body-desc-title--open': isShowingCurrentPhaseDescription}]">
+                    <button @click="toggleCurrentPhaseDescription">
+                        مشاهده توضیحات {{currentPhase.title}}
+                        <transition name="fade">
+                            <i class="material-icons" v-if="isShowingCurrentPhaseDescription">keyboard_arrow_up</i>
+                            <i class="material-icons" v-else>keyboard_arrow_down</i>
+                        </transition>
+                    </button>
+                </div>
+                <transition name="fade">
+                    <div class="package-body-desc-content" v-html="currentPhase.description" v-if="isShowingCurrentPhaseDescription"></div>
+                </transition>
+            </div>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
                     <p class="body-tab-title-text">
@@ -82,13 +101,18 @@
                     </p>
                     <div class="body-tab-row-text more-info-row">
                         <span v-if="!isOnMobile">
-                            <a v-if="task.file" :href="task.file" target="_blank">دانلود</a>
-                            <span v-else>ندارد</span>
+                            <a v-if="task.file" :href="task.file" target="_blank">
+                                <i class="material-icons-outlined file-icon">cloud_download</i>
+                            </a>
+                            <span v-else>
+                                <i class="material-icons nofile-icon">horizontal_rule</i>
+                            </span>
                         </span>
                         <button class="row-more-info-button" v-if="isOnMobile" @click="toggleTaskMoreInfo(task)">
                             <i class="material-icons">info</i>
                         </button>
-                        <div class="row-more-info-box" v-if="isOnMobile && showTaskMobileMoreInfo && taskToShowMoreInfo === task">
+                        <div class="row-more-info-box"
+                             v-if="isOnMobile && showTaskMobileMoreInfo && taskToShowMoreInfo === task">
                             <button @click="toggleTaskMoreInfo(task)" class="more-info-box-close">
                                 <i class="material-icons">close</i>
                             </button>
@@ -117,7 +141,14 @@
                 </p>
             </div>
         </div>
-        <button @click="payCurrentPhase" class="payCurrentPhase isansFont" v-if="currentPhase.active">پرداخت قسط {{currentPhase.title}}</button>
+        <button @click="payCurrentPhase" class="payCurrentPhase isansFont" v-if="currentPhase.active">پرداخت قسط
+            {{currentPhase.title}}
+        </button>
+        <p class="currentPhase-paidbefore isansFont--faNum"
+           v-if="getPhaseContentType(currentPhase) === 'soldstorepaidpackagephase'">
+            شما قبلاً هزینه {{currentPhase.title}} را پرداخت کرده اید.
+            <i class="material-icons">done</i>
+        </p>
     </section>
 </template>
 
@@ -134,12 +165,18 @@
                 currentPhaseTasks: [],
                 showTaskMobileMoreInfo: false,
                 taskToShowMoreInfo: null,
+                availablePhaseStatuses: [
+                    {value: 'in_progress', name: 'در حال انجام'},
+                    {value: 'pay_to_start', name: 'پرداخت هزینه'},
+                    {value: 'not_started', name: 'شروع نشده'}
+                ],
                 availableStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'done', name: 'انجام شد'},
                     {value: 'finished', name: 'دریافت نتیجه'},
                     {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
                 ],
+                isShowingCurrentPhaseDescription: false,
             }
         },
         computed: {
@@ -202,6 +239,9 @@
             isOnMobile() {
                 return this.windowWidth <= 568;
             },
+            currentPhaseStatusName() {
+                return (this.availablePhaseStatuses.find(status => status.value === this.currentPhase.status)).name;
+            }
         },
         watch: {
             currentPhase(newVal) {
@@ -211,6 +251,10 @@
         methods: {
             getJalali(date) {
                 return jalali(date).locale(this.$store.getters.locale);
+            },
+
+            toggleCurrentPhaseDescription() {
+                this.isShowingCurrentPhaseDescription = !this.isShowingCurrentPhaseDescription;
             },
 
             getTaskStatusName(task) {
@@ -265,14 +309,14 @@
             },
 
             async payCurrentPhase() {
-                if(!!this.currentPhase.active) {
+                if (!!this.currentPhase.active) {
                     try {
                         this.$loading(true);
                         let result = (await this.$api.post(`${this.api}/cart/carts/`, {"products": [this.currentPhase.id]}, this.httpConfig))
                         console.log(result);
                         this.$router.push(`/carts/${result.data.id}`)
                     } catch (e) {
-                        if(e.response) {
+                        if (e.response) {
                             console.log(e.response);
                         }
                     } finally {
@@ -284,8 +328,8 @@
             },
 
             toggleTaskMoreInfo(task) {
-                if(this.showTaskMobileMoreInfo) {
-                    if(this.taskToShowMoreInfo === task) {
+                if (this.showTaskMobileMoreInfo) {
+                    if (this.taskToShowMoreInfo === task) {
                         this.hideTaskMoreInfo();
                     } else {
                         this.showTaskMoreInfo(task);
@@ -346,7 +390,7 @@
 
     .package-head-info {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .package-head-info-image {
@@ -434,8 +478,12 @@
     }
 
     .switcher-item-button i {
-        font-size: 15px;
-        margin-right: 5px;
+        font-size: 12px;
+        margin-right: 8px;
+        border-radius: 50%;
+        padding: 1px;
+        font-weight: bold;
+        border: 1.3px solid #8C3DDB;
     }
 
     .switcher-item-button--active {
@@ -550,6 +598,105 @@
     .row-more-info-button {
         display: none;
     }
+
+    .currentPhase-paidbefore {
+        color: #3CAEA3;
+        display: flex;
+        align-items: center;
+        margin: 10px 15px;
+    }
+
+    .currentPhase-paidbefore i {
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #3CAEA3;
+        font-size: 14px;
+        padding: 2px;
+        margin: 0 5px;
+    }
+
+    .file-icon {
+        color: #A347FF;
+        font-size: 21px;
+    }
+
+    .nofile-icon {
+        color: #9B9999;
+        font-weight: bold;
+    }
+
+    .package-head-info-phasestatus {
+        font-size: 13px;
+        color: #585858;
+        margin-top: 10px;
+    }
+
+    .phasestatus--inprogress {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--paytostart {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--notstarted {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .package-body-desc {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .package-body-desc-title {
+        background-color: white;
+        padding: 10px 20px 10px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .body-desc-title--open {
+        background-color: #F8F8F8;
+    }
+
+    .package-body-desc-title button {
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #707070;
+    }
+
+    .package-body-desc-title button i {
+        margin-right: 5px;
+    }
+
+    .package-body-desc-content {
+        margin: 0 20px;
+        padding: 20px 0;
+        border-bottom: 2px solid #F8F8F8;
+    }
+
 
     @media only screen and (max-width: 991.8px) {
         .itemBlock {

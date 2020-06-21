@@ -119,10 +119,12 @@
                         {"authority": this.$route.query.Authority, "status": this.$route.query.Status},
                         this.httpConfig
                     );
-                    this.order = (await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig)).data;
-                    this.currentPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
-                    this.detail = result.data.detail;
-                    this.refld = result.data.ReflD;
+                    if(result && result.data && result.data.order) {
+                        this.order = (await this.$api.get(`${this.api}/order/orders/${result.data.order}/`, this.httpConfig)).data;
+                        this.currentPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                        this.detail = result.data.detail;
+                        this.refld = result.data.ReflD;
+                    }
                 } catch (e) {
                     console.log(e);
                     if (e.response) {

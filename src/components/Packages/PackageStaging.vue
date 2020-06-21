@@ -1,6 +1,6 @@
 <template>
     <div class="staging isansFont--faNum">
-        <div class="staging-item" :class="[{'staging-item--done': stage.isDone, 'staging-item--current': stage.value === currentStageValue}]" v-for="stage in fromPaymentStages">
+        <div class="staging-item" :class="[{'staging-item--done': stage.isDone, 'staging-item--current': stage.value === currentStageValue}]" v-for="stage in fromLoginStages">
             <div class="staging-item-icon">
                 <i class="material-icons" v-if="stage.isDone">done</i>
             </div>
@@ -16,15 +16,15 @@
         props: {
             currentStageValue: {
                 type: String,
-                default: () => "pay"
+                default: () => "login"
             },
         },
         data() {
             return {
                 fromLoginStages: [
                     {name: 'مرحله 1', desc: 'ورود به حساب' ,value: 'login', order: 1, isDone: true},
-                    {name: 'مرحله 2', desc: 'پرداخت هزینه رزرو', value: 'pay', order: 2, isDone: true},
-                    {name: 'مرحله 3', desc: 'تکمیل فرم پکیج', value: 'fillout', order: 3, isDone: true},
+                    {name: 'مرحله 2', desc: 'پرداخت هزینه رزرو', value: 'pay', order: 2, isDone: false},
+                    {name: 'مرحله 3', desc: 'تکمیل فرم پکیج', value: 'fillout', order: 3, isDone: false},
                     {name: 'مرحله 4', desc: 'انتخاب مشاور اپلای', value: 'choosecons', order: 4, isDone: false},
                 ],
                 fromPaymentStages: [

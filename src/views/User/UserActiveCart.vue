@@ -2,9 +2,11 @@
     <div class="container activeCart" style="padding-top: 15px;">
         <div class="row">
             <div class="col-md-8" v-if="thereIsFactor">
+                <package-staging current-stage-value="login" v-if="thereIsPackage" />
                 <div class="cartsWrapper" v-if="thereIsTimeSlots">
                     <div class="cartsWrapper-title isansFont--faNum">
-                        <img v-bind:src="cart.time_slot_sales[0].consultant.profile_picture" draggable="false" alt="">
+                        <img class="cartsWrapper-title-consultant-image" v-bind:src="cart.time_slot_sales[0].consultant.profile_picture" draggable="false" :alt="`(${cart.time_slot_sales[0].consultant.first_name}
+                                ${cart.time_slot_sales[0].consultant.last_name})`">
                         <div class="cartsWrapper-title-consultant--info">
                             <h5 class="isansFont--faNum">رزرو مشاوره آنلاین</h5>
                             <h6 class="isansFont--faNum">{{`(${cart.time_slot_sales[0].consultant.first_name}
@@ -171,9 +173,13 @@
 <script>
     import axios from 'axios'
     import jalali from 'jalali-moment'
+    import PackageStaging from "@/components/Packages/PackageStaging";
 
     export default {
         name: "UserActiveCart",
+        components: {
+            'package-staging': PackageStaging
+        },
         data() {
             return {
                 cart: null,
@@ -711,6 +717,13 @@
     .package-detail-item i {
         color: #8C3DDB;
         font-size: 16px;
+    }
+
+    .cartsWrapper-title-consultant-image {
+        width: 140px;
+        height: 140px;
+        border-radius: 10px;
+        margin-left: 10px;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

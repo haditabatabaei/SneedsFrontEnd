@@ -1,5 +1,62 @@
 <template>
     <section class="itemBlock">
+        <transition name="fade">
+            <div class="modal-overlay" v-if="isShowingTaskMoreInfoModal" id="closable-overlay" @click.self="isShowingTaskMoreInfoModal = false">
+                <div class="newTaskModal">
+                    <div class="newTaskModal-head">
+                        <h2 class="newTaskModal-head-title isansFont">
+                            <button class="newTaskModal-head-title-close">
+                                <i id="closable-modal" class="material-icons" @click.self="isShowingTaskMoreInfoModal = false">close</i>
+                            </button>
+                        </h2>
+                    </div>
+                    <div class="newTaskModal-body isansFont">
+                        <div class="modal-body-title">
+                            <h2 class="isansFont modal-body-title-text">
+                                {{taskToShowMoreInfo.title}}
+                                <mark class="row-text-status"
+                                      :class="[{'status--done': taskToShowMoreInfo.status === 'done' || taskToShowMoreInfo.status === 'finished', 'status--inprogress': taskToShowMoreInfo.status === 'in_progress'}]">
+                                    {{getTaskStatusName(taskToShowMoreInfo)}}
+                                </mark>
+                            </h2>
+                            <a class="modal-body-title-file" :href="taskToShowMoreInfo.file" target="_blank" v-if="taskToShowMoreInfo.file">
+                                دانلود فایل
+                                <i class="material-icons-outlined title-file-icon">cloud_download</i>
+                            </a>
+                            <a class="modal-body-title-file file--nofile" v-else>
+                                بدون فایل
+                                <i class="material-icons-outlined title-file-icon">cloud_off</i>
+                            </a>
+                        </div>
+                        <p class="modal-body-dates isansFont--faNum">
+                            <span>
+                                <i class="material-icons-outlined">access_time</i>
+                                تاریخ ایجاد (
+                                {{getJalali(taskToShowMoreInfo.created).format('YY/MM/DD HH:mm')}}
+                                )
+                            </span>
+                            |
+                            <span>
+                                تاریخ آخرین تغییر (
+                                {{getJalali(taskToShowMoreInfo.updated).format('YY/MM/DD HH:mm')}}
+                                )
+                            </span>
+                        </p>
+                    </div>
+                    <div class="newTaskModal-footer isansFont">
+                        <p class="modal-footer-title">
+                            <i class="material-icons-outlined">
+                                info
+                            </i>
+                            توضیحات
+                            {{taskToShowMoreInfo.title}}
+                        </p>
+                        <div class="modal-footer-content" v-html="taskToShowMoreInfo.description">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <div class="package-title">
             <h1 class="package-title-text isansFont">
                 مدیریت پکیج اپلای کاربر
@@ -27,7 +84,7 @@
             </div>
             <div class="package-head-action isansFont">
                 <router-link to="/user/chatroom" class="package-head-action-profileview">
-                    <i class="material-icons">mail</i>
+                    <i class="material-icons-outlined">mail</i>
                     <span class="no--mobile">
                         گفتگو با مشاور
                     </span>
@@ -69,10 +126,7 @@
                     <p class="body-tab-title-text">
                         عنوان
                     </p>
-                    <p class="body-tab-title-text no--mobile">
-                        تاریخ ایجاد
-                    </p>
-                    <p class="body-tab-title-text no--mobile">
+                    <p class="body-tab-title-text">
                         تاریخ آخرین تغییر
                     </p>
                     <p class="body-tab-title-text">
@@ -83,17 +137,14 @@
                         <span v-else>فایل</span>
                     </p>
                 </div>
-                <div class="package-body-tab-row" v-for="task in currentPhaseTasks">
-                    <p class="body-tab-row-text row-text--dark">
+                <div class="package-body-tab-row" @click.self="showTaskMoreInfo(task)" v-for="task in currentPhaseTasks">
+                    <p class="body-tab-row-text row-text--dark" @click.self="showTaskMoreInfo(task)">
                         {{task.title}}
                     </p>
-                    <p class="body-tab-row-text no--mobile">
-                        {{getJalali(task.created).format('YY/MM/DD')}}
-                    </p>
-                    <p class="body-tab-row-text no--mobile">
+                    <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         <mark class="row-text-status"
                               :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
                             {{getTaskStatusName(task)}}
@@ -108,27 +159,9 @@
                                 <i class="material-icons nofile-icon">horizontal_rule</i>
                             </span>
                         </span>
-                        <button class="row-more-info-button" v-if="isOnMobile" @click="toggleTaskMoreInfo(task)">
-                            <i class="material-icons">info</i>
+                        <button class="row-more-info-button" v-if="isOnMobile" @click="showTaskMoreInfo(task)">
+                            <i class="material-icons-outlined">info</i>
                         </button>
-                        <div class="row-more-info-box"
-                             v-if="isOnMobile && showTaskMobileMoreInfo && taskToShowMoreInfo === task">
-                            <button @click="toggleTaskMoreInfo(task)" class="more-info-box-close">
-                                <i class="material-icons">close</i>
-                            </button>
-                            <p class="more-info-item">
-                                <span>تاریخ ایجاد</span>
-                                {{getJalali(task.created).format('YY/MM/DD')}}
-                            </p>
-                            <p class="more-info-item">
-                                <span>تاریخ آخرین تغییر</span>
-                                {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
-                            </p>
-                            <p class="more-info-item" v-if="task.file">
-                                <span>فایل</span>
-                                <a :href="task.file" target="_blank">دانلود فایل</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -165,6 +198,7 @@
                 currentPhaseTasks: [],
                 showTaskMobileMoreInfo: false,
                 taskToShowMoreInfo: null,
+                isShowingTaskMoreInfoModal: false,
                 availablePhaseStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'pay_to_start', name: 'پرداخت هزینه'},
@@ -339,9 +373,12 @@
                 }
             },
 
-            showTaskMoreInfo(task) {
+            showTaskMoreInfo(task, event) {
+                console.log('show more info for task ', task);
+                console.log(event);
                 this.taskToShowMoreInfo = task;
-                this.showTaskMobileMoreInfo = true;
+                this.isShowingTaskMoreInfoModal = true;
+                // this.showTaskMobileMoreInfo = true;
             },
 
             hideTaskMoreInfo() {
@@ -430,12 +467,17 @@
         margin-left: 10px;
         display: flex;
         align-items: center;
+        transition: all 0.1s ease-in-out;
     }
 
     .package-head-action-profileview i {
-        color: #8C3DDB;
         font-size: 16px;
         margin-left: 5px;
+    }
+
+    .package-head-action-profileview:hover {
+        background-color: #8C3DDB;
+        color: white;
     }
 
     .package-body {
@@ -484,6 +526,10 @@
         padding: 1px;
         font-weight: bold;
         border: 1.3px solid #8C3DDB;
+    }
+
+    .switcher-item-button:hover {
+        color: #8C3DDB;
     }
 
     .switcher-item-button--active {
@@ -537,6 +583,16 @@
         align-items: center;
         justify-content: space-around;
         color: #9B9999;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .package-body-tab-row:hover {
+        background-color: #F8F8F8;
+        cursor: pointer;
+    }
+
+    .body-tab-row-text {
+        margin: 0;
     }
 
     .row-text--dark {
@@ -620,6 +676,19 @@
     .file-icon {
         color: #A347FF;
         font-size: 21px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .file-icon:hover {
+        border-radius: 50%;
+        border: 1px solid #8C3DDB;
+        padding: 1.5px;
+        font-size: 18px;
     }
 
     .nofile-icon {
@@ -695,6 +764,148 @@
         margin: 0 20px;
         padding: 20px 0;
         border-bottom: 2px solid #F8F8F8;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1016;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .newTaskModal {
+        width: 100%;
+        max-width: 790px;
+        max-height: 100vh;
+        overflow: auto;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-bottom: 15px;
+    }
+
+    .newTaskModal-head-title {
+        color: #B3B3B3;
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        font-size: 18px;
+    }
+
+    .newTaskModal-head-title-close {
+        padding: 0;
+        margin: 0;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .newTaskModal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 20px;
+    }
+
+    .modal-body-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 20px 10px 20px;
+    }
+
+    .modal-body-title-text {
+        font-size: 18px;
+        color: #707070;
+    }
+
+    .modal-body-title-file {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #8C3DDB;
+        color: white;
+        padding: 7.5px 25px;
+        border-radius: 10px;
+        font-weight: normal;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .modal-body-title-file:hover {
+        border: 1px inset #8C3DDB;
+        background-color: white;
+        color: #8C3DDB;
+    }
+
+    .modal-body-title-file.file--nofile {
+        background-color: #F2F2F2;
+        color: #B3B3B3;
+    }
+
+    .title-file-icon {
+        margin-right: 10px;
+    }
+
+    .modal-body-dates {
+        margin: 0 20px 10px 20px;
+        display: flex;
+        align-items: center;
+        color: #9B9999;
+        font-size: 13px;
+        flex-wrap: wrap;
+    }
+
+    .modal-body-dates span {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .modal-body-dates span:first-child {
+        margin-right: 0;
+    }
+
+    .modal-body-dates span i {
+        margin-left: 5px;
+        font-size: 18px;
+    }
+
+    .newTaskModal-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0 20px 20px 20px;
+    }
+
+    .modal-footer-title {
+        margin: 20px 20px 15px 20px;
+        display: flex;
+        align-items: center;
+        color: #585858;
+    }
+
+    .modal-footer-title i {
+        margin-left: 5px;
+        color: #D2D2D2;
+        font-size: 18px;
+    }
+
+    .modal-footer-content {
+        margin: 15px 20px 20px 20px;
+        background-color: #F8F8F8;
+        padding: 15px;
+        border-radius: 10px;
     }
 
 

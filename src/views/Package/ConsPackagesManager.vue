@@ -161,10 +161,10 @@
                 <ul class="package-body-switcher-items">
                     <li class=" package-body-switcher-item" v-for="phase in allPhases ">
                         <button class="switcher-item-button"
-                                :class="[{'switcher-item-button--active': currentPhase === phase}]"
+                                :class="[{'switcher-item-button--active': currentPhase.id === phase.id}]"
                                 @click="currentPhase = phase">
                             {{phase.title}}
-                            <i class="material-icons-outlined" v-if="currentPhase === phase">done</i>
+                            <i class="material-icons-outlined" v-if="currentPhase.id === phase.id">done</i>
                         </button>
                     </li>
                 </ul>
@@ -478,13 +478,41 @@
                             active: true
                         };
                         let activeResult = await this.$api.patch(`${this.api}/store/packages/sold-store-unpaid-package-phase-detail/${this.currentPhase.id}/`, payload, this.httpConfig);
-                        console.log(activeResult);
-                    } else {
+                        let phaseResult = await this.$api.get(`${this.api}/store/packages/sold-store-unpaid-package-phase-detail/${this.currentPhase.id}/`, this.httpConfig)
+                        console.log('active reesult', activeResult);
+                        console.log('phase result ', phaseResult);
 
+                        let indexOfCurrentPhase = this.allPhases.indexOf(this.currentPhase);
+                        this.soldPackage.sold_store_unpaid_package_phases[indexOfCurrentPhase] = phaseResult.data;
+                        this.allPhases[indexOfCurrentPhase] = phaseResult.data;
+                        this.currentPhase = phaseResult.data;
+
+                        // this.toggleCurrentPhase(phaseResult.data);
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'ویرایش فاز: موفق',
+                            text: 'شما با موفقیت درخواست پرداخت برای این فاز را ثبت کردید.',
+                            duration: 5000
+                        });
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            type: 'warn',
+                            title: 'ویرایش فاز: اخطار',
+                            text: 'برای ثبت درخواست پرداخت باید مطمئن باشید. این عملیات برگشت ناپذیر است.',
+                            duration: 5000
+                        });
                     }
 
                 } catch (e) {
-
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'ویرایش فاز: خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد و درخواست شما ثبت نشد.',
+                        duration: 5000
+                    });
                 } finally {
                     this.$loading(false);
                 }

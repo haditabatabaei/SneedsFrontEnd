@@ -1,6 +1,61 @@
 <template>
     <section class="itemBlock">
         <transition name="fade">
+            <div class="modal-overlay" v-if="isShowingTaskMoreInfoModal" id="closable-overlay" @click.self="isShowingTaskMoreInfoModal = false">
+                <div class="taskMoreInfoModal">
+                    <div class="taskMoreInfoModal-head">
+                        <h2 class="taskMoreInfoModal-head-title isansFont">
+                            <button class="taskMoreInfoModal-head-title-close">
+                                <i id="closable-modal" class="material-icons" @click.self="isShowingTaskMoreInfoModal = false">close</i>
+                            </button>
+                        </h2>
+                    </div>
+                    <div class="taskMoreInfoModal-body isansFont">
+                        <div class="taskMoreInfoModal-body-title">
+                            <h2 class="isansFont taskMoreInfoModal-body-title-text">
+                                {{taskToShowMoreInfo.title}}
+                                <mark class="row-text-status"
+                                      :class="[{'status--done': taskToShowMoreInfo.status === 'done' || taskToShowMoreInfo.status === 'finished', 'status--inprogress': taskToShowMoreInfo.status === 'in_progress'}]">
+                                    {{getTaskStatusName(taskToShowMoreInfo)}}
+                                </mark>
+                            </h2>
+                            <a class="taskMoreInfoModal-body-title-file" :href="taskToShowMoreInfo.file" target="_blank" v-if="taskToShowMoreInfo.file">
+                                دانلود فایل
+                                <i class="material-icons-outlined title-file-icon">cloud_download</i>
+                            </a>
+                            <a class="taskMoreInfoModal-body-title-file file--nofile" v-else>
+                                بدون فایل
+                                <i class="material-icons-outlined title-file-icon">cloud_off</i>
+                            </a>
+                        </div>
+                        <p class="taskMoreInfoModal-body-dates isansFont--faNum">
+                            <span>
+                                <i class="material-icons-outlined">access_time</i>
+                                تاریخ ایجاد (
+                                {{getJalali(taskToShowMoreInfo.created).format('YY/MM/DD HH:mm')}}
+                                )
+                            </span>
+                            |
+                            <span>
+                                تاریخ آخرین تغییر (
+                                {{getJalali(taskToShowMoreInfo.updated).format('YY/MM/DD HH:mm')}}
+                                )
+                            </span>
+                        </p>
+                    </div>
+                    <div class="taskMoreInfoModal-footer isansFont">
+                        <p class="taskMoreInfoModal-footer-title">
+                            <i class="material-icons-outlined">
+                                info
+                            </i>
+                            توضیحات
+                            {{taskToShowMoreInfo.title}}
+                        </p>
+                        <div class="taskMoreInfoModal-footer-content" v-html="taskToShowMoreInfo.description">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal-overlay" v-if="isShowingNewTaskModal" id="closable-overlay" @click="hideNewTaskModal">
                 <div class="newTaskModal">
                     <div class="newTaskModal-head">
@@ -83,6 +138,10 @@
                     <p class="package-head-info-namerate" v-if="soldPackage.sold_to">
                         {{`${soldPackage.sold_to.first_name} ${soldPackage.sold_to.last_name}`}}
                     </p>
+                    <p class="package-head-info-phasestatus">
+                        <span>وضعیت {{currentPhase.title}}: </span>
+                        <span :class="[{'phasestatus--notstarted': currentPhase.status == 'not_started', 'phasestatus--inprogress': currentPhase.status == 'in_progress', 'phasestatus--paytostart': currentPhase.status == 'pay_to_start', 'phasestatus--done': currentPhase.status == 'done'}]">{{currentPhaseStatusName}}</span>
+                    </p>
                 </div>
             </div>
             <div class="package-head-action isansFont">
@@ -92,7 +151,7 @@
                 <button class="package-head-action-profileview" @click="showNewTaskModal">
                     <i class="material-icons">add</i>
                     <span class="action-profilevew-holder">
-                        افزودن کار جدید به این مرحله
+                        افزودن کار جدید به {{currentPhase.title}}
                     </span>
                 </button>
             </div>
@@ -105,7 +164,7 @@
                                 :class="[{'switcher-item-button--active': currentPhase === phase}]"
                                 @click="currentPhase = phase">
                             {{phase.title}}
-                            <i class="material-icons" v-if="currentPhase === phase">done</i>
+                            <i class="material-icons-outlined" v-if="currentPhase === phase">done</i>
                         </button>
                     </li>
                 </ul>
@@ -122,9 +181,6 @@
                         عنوان
                     </p>
                     <p class="body-tab-title-text no--mobile">
-                        تاریخ ایجاد
-                    </p>
-                    <p class="body-tab-title-text no--mobile">
                         تاریخ آخرین تغییر
                     </p>
                     <p class="body-tab-title-text">
@@ -135,22 +191,19 @@
                         <span v-else>فایل</span>
                     </p>
                 </div>
-                <div class="package-body-tab-row" v-for="task in currentPhaseTasks">
+                <div class="package-body-tab-row" v-for="task in currentPhaseTasks" @click.self="showTaskMoreInfo(task)">
                     <p class="body-tab-row-text">
                         <button class="tab-row-edit" title="ویرایش این کار" @click="editTask(task)">
                             <i class="material-icons">settings</i>
                         </button>
                     </p>
-                    <p class="body-tab-row-text row-text--dark">
+                    <p class="body-tab-row-text row-text--dark" @click.self="showTaskMoreInfo(task)">
                         {{task.title}}
                     </p>
-                    <p class="body-tab-row-text no--mobile">
-                        {{getJalali(task.created).format('YY/MM/DD')}}
-                    </p>
-                    <p class="body-tab-row-text no--mobile">
+                    <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
                     </p>
-                    <p class="body-tab-row-text">
+                    <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         <mark class="row-text-status"
                               :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
                             {{getTaskStatusName(task)}}
@@ -158,29 +211,16 @@
                     </p>
                     <div class="body-tab-row-text more-info-row">
                         <span v-if="!isOnMobile">
-                            <a v-if="task.file" :href="task.file" target="_blank">دانلود</a>
-                            <span v-else>ندارد</span>
+                            <a v-if="task.file" :href="task.file" target="_blank">
+                                <i class="material-icons-outlined file-icon">cloud_download</i>
+                            </a>
+                            <span v-else>
+                                <i class="material-icons nofile-icon">horizontal_rule</i>
+                            </span>
                         </span>
-                        <button class="row-more-info-button" v-if="isOnMobile" @click="toggleTaskMoreInfo(task)">
-                            <i class="material-icons">info</i>
+                        <button class="row-more-info-button" v-if="isOnMobile" @click="showTaskMoreInfo(task)">
+                            <i class="material-icons-outlined">info</i>
                         </button>
-                        <div class="row-more-info-box" v-if="isOnMobile && showTaskMobileMoreInfo && taskToShowMoreInfo === task">
-                            <button @click="toggleTaskMoreInfo(task)" class="more-info-box-close">
-                                <i class="material-icons">close</i>
-                            </button>
-                            <p class="more-info-item">
-                                <span>تاریخ ایجاد</span>
-                                {{getJalali(task.created).format('YY/MM/DD')}}
-                            </p>
-                            <p class="more-info-item">
-                                <span>تاریخ آخرین تغییر</span>
-                                {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
-                            </p>
-                            <p class="more-info-item" v-if="task.file">
-                                <span>فایل</span>
-                                <a :href="task.file" target="_blank">دانلود فایل</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -198,6 +238,20 @@
                 </button>
             </div>
         </div>
+        <button @click="requestPaymentForCurrentPhase" v-if="getPhaseContentType(currentPhase) === 'soldstoreunpaidpackagephase' && currentPhase.active == false" class="reqCurrentPhasePayment isansFont">
+            درخواست پرداخت برای
+            {{currentPhase.title}}
+        </button>
+        <p class="currentPhase-paidbefore isansFont--faNum"
+           v-if="getPhaseContentType(currentPhase) === 'soldstorepaidpackagephase'">
+            کاربر قبلاً هزینه {{currentPhase.title}} را پرداخت کرده است.
+            <i class="material-icons-outlined">done</i>
+        </p>
+        <p class="currentPhase-readyforpayment isansFont--faNum"
+           v-if="getPhaseContentType(currentPhase) === 'soldstoreunpaidpackagephase' && currentPhase.active == true">
+            کاربر هنوز هزینه {{currentPhase.title}} را پرداخت نکرده است.
+            <i class="material-icons-outlined">info</i>
+        </p>
     </section>
 </template>
 
@@ -213,6 +267,7 @@
                 currentPhase: {},
                 currentPhaseTasks: [],
                 isShowingNewTaskModal: false,
+                isShowingTaskMoreInfoModal: false,
                 editTaskPattern: false,
                 newTaskInput: {
                     title: '',
@@ -220,13 +275,18 @@
                     file: null
                 },
                 newTaskInputFile: null,
+                availablePhaseStatuses: [
+                    {value: 'in_progress', name: 'در حال انجام'},
+                    {value: 'pay_to_start', name: 'نیازمند پرداخت برای شروع'},
+                    {value: 'not_started', name: 'شروع نشده'},
+                    {value: 'done', name: 'انجام شده'}
+                ],
                 availableStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'done', name: 'انجام شد'},
                     {value: 'finished', name: 'دریافت نتیجه'},
                     {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
                 ],
-                showTaskMobileMoreInfo: false,
                 taskToShowMoreInfo: null
             }
         },
@@ -257,6 +317,9 @@
             },
             isOnMobile() {
                 return this.windowWidth <= 568;
+            },
+            currentPhaseStatusName() {
+                return (this.availablePhaseStatuses.find(status => status.value === this.currentPhase.status)).name;
             }
         },
         watch: {
@@ -312,8 +375,8 @@
             },
 
             toggleTaskMoreInfo(task) {
-                if(this.showTaskMobileMoreInfo) {
-                    if(this.taskToShowMoreInfo === task) {
+                if (this.showTaskMobileMoreInfo) {
+                    if (this.taskToShowMoreInfo === task) {
                         this.hideTaskMoreInfo();
                     } else {
                         this.showTaskMoreInfo(task);
@@ -323,9 +386,11 @@
                 }
             },
 
-            showTaskMoreInfo(task) {
+            showTaskMoreInfo(task, event) {
+                console.log('show more info for task ', task);
+                console.log(event);
                 this.taskToShowMoreInfo = task;
-                this.showTaskMobileMoreInfo = true;
+                this.isShowingTaskMoreInfoModal = true;
             },
 
             hideTaskMoreInfo() {
@@ -400,6 +465,26 @@
                     if (e.response) {
                         console.log(e.response);
                     }
+                } finally {
+                    this.$loading(false);
+                }
+            },
+
+            async requestPaymentForCurrentPhase() {
+                try {
+                    if(window.confirm("برای درخواست هزینه از کاربر مطمئن هستید ؟")) {
+                        this.$loading(true);
+                        let payload = {
+                            active: true
+                        };
+                        let activeResult = await this.$api.patch(`${this.api}/store/packages/sold-store-unpaid-package-phase-detail/${this.currentPhase.id}/`, payload, this.httpConfig);
+                        console.log(activeResult);
+                    } else {
+
+                    }
+
+                } catch (e) {
+
                 } finally {
                     this.$loading(false);
                 }
@@ -600,6 +685,12 @@
     .switcher-item-button i {
         font-size: 15px;
         margin-right: 5px;
+        border: 1px solid #8C3DDB;
+        border-radius: 50%;
+    }
+
+    .switcher-item-button:hover {
+        color: #8C3DDB;
     }
 
     .switcher-item-button--active {
@@ -669,12 +760,64 @@
         font-size: 13px;
     }
 
+    .body-tab-row-text {
+        margin: 0;
+    }
+
+    .package-head-info-phasestatus {
+        font-size: 13px;
+        color: #585858;
+        margin-top: 10px;
+    }
+
+    .phasestatus--inprogress {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--paytostart {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--notstarted {
+        color: #6C2C10;
+        background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--done {
+        background-color: #E7FFFE;
+        color: #1B655E;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
     .package-body-tab-row {
         padding: 20px 0;
         display: flex;
         align-items: center;
         justify-content: space-around;
         color: #9B9999;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .package-body-tab-row:hover {
+        background-color: #F8F8F8;
+        cursor: pointer;
     }
 
     .row-text--dark {
@@ -836,6 +979,174 @@
 
     .row-more-info-button {
         display: none;
+    }
+
+    .taskMoreInfoModal {
+        width: 100%;
+        max-width: 790px;
+        max-height: 100vh;
+        overflow: auto;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-bottom: 15px;
+    }
+
+    .taskMoreInfoModal-head-title {
+        color: #B3B3B3;
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        font-size: 18px;
+    }
+
+    .taskMoreInfoModal-head-title-close {
+        padding: 0;
+        margin: 0;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .taskMoreInfoModal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 20px;
+    }
+
+    .taskMoreInfoModal-body-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 20px 10px 20px;
+    }
+
+    .taskMoreInfoModal-body-title-text {
+        font-size: 18px;
+        color: #707070;
+    }
+
+    .taskMoreInfoModal-body-title-file {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #8C3DDB;
+        color: white;
+        padding: 7.5px 25px;
+        border-radius: 10px;
+        font-weight: normal;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .taskMoreInfoModal-body-title-file:hover {
+        border: 1px inset #8C3DDB;
+        background-color: white;
+        color: #8C3DDB;
+    }
+
+    .taskMoreInfoModal-body-title-file.file--nofile {
+        background-color: #F2F2F2;
+        color: #B3B3B3;
+    }
+
+    .title-file-icon {
+        margin-right: 10px;
+    }
+
+    .taskMoreInfoModal-body-dates {
+        margin: 0 20px 10px 20px;
+        display: flex;
+        align-items: center;
+        color: #9B9999;
+        font-size: 13px;
+        flex-wrap: wrap;
+    }
+
+    .taskMoreInfoModal-body-dates span {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .taskMoreInfoModal-body-dates span:first-child {
+        margin-right: 0;
+    }
+
+    .taskMoreInfoModal-body-dates span i {
+        margin-left: 5px;
+        font-size: 18px;
+    }
+
+    .taskMoreInfoModal-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0 20px 20px 20px;
+    }
+
+    .taskMoreInfoModal-footer-title {
+        margin: 20px 20px 15px 20px;
+        display: flex;
+        align-items: center;
+        color: #585858;
+    }
+
+    .taskMoreInfoModal-footer-title i {
+        margin-left: 5px;
+        color: #D2D2D2;
+        font-size: 18px;
+    }
+
+    .taskMoreInfoModal-footer-content {
+        margin: 15px 20px 20px 20px;
+        background-color: #F8F8F8;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .currentPhase-paidbefore {
+        color: #3CAEA3;
+        display: flex;
+        align-items: center;
+        margin: 10px 15px;
+    }
+
+    .currentPhase-paidbefore i {
+        font-size: 14px;
+    }
+
+    .reqCurrentPhasePayment {
+        align-self: flex-start;
+        margin: 15px;
+        background-color: #3CAEA3;
+        color: white;
+        border-radius: 5px;
+        padding: 7px 25px;
+        border: none;
+    }
+
+    .reqCurrentPhasePayment:hover {
+        background-color: #3ba499;
+    }
+
+    .currentPhase-readyforpayment {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: center;
+        margin: 10px 15px;
+        padding: 5px 12px;
+        border-radius: 5px;
+    }
+
+    .currentPhase-readyforpayment i {
+        font-size: 14px;
     }
 
     @media only screen and (max-width: 991.8px) {

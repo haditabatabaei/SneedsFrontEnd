@@ -78,7 +78,7 @@
                     </p>
                     <p class="package-head-info-phasestatus">
                         <span>وضعیت {{currentPhase.title}}: </span>
-                        <span :class="[{'phasestatus--notstarted': currentPhase.status == 'not_started', 'phasestatus--inprogress': currentPhase.status == 'in_progress', 'phasestatus--paytostart': currentPhase.status == 'pay_to_start'}]">{{currentPhaseStatusName}}</span>
+                        <span :class="[{'phasestatus--notstarted': currentPhase.status == 'not_started', 'phasestatus--inprogress': currentPhase.status == 'in_progress', 'phasestatus--paytostart': currentPhase.status == 'pay_to_start', 'phasestatus--done': currentPhase.status == 'done'}]">{{currentPhaseStatusName}}</span>
                     </p>
                 </div>
             </div>
@@ -201,8 +201,9 @@
                 isShowingTaskMoreInfoModal: false,
                 availablePhaseStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
-                    {value: 'pay_to_start', name: 'پرداخت هزینه'},
-                    {value: 'not_started', name: 'شروع نشده'}
+                    {value: 'pay_to_start', name: 'نیازمند پرداخت برای شروع'},
+                    {value: 'not_started', name: 'شروع نشده'},
+                    {value: 'done', name: 'انجام شده'}
                 ],
                 availableStatuses: [
                     {value: 'in_progress', name: 'در حال انجام'},
@@ -723,6 +724,15 @@
     .phasestatus--notstarted {
         color: #6C2C10;
         background-color: #FBF8DE;
+        border-radius: 10px;
+        padding: 2.5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .phasestatus--done {
+        background-color: #E7FFFE;
+        color: #1B655E;
         border-radius: 10px;
         padding: 2.5px 10px;
         font-size: 12px;

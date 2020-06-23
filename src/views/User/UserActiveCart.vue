@@ -57,22 +57,9 @@
                     </div>
                     <div class="cartsWrapper-package-detail">
                         <ul class="package-detail-list">
-                            <li class="package-detail-item isansFont">
-                                <i class="material-icons">done</i>
-                                <p>تضمین بازگشت هزینه رزرو در صورت عدم رضایت.</p>
-                            </li>
-                            <li class="package-detail-item isansFont">
-                                <i class="material-icons">done</i>
-                                <p>بررسی رایگان فرم اطلاعات تحصیلی شما به دست مشاوران اسنیدز.</p>
-                            </li>
-                            <li class="package-detail-item isansFont">
-                                <i class="material-icons">done</i>
-                                <p>امکان انجام مشاوره تصویری رایگان قبل از تایید با مشاورانی که پروژه شما رو قبول
-                                    کرده‌اند.</p>
-                            </li>
-                            <li class="package-detail-item isansFont">
+                            <li class="package-detail-item isansFont" v-if="phase.description">
                                 <i class="material-icons">info</i>
-                                <p>توضیحات {{phase.title}}: {{phase.detailed_title}}</p>
+                                <p>توضیحات {{phase.title}}: {{phase.description}}</p>
                             </li>
                         </ul>
                     </div>

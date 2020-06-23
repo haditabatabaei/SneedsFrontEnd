@@ -79,7 +79,7 @@
 
                 <div class="payment-result-box isansFont" v-if="hasPhase">
                     <p class="payment-result-data">
-                        هزینه مرحله پکیج شما با موفقی انجام شد.
+                        هزینه {{order.sold_store_paid_package_phases[0]}} پکیج شما با موفقیت پرداخت شد.
                     </p>
                     <router-link :to="`/user/userpackages/manager/${orderStorePackageId}`"
                                  class="payment-action payment-action--success">
@@ -112,7 +112,6 @@
         methods: {
             async verifyPayment() {
                 try {
-                    //this.$loading(true);
                     this.showResult = false;
                     let result = await this.$api.post(
                         `${this.api}/payment/verify/`,
@@ -131,7 +130,6 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
                     this.showResult = true;
                 }
             }

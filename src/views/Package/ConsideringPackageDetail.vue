@@ -8,7 +8,7 @@
             </router-link>
             <section class="package-detail-box" v-if="userForm.id">
                 <div class="package-detail-box-title">
-                    <h1 class="package-detail-box-title-text isansFont">درخواست پکیج طلایی</h1>
+                    <h1 class="package-detail-box-title-text isansFont">درخواست {{package.title}}</h1>
                 </div>
                 <div class="package-detail-box-intro">
                     <div class="detail-box-intro-personal">
@@ -20,7 +20,7 @@
                         </h3>
                     </div>
                     <div class="detail-box-intro-actions">
-                        <a download :href="userForm.resume" class="isansFont detail-box-intro-actions-resume">
+                        <a download :href="userForm.resume" class="isansFont detail-box-intro-actions-resume" v-if="userForm.resume">
                             دانلود رزومه
                         </a>
                         <button @click="acceptCurrentPackage" class="isansFont detail-box-intro-actions-accept">
@@ -211,11 +211,14 @@
                             <span class="form-info-field-key">
                                 فایل رزومه:
                             </span>
-                            <a download :href="userForm.resume" class="form-info-field-clickcablevalue">
+                            <a download :href="userForm.resume" class="form-info-field-clickcablevalue" v-if="userForm.resume">
                                 دانلود رزومه
                                 <i class="material-icons">
                                     keyboard_arrow_down
                                 </i>
+                            </a>
+                            <a class="form-info-field-clickcablevalue" v-else>
+                                آپلود نشده
                             </a>
                         </p>
                     </div>
@@ -344,8 +347,10 @@
                                 group: 'notif',
                                 type: 'success',
                                 title: 'آمادگی پکیج: موفق',
-                                text: 'شما با موفقیت برای انجام این پکیج اعلام آمادگی کردید.'
+                                text: 'شما با موفقیت برای انجام این پکیج اعلام آمادگی کردید.',
+                                duration: 10000,
                             })
+                            this.$router.push('/user/conspackages');
                         } catch (e) {
                             console.log(e.response);
                             this.$notify({

@@ -1,6 +1,6 @@
 <template>
     <section class="userpackages-wrapper">
-        <package-staging current-stage-value="choosecons"  v-if="isFromStaging"/>
+        <package-staging current-stage-value="selectpackage"  v-if="isFromStaging"/>
         <section class="infoBlock" :class="[{'no-top': !isFromStaging}]">
             <div class="authWrapper">
                 <div class="authFormWrapper">

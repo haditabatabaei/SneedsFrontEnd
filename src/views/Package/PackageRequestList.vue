@@ -1,45 +1,53 @@
 <template>
-    <section class="itemBlock">
-        <div class="packages-head">
-            <h1 class="packages-head-title isansFont">
-                نتیجه بررسی اطلاعات فرم درخواست پکیج
-            </h1>
-        </div>
-        <div class="packages-alarm isansFont">
-            <i class="material-icons">
-                done
-            </i>
-            <p class="packages-alarm-text">
-                <strong>درخواست اولیه شما توسط مشاوران زیر تایید شد</strong>
-                <br>
-                شما یک هفته فرصت دارین با بررسی مشاوران مناسب ترین مشاور رو انتخاب کنید.
-            </p>
-        </div>
-        <div class="package-request-item isansFont" v-for="request in requests">
-            <div class="package-request-item-info">
-                <img class="request-item-info-image" :src="request.consultant_info.profile_picture" :alt="`${request.consultant_info.first_name} ${request.consultant_info.last_name}`">
-                <div class="request-item-info-content">
-                    <h2 class="isansFont item-info-content-name">{{`${request.consultant_info.first_name} ${request.consultant_info.last_name}`}}</h2>
-                    <router-link to="/user/chatroom" class="info-content-chat">
-                        <i class="material-icons">message</i>
-                        گفتگو با
-                        {{request.consultant_info.first_name}}
-                    </router-link>
-                </div>
+    <section class="request-list-wrapper">
+        <package-staging current-stage-value="choosecons" />
+        <section class="itemBlock">
+            <div class="packages-head">
+                <h1 class="packages-head-title isansFont">
+                    نتیجه بررسی اطلاعات فرم درخواست پکیج
+                </h1>
             </div>
-            <router-link :to="`/user/userpackages/requestlist/${request.sold_store_package}/${request.id}`" class="package-request-item-aboutaction">
-                درباره مشاور
-            </router-link>
-        </div>
-        <p class="package-request--empty isansFont" v-if="requests.length === 0">
-            هنوز مشاوری برای انجام پکیج شما اعلام آمادگی نکرده است.
-        </p>
+            <div class="packages-alarm isansFont">
+                <i class="material-icons">
+                    done
+                </i>
+                <p class="packages-alarm-text">
+                    <strong>درخواست اولیه شما توسط مشاوران زیر تایید شد</strong>
+                    <br>
+                    شما یک هفته فرصت دارین با بررسی مشاوران مناسب ترین مشاور رو انتخاب کنید.
+                </p>
+            </div>
+            <div class="package-request-item isansFont" v-for="request in requests">
+                <div class="package-request-item-info">
+                    <img class="request-item-info-image" :src="request.consultant_info.profile_picture" :alt="`${request.consultant_info.first_name} ${request.consultant_info.last_name}`">
+                    <div class="request-item-info-content">
+                        <h2 class="isansFont item-info-content-name">{{`${request.consultant_info.first_name} ${request.consultant_info.last_name}`}}</h2>
+                        <router-link to="/user/chatroom" class="info-content-chat">
+                            <i class="material-icons">message</i>
+                            گفتگو با
+                            {{request.consultant_info.first_name}}
+                        </router-link>
+                    </div>
+                </div>
+                <router-link :to="`/user/userpackages/requestlist/${request.sold_store_package}/${request.id}`" class="package-request-item-aboutaction">
+                    درباره مشاور
+                </router-link>
+            </div>
+            <p class="package-request--empty isansFont" v-if="requests.length === 0">
+                هنوز مشاوری برای انجام پکیج شما اعلام آمادگی نکرده است.
+            </p>
+        </section>
     </section>
 </template>
 
 <script>
+    import PackageStaging from "@/components/Packages/PackageStaging";
+
     export default {
         name: "PackageRequestList",
+        components: {
+            'package-staging': PackageStaging
+        },
         data() {
             return {
                 requests: [],
@@ -60,8 +68,6 @@
                     let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/?sold_store_package=${this.$route.params.packageId}`, this.httpConfig);
                     console.log(result);
                     this.requests = result.data;
-                    let consultantsReqs = [];
-                    // this.requests.forEach(request => this.$api.get(`${this.api}`))
                 } catch (e) {
                     console.log(e);
                     if(e.response) {
@@ -79,11 +85,18 @@
 </script>
 
 <style scoped>
+
+    .request-list-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+    }
+
     .itemBlock {
         background-color: white;
         border-radius: 15px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        margin-top: 30px;
+        margin-top: 15px;
         padding-bottom: 20px;
         display: flex;
         flex-direction: column;

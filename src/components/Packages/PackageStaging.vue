@@ -25,7 +25,8 @@
                     {name: 'مرحله 1', desc: 'ورود به حساب' ,value: 'login', order: 1, isDone: true},
                     {name: 'مرحله 2', desc: 'پرداخت هزینه رزرو', value: 'pay', order: 2, isDone: false},
                     {name: 'مرحله 3', desc: 'تکمیل فرم پکیج', value: 'fillout', order: 3, isDone: false},
-                    {name: 'مرحله 4', desc: 'انتخاب مشاور اپلای', value: 'choosecons', order: 4, isDone: false},
+                    {name: 'مرحله 4', desc: 'انتخاب پکیج رزرو شده', value: 'selectpackage', order: 4, isDone: false},
+                    {name: 'مرحله 5', desc: 'انتخاب مشاور اپلای', value: 'choosecons', order: 5, isDone: false},
                 ],
                 fromPaymentStages: [
                     {name: 'مرحله 1', desc: 'پرداخت هزینه رزرو', value: 'pay', order: 1, isDone: true},
@@ -103,10 +104,10 @@
     .staging-item:not(:first-child).staging-item--done:before {
         content: " ";
         position: absolute;
-        width: 100px;
+        width: 80px;
         height: 3px;
         background-color: #3CAEA3;
         border-radius:  5px;
-        right: -100px;
+        right: -66px;
     }
 </style>

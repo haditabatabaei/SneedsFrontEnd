@@ -36,11 +36,11 @@
         },
         methods: {
             activeCurrentAndBeforeStatuses() {
-                let currentStageIndex = this.fromPaymentStages.findIndex(stage => stage.value === this.currentStageValue);
-                this.fromPaymentStages.forEach((stage, index) => {
+                let currentStageIndex = this.fromLoginStages.findIndex(stage => stage.value === this.currentStageValue);
+                this.fromLoginStages.forEach((stage, index) => {
                     stage.isDone = index <= currentStageIndex;
                 })
-                console.log(this.fromPaymentStages);
+                console.log(this.fromLoginStages);
             }
         },
         created() {

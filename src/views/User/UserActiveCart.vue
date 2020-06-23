@@ -225,7 +225,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -248,7 +248,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -270,7 +270,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -287,7 +287,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -325,7 +325,7 @@
                         this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "پرداخت: خطا", "error", 5000, "notif");
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 

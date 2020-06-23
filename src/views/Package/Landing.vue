@@ -1119,7 +1119,7 @@
                 }).catch(error => {
 
                 }).finally(() => {
-                    this.$loading(false);
+
                 })
             },
 
@@ -1148,7 +1148,7 @@
                             }
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "رزرو : خطا", "error", 3000, "notif")
                         } finally {
-                            this.$loading(false);
+
                         }
                     }
                 } else {
@@ -1164,7 +1164,7 @@
                 } catch (e) {
 
                 } finally {
-                    this.$loading(false);
+
                 }
             }
         },

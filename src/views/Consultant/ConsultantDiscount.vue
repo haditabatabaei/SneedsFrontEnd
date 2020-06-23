@@ -96,7 +96,7 @@
                         }
                     })
                     .finally(() => {
-                        this.$loading(false);
+
                     })
             },
 
@@ -113,7 +113,7 @@
                     } else {
                     }
                 } catch (e) {
-                    this.$loading(false);
+
                 }
             }
         },

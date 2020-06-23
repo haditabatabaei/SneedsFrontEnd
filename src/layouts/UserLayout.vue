@@ -200,7 +200,7 @@
             } catch (e) {
                 this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "خطا", "error", 3000, "notif")
             } finally {
-                this.$loading(false);
+
             }
         },
     }

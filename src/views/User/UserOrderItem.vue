@@ -155,7 +155,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
             getConsultantSlugFromUrl(url) {

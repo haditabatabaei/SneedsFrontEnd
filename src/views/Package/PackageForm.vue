@@ -496,7 +496,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -578,7 +578,7 @@
                             text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     //form is invalid, show notification
@@ -635,7 +635,7 @@
                             text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     //form is invalid, show notification

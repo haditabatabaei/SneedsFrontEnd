@@ -153,10 +153,10 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ثبت نام :‌ خطا", "error", 3000, "notif");
                         }
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
-                    this.$loading(false);
+
                     this.printMessage("لطفا اطلاعات خود را به درستی پر کنید...", "ثبت نام :‌ اخطار", "warn", 3000, "notif");
                 }
             },

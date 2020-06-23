@@ -326,7 +326,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -361,7 +361,7 @@
                             })
 
                         } finally {
-                            this.$loading(false);
+
                         }
 
                     }

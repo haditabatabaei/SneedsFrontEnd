@@ -21,7 +21,7 @@
                 } catch (e) {
                     console.log(e);
                 } finally {
-                    this.$loading(false);
+
                 }
             }
         },

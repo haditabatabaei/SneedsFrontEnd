@@ -84,7 +84,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
         },

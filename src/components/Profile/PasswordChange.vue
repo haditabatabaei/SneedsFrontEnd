@@ -156,10 +156,10 @@
                         });
 
                     }).finally(() => {
-                        this.$loading(false)
+
                     })
                 } else {
-                    this.$loading(false);
+
                     this.$notify({
                         group: 'notif',
                         duration: 3000,

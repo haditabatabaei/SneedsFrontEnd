@@ -171,9 +171,9 @@
                             title : 'ویرایش : خطا',
                             text : 'خطایی هنگام ارتباط با سرور رخ داد.'
                         });
-                    }).finally( () => {this.$loading(false);})
+                    }).finally( () => {})
                 } else {
-                    this.$loading(false);
+
                     this.$notify({
                         group : 'notif',
                         duration: 3000,

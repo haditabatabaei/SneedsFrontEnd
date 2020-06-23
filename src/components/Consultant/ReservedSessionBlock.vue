@@ -127,7 +127,7 @@
                         console.log(e);
                         console.log(`current session ${this.session.id} doesnt have rate`)
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     console.log(`no time or already has rate for getting session ${this.session.id} rate.`);
@@ -145,7 +145,7 @@
                         console.log(e);
                         console.log(`current session ${this.session.id} doesnt have room`);
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     console.log(`no time or already has room for getting session ${this.session.id} room.`);
@@ -168,7 +168,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
         },

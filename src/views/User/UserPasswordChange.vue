@@ -84,7 +84,7 @@
                             }
                         }
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     this.printMessage("لطفا اطلاعات ورودی خود را کنترل کنید.", "ویرایش: اخطار", "warn", 3000, "notif");

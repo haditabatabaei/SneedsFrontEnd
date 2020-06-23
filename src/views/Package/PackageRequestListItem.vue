@@ -145,7 +145,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -160,7 +160,7 @@
                         console.log(e.response);
                     }
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 
@@ -195,7 +195,7 @@
                             duration: 5000,
                         })
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
                     this.$notify({

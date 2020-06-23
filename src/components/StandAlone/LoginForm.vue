@@ -119,10 +119,10 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ورود: خطا", "error", 3000, "notif");
                         }
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
-                    this.$loading(false);
+
                     this.printMessage("لطفا اطلاعات ورودی خود را کنترل کنید.", "ورود: اخطار", "warn", 3000, "notif");
                 }
             },

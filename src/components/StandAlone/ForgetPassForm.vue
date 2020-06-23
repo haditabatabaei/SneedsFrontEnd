@@ -110,10 +110,10 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "بازیابی: خطا", "error", 3000, "notif");
                         }
                     } finally {
-                        this.$loading(false);
+
                     }
                 } else {
-                    this.$loading(false);
+
                     this.printMessage("لطفا اطلاعات ورودی خود را کنترل کنید.", "بازیابی: اخطار", "warn", 3000, "notif");
                 }
             },
@@ -137,7 +137,7 @@
                         }
                         this.printMessage("خطایی هنگام ارتباط با سرور رخ داد و یا اطلاعات وارد شده نا معتبر است.", "ثبت رمز جدید: خطا", "error", 3000, "notif");
                     } finally {
-                        this.$loading(false);
+
                     }
 
                 } else {

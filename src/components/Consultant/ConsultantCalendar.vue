@@ -148,7 +148,7 @@
                 }).catch(error => {
                     console.log(error);
                 }).finally(() => {
-                    this.$loading(false);
+
                 })
             },
 
@@ -333,7 +333,7 @@
                             this.initComp();
                         })
                         .finally(() => {
-                            this.$loading(false);
+
                         })
                 }
 
@@ -365,7 +365,7 @@
                         console.log(error);
                     })
                     .finally(() => {
-                        this.$loading(false);
+
                     })
             }
         }

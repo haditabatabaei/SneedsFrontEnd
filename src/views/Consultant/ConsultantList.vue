@@ -349,7 +349,7 @@
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif");
                 } finally {
-                    this.$loading(false);
+
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }
@@ -380,7 +380,7 @@
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif")
                 } finally {
-                    this.$loading(false);
+
                 }
             },
 

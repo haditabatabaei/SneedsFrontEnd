@@ -1,33 +1,19 @@
 <template>
     <section class="itemBlock">
         <transition name="fade">
-            <div class="modal-overlay" v-if="isShowingTaskMoreInfoModal" id="closable-overlay" @click.self="isShowingTaskMoreInfoModal = false">
+            <div class="modal-overlay" v-if="isShowingTaskMoreInfoModal" id="closable-overlay"
+                 @click.self="hideTaskMoreInfo">
                 <div class="taskMoreInfoModal">
                     <div class="taskMoreInfoModal-head">
-                        <h2 class="taskMoreInfoModal-head-title isansFont">
+                        <h2 class="taskMoreInfoModal-head-title isansFont--faNum">
                             <button class="taskMoreInfoModal-head-title-close">
-                                <i id="closable-modal" class="material-icons" @click.self="isShowingTaskMoreInfoModal = false">close</i>
+                                <i id="closable-modal" class="material-icons"
+                                   @click.self="hideTaskMoreInfo">close</i>
+                                ویرایش {{taskToShowMoreInfo.title}}
                             </button>
                         </h2>
                     </div>
                     <div class="taskMoreInfoModal-body isansFont">
-                        <div class="taskMoreInfoModal-body-title">
-                            <h2 class="isansFont taskMoreInfoModal-body-title-text">
-                                {{taskToShowMoreInfo.title}}
-                                <mark class="row-text-status"
-                                      :class="[{'status--done': taskToShowMoreInfo.status === 'done' || taskToShowMoreInfo.status === 'finished', 'status--inprogress': taskToShowMoreInfo.status === 'in_progress'}]">
-                                    {{getTaskStatusName(taskToShowMoreInfo)}}
-                                </mark>
-                            </h2>
-                            <a class="taskMoreInfoModal-body-title-file" :href="taskToShowMoreInfo.file" target="_blank" v-if="taskToShowMoreInfo.file">
-                                دانلود فایل
-                                <i class="material-icons-outlined title-file-icon">cloud_download</i>
-                            </a>
-                            <a class="taskMoreInfoModal-body-title-file file--nofile" v-else>
-                                بدون فایل
-                                <i class="material-icons-outlined title-file-icon">cloud_off</i>
-                            </a>
-                        </div>
                         <p class="taskMoreInfoModal-body-dates isansFont--faNum">
                             <span>
                                 <i class="material-icons-outlined">access_time</i>
@@ -43,37 +29,8 @@
                             </span>
                         </p>
                     </div>
-                    <div class="taskMoreInfoModal-footer isansFont">
-                        <p class="taskMoreInfoModal-footer-title">
-                            <i class="material-icons-outlined">
-                                info
-                            </i>
-                            توضیحات
-                            {{taskToShowMoreInfo.title}}
-                        </p>
-                        <div class="taskMoreInfoModal-footer-content" v-html="taskToShowMoreInfo.description">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-overlay" v-if="isShowingNewTaskModal" id="closable-overlay" @click="hideNewTaskModal">
-                <div class="newTaskModal">
-                    <div class="newTaskModal-head">
-                        <h2 class="newTaskModal-head-title isansFont" v-if="editTaskPattern">
-                            <button class="newTaskModal-head-title-close">
-                                <i id="closable-modal" class="material-icons" @click="hideNewTaskModal">close</i>
-                            </button>
-                            ویرایش کار
-                        </h2>
-                        <h2 class="newTaskModal-head-title isansFont" v-else>
-                            <button class="newTaskModal-head-title-close">
-                                <i id="closable-modal" class="material-icons" @click="hideNewTaskModal">close</i>
-                            </button>
-                            ایجاد کار جدید
-                        </h2>
-                    </div>
-                    <div class="newTaskModal-body isansFont">
-                        <label for="taskTitle" class="newTaskModal-body-label">
+                    <div class="taskMoreInfoModal-footer isansFont--faNum">
+                        <label for="taskTitle" class="newTaskModal-body-label label--third">
                         <span class="newTaskModal-body-label-name">
                             عنوان کار
                             <mark>*</mark>
@@ -82,7 +39,7 @@
                             <input type="text" class="newTaskModal-body-input" id="taskTitle" name="taskTitle"
                                    v-model="newTaskInput.title">
                         </label>
-                        <label for="taskStatus" class="newTaskModal-body-label">
+                        <label for="taskStatus" class="newTaskModal-body-label label--third">
                         <span class="newTaskModal-body-label-name">
                             وضعیت فعلی
                             <mark>*</mark>
@@ -95,31 +52,92 @@
                                 </option>
                             </select>
                         </label>
-                        <label for="taskFile" class="newTaskModal-body-label">
+                        <label for="taskFile" class="newTaskModal-body-label label--third">
                             <span class="newTaskModal-body-label-name">
                                 فایل :
                             </span>
                             <input type="file" id="taskFile" class="newTaskModal-body-input" name="taskFile" ref="file"
                                    @input="taskFileHandler">
-                            <a :href="newTaskInput.file" v-if="editTaskPattern && newTaskInput.file" target="_blank">دانلود فایل فعلی</a>
+                            <a :href="newTaskInput.file" v-if="newTaskInput.file" target="_blank">دانلود فایل فعلی</a>
+                        </label>
+                        <label for="taskDescription" class="newTaskModalbody-label" style="width: 100%">
+                        <span class="newTaskModal-body-label-name">
+                            توضیحات
+                            :
+                        </span>
+                            <textarea id="taskDescription" class="newTaskModal-body-input"
+                                      v-model.trim="newTaskInput.description" style="resize: vertical">
+                            {{taskToShowMoreInfo.description}}
+                        </textarea>
+                        </label>
+
+                        <button class="newTaskModal-footer-create" @click="performEditTask">
+                            ثبت تغییرات این کار
+                        </button>
+                        <button class="newTaskModal-footer-delete" @click="deleteTask">
+                            <i class="material-icons">delete_forever</i>
+                            حذف این کار
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-overlay" v-if="isShowingNewTaskModal" id="closable-overlay"
+                 @click.self="hideNewTaskModal">
+                <div class="newTaskModal">
+                    <div class="newTaskModal-head">
+                        <h2 class="newTaskModal-head-title isansFont">
+                            <button class="newTaskModal-head-title-close">
+                                <i id="closable-modal" class="material-icons" @click.self="hideNewTaskModal">close</i>
+                            </button>
+                            ایجاد کار جدید
+                        </h2>
+                    </div>
+                    <div class="newTaskModal-body isansFont--faNum">
+                        <label for="taskTitle" class="newTaskModal-body-label label--third">
+                        <span class="newTaskModal-body-label-name">
+                            عنوان کار
+                            <mark>*</mark>
+                            :
+                        </span>
+                            <input type="text" class="newTaskModal-body-input" id="taskTitle" name="taskTitle"
+                                   v-model="newTaskInput.title">
+                        </label>
+                        <label for="taskStatus" class="newTaskModal-body-label label--third">
+                        <span class="newTaskModal-body-label-name">
+                            وضعیت فعلی
+                            <mark>*</mark>
+                            :
+                        </span>
+                            <select name="taskStatus" id="taskStatus" class="newTaskModal-body-input"
+                                    v-model="newTaskInput.status">
+                                <option :value="status.value" class="newTaskModal-body-input-option"
+                                        v-for="status in availableStatuses">{{status.name}}
+                                </option>
+                            </select>
+                        </label>
+                        <label for="taskFile" class="newTaskModal-body-label label--third">
+                            <span class="newTaskModal-body-label-name">
+                                فایل :
+                            </span>
+                            <input type="file" id="taskFile" class="newTaskModal-body-input" name="taskFile" ref="file"
+                                   @input="taskFileHandler">
+                        </label>
+                        <label for="taskDescription" class="newTaskModalbody-label" style="width: 100%">
+                        <span class="newTaskModal-body-label-name">
+                            توضیحات
+                            :
+                        </span>
+                            <textarea id="taskDescription" class="newTaskModal-body-input"
+                                      v-model.trim="newTaskInput.description" style="resize: vertical">
+
+                        </textarea>
                         </label>
                     </div>
                     <div class="newTaskModal-footer isansFont">
                         <p class="package-empty-tab-warn">
                             توجه داشته باشید که کاربر قادر به مشاهده تمام جزئیات کارها می‌باشد.
                         </p>
-                        <button class="newTaskModal-footer-cancel" v-if="!editTaskPattern" id="closable-action"
-                                @click="hideNewTaskModal">
-                            بیخیال
-                        </button>
-                        <button class="newTaskModal-footer-delete" @click="deleteTask" v-if="editTaskPattern">
-                            <i class="material-icons">delete_forever</i>
-                            حذف این کار
-                        </button>
-                        <button class="newTaskModal-footer-create" @click="performEditTask" v-if="editTaskPattern">
-                            اعمال تغییرات
-                        </button>
-                        <button v-else class="newTaskModal-footer-create" @click="createNewTask">
+                        <button class="newTaskModal-footer-create" @click="createNewTask">
                             ایجاد کار جدید
                         </button>
                     </div>
@@ -164,7 +182,7 @@
                                 :class="[{'switcher-item-button--active': currentPhase.id === phase.id}]"
                                 @click="currentPhase = phase">
                             {{phase.title}}
-                            <i class="material-icons-outlined" v-if="currentPhase.id === phase.id">done</i>
+                            <i class="material-icons-outlined" v-if="currentPhase === phase && getPhaseContentType(phase) === 'soldstorepaidpackagephase'">done</i>
                         </button>
                     </li>
                 </ul>
@@ -172,11 +190,25 @@
             <select class="mobile-switcher" v-model="currentPhase">
                 <option :value="phase" v-for="phase in allPhases">{{phase.title}}</option>
             </select>
+            <div class="package-body-desc" v-if="currentPhase.description">
+                <div class="package-body-desc-title" :class="[{'body-desc-title--open': isShowingCurrentPhaseDescription}]">
+                    <button @click="toggleCurrentPhaseDescription">
+                        مشاهده توضیحات {{currentPhase.title}}
+                        <transition name="fade">
+                            <i class="material-icons" v-if="isShowingCurrentPhaseDescription">keyboard_arrow_up</i>
+                            <i class="material-icons" v-else>keyboard_arrow_down</i>
+                        </transition>
+                    </button>
+                </div>
+                <transition name="fade">
+                    <div class="package-body-desc-content" v-html="currentPhase.description" v-if="isShowingCurrentPhaseDescription"></div>
+                </transition>
+            </div>
+            <p v-else class="package-body-desc-empty">
+                توضیحات تکمیلی برای این فاز ثبت نشده است.
+            </p>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
-                    <p class="body-tab-title-text">
-
-                    </p>
                     <p class="body-tab-title-text">
                         عنوان
                     </p>
@@ -191,14 +223,11 @@
                         <span v-else>فایل</span>
                     </p>
                 </div>
-                <div class="package-body-tab-row" v-for="task in currentPhaseTasks" @click.self="showTaskMoreInfo(task)">
-                    <p class="body-tab-row-text">
-                        <button class="tab-row-edit" title="ویرایش این کار" @click="editTask(task)">
-                            <i class="material-icons">settings</i>
-                        </button>
-                    </p>
+                <div class="package-body-tab-row" v-for="task in currentPhaseTasks"
+                     @click.self="showTaskMoreInfo(task)">
                     <p class="body-tab-row-text row-text--dark" @click.self="showTaskMoreInfo(task)">
                         {{task.title}}
+                        <i class="material-icons icon-desc">line_weight</i>
                     </p>
                     <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
@@ -238,7 +267,9 @@
                 </button>
             </div>
         </div>
-        <button @click="requestPaymentForCurrentPhase" v-if="getPhaseContentType(currentPhase) === 'soldstoreunpaidpackagephase' && currentPhase.active == false" class="reqCurrentPhasePayment isansFont">
+        <button @click="requestPaymentForCurrentPhase"
+                v-if="getPhaseContentType(currentPhase) === 'soldstoreunpaidpackagephase' && currentPhase.active == false"
+                class="reqCurrentPhasePayment isansFont">
             درخواست پرداخت برای
             {{currentPhase.title}}
         </button>
@@ -268,10 +299,11 @@
                 currentPhaseTasks: [],
                 isShowingNewTaskModal: false,
                 isShowingTaskMoreInfoModal: false,
-                editTaskPattern: false,
+                isShowingCurrentPhaseDescription: false,
                 newTaskInput: {
                     title: '',
                     status: 'in_progress',
+                    description: '',
                     file: null
                 },
                 newTaskInputFile: null,
@@ -310,7 +342,7 @@
             },
             allPhases() {
                 if (this.soldPackage.id) {
-                    return this.soldPackage.sold_store_paid_package_phases.concat(this.soldPackage.sold_store_unpaid_package_phases);
+                    return this.soldPackage.sold_store_paid_package_phases.concat(this.soldPackage.sold_store_unpaid_package_phases).sort((a, b) => a.phase_number - b.phase_number);
                 } else {
                     return []
                 }
@@ -340,23 +372,19 @@
                 return (this.availableStatuses.find(status => status.value === task.status)).name;
             },
 
-            hideNewTaskModal(event, forced = false) {
-                if (forced) {
-                    this.isShowingNewTaskModal = false;
-                    this.editTaskPattern = false;
-                    this.resetInputTaskModel();
-                } else {
-                    if (event.target.id.startsWith('closable')) {
-                        this.isShowingNewTaskModal = false;
-                        this.editTaskPattern = false;
-                        this.resetInputTaskModel();
-                    }
-                }
+            hideNewTaskModal() {
+                this.isShowingNewTaskModal = false;
+                this.resetInputTaskModel();
+            },
+
+            toggleCurrentPhaseDescription() {
+                this.isShowingCurrentPhaseDescription = !this.isShowingCurrentPhaseDescription;
             },
 
             resetInputTaskModel() {
                 this.newTaskInput.title = '';
                 this.newTaskInput.status = 'in_progress';
+                this.newTaskInput.description = '';
                 this.newTaskInputFile = null;
                 this.newTaskInput.file = null;
             },
@@ -365,37 +393,21 @@
                 this.newTaskInputFile = this.$refs.file.files[0];
             },
 
-            editTask(task) {
-                this.showNewTaskModal();
-                this.editTaskPattern = true;
+            showTaskMoreInfo(task) {
+                console.log('show more info for task ', task);
+                this.taskToShowMoreInfo = task;
+                this.isShowingTaskMoreInfoModal = true;
                 this.newTaskInput.title = task.title;
                 this.newTaskInput.status = task.status;
                 this.newTaskInput.id = task.id;
                 this.newTaskInput.file = task.file;
-            },
-
-            toggleTaskMoreInfo(task) {
-                if (this.showTaskMobileMoreInfo) {
-                    if (this.taskToShowMoreInfo === task) {
-                        this.hideTaskMoreInfo();
-                    } else {
-                        this.showTaskMoreInfo(task);
-                    }
-                } else {
-                    this.showTaskMoreInfo(task);
-                }
-            },
-
-            showTaskMoreInfo(task, event) {
-                console.log('show more info for task ', task);
-                console.log(event);
-                this.taskToShowMoreInfo = task;
-                this.isShowingTaskMoreInfoModal = true;
+                this.newTaskInput.description = task.description;
             },
 
             hideTaskMoreInfo() {
                 this.taskToShowMoreInfo = null;
-                this.showTaskMobileMoreInfo = false;
+                this.isShowingTaskMoreInfoModal = false;
+                this.resetInputTaskModel()
             },
 
 
@@ -405,75 +417,108 @@
 
             async deleteTask() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.delete(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, this.httpConfig);
                     console.log(result);
-                    this.hideNewTaskModal(null, true);
+                    this.hideTaskMoreInfo();
                     await this.getCurrentPhaseTasks();
+                    this.$notify({
+                        group: 'notif',
+                        type: 'success',
+                        title: 'خذف کار: موفق',
+                        text: 'کار با موفقیت حذف شد.',
+                        duration: 10000,
+                    })
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'ویرایش کار: خطا',
+                        text: 'خطایی هنگام حذف کار رخ داد.',
+                        duration: 3000,
+                    })
                 }
             },
 
             async performEditTask() {
                 try {
-                    //this.$loading(true);
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
-                    if(this.newTaskInputFile) {
+                    payload.append("description", this.newTaskInput.description);
+                    if (this.newTaskInputFile) {
                         payload.append("file", this.newTaskInputFile);
                     }
 
                     let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.multipartHttpConfig);
-                    this.hideNewTaskModal(null, true);
+                    this.hideTaskMoreInfo();
                     await this.getCurrentPhaseTasks();
+                    this.$notify({
+                        group: 'notif',
+                        type: 'success',
+                        title: 'ویرایش کار: موفق',
+                        text: 'کار با موفقیت ویرایش شد.',
+                        duration: 10000,
+                    })
                     console.log(result);
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'ویرایش کار: خطا',
+                        text: 'خطایی هنگام ویرایش کار رخ داد.',
+                        duration: 3000,
+                    })
                 }
             },
 
             async createNewTask() {
                 try {
-                    //this.$loading(true);
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
                     payload.append("object_id", this.currentPhase.id);
                     payload.append("content_type", this.getPhaseContentType(this.currentPhase));
-                    if(this.newTaskInputFile) {
+                    payload.append("description", this.newTaskInput.description);
+                    if (this.newTaskInputFile) {
                         payload.append("file", this.newTaskInputFile);
                     }
-
                     let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.multipartHttpConfig);
                     this.hideNewTaskModal(null, true);
                     await this.getCurrentPhaseTasks();
+                    this.$notify({
+                        group: 'notif',
+                        type: 'success',
+                        title: 'ایجاد کار: موفق',
+                        text: 'کار جدید با موفقیت اضافه شد.',
+                        duration: 10000,
+                    });
                     console.log(result);
                 } catch (e) {
                     console.log(e);
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-                    this.$loading(false);
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'ایجاد کار: خطا',
+                        text: 'خطایی هنگام ایجاد کار جدید رخ داد.',
+                        duration: 3000,
+                    });
                 }
             },
 
             async requestPaymentForCurrentPhase() {
                 try {
-                    if(window.confirm("برای درخواست هزینه از کاربر مطمئن هستید ؟")) {
-                        //this.$loading(true);
+                    if (window.confirm("برای درخواست هزینه از کاربر مطمئن هستید ؟")) {
                         let payload = {
                             active: true
                         };
@@ -487,7 +532,6 @@
                         this.allPhases[indexOfCurrentPhase] = phaseResult.data;
                         this.currentPhase = phaseResult.data;
 
-                        // this.toggleCurrentPhase(phaseResult.data);
                         this.$notify({
                             group: 'notif',
                             type: 'success',
@@ -513,8 +557,6 @@
                         text: 'خطایی هنگام ارتباط با سرور رخ داد و درخواست شما ثبت نشد.',
                         duration: 5000
                     });
-                } finally {
-                    this.$loading(false);
                 }
             },
 
@@ -528,7 +570,6 @@
 
             async getCurrentPhaseTasks() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-phase-detail-list/?object_id=${this.currentPhase.id}&content_type=${this.getPhaseContentType(this.currentPhase)}`, this.httpConfig);
                     console.log(result);
                     this.currentPhaseTasks = result.data;
@@ -537,14 +578,11 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-                    this.$loading(false);
                 }
             },
 
             async getSoldPackage() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;
@@ -554,8 +592,6 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-                    this.$loading(false);
                 }
             }
         },
@@ -789,7 +825,15 @@
     }
 
     .body-tab-row-text {
+        display: flex;
+        align-items: center;
         margin: 0;
+    }
+
+    .icon-desc {
+        margin-right: 5px;
+        font-size: 16px;
+        color: #ddd;
     }
 
     .package-head-info-phasestatus {
@@ -891,7 +935,8 @@
     }
 
     .newTaskModal {
-        width: 80%;
+        width: 100%;
+        max-width: 670px;
         background-color: white;
         border-radius: 10px;
         display: flex;
@@ -920,6 +965,7 @@
 
     .newTaskModal-body {
         display: flex;
+        flex-wrap: wrap;
         margin: 20px;
     }
 
@@ -937,8 +983,8 @@
         margin-top: 10px;
         border-radius: 5px;
         padding: 5px 5px 5px 15px;
-        min-width: 250px;
         min-height: 40px;
+        width: 100%;
         border: 1px solid #F2F2F2;
         background-color: #F8F8F8;
     }
@@ -1022,6 +1068,10 @@
         padding-bottom: 15px;
     }
 
+    .label--third {
+        width: calc(33% - 10px);
+    }
+
     .taskMoreInfoModal-head-title {
         color: #B3B3B3;
         display: flex;
@@ -1045,46 +1095,6 @@
         flex-direction: column;
         align-items: stretch;
         margin: 20px;
-    }
-
-    .taskMoreInfoModal-body-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin: 0 20px 10px 20px;
-    }
-
-    .taskMoreInfoModal-body-title-text {
-        font-size: 18px;
-        color: #707070;
-    }
-
-    .taskMoreInfoModal-body-title-file {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #8C3DDB;
-        color: white;
-        padding: 7.5px 25px;
-        border-radius: 10px;
-        font-weight: normal;
-        transition: all 0.1s ease-in-out;
-    }
-
-    .taskMoreInfoModal-body-title-file:hover {
-        border: 1px inset #8C3DDB;
-        background-color: white;
-        color: #8C3DDB;
-    }
-
-    .taskMoreInfoModal-body-title-file.file--nofile {
-        background-color: #F2F2F2;
-        color: #B3B3B3;
-    }
-
-    .title-file-icon {
-        margin-right: 10px;
     }
 
     .taskMoreInfoModal-body-dates {
@@ -1113,29 +1123,9 @@
 
     .taskMoreInfoModal-footer {
         display: flex;
-        flex-direction: column;
-        align-items: stretch;
+        justify-content: flex-start;
         margin: 0 20px 20px 20px;
-    }
-
-    .taskMoreInfoModal-footer-title {
-        margin: 20px 20px 15px 20px;
-        display: flex;
-        align-items: center;
-        color: #585858;
-    }
-
-    .taskMoreInfoModal-footer-title i {
-        margin-left: 5px;
-        color: #D2D2D2;
-        font-size: 18px;
-    }
-
-    .taskMoreInfoModal-footer-content {
-        margin: 15px 20px 20px 20px;
-        background-color: #F8F8F8;
-        padding: 15px;
-        border-radius: 10px;
+        flex-wrap: wrap;
     }
 
     .currentPhase-paidbefore {
@@ -1176,6 +1166,50 @@
     .currentPhase-readyforpayment i {
         font-size: 14px;
     }
+
+    .package-body-desc {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .package-body-desc-empty {
+        margin: 5px 20px;
+        font-size: 13px;
+        color: #999;
+    }
+
+    .package-body-desc-title {
+        background-color: white;
+        padding: 10px 20px 10px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .body-desc-title--open {
+        background-color: #F8F8F8;
+    }
+
+    .package-body-desc-title button {
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #707070;
+    }
+
+    .package-body-desc-title button i {
+        margin-right: 5px;
+    }
+
+    .package-body-desc-content {
+        margin: 0 20px;
+        padding: 20px 0;
+        border-bottom: 2px solid #F8F8F8;
+    }
+
 
     @media only screen and (max-width: 991.8px) {
         .itemBlock {

@@ -10,9 +10,9 @@
                             </button>
                         </h2>
                     </div>
-                    <div class="newTaskModal-body isansFont">
+                    <div class="newTaskModal-body isansFont--faNum">
                         <div class="modal-body-title">
-                            <h2 class="isansFont modal-body-title-text">
+                            <h2 class="isansFont--faNum modal-body-title-text">
                                 {{taskToShowMoreInfo.title}}
                                 <mark class="row-text-status"
                                       :class="[{'status--done': taskToShowMoreInfo.status === 'done' || taskToShowMoreInfo.status === 'finished', 'status--inprogress': taskToShowMoreInfo.status === 'in_progress'}]">
@@ -43,7 +43,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="newTaskModal-footer isansFont">
+                    <div class="newTaskModal-footer isansFont--faNum">
                         <p class="modal-footer-title">
                             <i class="material-icons-outlined">
                                 info
@@ -51,7 +51,13 @@
                             توضیحات
                             {{taskToShowMoreInfo.title}}
                         </p>
-                        <div class="modal-footer-content" v-html="taskToShowMoreInfo.description">
+                        <div class="modal-footer-content">
+                            <p class="modal-footer-content-text" v-if="taskToShowMoreInfo.description">
+                                {{taskToShowMoreInfo.description}}
+                            </p>
+                            <p v-else class="modal-footer-content-text">
+                                توضیحاتی برای این کار وارد نشده است.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -99,7 +105,7 @@
                                 :class="[{'switcher-item-button--active': currentPhase === phase}]"
                                 @click="currentPhase = phase">
                             {{phase.title}}
-                            <i class="material-icons" v-if="currentPhase === phase">done</i>
+                            <i class="material-icons" v-if="currentPhase === phase && getPhaseContentType(phase) === 'soldstorepaidpackagephase'">done</i>
                         </button>
                     </li>
                 </ul>
@@ -107,7 +113,7 @@
             <select class="mobile-switcher" v-model="currentPhase">
                 <option :value="phase" v-for="phase in allPhases">{{phase.title}}</option>
             </select>
-            <div class="package-body-desc">
+            <div class="package-body-desc" v-if="currentPhase.description">
                 <div class="package-body-desc-title" :class="[{'body-desc-title--open': isShowingCurrentPhaseDescription}]">
                     <button @click="toggleCurrentPhaseDescription">
                         مشاهده توضیحات {{currentPhase.title}}
@@ -121,6 +127,9 @@
                     <div class="package-body-desc-content" v-html="currentPhase.description" v-if="isShowingCurrentPhaseDescription"></div>
                 </transition>
             </div>
+            <p v-else class="package-body-desc-empty">
+                توضیحات تکمیلی برای این فاز ثبت نشده است.
+            </p>
             <div class="package-body-tab" v-if="currentPhaseTasks.length != 0">
                 <div class="package-body-tab-title">
                     <p class="body-tab-title-text">
@@ -140,6 +149,7 @@
                 <div class="package-body-tab-row" @click.self="showTaskMoreInfo(task)" v-for="task in currentPhaseTasks">
                     <p class="body-tab-row-text row-text--dark" @click.self="showTaskMoreInfo(task)">
                         {{task.title}}
+                        <i class="material-icons icon-desc" v-if="task.description">line_weight</i>
                     </p>
                     <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}
@@ -181,6 +191,10 @@
            v-if="getPhaseContentType(currentPhase) === 'soldstorepaidpackagephase'">
             شما قبلاً هزینه {{currentPhase.title}} را پرداخت کرده اید.
             <i class="material-icons">done</i>
+        </p>
+        <p class="currentPhase-cantpay isansFont--faNum"
+           v-if="getPhaseContentType(currentPhase) === 'soldstoreunpaidpackagephase' && !currentPhase.active">
+            مشاور هنوز درخواستی برای پرداخت هزینه {{currentPhase.title}} اعلام نکرده است.
         </p>
     </section>
 </template>
@@ -229,7 +243,7 @@
             },
             allPhases() {
                 if (this.soldPackage.id) {
-                    return this.soldPackage.sold_store_paid_package_phases.concat(this.soldPackage.sold_store_unpaid_package_phases);
+                    return this.soldPackage.sold_store_paid_package_phases.concat(this.soldPackage.sold_store_unpaid_package_phases).sort((a, b) => a.phase_number - b.phase_number);
                 } else {
                     return []
                 }
@@ -594,6 +608,14 @@
 
     .body-tab-row-text {
         margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-desc {
+        margin-right: 5px;
+        font-size: 16px;
+        color: #ddd;
     }
 
     .row-text--dark {
@@ -674,6 +696,14 @@
         margin: 0 5px;
     }
 
+    .currentPhase-cantpay {
+        margin: 10px 15px;
+        background-color: #FFFCF4;
+        color: #a28220;
+        border-radius: 10px;
+        padding: 5px 15px;
+    }
+
     .file-icon {
         color: #A347FF;
         font-size: 21px;
@@ -743,6 +773,12 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .package-body-desc-empty {
+        margin: 5px 20px;
+        font-size: 13px;
+        color: #999;
     }
 
     .package-body-desc-title {
@@ -916,6 +952,13 @@
         background-color: #F8F8F8;
         padding: 15px;
         border-radius: 10px;
+    }
+
+    .modal-footer-content-text {
+        color: #666;
+        font-size: 13px;
+        line-height: 26px;
+        margin-bottom: 0;
     }
 
 

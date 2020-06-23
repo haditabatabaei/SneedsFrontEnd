@@ -19,8 +19,8 @@
                         منتظر تایید یکی از مشاوران توسط شما.
                     </p>
                     <p class="isansFont--faNum consultantBio">
-                        آخرین تغییر:
-                        {{getJalali(package.updated).locale($store.getters.locale).format('dddd DD MMMM YYYY HH:mm')}}
+                        تاریخ ایجاد:
+                        {{getJalali(package.created).locale($store.getters.locale).format('dddd DD MMMM YYYY HH:mm')}}
                     </p>
                 </div>
             </div>

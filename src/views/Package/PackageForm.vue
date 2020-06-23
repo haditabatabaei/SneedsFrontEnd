@@ -264,7 +264,7 @@
                     <label class="form-input-label" for="applyInfo.university"> دانشگاه مورد نظر
                         <span class="form-input--required">*</span>
                     </label>
-                    <input class="form-input-control" type="text" placeholder="رشته مورد نظر" id="applyInfo.university"
+                    <input class="form-input-control" type="text" placeholder="دانشگاه مورد نظر" id="applyInfo.university"
                            v-model.trim="$v.packageForm.applyInfo.university.$model"
                            :class="[{'form-input-control--invalid': applyUniversityIsInvalid}]"
                     >

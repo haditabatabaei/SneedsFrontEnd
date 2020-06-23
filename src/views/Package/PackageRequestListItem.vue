@@ -66,7 +66,6 @@
             </div>
         </div>
         <div class="request-footer isansFont">
-            <h2 class="request-footer-title isansFont">عملیات روی درخواست:</h2>
             <button class="request-footer-action" @click="pickCurrentConsultantForPackage">
                 تایید {{consultant.first_name + " " + consultant.last_name}} و شروع فرآیند اپلای
                 <i class="material-icons">done</i>

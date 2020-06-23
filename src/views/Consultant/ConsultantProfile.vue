@@ -402,7 +402,7 @@
                     console.log(result);
                 } catch (e) {
                     console.log(e.response);
-                    this.printMessage("خطایی هنگام ارتبا با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
+                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
                 } finally {
 
                 }

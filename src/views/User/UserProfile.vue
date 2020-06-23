@@ -2,16 +2,15 @@
         <div class="col-md-12 infoBlock">
             <form @submit.prevent="updateUser" class="info-form isansFont">
                 <div class="row">
-                    <p style="margin-right: 15px;">نکته : موارد خالی حساب نخواهند شد.</p>
                     <div class="col-md-6">
                         <label for="email" class="info-label isansFont--faNum">ایمیل (غیر قابل تغییر) :
-                            <input id="email" :placeholder="`فعلی :‌ ${user.email}`" type="text" class="info-input" disabled>
+                            <input id="email" :placeholder="user.email" type="text" class="info-input" disabled>
                         </label>
                     </div>
                     <div class="col-md-6">
                         <label for="phoneNumber" class="info-label">
                             شماره تماس (غیر قابل تغییر) :
-                            <input type="text" :placeholder="`فعلی :‌ ${user.phone_number}`" id="phoneNumber" class="info-input" disabled>
+                            <input type="text" :placeholder="user.phone_number" id="phoneNumber" class="info-input" disabled>
                         </label>
                     </div>
 
@@ -144,16 +143,16 @@
             },
             firstNamePlaceholder() {
                 if(this.user.first_name == null) {
-                    return 'فعلی: ثبت نشده'
+                    return 'ثبت نشده'
                 } else {
-                    return `فعلی: ${this.user.first_name}`
+                    return this.user.first_name
                 }
             },
             lastNamePlaceholder() {
                 if(this.user.last_name == null) {
-                    return 'فعلی: ثبت نشده'
+                    return 'ثبت نشده'
                 } else {
-                    return `فعلی: ${this.user.last_name}`
+                    return this.user.last_name
                 }
             }
         }

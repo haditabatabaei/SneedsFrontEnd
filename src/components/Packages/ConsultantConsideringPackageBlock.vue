@@ -20,7 +20,7 @@
                         {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
                         <br>
                         <span v-if="hasUserDetailedInfo">
-                            برای رشته :
+                            برای رشته:
                             {{package.userDetailedInfo.apply_major}}
                         </span>
                     </p>

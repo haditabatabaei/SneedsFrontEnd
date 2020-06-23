@@ -1,7 +1,8 @@
 <template>
     <router-link class="consultantBlock row" :to="clickTarget">
         <div class="consultantBlockData col-md-8">
-            <img src="/sneedsAssets/img/plane.jpg" class="consultantBlockImage"/>
+            <img :src="package.image" :alt="package.title" class="consultantBlockImage" v-if="package.image"/>
+            <img src="/sneedsAssets/img/plane.jpg" :alt="package.title" class="consultantBlockImage" v-else/>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">

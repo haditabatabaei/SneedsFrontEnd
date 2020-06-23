@@ -2,11 +2,8 @@
     <router-link class="consultantBlock row" :to="clickTarget">
         <div class="consultantBlockData col-md-8">
             <div class="package-image-wrapper">
-                <p class="package-budget isansFont--faNum" v-if="!hasConsultant">
-                    بودجه :
-                    {{package.total_price}}
-                    تومان
-                </p>
+                <img class="package-image" :src="package.image" :alt="package.title" v-if="package.image">
+                <img class="package-image" src="/sneedsAssets/img/plane.jpg" :alt="package.title" v-else>
             </div>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
@@ -39,6 +36,11 @@
             <router-link :to="clickTarget" class="consultantShowButton isansFont" v-if="!hasConsultant">
                 مشاهده جزئیات پکیج و اعلام آمادگی
             </router-link>
+            <p class="package-budget isansFont--faNum" v-if="!hasConsultant">
+                درآمد خام پکیج :
+                {{package.total_price}}
+                تومان
+            </p>
             <router-link :to="clickTarget" class="consultantShowButton isansFont" v-else>
                 مدیریت پکیج
             </router-link>
@@ -103,27 +105,20 @@
         border-color: #82eafb;
     }
 
-    .package-image-wrapper {
-        width: 150px !important;
-        height: 150px !important;
+    .package-image {
+        width: 150px;
+        height: 150px ;
         min-width: 150px;
         max-width: 150px;
         min-height: 150px;
         max-height: 150px;
         border-radius: 10px;
-        background: url("/sneedsAssets/img/plane.jpg") no-repeat center center;
-        position: relative;
     }
 
     .package-budget {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
         padding: 3px 5px;
         border-radius: 10px;
-        background-color: #8E39CC;
-        color: white;
+        color: #666;
         font-size: 10px;
     }
 
@@ -182,7 +177,8 @@
     }
 
     .consultantBlockAction {
-        display: block;
+        display: flex;
+        flex-direction: column;;
     }
 
     .consultantBio--mobile {

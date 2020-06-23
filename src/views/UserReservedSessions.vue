@@ -71,7 +71,7 @@
         methods: {
             async getAllSessions() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.startedSessions = [];
                     this.notStartedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time&used=false`, this.$store.getters.httpConfig)).data;
                     // console.log(this.reservedSessions);
@@ -88,7 +88,7 @@
 
             async getUsedSessions() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.notStartedSessions  = [];
                     this.startedSessions = (await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?ordering=-start_time&used=true`, this.$store.getters.httpConfig)).data;
                     // console.log(this.reservedSessions);
@@ -105,7 +105,7 @@
 
             async getCurrentTimeInTimezone() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let timeString = ((await this.$api.get(
                         `${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`,
                         this.$store.getters.httpConfig)).data).now;

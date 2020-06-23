@@ -114,7 +114,7 @@
                 let slotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let soldSlotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let timezoneRequest = this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
-                this.$loading(true);
+                //this.$loading(true);
                 Promise.all([slotsRequest, soldSlotsRequest, timezoneRequest]).then(([slotsResult, soldSlotsResult, timeZoneResult]) => {
                     this.slots = slotsResult.data.map(slot => {
                         return {
@@ -310,7 +310,7 @@
             removeTimes() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     let removeReqs = [];
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.days.forEach(day => {
                         day.slots.forEach(slot => {
                             if (slot.where === 'opened-selected') {
@@ -341,7 +341,7 @@
 
             addTimes() {
                 let openReqs = [];
-                this.$loading(true);
+                //this.$loading(true);
                 this.days.forEach(day => {
                     day.slots.forEach(slot => {
                         if (slot.where === 'ready-selected') {

@@ -103,7 +103,7 @@
                 if (!this.loginFormIsInvalid) {
                     window.console.log("dispatching login with payload");
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         await this.$store.dispatch('login', this.userToLogin);
                         this.printMessage("شما با موفقیت وارد شدید.", "ورود: موفق", "success", 3000, "notif");
                         if(this.customAction) {

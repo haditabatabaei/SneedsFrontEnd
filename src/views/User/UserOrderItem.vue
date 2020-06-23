@@ -145,7 +145,7 @@
 
             async getOrder() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.order = (await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig)).data;
 
                     console.log('current order ', this.order);

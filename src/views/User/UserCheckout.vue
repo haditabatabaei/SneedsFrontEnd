@@ -14,7 +14,7 @@
         methods: {
             async getCheckouts() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     console.log('http config', this.$store.getters.httpConfig);
                     this.checkouts = (await this.$api.get(`${this.$store.getters.getApi}/payment/consultant-deposits/`, this.$store.getters.httpConfig));
                     console.log(this.checkouts);

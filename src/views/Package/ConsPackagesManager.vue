@@ -405,7 +405,7 @@
 
             async deleteTask() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.delete(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, this.httpConfig);
                     console.log(result);
                     this.hideNewTaskModal(null, true);
@@ -422,7 +422,7 @@
 
             async performEditTask() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
@@ -446,7 +446,7 @@
 
             async createNewTask() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
@@ -473,7 +473,7 @@
             async requestPaymentForCurrentPhase() {
                 try {
                     if(window.confirm("برای درخواست هزینه از کاربر مطمئن هستید ؟")) {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let payload = {
                             active: true
                         };
@@ -528,7 +528,7 @@
 
             async getCurrentPhaseTasks() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-phase-detail-list/?object_id=${this.currentPhase.id}&content_type=${this.getPhaseContentType(this.currentPhase)}`, this.httpConfig);
                     console.log(result);
                     this.currentPhaseTasks = result.data;
@@ -544,7 +544,7 @@
 
             async getSoldPackage() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;

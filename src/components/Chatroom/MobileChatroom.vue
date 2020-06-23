@@ -138,7 +138,7 @@
 
             async getMessagesForSelectedChat() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.$store.getters.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;
@@ -183,7 +183,7 @@
 
             async getChats() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/chat/chats/`, this.$store.getters.httpConfig);
                     console.log('chats result ', result);
                     this.chats = result.data;

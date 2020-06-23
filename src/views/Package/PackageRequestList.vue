@@ -56,7 +56,7 @@
         methods: {
             async getAvailableRequests() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-list/?sold_store_package=${this.$route.params.packageId}`, this.httpConfig);
                     console.log(result);
                     this.requests = result.data;

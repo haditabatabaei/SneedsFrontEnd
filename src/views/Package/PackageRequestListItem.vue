@@ -135,7 +135,7 @@
         methods: {
             async getRequest() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-detail/${this.$route.params.reqId}/`, this.httpConfig);
                     console.log(result);
                     this.request = result.data;
@@ -168,7 +168,7 @@
             async pickCurrentConsultantForPackage() {
                 if(window.confirm("آیا از انتخاب این مشاور برای انجام پروسه مهاجرت و این پکیج اطمینان دارید ؟")) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let result = await this.$api.patch(
                             `${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`,
                             {"consultant": this.consultant.id},

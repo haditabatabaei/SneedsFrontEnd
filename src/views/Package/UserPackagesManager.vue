@@ -310,7 +310,7 @@
 
             async getCurrentPhaseTasks() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-phase-detail-list/?object_id=${this.currentPhase.id}&content_type=${this.getPhaseContentType(this.currentPhase)}`, this.httpConfig);
                     console.log(result);
                     this.currentPhaseTasks = result.data;
@@ -326,7 +326,7 @@
 
             async getSoldPackage() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;
@@ -346,7 +346,7 @@
             async payCurrentPhase() {
                 if (!!this.currentPhase.active) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let result = (await this.$api.post(`${this.api}/cart/carts/`, {"products": [this.currentPhase.id]}, this.httpConfig))
                         console.log(result);
                         this.$router.push(`/carts/${result.data.id}`)

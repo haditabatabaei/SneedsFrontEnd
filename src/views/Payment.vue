@@ -112,7 +112,7 @@
         methods: {
             async verifyPayment() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.showResult = false;
                     let result = await this.$api.post(
                         `${this.api}/payment/verify/`,

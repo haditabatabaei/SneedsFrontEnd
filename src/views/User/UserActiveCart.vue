@@ -233,7 +233,7 @@
 
             async getCurrentCart() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/cart/carts/${this.$route.params.id}/`, this.httpConfig);
                     this.cart = result.data;
                     console.log('current last cart ', this.cart);
@@ -249,7 +249,7 @@
 
             async checkDiscountCode() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.post(
                         `${this.$store.getters.getApi}/discount/cart-discounts/`,
                         {"cart": this.cart.id, "code": this.inputCode},
@@ -272,7 +272,7 @@
 
             async getDiscountsOnThisCart() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/discount/cart-discounts/?cart=${this.cart.id}`, this.$store.getters.httpConfig);
                     console.log('discounts for this cart :', result);
                     this.discounts = result.data;
@@ -294,7 +294,7 @@
 
             async deleteDiscountById(id) {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.delete(`${this.$store.getters.getApi}/discount/cart-discounts/${id}/`, this.$store.getters.httpConfig);
                     console.log('delete for this cart :', result);
                     this.getCurrentCart();
@@ -317,7 +317,7 @@
 
             async requestPayment() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
                     console.log(result);
                     this.$store.commit('setStash', []);

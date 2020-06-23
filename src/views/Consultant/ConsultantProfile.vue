@@ -319,7 +319,7 @@
                             this.showNameModal = true;
                         } else {
                             try {
-                                this.$loading(true);
+                                //this.$loading(true);
                                 let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                                 console.log(result);
                                 this.$router.push(`/carts/${result.data.id}`);
@@ -365,7 +365,7 @@
                 let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
                 requests.push(editReq);
                 requests.push(dispatchUser);
-                this.$loading(true);
+                //this.$loading(true);
                 Promise.all(requests).then(([editRes, dispatchRes]) => {
                     this.addSelectedTimesToCart();
                 }).catch(error => {
@@ -395,7 +395,7 @@
             },
 
             async getConsultantBySlug(consultantSlug) {
-                this.$loading(true);
+                //this.$loading(true);
                 try {
                     let result = await this.$api.get(`${this.$store.getters.getApi}/account/consultant-profiles/${consultantSlug}/`, this.$store.getters.httpConfig);
                     this.consultant = result.data;

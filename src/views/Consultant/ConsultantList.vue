@@ -338,7 +338,7 @@
             },
 
             async doFilter(toggleIndicator) {
-                this.$loading(true);
+                //this.$loading(true);
                 try {
                     let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters()}`);
                     console.log(result);
@@ -370,7 +370,7 @@
             },
 
             async getListOfConsultants(toggleIndicator) {
-                this.$loading(true);
+                //this.$loading(true);
                 try {
                     let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
                     this.consultants = result.data;

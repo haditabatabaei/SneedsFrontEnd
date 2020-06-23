@@ -119,7 +119,7 @@
             async getMyRate(overrideConditions) {
                 if (this.readyToCheckForRate || overrideConditions) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let rateResult = (await this.$api.get(`${this.$store.getters.getApi}/comment/sold-time-slot-rates/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
                         console.log(`current session ${this.session.id} rate :`, rateResult);
                         this.rate = rateResult;
@@ -137,7 +137,7 @@
             async getMyRoom(overrideConditions) {
                 if (this.readyToCheckForRoom || overrideConditions) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let roomResult = (await this.$api.get(`${this.$store.getters.getApi}/videochat/rooms/?sold_time_slot=${this.session.id}`, this.$store.getters.httpConfig)).data;
                         console.log(`current session ${this.session.id} room :`, roomResult);
                         this.room = roomResult;
@@ -155,7 +155,7 @@
             async submitRate(rate) {
                 console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.post(
                         `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
                         {"sold_time_slot": this.session.id, "rate": rate},

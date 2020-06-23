@@ -286,7 +286,7 @@
 
             async getMessagesForSelectedChat() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/chat/messages/?chat=${this.selectedChat.id}&ordering=created`, this.httpConfig);
                     console.log('selected chats messages result ', result);
                     this.selectedChatMessages = result.data;

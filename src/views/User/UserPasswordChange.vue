@@ -62,7 +62,7 @@
                     //remove all empty fields from;
                     try {
                         console.log('form is good dispatching requests.')
-                        this.$loading(true);
+                        //this.$loading(true);
                         let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,this.generatePayload(),
                             {
                                 headers : {

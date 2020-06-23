@@ -75,7 +75,7 @@
             async getConsultantComments(consultantId) {
                 console.log('calling get consultant comments');
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.get(
                         `${this.$store.getters.getApi}/comment/comments/?consultant=${consultantId}`,
                         this.$store.getters.httpConfig
@@ -96,7 +96,7 @@
                 if (!this.$v.inputComment.$invalid) {
                     console.log('sending request');
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let result = await this.$api.post(
                             `${this.$store.getters.getApi}/comment/comments/`,
                             {consultant: this.consultant.id, message: this.inputComment},

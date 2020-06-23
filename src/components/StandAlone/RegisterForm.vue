@@ -132,7 +132,7 @@
 
                 if (!this.registerFormIsInvalid) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         await this.$store.dispatch('register', this.userToRegister);
                         if (this.customAction) {
                             this.printMessage("شما با موفقیت ثبت نام کردید ، در این مرحله نام و نام خانوادگی خود را وارد کنید.", "ثبت نام :‌ موفق", "success", 3000, "notif");

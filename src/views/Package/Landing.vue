@@ -1113,7 +1113,7 @@
                 let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
                 requests.push(editReq);
                 requests.push(dispatchUser);
-                this.$loading(true);
+                //this.$loading(true);
                 Promise.all(requests).then(([editRes, dispatchRes]) => {
                     this.buyPackage(null, true);
                 }).catch(error => {
@@ -1137,7 +1137,7 @@
                         this.showNameModal = true;
                     } else {
                         try {
-                            this.$loading(true);
+                            //this.$loading(true);
                             let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                             console.log(result);
                             this.$router.push(`/carts/${result.data.id}`);
@@ -1159,7 +1159,7 @@
 
             async getPackages() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.storePackages = (await this.$api.get(`${this.api}/store/packages/store-package-list/`, this.httpConfig)).data;
                 } catch (e) {
 

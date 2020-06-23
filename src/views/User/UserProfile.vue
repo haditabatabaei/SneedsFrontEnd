@@ -72,7 +72,7 @@
                 if(!this.formIsInvalid) {
                     try {
                         console.log('form is good dispatching requests.')
-                        this.$loading(true);
+                        //this.$loading(true);
                         let editResult = await this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`,this.generatePayload(),this.$store.getters.httpConfig);
                         console.log(editResult);
                         await this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);

@@ -312,7 +312,7 @@
         methods: {
             async getPackage() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     this.package = (await this.$api.get(`${this.api}/store/packages/marketplace-detail/${this.$route.params.id}/`, this.httpConfig)).data;
                     this.userForm = (await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.package.sold_to.id}/`, this.httpConfig)).data;
                     console.log(this.package);
@@ -332,7 +332,7 @@
                 if (this.isConsultant) {
                     if (window.confirm("آیا برای اعلام آمادگی برای انجام این پکیج مطمئنید ؟")) {
                         try {
-                            this.$loading(true);
+                            //this.$loading(true);
                             let payload = {
                                 "sold_store_package": this.package.id,
                                 "consultant": this.userInfo.consultant.id

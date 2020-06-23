@@ -440,7 +440,7 @@
 
             async getCurrentFormData() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                     console.log('has form?', !!result);
                     console.log(result);
@@ -542,7 +542,7 @@
                     Object.assign(conf, this.httpConfig);
                     conf.headers['Content-Type'] = 'multipart/form-data';
                     try {
-                        this.$loading(true)
+                        //this.$loading(true)
                         let editResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.packageForm.id}/`, payload, conf);
                         console.log(editResult);
                         await this.getCurrentFormData();
@@ -588,7 +588,7 @@
                     Object.assign(conf, this.httpConfig);
                     conf.headers['Content-Type'] = 'multipart/form-data';
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, payload, conf);
                         await this.getCurrentFormData();
                         console.log(createResult);

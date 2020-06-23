@@ -5,7 +5,6 @@ import store from './store'
 import './registerServiceWorker'
 import Vuelidate from 'vuelidate'
 import Notifications from 'vue-notification'
-import VueLoading from 'vuejs-loading-plugin';
 import VueWindowSize from 'vue-window-size';
 import VModal from 'vue-js-modal'
 import * as Sentry from '@sentry/browser';
@@ -21,12 +20,6 @@ Vue.use(Vuelidate);
 Vue.use(Notifications);
 Vue.use(VueWindowSize);
 Vue.use(VModal);
-// Vue.use(VueRecord);
-Vue.use(VueLoading, {
-    text: 'لطفاً صبر کنید...',
-    classes : ['isansFont', 'loadingZIndex']
-});
-
 Vue.prototype.$api = api;
 
 new Vue({

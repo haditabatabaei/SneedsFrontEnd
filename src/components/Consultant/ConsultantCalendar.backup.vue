@@ -161,7 +161,7 @@
                     console.log('selected dates to add open:', this.selectedDatesToOpen);
                     console.log('selected price:', this.selectedPrice);
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         for (let selecteDate of this.selectedDatesToOpen) {
                             let payload = {
                                 "start_time": selecteDate.datestart,
@@ -245,7 +245,7 @@
             async startDeleteItems() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         for (let selectedDate of this.selectedDatesToRemove) {
                             let itemIdToDelete = this.getSlotIdByDate(selectedDate.datestart, selectedDate.dateend);
                             let result = await this.$api.delete(`${this.$store.getters.getApi}/store/time-slot-sales/${itemIdToDelete}/`, this.$store.getters.httpConfig);
@@ -267,7 +267,7 @@
 
             async getListOfSoldTimes() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     console.log('getting list of sold times');
                     let result = await this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/`, this.$store.getters.httpConfig);
                     console.log(result);
@@ -284,7 +284,7 @@
 
             async getListOfTimesById(id) {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     console.log('getting list of times by id ', id);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${id}`, this.$store.getters.httpConfig);
                     console.log(result);

@@ -135,7 +135,7 @@
 
             edit: function () {
                 window.console.log('edit pressed');
-                this.$loading(true);
+                //this.$loading(true);
                 window.console.log('user input data : ', this.inputUser);
 
                 if (!(this.$v.inputUser.$anyError || !this.$v.inputUser.$anyDirty)) {

@@ -69,7 +69,7 @@
         methods: {
             async editComment() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let result = await this.$api.put(
                         `${this.$store.getters.getApi}/comment/comments/${this.comment.id}/`,
                         {consultant: this.consultant.id, message: this.editedCommentInput},

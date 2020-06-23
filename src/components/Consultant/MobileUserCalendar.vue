@@ -128,7 +128,7 @@
             },
 
             initComp() {
-                this.$loading(true);
+                //this.$loading(true);
                 let reqs = [
                     this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig),
                     this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales-safe/?consultant=${this.consultantId}`, this.$store.getters.httpConfig)

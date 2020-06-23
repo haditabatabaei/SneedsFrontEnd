@@ -98,7 +98,7 @@
                 if (!this.emailIsInvalid) {
                     window.console.log("dispatching login with payload");
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let resetResult = await this.$api.post(`${this.$store.getters.getApi}/auth/password-reset/`, {"email": this.email}, this.$store.getters.httpConfig);
                         console.log('reset result', resetResult);
                         this.printMessage("ایمیلی شامل مراحل بازیابی رمز عبور برایتان ارسال شد. لطفا پوشه اسپم خود را نیز بررسی کنید", "بازیابی: موفق", "success", 10000, "notif");
@@ -125,7 +125,7 @@
                 if(!this.newPasswordIsInvalid && !this.confirmNewPasswordIsInvalid) {
                     //form is valid
                     try {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let changeResult = await this.$api.post(`${this.$store.getters.getApi}/auth/password-reset/confirm/`, {"password" : this.newPassword, "token" : this.$route.query.token},this.$store.getters.httpConfig);
                         console.log(changeResult);
                         this.printMessage("رمز جدید شما با موفقیت ثبت شد.", "ثبت رمز جدید: موفق", "success", 10000, "notif");

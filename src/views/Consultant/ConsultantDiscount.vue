@@ -81,7 +81,7 @@
             },
 
             loadCreationData() {
-                this.$loading(true);
+                //this.$loading(true);
                 Promise
                     .all([this.getInteractingUsersRequest(), this.getCurrentDiscountsRequest()])
                     .then(([usersRes, currentDiscountsRes]) => {
@@ -103,7 +103,7 @@
             async createNewDiscountCode() {
                 try {
                     if(this.selectedUserId) {
-                        this.$loading(true);
+                        //this.$loading(true);
                         let payload = {
                             "users": [this.selectedUserId]
                         };

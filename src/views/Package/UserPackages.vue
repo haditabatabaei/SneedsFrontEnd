@@ -72,7 +72,7 @@
             },
             async getSoldPackages() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/sold-store-package-list/`, this.httpConfig));
                     console.log(packagesResult);
                     this.packages = packagesResult.data;

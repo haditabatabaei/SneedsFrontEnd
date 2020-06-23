@@ -72,7 +72,7 @@
 
             async getAcceptedPackages() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/sold-store-package-list/`, this.httpConfig));
                     console.log(packagesResult);
                     let packagesFormsReqs = [];
@@ -116,7 +116,7 @@
 
             async getConsideringPackages() {
                 try {
-                    this.$loading(true);
+                    //this.$loading(true);
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/marketplace-list/`, this.httpConfig));
                     let packagesFormsReqs = [];
                     console.log(packagesResult);

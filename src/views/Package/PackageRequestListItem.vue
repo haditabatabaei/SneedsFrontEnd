@@ -380,7 +380,7 @@
         display: flex;
         align-items: center;
         padding: 8px 25px;
-        background-color: #8C3DDB;
+        background-color: #3CAEA3;
         border: none;
         border-radius: 10px;
         color: white;

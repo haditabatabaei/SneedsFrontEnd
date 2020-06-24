@@ -19,23 +19,23 @@
                 <div class="order-item-title isansFont--faNum">
                     <i class="material-icons text-rose">alarm_on</i>
                     <p>
-                        <span v-if="order.sold_time_slot_sales.length > 0">
+                        <span v-if="hasTimeSlot(order)">
                             جلسه مشاوره آنلاین
                         </span>
-                        <span v-else-if="order.sold_store_paid_package_phases.length > 0">
-                            {{order.sold_store_paid_package_phases[0].title}}
+                        <span v-else-if="hasSoldStorePaidPackagePhase(order)">
+                            {{soldPackagePhase(order).title}}
                         </span>
                         <span v-else>
                             نا مشخص
                         </span>
-                        <span v-if="order.sold_time_slot_sales[0]">
-                            {{order.sold_time_slot_sales[0].consultant.first_name + " " + order.sold_time_slot_sales[0].consultant.last_name}}
+                        <span v-if="hasTimeSlot(order)">
+                            {{firstTimeSlot(order).consultant.first_name + " " + firstTimeSlot(order).consultant.last_name}}
                         </span>
-                        <span v-else-if="order.sold_store_paid_package_phases.length > 0">
-                            {{order.sold_store_paid_package_phases[0].detailed_title}}
+                        <span v-else-if="hasSoldStorePaidPackagePhase(order) && !!soldPackagePhase(order).description">
+                            دارای توضیحات
                         </span>
                         <span v-else>
-                            نا مشخص
+                             توضیحاتی ثبت نشده
                         </span>
                     </p>
                 </div>
@@ -74,15 +74,40 @@
         created() {
             this.getOrders();
         },
+        computed: {
+
+        },
         methods: {
 
             getJalali(date) {
                 return jalali(date);
             },
 
+            hasTimeSlot(order) {
+                return order.sold_time_slot_sales.length > 0;
+            },
+
+            firstTimeSlot(order) {
+                if(this.hasTimeSlot(order)) {
+                    return order.sold_time_slot_sales[0]
+                } else {
+                    return null;
+                }
+            },
+
+            hasSoldStorePaidPackagePhase(order) {
+                return order.sold_store_paid_package_phases.length > 0;
+            },
+
+            soldPackagePhase(order) {
+                if(this.hasSoldStorePaidPackagePhase(order)) {
+                    return order.sold_store_paid_package_phases[0]
+                } else {
+                    return null;
+                }
+            },
             async getOrders() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/order/orders/`, this.$store.getters.httpConfig);
                     console.log(result);
                     this.orders = result.data;
@@ -91,8 +116,6 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             }
         }

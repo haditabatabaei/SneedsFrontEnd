@@ -1,14 +1,15 @@
 <template>
     <div class="container-fluid activeCart">
+        <package-staging current-stage-value="pay" style="margin-bottom: 20px" v-if="isShowingPackageStaging"/>
         <div class="row">
             <div class="col-md-12">
                 <div class="cartsWrapper" v-if="showOrder">
                     <div class="cartsWrapper-title isansFont--faNum">
                         <div class="cartsWrapper-title-consultant">
                             <img
-                                 v-if="hasTimeSlot"
-                                 :src="firstTimeSlot.consultant.profile_picture" draggable="false"
-                                 alt="">
+                                    v-if="hasTimeSlot"
+                                    :src="firstTimeSlot.consultant.profile_picture" draggable="false"
+                                    alt="">
                             <div class="cartsWrapper-title-consultant--info">
                                 <h5 class="isansFont--faNum" v-if="hasTimeSlot">
                                     جلسه مشاوره آنلاین
@@ -19,7 +20,8 @@
                                 <h6 class="isansFont--faNum" v-if="hasTimeSlot">
                                     {{`${firstTimeSlot.consultant.first_name}
                                     ${firstTimeSlot.consultant.last_name}`}}</h6>
-                                <h6 class="isansFont--faNum" v-if="hasSoldStorePaidPackagePhase">{{soldPackagePhase.detailed_title}}</h6>
+                                <h6 class="isansFont--faNum" v-if="hasSoldStorePaidPackagePhase">
+                                    {{soldPackagePhase.detailed_title}}</h6>
                             </div>
                             <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum"
                                v-if="order.status != 'paid'">
@@ -36,6 +38,9 @@
                         <div class="cartsWrapper-title-actions" v-if="hasSoldStorePaidPackagePhase">
                             <router-link :to="`/user/userpackages/`">
                                 مشاهده پکیج ها
+                            </router-link>
+                            <router-link :to="`/user/userpackages/staging/form`" v-if="isShowingPackageStaging">
+                                تکمیل فرم اطلاعات پکیج
                             </router-link>
                         </div>
                     </div>
@@ -68,10 +73,19 @@
                     </div>
 
                     <div class="cartsWrapper-item" v-for="phase in order.sold_store_paid_package_phases">
-                        <p class="cartsWrapper-item--day isansFont">{{phase.title}} | {{phase.detailed_title}}</p>
+                        <p class="cartsWrapper-item--day isansFont">{{phase.title}}</p>
+
                         <p class="isansFont--faNum cartsWrapper-item-length">
-                            <i class="material-icons">autorenew</i>
-                            <span>{{phase.status}}</span>
+                            وضعیت فعلی {{phase.title}} :
+                            <span>{{getPhaseStatusName(phase)}}</span>
+                        </p>
+                        <p v-if="!!phase.description">
+                            توضیحات:
+                            <br>
+                            {{phase.description}}
+                        </p>
+                        <p v-else class="isansFont--faNum">
+                             توضیحات تکمیلی برای {{phase.title}} تعریف نشده است.
                         </p>
                     </div>
 
@@ -92,14 +106,24 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import jalali from 'jalali-moment'
+    import PackageStaging from "@/components/Packages/PackageStaging";
+
 
     export default {
         name: "UserOrderItem",
+        components: {
+            'package-staging': PackageStaging,
+        },
         data() {
             return {
                 order: null,
+                availablePhaseStatuses: [
+                    {value: 'in_progress', name: 'در حال انجام'},
+                    {value: 'pay_to_start', name: 'نیازمند پرداخت برای شروع'},
+                    {value: 'not_started', name: 'شروع نشده'},
+                    {value: 'done', name: 'انجام شده'}
+                ],
             }
         },
         created() {
@@ -114,12 +138,16 @@
                 return this.order && this.order.sold_store_paid_package_phases.length > 0;
             },
 
+            isShowingPackageStaging() {
+                return this.hasSoldStorePaidPackagePhase && this.order.sold_store_paid_package_phases[0].phase_number == 1;
+            },
+
             showOrder() {
                 return this.hasTimeSlot || this.hasSoldStorePaidPackagePhase;
             },
 
             firstTimeSlot() {
-                if(this.hasTimeSlot) {
+                if (this.hasTimeSlot) {
                     return this.order.sold_time_slot_sales[0]
                 } else {
                     return null;
@@ -127,7 +155,7 @@
             },
 
             soldPackagePhase() {
-                if(this.hasSoldStorePaidPackagePhase) {
+                if (this.hasSoldStorePaidPackagePhase) {
                     return this.order.sold_store_paid_package_phases[0]
                 } else {
                     return null;
@@ -139,13 +167,21 @@
                 return jalali(date);
             },
 
+            getPhaseStatusName(phase) {
+                if(this.hasSoldStorePaidPackagePhase) {
+                    return (this.availablePhaseStatuses.find(status => status.value === phase.status)).name;
+                } else {
+                    return '';
+                }
+            },
+
+
             initComp() {
                 this.getOrder();
             },
 
             async getOrder() {
                 try {
-                    //this.$loading(true);
                     this.order = (await this.$api.get(`${this.$store.getters.getApi}/order/orders/${this.$route.params.id}/`, this.$store.getters.httpConfig)).data;
 
                     console.log('current order ', this.order);
@@ -154,8 +190,6 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             },
             getConsultantSlugFromUrl(url) {

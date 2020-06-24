@@ -227,7 +227,7 @@
                      @click.self="showTaskMoreInfo(task)">
                     <p class="body-tab-row-text row-text--dark" @click.self="showTaskMoreInfo(task)">
                         {{task.title}}
-                        <i class="material-icons icon-desc">line_weight</i>
+                        <i class="material-icons icon-desc" v-if="!!task.description">line_weight</i>
                     </p>
                     <p class="body-tab-row-text" @click="showTaskMoreInfo(task)">
                         {{getJalali(task.updated).format('YY/MM/DD HH:mm')}}

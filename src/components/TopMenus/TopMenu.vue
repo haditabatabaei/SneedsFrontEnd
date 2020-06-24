@@ -71,38 +71,20 @@
                         <i class="material-icons" v-if="!profileDropdownMenuOpen">keyboard_arrow_down</i>
                         <i class="material-icons" style="margin-right:5px;" v-else>keyboard_arrow_up</i>
                     </button>
-                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen"
+                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen && !isConsultant"
                         @click.prevent="toggleProfileDropdown">
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/profile">اطلاعات کاربری</router-link>
+                        <li class="profile-menu-list-item" v-for="item in userProfileDropDownItems">
+                            <router-link class="profile-menu-list-link" :to="item.target">{{item.name}}</router-link>
                         </li>
                         <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/sessions">جلسات مشاوره</router-link>
+                            <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
                         </li>
-                        <li class="profile-menu-list-item" v-if="!isConsultant">
-                            <router-link class="profile-menu-list-link" to="/user/orders">پرداخت ها</router-link>
+                    </ul>
+                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen && isConsultant"
+                        @click.prevent="toggleProfileDropdown">
+                        <li class="profile-menu-list-item" v-for="item in consultantProfileDropDownItems">
+                            <router-link class="profile-menu-list-link" :to="item.target">{{item.name}}</router-link>
                         </li>
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/chatroom">چتروم</router-link>
-                        </li>
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/userpackages" v-if="!isConsultant">پکیج ها</router-link>
-                        </li>
-                        <li class="profile-menu-list-item">
-                            <router-link class="profile-menu-list-link" to="/user/package/form" v-if="!isConsultant">فرم اطلاعات اپلای</router-link>
-                        </li>
-                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
-                        <li class="dropdown-header" v-if="isConsultant">پنل مشاور :</li>
-                        <li class="profile-menu-list-item" v-if="isConsultant">
-                            <router-link class="profile-menu-list-link" to="/user/calendar">مدیریت تقویم</router-link>
-                        </li>
-                        <li class="profile-menu-list-item" v-if="isConsultant">
-                            <router-link class="profile-menu-list-link" to="/user/conspackages">پکیج ها</router-link>
-                        </li>
-                        <li class="profile-menu-list-item" v-if="isConsultant">
-                            <router-link class="profile-menu-list-link" to="/user/discounts">تخفیفات اختصاصی</router-link>
-                        </li>
-                        <li class="profile-menu-list-item profile-menu-list-item--divider" v-if="isConsultant"/>
                         <li class="profile-menu-list-item">
                             <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
                         </li>
@@ -164,52 +146,26 @@
                         </ul>
                     </div>
                     <div class="mobileMenuActionWrapper" v-if="isLoggedIn">
-                        <ul class="mobileMenuList isansFont--faNum">
-                            <li class="mobileMenuList--item">
-                                <router-link to="/user/profile" class="mobileMenuList--linkItem">
+                        <ul class="mobileMenuList isansFont--faNum" v-if="isConsultant">
+                            <li class="mobileMenuList--item" v-for="item in consultantProfileDropDownItems">
+                                <router-link :to="item.target" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    اطلاعات کاربری
+                                    {{item.name}}
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
-                                <router-link to="/user/sessions" class="mobileMenuList--linkItem">
+                                <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    جلسات مشاوره
-                                </router-link>
+                                    خروج
+                                </a>
                             </li>
-                            <li class="mobileMenuList--item">
-                                <router-link v-if="isConsultant" to="/user/conspackages" class="mobileMenuList--linkItem">
+                        </ul>
+                        <ul class="mobileMenuList isansFont--faNum" v-else>
+                            <li class="mobileMenuList--item" v-for="item in userProfileDropDownItems">
+                                <router-link :to="item.target" class="mobileMenuList--linkItem">
                                     <i class="material-icons">keyboard_arrow_left</i>
-                                    پکیج ها
+                                    {{item.name}}
                                 </router-link>
-                                <router-link v-else to="/user/userpackages" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    پکیج ها
-                                </router-link>
-                            </li>
-                            <li class="mobileMenuList--item" v-if="!isConsultant">
-                                <router-link to="/user/orders" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    پرداخت ها
-                                </router-link>
-                            </li>
-                            <li class="mobileMenuList--item">
-                                <router-link to="/user/chatroom" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    چتروم
-                                </router-link>
-                            </li>
-                            <li class="mobileMenuList--item" v-if="isConsultant">
-                                <router-link to="/user/calendar" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    مدیریت تقویم
-                                </router-link>
-                            </li>
-                            <li class="mobileMenuList--item" v-if="isConsultant">
-                                <router-link to="/user/discounts" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    تخفیفات اختصاصی
-                            </router-link>
                             </li>
                             <li class="mobileMenuList--item">
                                 <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">
@@ -238,6 +194,86 @@
         data() {
             return {
                 profileDropdownMenuOpen: false,
+                userProfileDropDownItems: [
+                    {
+                        name: 'اطلاعات کاربری',
+                        target: '/user/profile',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "جلسات مشاوره",
+                        target: '/user/sessions',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "پرداخت های قبلی",
+                        target: '/user/orders',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "پکیج ها",
+                        target: '/user/userpackages',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                ],
+
+                consultantProfileDropDownItems: [
+                    {
+                        name: 'اطلاعات کاربری',
+                        target: '/user/profile',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "جلسات مشاوره",
+                        target: '/user/sessions',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "مدیریت تقویم",
+                        target: '/user/calendar',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "ایجاد کد تخفیف",
+                        target: '/user/discounts',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "پکیج ها",
+                        target: '/user/conspackages',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                ],
+
                 topMenuListItems: [
                     {
                         itemName: 'مشاوران',
@@ -247,14 +283,6 @@
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
-                    // {
-                    //     itemName: 'شرایط و ضوابط استفاده از وبسایت اسنیدز',
-                    //     target: '/policy',
-                    //     type: 'router',
-                    //     hasDropDown: false,
-                    //     dropdownItems: [],
-                    //     icon: 'supervisor_account'
-                    // },
                 ],
             }
         },
@@ -365,6 +393,12 @@
         background-color: white;
         outline: none;
         font-size: 14px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .menu-login-button:hover {
+        background-color: #8C3DDB;
+        color: white;
     }
 
     .profile-menu-button {

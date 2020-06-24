@@ -142,27 +142,59 @@
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name: "پکیج ها", target: '/user/userpackages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name: "فرم اطلاعات اپلای", target: '/user/package/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
-                        name: "ویرایش رمز عبور",
-                        target: "/user/password",
-                        icon: "circle",
+                        name: "پکیج ها",
+                        target: '/user/userpackages',
+                        icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
-                    }
+                    },
+                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
                 consultantSidebarItems : [
-                    {name : 'اطلاعات کاربری', target: '/user/profile', icon : 'circle', tag: 0, hasSubmenu : false, submenu : []},
-                    {name : "جلسات مشاوره", target: '/user/sessions', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "چتروم", target: '/user/chatroom',  icon : 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {name : "مدیریت تقویم" , target: '/user/calendar', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
-                    {name : "ویرایش رمز عبور", target : "/user/password", icon : "circle", tag : 0, hasSubmenu: false, submenu: []},
-                    {name : "تخفیفات اختصاصی" , target: '/user/discounts', icon : 'circle', tag : 0, hasSubmenu : false, submenu : []},
-                    {name: "پکیج ها", target: '/user/conspackages', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {
+                        name: 'اطلاعات کاربری',
+                        target: '/user/profile',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "جلسات مشاوره",
+                        target: '/user/sessions',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "مدیریت تقویم",
+                        target: '/user/calendar',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "ایجاد کد تخفیف",
+                        target: '/user/discounts',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
+                        name: "پکیج ها",
+                        target: '/user/conspackages',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ]
             }
         },

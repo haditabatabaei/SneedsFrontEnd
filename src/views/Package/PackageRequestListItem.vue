@@ -47,21 +47,31 @@
                     نکات مهم:
                 </h2>
                 <ul class="request-point-items">
-                    <li class="request-point-item">لطفا قبل این که دستتون رو به دهنتون بزنید دستاتون رو بشورید</li>
-                    <li class="request-point-item">از تماس با حیوانات اهلی و وحشی خودداری کنید و در صورت تماس دست خود را
-                        با آب و صابون به خوبی بشورید
+                    <li class="request-point-item">
+                        لطفاً اطلاعات مشاور مورد نظر را بررسی کنید، پروفایل ایشان را ببینید و در
+                        <a href="http://blog.sneeds.ir" target="_blank">بلاگ اسنیدز</a>
+                        مصاحبه های ما با ایشان را تماشا کنید.
                     </li>
-                    <li class="request-point-item">لطفا قبل این که دستتون رو به دهنتون بزنید دستاتون رو بشورید</li>
+                    <li class="request-point-item">
+                        در هر صورت وجود هر گونه مشکل لطفاً با پشتیبانی اسنیدز تماس بگیرید.
+                    </li>
                 </ul>
             </div>
             <div class="request-point isansFont">
                 <h2 class="request-point-title isansFont">
                     <i class="material-icons">info</i>
-                    آموزش تماس تصویری با مشاور
+                    راه های ارتباط با مشاور
                 </h2>
                 <ul class="request-point-items">
-                    <li class="request-point-item">با مشاور چت کنید تایم ست کنید بش بگید تایم باز کنه</li>
-                    <li class="request-point-item">بعد بش بگید تر خدا یه کد تخفیف ۱۰۰درصد بده که من تایمات رو رزرو کنم</li>
+                    <li class="request-point-item">
+                        شما می توانید در بستر اسنیدز با مشاور خود چت کنید.
+                    </li>
+                    <li class="request-point-item">
+                        در صورت درخواست شما مشاور می تواند طبق قرارداد، با ایجاد کد تخفیف 100 درصد برای جلسات مشاوره، برای شما کد تخفیف رایگان اختصاصی ایجاد کند.
+                    </li>
+                    <li class="request-point-item">
+                        شما می توانید با استفاده از این کد تخفیف، با مشاور جلسات رایگان داشته باشید.
+                    </li>
                 </ul>
             </div>
         </div>
@@ -167,7 +177,6 @@
             async pickCurrentConsultantForPackage() {
                 if(window.confirm("آیا از انتخاب این مشاور برای انجام پروسه مهاجرت و این پکیج اطمینان دارید ؟")) {
                     try {
-                        //this.$loading(true);
                         let result = await this.$api.patch(
                             `${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`,
                             {"consultant": this.consultant.id},
@@ -194,8 +203,6 @@
                             text: `خطایی هنگام ارتباط با سرور رخ داد.`,
                             duration: 5000,
                         })
-                    } finally {
-
                     }
                 } else {
                     this.$notify({

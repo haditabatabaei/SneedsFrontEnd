@@ -144,7 +144,6 @@
         methods: {
             async getRequest() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/consultant-sold-store-package-accept-request-detail/${this.$route.params.reqId}/`, this.httpConfig);
                     console.log(result);
                     this.request = result.data;
@@ -154,8 +153,6 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             },
 

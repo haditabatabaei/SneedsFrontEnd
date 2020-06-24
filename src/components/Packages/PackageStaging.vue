@@ -78,9 +78,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .staging-item-icon {
         color: #3CAEA3;
     }
 
@@ -104,10 +101,57 @@
     .staging-item:not(:first-child).staging-item--done:before {
         content: " ";
         position: absolute;
-        width: 80px;
+        width: 50px;
         height: 3px;
         background-color: #3CAEA3;
         border-radius:  5px;
-        right: -66px;
+        right: -50px;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .staging-item:not(:first-child).staging-item--done:before {
+            right: -35px;
+        }
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .staging-item:not(:first-child).staging-item--done:before {
+            right: -50px;
+        }
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .staging-item:not(:first-child).staging-item--done:before {
+            right: -25px;
+            width: 30px;
+        }
+        .staging-item-name {
+            font-size: 11px;
+        }
+
+        .staging-item-desc {
+            font-size: 12px;
+        }
+
+        .staging-item-icon {
+            width: 20px;
+            height: 20px;
+            border-width: 1px;
+        }
+
+        .staging-item-icon i {
+            font-size: 14px;
+        }
+    }
+
+    @media only screen and (max-width: 567.8px) {
+        .staging-item:not(:first-child).staging-item--done:before {
+            display: none;
+        }
+
+        .staging-item-desc {
+            text-align: center;
+            font-size: 10px;
+        }
     }
 </style>

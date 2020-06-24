@@ -1,34 +1,5 @@
 <template>
     <section class="package-form itemBlock">
-        <div class="warn" v-if="editPattern">
-            <i class="material-icons warn-icon">
-                info
-            </i>
-            <div class="warn-content">
-                <h1 class="warn-content-title isansFont--faNum">
-                    لطفاً اطلاعات این فرم را به طور دقیق پر کنید.
-                </h1>
-                <h5 class="warn-content-text isansFont--faNum">
-                    در صورتی که پکیجی رزرو کرده باشید، از اطلاعات این فرم برای مشخص شدن اطلاعات اپلای شما استفاده خواهد شد.
-                </h5>
-            </div>
-        </div>
-        <div class="warn" v-else>
-            <i class="material-icons warn-icon">
-                info
-            </i>
-            <div class="warn-content">
-                <h1 class="warn-content-title isansFont--faNum">
-                    لطفاً فرم زیر رو به صورت دقیق کامل کنید تا درخواست شما برای مشاوران اسنیدز ارسال بشه.
-                </h1>
-                <h5 class="warn-content-text isansFont--faNum">
-                    حداکثر 4 روز بعد از ارسال فرم، مشاورانی که برای انجام پروژه شما اعلام آمادگی کرده اند، در پروفایلتان
-                    نمایش داده می شود و شما با انجام مشاوره تصویری رایگان می توانید از بین این مشاوران، مناسب ترین مشاور
-                    رو
-                    انتخاب کنید.
-                </h5>
-            </div>
-        </div>
         <section class="form-section isansFont--faNum">
             <h1 class="form-section-title isansFont--faNum">
                 <span class="section-title-number">
@@ -37,20 +8,6 @@
                 اطلاعات شخصی
             </h1>
             <div class="form-section-inputs">
-                <div class="form-input">
-                    <label class="form-input-label" for="personal.firstName">نام <span
-                            class="form-input--required">*</span></label>
-                    <input class="form-input-control" :class="[{'form-input-control--invalid': firstNameIsInvalid}]"
-                           type="text" placeholder="نام" id="personal.firstName"
-                           v-model.trim="$v.packageForm.personal.firstName.$model">
-                </div>
-                <div class="form-input">
-                    <label class="form-input-label" for="personal.lastName">نام خانوادگی <span
-                            class="form-input--required">*</span></label>
-                    <input class="form-input-control" type="text"
-                           :class="[{'form-input-control--invalid': lastNameIsInvalid}]" placeholder="نام خانوادگی"
-                           id="personal.lastName" v-model.trim="$v.packageForm.personal.lastName.$model">
-                </div>
                 <div class="form-input form-input--smaller">
                     <label class="form-input-label" for="personal.age">سن <span
                             class="form-input--required">*</span></label>
@@ -264,7 +221,8 @@
                     <label class="form-input-label" for="applyInfo.university"> دانشگاه مورد نظر
                         <span class="form-input--required">*</span>
                     </label>
-                    <input class="form-input-control" type="text" placeholder="دانشگاه مورد نظر" id="applyInfo.university"
+                    <input class="form-input-control" type="text" placeholder="دانشگاه مورد نظر"
+                           id="applyInfo.university"
                            v-model.trim="$v.packageForm.applyInfo.university.$model"
                            :class="[{'form-input-control--invalid': applyUniversityIsInvalid}]"
                     >
@@ -280,8 +238,10 @@
 
                 <div class="form-input">
                     <label class="form-input-label" for="file">آپلود رزومه (اختیاری)</label>
-                    <input class="form-input-control" @change="inputFileChanged" ref="file" name="file" type="file" id="file">
-                    <a target="_blank" download :href="packageForm.currentResumeLink" v-if="packageForm.currentResumeLink">
+                    <input class="form-input-control" @change="inputFileChanged" ref="file" name="file" type="file"
+                           id="file">
+                    <a target="_blank" download :href="packageForm.currentResumeLink"
+                       v-if="packageForm.currentResumeLink">
                         دانلود فایل آپلود شده فعلی
                     </a>
                 </div>
@@ -291,7 +251,7 @@
             ویرایش اطلاعات فرم
         </button>
         <button class="package-form-submit isansFont" v-else @click="createForm">
-            تایید و ثبت اطلاعات فرم
+            ثبت اطلاعات فرم
         </button>
     </section>
 </template>
@@ -304,8 +264,6 @@
         validations: {
             packageForm: {
                 personal: {
-                    firstName: {required, minLength: minLength(1), maxLength: maxLength(100)},
-                    lastName: {required, minLength: minLength(1), maxLength: maxLength(100)},
                     age: {required, decimal, between: between(18, 100)},
                     marriage: {required}
                 },
@@ -362,8 +320,6 @@
                 packageForm: {
                     id: '',
                     personal: {
-                        firstName: '',
-                        lastName: '',
                         age: '',
                         marriage: {}
                     },
@@ -437,7 +393,7 @@
 
             inputFileChanged() {
                 let currentFile = this.$refs.file.files[0];
-                if(currentFile && currentFile.type === "application/pdf") {
+                if (currentFile && currentFile.type === "application/pdf") {
                     this.packageForm.resume = currentFile
                 } else {
                     this.packageForm.resume = null
@@ -446,7 +402,6 @@
 
             async getCurrentFormData() {
                 try {
-                    //this.$loading(true);
                     let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                     console.log('has form?', !!result);
                     console.log(result);
@@ -454,8 +409,6 @@
                         this.packageForm.id = result.id;
                         this.editPattern = true;
                         this.packageForm.personal.age = result.age;
-                        this.packageForm.personal.firstName = result.user.first_name;
-                        this.packageForm.personal.lastName = result.user.last_name;
                         this.packageForm.personal.marriage = result.marital_status;
 
                         this.packageForm.education.grade = result.grade;
@@ -483,12 +436,6 @@
                         this.packageForm.currentResumeLink = result.resume;
                     } else {
                         this.editPattern = false;
-                        if (this.user.first_name) {
-                            this.packageForm.personal.firstName = this.user.first_name;
-                        }
-                        if (this.user.last_name) {
-                            this.packageForm.personal.lastName = this.user.last_name;
-                        }
                     }
                 } catch (e) {
                     console.log(e);
@@ -526,11 +473,11 @@
                     "comment": this.packageForm.description,
                 };
 
-                for(let item in payload) {
+                for (let item in payload) {
                     console.log(item);
                     formData.append(item, payload[item]);
                 }
-                if(this.packageForm.resume) {
+                if (this.packageForm.resume) {
                     formData.append("resume", this.packageForm.resume);
                 }
                 return formData;
@@ -553,29 +500,18 @@
                         console.log(editResult);
                         await this.getCurrentFormData();
                         console.log('has coming from payment', this.comingFromPayment);
-                        if(this.comingFromPayment) {
-                            this.$notify({
-                                group: 'notif',
-                                type: 'success',
-                                title: 'فرم پکیج: موفق',
-                                text: 'اطلاعات شما با موفقیت ویرایش شد. باتشکر از رزرو این پکیج، شما به صفحه پکیج هایتان برده می شوید.',
-                                duration: 10000
-                            });
-                            this.$router.push('/user/userpackages/')
-                        } else {
-                            this.$notify({
-                                group: 'notif',
-                                type: 'success',
-                                title: 'فرم پکیج: موفق',
-                                text: 'اطلاعات شما با موفقیت ویرایش شد.'
-                            })
-                        }
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'اطلاعات تکمیلی: موفق',
+                            text: 'اطلاعات تکمیلی شما با موفقیت ویرایش شد.'
+                        })
                     } catch (e) {
                         this.$notify({
                             group: 'notif',
                             type: 'error',
-                            title: 'فرم پکیج: خطا',
-                            text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
+                            title: 'اطلاعات تکمیلی: خطا',
+                            text: 'خطایی هنگام ویرایش اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
 
@@ -585,8 +521,8 @@
                     this.$notify({
                         group: 'notif',
                         type: 'error',
-                        title: 'فرم پکیج: اخطار',
-                        text: 'لطفا اطلاعات فرم را به درست پر کنید. موارد خطا با رنگ قرمز مشخص شده اند.'
+                        title: 'اطلاعات تکمیلی: اخطار',
+                        text: 'لطفاً اطلاعات فرم را به درست پر کنید. موارد خطا با رنگ قرمز مشخص شده اند.'
                     })
                 }
             },
@@ -608,30 +544,20 @@
                         let createResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, payload, conf);
                         await this.getCurrentFormData();
                         console.log(createResult);
-                        if(this.comingFromPayment) {
-                            this.$notify({
-                                group: 'notif',
-                                type: 'success',
-                                title: 'فرم پکیج: موفق',
-                                text: 'اطلاعات شما با موفقیت ثبت شد. باتشکر از رزرو این پکیج، شما به صفحه پکیج هایتان برده می شوید.',
-                                duration: 10000
-                            });
-                            this.$router.push('/user/userpackages/')
-                        } else {
-                            this.$notify({
-                                group: 'notif',
-                                type: 'success',
-                                title: 'فرم پکیج: موفق',
-                                text: 'اطلاعات شما با موفقیت ثبت شد.'
-                            })
-                        }
+
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'اطلاعات تکمیلی: موفق',
+                            text: 'اطلاعات تکمیلی شما با موفقیت ثبت شد.'
+                        })
 
                     } catch (e) {
                         console.log(e.response);
                         this.$notify({
                             group: 'notif',
                             type: 'error',
-                            title: 'فرم پکیج: خطا',
+                            title: 'اطلاعات تکمیلی: خطا',
                             text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
@@ -642,7 +568,7 @@
                     this.$notify({
                         group: 'notif',
                         type: 'error',
-                        title: 'فرم پکیج: اخطار',
+                        title: 'اطلاعات تکمیلی: اخطار',
                         text: 'لطفا اطلاعات فرم را به درست پر کنید. موارد خطا با رنگ قرمز مشخص شده اند.'
                     })
                 }
@@ -670,12 +596,6 @@
             },
 
             //Personal invalidity
-            firstNameIsInvalid() {
-                return this.submitted && this.$v.packageForm.personal.firstName.$error;
-            },
-            lastNameIsInvalid() {
-                return this.submitted && this.$v.packageForm.personal.lastName.$error;
-            },
             ageIsInvalid() {
                 return this.submitted && this.$v.packageForm.personal.age.$error;
             },
@@ -763,46 +683,7 @@
 
 <style scoped>
     .itemBlock {
-        background-color: white;
-        border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        margin-top: 30px;
-        padding-top: 20px;
         padding-bottom: 20px;
-    }
-
-    .warn {
-        background-color: #FFFCF4;
-        color: #8C6D1F;
-        display: flex;
-        align-items: center;
-        margin: 0 15px;
-        padding: 15px;
-        border-radius: 5px;
-    }
-
-    .warn-content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .warn-content-title {
-        color: #8C6D1F;
-        font-size: 15px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .warn-content-text {
-        color: #8C6D1F;
-        font-size: 14px;
-        margin: 10px 0 0 0;
-    }
-
-    .warn-icon {
-        color: #CAA53D;
-        margin-left: 10px;
-        font-size: 32px;
     }
 
     .package-form {
@@ -958,7 +839,8 @@
     }
 
     .package-form-submit {
-        background-color: #8C3DDB;
+        background-color: #3CAEA3;
+        color: white;
         height: 40px;
         display: flex;
         align-items: center;
@@ -966,8 +848,12 @@
         align-self: center;
         padding: 0 20px;
         border: none;
-        color: white;
         border-radius: 10px;
+    }
+
+    .package-form-submit:hover {
+        background-color: #3ba499;
+
     }
 
     .form-input--disabled .form-input-label {

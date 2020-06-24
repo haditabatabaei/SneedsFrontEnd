@@ -154,14 +154,6 @@ const router = new Router({
                     }
                 },
                 {
-                    path: 'package/form',
-                    name: 'user-package-form',
-                    component: () => import("@/views/Package/PackageForm"),
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
                     path: 'userpackages/staging/form',
                     name: 'user-userpackages-staging-form',
                     component: () => import("@/views/Package/PackageStagingForm"),

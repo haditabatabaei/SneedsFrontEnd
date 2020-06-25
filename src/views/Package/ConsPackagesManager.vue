@@ -155,6 +155,7 @@
                 <div class="package-head-info-text isansFont--faNum">
                     <p class="package-head-info-namerate" v-if="soldPackage.sold_to">
                         {{`${soldPackage.sold_to.first_name} ${soldPackage.sold_to.last_name}`}}
+                        <button class="head-discount" @click="createDiscountCodeForUser">ایجاد کد تخفیف برای این کاربر</button>
                     </p>
                     <p class="package-head-info-phasestatus">
                         <span>وضعیت {{currentPhase.title}}: </span>
@@ -371,7 +372,35 @@
             getJalali(date) {
                 return jalali(date).locale(this.$store.getters.locale);
             },
-
+            
+            async createDiscountCodeForUser() {
+                try {
+                    let payload = {
+                        "users": [this.soldPackage.sold_to.id]
+                    };
+                    let createDiscountResult = await this.$api.post(`${this.api}/discount/consultant-discounts/`,payload  ,this.httpConfig);
+                    console.log(createDiscountResult);
+                    this.$notify({
+                        group: 'notif',
+                        type: 'success',
+                        title: 'کد تخفیف: موفق',
+                        text: `شما برای ${this.soldPackage.sold_to.first_name} ${this.soldPackage.sold_to.last_name} با موفقیت یک کد تخفیف ایجاد کردید. این کد تخفیف به صورت اتوماتیک برای ایشان ارسال خواهد شد.`,
+                        duration: 15000,
+                    })
+                } catch (e) {
+                    if(e.response) {
+                        console.log(e.response);
+                    }
+                    this.$notify({
+                        group: 'notif',
+                        type: 'error',
+                        title: 'کد تخفیف: خطا',
+                        text: 'خطایی هنگام ایجاد کد تخفیف برای این کاربر رخ داد.',
+                        duration: 4000,
+                    })
+                }
+            },
+ 
             showNewTaskModal() {
                 this.isShowingNewTaskModal = true;
             },
@@ -1225,6 +1254,21 @@
         margin: 0 20px;
         padding: 20px 0;
         border-bottom: 2px solid #F8F8F8;
+    }
+
+    .head-discount {
+        font-size: 12px;
+        border-radius: 5px;
+        border: 1px solid #3CAEA3;
+        font-weight: normal;
+        background-color: #3CAEA3;
+        color: white;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .head-discount:hover {
+        background-color: white;
+        color: #3CAEA3;
     }
 
 

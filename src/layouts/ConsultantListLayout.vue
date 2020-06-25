@@ -66,7 +66,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
-                                        <img class="filterBlock-item-image" :src="country.picture" :alt="country.name">
                                         {{country.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="country.select">done</i>
@@ -95,7 +94,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(field)"
                                         v-for="(field, index) in shownFields" :key="index">
-                                        <img class="filterBlock-item-image" :src="field.picture" :alt="field.name">
                                         {{field.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="field.select">done</i>
@@ -124,8 +122,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(university)"
                                         v-for="(university, index) in shownUniversities" :key="index">
-                                        <img class="filterBlock-item-image" :src="university.picture"
-                                             :alt="university.name">
                                         {{university.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="university.select">done</i>
@@ -184,8 +180,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
-                                        <img class="filterBlock-item-image" :src="country.picture"
-                                             :alt="country.name">
                                         {{country.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="country.select">done</i>
@@ -205,7 +199,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(field)"
                                         v-for="(field, index) in shownFields" :key="index">
-                                        <img class="filterBlock-item-image" :src="field.picture" :alt="field.name">
                                         {{field.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="field.select">done</i>
@@ -226,8 +219,6 @@
                                 <ul class="filterBlock-list isansFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(university)"
                                         v-for="(university, index) in shownUniversities" :key="index">
-                                        <img class="filterBlock-item-image" :src="university.picture"
-                                             :alt="university.name">
                                         {{university.name}}
                                         <i class="material-icons filterBlock-item-selected"
                                            v-if="university.select">done</i>

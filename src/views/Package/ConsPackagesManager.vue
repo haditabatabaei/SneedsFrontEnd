@@ -317,7 +317,8 @@
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'done', name: 'انجام شد'},
                     {value: 'finished', name: 'دریافت نتیجه'},
-                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
+                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'},
+                    {value: 'not_started', name: 'شروع نشده'}
                 ],
                 taskToShowMoreInfo: null
             }
@@ -337,9 +338,11 @@
             isConsultant() {
                 return this.$store.getters.isConsultant;
             },
+
             userInfo() {
                 return this.$store.getters.getUserInfo;
             },
+
             allPhases() {
                 if (this.soldPackage.id) {
                     return this.soldPackage.sold_store_paid_package_phases.concat(this.soldPackage.sold_store_unpaid_package_phases).sort((a, b) => a.phase_number - b.phase_number);
@@ -351,7 +354,12 @@
                 return this.windowWidth <= 568;
             },
             currentPhaseStatusName() {
-                return (this.availablePhaseStatuses.find(status => status.value === this.currentPhase.status)).name;
+                let toFind = this.availablePhaseStatuses.find(status => status.value === this.currentPhase.status);
+                if(!!toFind) {
+                    return toFind.name;
+                } else {
+                    return ''
+                }
             }
         },
         watch: {
@@ -369,7 +377,12 @@
             },
 
             getTaskStatusName(task) {
-                return (this.availableStatuses.find(status => status.value === task.status)).name;
+                let toFind = this.availableStatuses.find(status => status.value === task.status);
+                if(!!toFind) {
+                    return toFind.name;
+                } else {
+                    return ''
+                }
             },
 
             hideNewTaskModal() {
@@ -561,7 +574,7 @@
             },
 
             getPhaseContentType(phase) {
-                if (this.soldPackage.sold_store_paid_package_phases.includes(phase)) {
+                if (!!this.soldPackage.sold_store_paid_package_phases && this.soldPackage.sold_store_paid_package_phases.includes(phase)) {
                     return "soldstorepaidpackagephase"
                 } else {
                     return "soldstoreunpaidpackagephase"
@@ -822,12 +835,16 @@
     .body-tab-title-text {
         color: #9B9999;
         font-size: 13px;
+        text-align: center;
+        width: 25%;
     }
 
     .body-tab-row-text {
         display: flex;
         align-items: center;
+        justify-content: center;
         margin: 0;
+        width: 25%;
     }
 
     .icon-desc {

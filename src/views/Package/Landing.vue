@@ -81,7 +81,7 @@
                         <p>
                             <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
                             <br>
-                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
+                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاورین شمارو بشناسن.
                             این اطلاعات همیشه از طریق پروفایلتان قابل ویرایش است.
                         </p>
                     </div>
@@ -160,15 +160,6 @@
                          alt="avatar">
                     <img class="section-consultants-avatars-img"
                          src="http://api.sneeds.ir/files/account/images/consultants/21/image/shahrooz-rahmati.jpeg"
-                         alt="avatar">
-                    <img class="section-consultants-avatars-img"
-                         src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg"
-                         alt="avatar">
-                    <img class="section-consultants-avatars-img"
-                         src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg"
-                         alt="avatar">
-                    <img class="section-consultants-avatars-img"
-                         src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg"
                          alt="avatar">
                     <img class="section-consultants-avatars-img"
                          src="http://api.sneeds.ir/files/account/images/consultants/24/image/mahtab-rezaie_CHIJEuT.jpeg"
@@ -346,7 +337,7 @@
                         مسئولیت رو به نحو احسن انجام بدیم شکر می‌کنیم
                     </p>
                 </div>
-                <img class="smart-image" src="/sneedsAssets/img/about.png" alt="Sneeds">
+                <img class="smart-image" src="/sneedsAssets/img/team.jpg" alt="Sneeds">
             </div>
         </section>
         <section class="package-section package-section-support">
@@ -356,15 +347,19 @@
                 <ul class="support-items isansFont--faNum">
                     <li class="support-item item--hasLtr">
                         <i class="material-icons">call</i>
-                        <span>۰۲۱ - ۲۲۸۵ ۳۲۳۱</span>
+                        <span>021 - 2842 8353</span>
                     </li>
-                    <li class="support-item item--hasLtr">
-                        <i class="material-icons">chat</i>
-                        <span>@sneeds_admin</span>
+                    <li class="support-item item--link ">
+                        <a href="http://bit.ly/2FPshaR" class="gadugiFont item--hasLtr" target="_blank">
+                            <i class="material-icons">chat</i>
+                            <span>@sneeds_admin</span>
+                        </a>
                     </li>
-                    <li class="support-item item--hasLtr">
-                        <i class="material-icons">picture_in_picture</i>
-                        <span>@sneeds_admin</span>
+                    <li class="support-item item--link">
+                        <a href="http://bit.ly/3581UUU" class="gadugiFont item--hasLtr" target="_blank">
+                            <i class="material-icons">picture_in_picture</i>
+                            <span>@sneeds_admin</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -1602,6 +1597,23 @@
     .support-item i {
         font-size: 16px;
         margin-left: 5px;
+    }
+
+    .item--link {
+        padding: 0;
+    }
+
+    .item--link a {
+        width: 100%;
+        padding: 10px 25px;
+        color: #00BFD6;
+        border-radius: 20px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .item--link a:hover {
+        color: #303143;
+        background-color: #00BFD6;
     }
 
     .item--hasLtr span {

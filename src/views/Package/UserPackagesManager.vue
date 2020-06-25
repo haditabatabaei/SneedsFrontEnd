@@ -223,7 +223,8 @@
                     {value: 'in_progress', name: 'در حال انجام'},
                     {value: 'done', name: 'انجام شد'},
                     {value: 'finished', name: 'دریافت نتیجه'},
-                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'}
+                    {value: 'pending_user_data', name: 'دریافت اطلاعات کاربر'},
+                    {value: 'not_started', name: 'شروع نشده'}
                 ],
                 isShowingCurrentPhaseDescription: false,
             }
@@ -315,7 +316,7 @@
             },
 
             getPhaseContentType(phase) {
-                if (this.soldPackage.sold_store_paid_package_phases.includes(phase)) {
+                if (!!this.soldPackage.sold_store_paid_package_phases && this.soldPackage.sold_store_paid_package_phases.includes(phase)) {
                     return "soldstorepaidpackagephase"
                 } else {
                     return "soldstoreunpaidpackagephase"
@@ -324,7 +325,6 @@
 
             async getCurrentPhaseTasks() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-phase-detail-list/?object_id=${this.currentPhase.id}&content_type=${this.getPhaseContentType(this.currentPhase)}`, this.httpConfig);
                     console.log(result);
                     this.currentPhaseTasks = result.data;
@@ -333,14 +333,11 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             },
 
             async getSoldPackage() {
                 try {
-                    //this.$loading(true);
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-detail/${this.$route.params.packageId}/`, this.httpConfig);
                     console.log(result);
                     this.soldPackage = result.data;
@@ -352,15 +349,12 @@
                     if (e.response) {
                         console.log(e.response);
                     }
-                } finally {
-
                 }
             },
 
             async payCurrentPhase() {
                 if (!!this.currentPhase.active) {
                     try {
-                        //this.$loading(true);
                         let result = (await this.$api.post(`${this.api}/cart/carts/`, {"products": [this.currentPhase.id]}, this.httpConfig))
                         console.log(result);
                         this.$router.push(`/carts/${result.data.id}`)
@@ -368,23 +362,9 @@
                         if (e.response) {
                             console.log(e.response);
                         }
-                    } finally {
-
                     }
                 } else {
 
-                }
-            },
-
-            toggleTaskMoreInfo(task) {
-                if (this.showTaskMobileMoreInfo) {
-                    if (this.taskToShowMoreInfo === task) {
-                        this.hideTaskMoreInfo();
-                    } else {
-                        this.showTaskMoreInfo(task);
-                    }
-                } else {
-                    this.showTaskMoreInfo(task);
                 }
             },
 
@@ -393,7 +373,6 @@
                 console.log(event);
                 this.taskToShowMoreInfo = task;
                 this.isShowingTaskMoreInfoModal = true;
-                // this.showTaskMobileMoreInfo = true;
             },
 
             hideTaskMoreInfo() {
@@ -583,13 +562,15 @@
         margin-top: 30px;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         border-bottom: 2px solid #f9f9f9;
     }
 
     .body-tab-title-text {
         color: #9B9999;
         font-size: 13px;
+        text-align: center;
+        width: 25%;
     }
 
     .package-body-tab-row {
@@ -610,6 +591,8 @@
         margin: 0;
         display: flex;
         align-items: center;
+        justify-content: center;
+        width: 25%;
     }
 
     .icon-desc {

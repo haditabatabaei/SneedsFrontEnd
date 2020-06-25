@@ -103,7 +103,6 @@
             async createNewDiscountCode() {
                 try {
                     if(this.selectedUserId) {
-                        //this.$loading(true);
                         let payload = {
                             "users": [this.selectedUserId]
                         };
@@ -113,7 +112,9 @@
                     } else {
                     }
                 } catch (e) {
-
+                    if(e.response) {
+                        console.log(e.response);
+                    }
                 }
             }
         },

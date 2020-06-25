@@ -337,7 +337,7 @@
                         مسئولیت رو به نحو احسن انجام بدیم شکر می‌کنیم
                     </p>
                 </div>
-                <img class="smart-image" src="/sneedsAssets/img/team.jpg" alt="Sneeds">
+                <img class="smart-image" src="/sneedsAssets/img/team.png" alt="تیم اسنیدز">
             </div>
         </section>
         <section class="package-section package-section-support">

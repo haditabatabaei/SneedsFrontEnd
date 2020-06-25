@@ -28,6 +28,15 @@
 </script>
 
 <style>
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loading-icon {
+        margin: 5px;
+    }
     .fade-enter-active,
     .fade-leave-active {
         transition-duration: 0.3s;

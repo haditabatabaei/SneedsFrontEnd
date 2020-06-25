@@ -1,36 +1,88 @@
 <template>
     <div v-if="consultantId" class="userCalendarWrapper">
-        <div class="userCalendarWeekWrapper isansFont--faNum">
-            <button @click.prevent="showPrevWeek()">
-                <i class="material-icons">keyboard_arrow_right</i>
-                هفته قبلی
-            </button>
-            <button @click.prevent="showNextWeek()">
-                هفته بعدی
-                <i class="material-icons">keyboard_arrow_left</i>
-            </button>
-        </div>
-        <div class="calendarTopWrapper isansFont--faNum">
-            <div class="calendarGuideWrapper">
-                <span class="isansFont text-sm">راهنمایی تقویم :</span>
-                <span class="btn btn-round btn-sm btn-sample slot-button--notavailable isansFont">بسته</span>
-                <span class="btn btn-round btn-sm btn-sample slot-button--open isansFont">باز</span>
-                <span class="btn btn-round btn-sm btn-sample slot-button--selected isansFont">انتخاب شده</span>
-            </div>
-        </div>
-        <form @submit.prevent="duplicateCurrentWeekTime" class="duplication-form isansFont--faNum">
-            <p>
-                کپی کردن زمان های این هفته برای هفته های بعدی:
-            </p>
-            <label for="weeksDuplicatorAmount">
-                <span>
-                    تعداد هفته(های) آینده (حداقل 1 و حداکثر 4):
-                </span>
-                <input v-model="weeksDuplicatorAmount" id="weeksDuplicatorAmount" type="number" min="1" max="4">
-            </label>
-            <button>کپی کردن زمان های این هفته برای {{weeksDuplicatorAmount}} هفته بعدی</button>
-        </form>
+        <p class="calendar-tutor isansFont--faNum">
+            آموزش استفاده از تقویم:
+            <br>
+            <span class="calendar-tutor-bold">
+            {{user.first_name}} {{user.last_name}}
+            عزیز، سلام، لطفاً در صورت امکان حتما توضیحات زیر را یکبار مطالعه بفرمایید.
+            </span>
+            <br>
+            در تقویم زیر می توانید زمان هایی را که برای مشاوره در نظر دارید وارد کنید.
+            <br>
+            تقویم با توجه به timezone شما به صورت اتوماتیک به روزرسانی میشود و زمان ها بر حسب وقت محلی شما و تاریخ
+            میلادی (اگر خارج ایران باشید) نشان داده می شود.
+            <br>
+            زمان هایی که قبل از لحظه فعلی تا 24 ساعت بعد هستند به جهت سیاست های شرکت اسنیدز قفل هستند و انتخاب آنها
+            امکان پذیر نیست. این به این دلیل است که مشاور و کاربر وقت کافی برای آماده سازی و اطلاع رسانی از طرف اسنیدز
+            را داشته باشند.
+            <br>
+            <br>
+            در تقویم زیر وضعیت هر زمان با یک رنگ مشخص شده است.
+            شما میتوانید از بین این زمان ها، هر تعدادی که مد نظر دارید انتخاب کنید:
+            <br>
+            1.رنگ <span class="desc-color slot-button--notavailable" style="color:white">خاکستری تیره</span> نشان دهنده
+            قفل بودن زمان برای انتخاب است و شما امکان انتخاب این زمان را ندارید.
+            <br>
+            2.رنگ <span class="desc-color" style="background-color:rgb(239, 239, 239);color:black">خاکستری کمرنگ</span>
+            نشان دهنده امکان انتخاب این زمان است.
+            <br>
+            4.رنگ <span class="desc-color slot-button--open" style="color:white">سبز</span> نشان دهنده زمان هایی هستند
+            که شما قبلاً آنها را ایجاد کرده اید.
+            <br>
+            5.رنگ <span class="desc-color slot-button--selected">زرد</span> نشان دهنده زمان هایی است که شما در حال حاضر
+            آنها را برای عملیات بعدی انتخاب کرده اید.
+            <br>
+            <br>
+            بدیهی است که اگر زمان(هایی) سبز بود(ند)، میتوانید با انتخاب آنها و سپس کلیک بر روی گزینه "<span
+                style="color:red">حذف زمان های انتخابی</span>" آنها را به حالت عادی برگردانید و از تقویم شما حذف خواهند
+            شد.
+            <br>
+            <br>
+            طبیعتا اگر زمانی از قبل توسط شما باز نشده باشد می توانید با کلیک بر روی آنها و کلیک بر روی گزینه "<span
+                style="color:green">ایجاد زمان های جدید</span>" آنها را به تقویم خود اضافه کنید.
+            <br>
+            <br>
+            به جهت ماهیت مشاوره به صورت مداوم و در جهت رفاه حال شما، می توانید تایم هایی که در یک هفته باز کرده اید را
+            برای تعداد هفته های بعدی نیز کپی کنید.
+            مثلا اگر شما هر هفته روزهای چهارشنبه و پنجشنبه ساعت های 10 تا 12 در هر روز (اعداد تصادفی هستند) امکان مشاوره
+            دارید و نمیخواهید هر دفعه این ها را وارد تقویم کنید، برای هفته اول این زمان ها را به صورت دستی وارد کنید،
+            سپس با استفاده از ویژگی کپی کردن زمان ها در هفته های بعدی، زمان های انتخاب شده در هفته فعلی را در تعداد هفته
+            های آتی که شما مشخص میکنید، کپی کنید.
+            <br>
+            <br>
+            با توجه به سیاست های اسنیدز تعداد هفته هایی که میخواهید زمان های هفته فعلی در آنها کپی شود، حداقل 1 هفته و
+            حداکثر 8 هفته ( حدود 2 ماه ) خواهد بود.
+            این به آن معناست که شما میتوانید یکباره برای 2 ماه آینده خود یک تایم مشخص را وارد تقویم کنید بدون اینکه به
+            صورت جدا وارد هر هفته شده و زمان ها را انتخاب کنید.
+            <br>
+            حالت پیشفرض: حالت پیشفرض تقویم، 24 ساعت بعد از زمان فعلی است.
+            <br>
+            هفته بعدی: شما یک هفته به جلو برده می شوید.
+            <br>
+            هفته قبلی:شما یک هفته به عقب بازگردانده می شوید.
+            <br>
+            ایجاد زمان های انتخاب شده: زمان هایی که انتخاب کردید و با رنگ زرد مشخص شده اند، به لیست زمان های فعال برای
+            رزرو اضافه می شوند.
+            <br>
+            حذف زمان های انتخاب شده: زمان هایی که انتخاب کردید و با رنگ زرد مشخص شده اند، اگر قبلا توسط شما آماده رزرو
+            کاربران باشند، از این لیست حذف خواهند شد.
+            <br>
+            کپی کردن زمان های این هفته برای x هفته بعدی: زمان هایی که در هفته فعلی ایجاد شده اند و سبز هستند، در تعداد
+            هفته های آتی که شما مشخص میکنید کپی می شوند.
+        </p>
+
         <div class="myTable isansFont" v-if="days.length != 0">
+            <div class="userCalendarWeekWrapper isansFont--faNum">
+                <button @click.prevent="showPrevWeek()">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                    هفته قبلی
+                </button>
+                <button @click.prevent="showNextWeek()">
+                    هفته بعدی
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </button>
+            </div>
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
                 <div class="myTableCell dayTitleCell" v-for="day in days">
@@ -68,9 +120,32 @@
                     </div>
                 </div>
             </div>
-            <button @click="addTimes()" class="btn btn-success">آزاد کردن زمان های انتخاب شده</button>
-            <button @click="removeTimes()" class="btn btn-danger">حذف زمان های انتخاب شده</button>
-            <button @click="clearAll()" class="btn btn-info">ریست انتخاب شده ها</button>
+            <div class="calendar-actions">
+                <button @click="addTimes()" class="addButton">
+                    ایجاد زمان های انتخاب شده
+                    <moon-loader class="loading-icon" color="#fff" :loading="isLoadingAdd" :size="15" sizeUnit="px"/>
+                </button>
+                <button @click="removeTimes()" class="removeButton">
+                    حذف زمان های انتخاب شده
+                    <moon-loader class="loading-icon" color="#fff" :loading="isLoadingRemove" :size="15" sizeUnit="px"/>
+                </button>
+            </div>
+
+            <form @submit.prevent="duplicateCurrentWeekTime" class="duplication-form isansFont--faNum">
+                <p>
+                    کپی کردن زمان های این هفته برای هفته های بعدی:
+                </p>
+                <label for="weeksDuplicatorAmount">
+                <span>
+                    تعداد هفته(های) آینده (حداقل 1 و حداکثر 8):
+                </span>
+                    <input v-model="weeksDuplicatorAmount" id="weeksDuplicatorAmount" type="number" min="1" max="8">
+                </label>
+                <button>
+                    کپی کردن زمان های این هفته برای {{weeksDuplicatorAmount}} هفته بعدی
+                    <moon-loader class="loading-icon" color="#fff" :loading="isLoadingCopy" :size="15" sizeUnit="px"/>
+                </button>
+            </form>
         </div>
     </div>
 </template>
@@ -78,9 +153,12 @@
 <script>
     import jalali from 'jalali-moment'
     import {required, between, numeric} from 'vuelidate/lib/validators'
+    import {MoonLoader} from '@saeris/vue-spinners'
+
 
     export default {
         name: "Calendar",
+        components: {'moon-loader': MoonLoader},
         validations: {
             selectedPrice: {required, between: between(1000, 100000), numeric}
         },
@@ -102,6 +180,9 @@
                 justNowDate: {},
                 minutesOffsetFromTehran: 0,
                 activeWeekOffset: 0,
+                isLoadingAdd: false,
+                isLoadingRemove: false,
+                isLoadingCopy: false,
             }
         },
         computed: {
@@ -113,6 +194,9 @@
             },
             locale() {
                 return this.$store.getters.locale;
+            },
+            user() {
+                return this.$store.getters.getUser
             }
         },
         async created() {
@@ -120,10 +204,22 @@
         },
 
         methods: {
-
+            loading(val, type) {
+                switch (type) {
+                    case 'add':
+                        this.isLoadingAdd = !!val;
+                        break;
+                    case 'remove':
+                        this.isLoadingRemove = !!val;
+                        break;
+                    case 'copy':
+                        this.isLoadingCopy = !!val;
+                        break;
+                }
+            },
             async duplicateCurrentWeekTime() {
                 console.log('duplicate current weeks times for ', this.weeksDuplicatorAmount, ' week(s).');
-                if(this.weeksDuplicatorAmount >= 1 && this.weeksDuplicatorAmount <= 4) {
+                if (this.weeksDuplicatorAmount >= 1 && this.weeksDuplicatorAmount <= 8) {
                     let populatedSlots = [];
                     for (let i = 0; i < this.days.length; i++) {
                         for (let j = 0; j < this.days[i].slots.length; j++) {
@@ -138,13 +234,23 @@
                         }
                     }
                     console.log('populated slots', populatedSlots);
-                    this.addTimes(populatedSlots);
+                    if(populatedSlots.length > 0) {
+                        this.addTimes(populatedSlots);
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            type: 'warn',
+                            title: 'تقویم: اخطار',
+                            text: 'در هفته ای که حضور دارید تایم سبزی برای کپی کردن موجود نیست.',
+                            duration: 5000
+                        })
+                    }
                 } else {
                     this.$notify({
                         group: 'notif',
                         type: 'warn',
                         title: 'تقویم: اخطار',
-                        text: 'تعداد هفته های آینده باید حداقل 1 و حداکثر 4 هفته (معادل 1 ماه) باشد.',
+                        text: 'تعداد هفته های آینده باید حداقل 1 و حداکثر 8 هفته (معادل 2 ماه) باشد.',
                         duration: 5000
                     })
                 }
@@ -171,7 +277,7 @@
                             "end_time_date": jalali(slot.end_time).locale(this.locale),
                         }
                     });
-                    this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale);
+                    this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale).add('26', 'hours');
                     this.shownDate = this.justNowDate.clone();
                     console.log(this.shownDate.format());
                     let timezone = this.shownDate.format('Z');
@@ -341,11 +447,6 @@
                 return this.slotIndexInOpen(slot) !== -1;
             },
 
-            clearAll() {
-                this.selectedSlotsToOpen = [];
-                this.selectedSlotsToRemove = [];
-            },
-
             removeTimes() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     let removeReqs = [];
@@ -360,23 +461,50 @@
                             }
                         })
                     });
+                    if(removeReqs.length > 0) {
+                        this.loading(true, 'remove');
+                        Promise
+                            .all(removeReqs)
+                            .then(() => {
+                                this.$notify({
+                                    group: 'notif',
+                                    type: 'success',
+                                    title: 'تقویم: موفق',
+                                    text: 'زمان های انتخاب شده با موفقیت حذف شدند.',
+                                    duration: 7000
+                                })
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                this.$notify({
+                                    group: 'notif',
+                                    type: 'error',
+                                    title: 'تقویم: خطا',
+                                    text: 'خطایی هنگام حذف کردن زمان های انتخاب شده رخ داد.',
+                                    duration: 4000
+                                })
+                            })
+                            .finally(() => {
+                                this.initComp();
+                                this.loading(false, 'remove');
+                            })
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            type: 'warn',
+                            title: 'تقویم: اخطار',
+                            text: 'برای حذف زمان، باید حداقل یک زمان از تقویم انتخاب کنید.',
+                            duration: 5000
+                        })
+                    }
 
-                    Promise
-                        .all(removeReqs)
-                        .then(() => {
-                            this.initComp();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            this.initComp();
-                        })
                 }
 
             },
-
             addTimes(slotsToOpen) {
                 let openReqs = [];
                 if (!!slotsToOpen) {
+                    this.loading(true, 'copy');
                     slotsToOpen.forEach(slot => {
                         openReqs.push(
                             this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
@@ -386,8 +514,10 @@
                                 },
                                 this.$store.getters.httpConfig)
                         );
-                    })
+                    });
+                    slotsToOpen = []
                 } else {
+
                     this.days.forEach(day => {
                         day.slots.forEach(slot => {
                             if (slot.where === 'ready-selected') {
@@ -402,32 +532,47 @@
                             }
                         })
                     });
+                    if(openReqs.length > 0){
+                        this.loading(true, 'add');
+                    }
                 }
-                Promise
-                    .all(openReqs)
-                    .then(() => {
-                        this.initComp();
-                        this.$notify({
-                            group: 'notif',
-                            type: 'success',
-                            title: 'تقویم: موفق',
-                            text: 'زمان های انتخاب شده با موفقیت برای رزرو باز شد.',
-                            duration: 7000
+                if(openReqs.length > 0) {
+                    Promise
+                        .all(openReqs)
+                        .then(() => {
+                            this.initComp();
+                            this.$notify({
+                                group: 'notif',
+                                type: 'success',
+                                title: 'تقویم: موفق',
+                                text: 'زمان های انتخاب شده با موفقیت برای رزرو باز شد.',
+                                duration: 7000
+                            })
                         })
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.$notify({
-                            group: 'notif',
-                            type: 'error',
-                            title: 'تقویم: خطا',
-                            text: 'خطایی هنگام اضافه کردن زمان های جدید رخ داد. لطفاً زمان های انتخابی خود را یک بار دیگر مرور کنید و مطمئن شوید که حداقل 24 ساعت از زمان فعلی گذشته باشند.',
-                            duration: 15000
+                        .catch(error => {
+                            console.log(error);
+                            this.$notify({
+                                group: 'notif',
+                                type: 'error',
+                                title: 'تقویم: خطا',
+                                text: 'خطایی هنگام اضافه کردن زمان های جدید رخ داد. لطفاً زمان های انتخابی خود را یک بار دیگر مرور کنید و مطمئن شوید که حداقل 24 ساعت از زمان فعلی گذشته باشند.',
+                                duration: 15000
+                            })
                         })
+                        .finally(() => {
+                            openReqs = [];
+                            this.loading(false, 'add');
+                            this.loading(false, 'copy');
+                        })
+                } else {
+                    this.$notify({
+                        group: 'notif',
+                        type: 'warn',
+                        title: 'تقویم: اخطار',
+                        text: 'برای ایجاد زمان، باید حداقل یک زمان از تقویم انتخاب کنید.',
+                        duration: 15000
                     })
-                    .finally(() => {
-                        openReqs = [];
-                    })
+                }
 
             }
         }
@@ -480,6 +625,7 @@
         border-radius: 10px;
         width: 100%;
         max-width: 90px;
+        transition: all 0.1s ease-in-out;
     }
 
     .duplication-form {
@@ -562,6 +708,10 @@
         justify-content: center;
         margin-top: 20px;
         width: 100%;
+        position: sticky;
+        top: 70px;
+        height: 50px;
+        background-color: white;
     }
 
     .userCalendarWeekWrapper button {
@@ -670,7 +820,62 @@
     .firstRow {
         background-color: white;
         position: sticky;
-        top: 115px;
+        top: 120px;
+        box-shadow: 0 40px 40px rgba(0, 0, 0, 0.2);
+        border-radius: 0 0 10px 10px;
+    }
+
+    .calendar-tutor {
+        font-size: 14px;
+        line-height: 26px;
+    }
+
+    .desc-color {
+        padding: 1px 10px;
+        border-radius: 5px;
+    }
+
+    .calendar-tutor-bold {
+        font-weight: bold;
+    }
+
+    .calendar-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .calendar-actions button {
+        margin: 10px;
+    }
+
+    .addButton {
+        background-color: #3CAEA3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 12px;
+        font-weight: normal;
+        transition: box-shadow 0.1s ease-in-out;
+    }
+
+    .addButton:hover {
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .removeButton {
+        background-color: #c9737c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 12px;
+        font-weight: normal;
+        transition: box-shadow 0.1s ease-in-out;
+    }
+
+    .removeButton:hover {
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

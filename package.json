@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@codekraft-studio/vue-record": "0.0.3",
+    "@saeris/vue-spinners": "^1.0.8",
     "@sentry/browser": "^5.15.4",
     "@sentry/integrations": "^5.15.4",
     "axios": "^0.19.2",

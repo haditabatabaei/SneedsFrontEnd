@@ -10,8 +10,7 @@
                 <i class="material-icons">keyboard_arrow_left</i>
             </button>
         </div>
-        <div class="calendarTopWrapper">
-
+        <div class="calendarTopWrapper isansFont--faNum">
             <div class="calendarGuideWrapper">
                 <span class="isansFont text-sm">راهنمایی تقویم :</span>
                 <span class="btn btn-round btn-sm btn-sample slot-button--notavailable isansFont">بسته</span>
@@ -19,6 +18,18 @@
                 <span class="btn btn-round btn-sm btn-sample slot-button--selected isansFont">انتخاب شده</span>
             </div>
         </div>
+        <form @submit.prevent="duplicateCurrentWeekTime" class="duplication-form isansFont--faNum">
+            <p>
+                کپی کردن زمان های این هفته برای هفته های بعدی:
+            </p>
+            <label for="weeksDuplicatorAmount">
+                <span>
+                    تعداد هفته(های) آینده (حداقل 1 و حداکثر 4):
+                </span>
+                <input v-model="weeksDuplicatorAmount" id="weeksDuplicatorAmount" type="number" min="1" max="4">
+            </label>
+            <button>کپی کردن زمان های این هفته برای {{weeksDuplicatorAmount}} هفته بعدی</button>
+        </form>
         <div class="myTable isansFont" v-if="days.length != 0">
             <div class="myTableRow firstRow">
                 <div class="myTableCell">ساعت / روز</div>
@@ -66,7 +77,6 @@
 
 <script>
     import jalali from 'jalali-moment'
-    import axios from 'axios'
     import {required, between, numeric} from 'vuelidate/lib/validators'
 
     export default {
@@ -87,6 +97,7 @@
                 selectedSlots: [],
                 selectedSlotsToRemove: [],
                 selectedSlotsToOpen: [],
+                weeksDuplicatorAmount: 1,
                 shownDate: {},
                 justNowDate: {},
                 minutesOffsetFromTehran: 0,
@@ -109,12 +120,42 @@
         },
 
         methods: {
+
+            async duplicateCurrentWeekTime() {
+                console.log('duplicate current weeks times for ', this.weeksDuplicatorAmount, ' week(s).');
+                if(this.weeksDuplicatorAmount >= 1 && this.weeksDuplicatorAmount <= 4) {
+                    let populatedSlots = [];
+                    for (let i = 0; i < this.days.length; i++) {
+                        for (let j = 0; j < this.days[i].slots.length; j++) {
+                            if (this.days[i].slots[j].where.startsWith('opened')) {
+                                for (let k = 1; k <= this.weeksDuplicatorAmount; k++) {
+                                    populatedSlots.push({
+                                        "start_time_date": this.days[i].slots[j].start_time_date.clone().add(k, 'weeks'),
+                                        "end_time_date": this.days[i].slots[j].end_time_date.clone().add(k, 'weeks')
+                                    })
+                                }
+                            }
+                        }
+                    }
+                    console.log('populated slots', populatedSlots);
+                    this.addTimes(populatedSlots);
+                } else {
+                    this.$notify({
+                        group: 'notif',
+                        type: 'warn',
+                        title: 'تقویم: اخطار',
+                        text: 'تعداد هفته های آینده باید حداقل 1 و حداکثر 4 هفته (معادل 1 ماه) باشد.',
+                        duration: 5000
+                    })
+                }
+            },
+
+
             async initComp() {
                 console.log('active time zone', this.$store.getters.timezone);
                 let slotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let soldSlotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let timezoneRequest = this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
-                //this.$loading(true);
                 Promise.all([slotsRequest, soldSlotsRequest, timezoneRequest]).then(([slotsResult, soldSlotsResult, timeZoneResult]) => {
                     this.slots = slotsResult.data.map(slot => {
                         return {
@@ -147,8 +188,6 @@
                     this.showWeek(this.activeWeekOffset);
                 }).catch(error => {
                     console.log(error);
-                }).finally(() => {
-
                 })
             },
 
@@ -310,7 +349,6 @@
             removeTimes() {
                 if (window.confirm('برای حذف زمان های باز انتخاب شده مطمئید ؟')) {
                     let removeReqs = [];
-                    //this.$loading(true);
                     this.days.forEach(day => {
                         day.slots.forEach(slot => {
                             if (slot.where === 'opened-selected') {
@@ -332,41 +370,65 @@
                             console.log(error);
                             this.initComp();
                         })
-                        .finally(() => {
-
-                        })
                 }
 
             },
 
-            addTimes() {
+            addTimes(slotsToOpen) {
                 let openReqs = [];
-                //this.$loading(true);
-                this.days.forEach(day => {
-                    day.slots.forEach(slot => {
-                        if (slot.where === 'ready-selected') {
-                            openReqs.push(
-                                this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
-                                    {
-                                        "start_time": slot.start_time_date.clone().locale('en').format(),
-                                        "end_time": slot.start_time_date.clone().locale('en').format()
-                                    },
-                                    this.$store.getters.httpConfig)
-                            );
-                        }
+                if (!!slotsToOpen) {
+                    slotsToOpen.forEach(slot => {
+                        openReqs.push(
+                            this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                                {
+                                    "start_time": slot.start_time_date.clone().locale('en').format(),
+                                    "end_time": slot.start_time_date.clone().locale('en').format()
+                                },
+                                this.$store.getters.httpConfig)
+                        );
                     })
-                });
+                } else {
+                    this.days.forEach(day => {
+                        day.slots.forEach(slot => {
+                            if (slot.where === 'ready-selected') {
+                                openReqs.push(
+                                    this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                                        {
+                                            "start_time": slot.start_time_date.clone().locale('en').format(),
+                                            "end_time": slot.start_time_date.clone().locale('en').format()
+                                        },
+                                        this.$store.getters.httpConfig)
+                                );
+                            }
+                        })
+                    });
+                }
                 Promise
                     .all(openReqs)
                     .then(() => {
                         this.initComp();
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'تقویم: موفق',
+                            text: 'زمان های انتخاب شده با موفقیت برای رزرو باز شد.',
+                            duration: 7000
+                        })
                     })
                     .catch(error => {
                         console.log(error);
+                        this.$notify({
+                            group: 'notif',
+                            type: 'error',
+                            title: 'تقویم: خطا',
+                            text: 'خطایی هنگام اضافه کردن زمان های جدید رخ داد. لطفاً زمان های انتخابی خود را یک بار دیگر مرور کنید و مطمئن شوید که حداقل 24 ساعت از زمان فعلی گذشته باشند.',
+                            duration: 15000
+                        })
                     })
                     .finally(() => {
-
+                        openReqs = [];
                     })
+
             }
         }
     }
@@ -418,6 +480,45 @@
         border-radius: 10px;
         width: 100%;
         max-width: 90px;
+    }
+
+    .duplication-form {
+        color: #222;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .duplication-form p {
+        color: #222;
+        font-size: 13px;
+    }
+
+    .duplication-form label {
+        font-size: 13px;
+        color: #222;
+    }
+
+    .duplication-form input {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-right: 5px;
+        padding: 5px 12px;
+    }
+
+    .duplication-form button {
+        border-radius: 5px;
+        border: 1px solid #3CAEA3;
+        background-color: #3CAEA3;
+        color: white;
+        font-size: 13px;
+        margin-right: 5px;
+        padding: 5px 12px;
+    }
+
+    .duplication-form button:hover {
+        background-color: #00bfa5;
     }
 
 

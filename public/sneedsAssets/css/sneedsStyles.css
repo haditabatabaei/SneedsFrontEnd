@@ -162,3 +162,11 @@
 .loadingZIndex {
     z-index: 1050 !important;
 }
+
+a, a:hover, a:active {
+    text-decoration: none;
+}
+
+*:focus {
+    outline: none;
+}

@@ -295,6 +295,7 @@
         margin-right: 20px;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
         font-size: 13px;
         color: #585858;
     }

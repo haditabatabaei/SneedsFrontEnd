@@ -12,8 +12,8 @@ api.interceptors.response.use(response => {
     return response;
 }, error => {
     console.log('api interceptor catch error, printing input');
-    console.dir(error);
-    console.log(error.response.status);
+    // console.dir(error);
+    // console.log(error.response.status);
     const originalRequest = error.config;
     const originalStatus = error.response.status;
     if (originalStatus != 401) {

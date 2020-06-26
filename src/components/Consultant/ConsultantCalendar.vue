@@ -46,8 +46,9 @@
             به جهت ماهیت مشاوره به صورت مداوم و در جهت رفاه حال شما، می توانید تایم هایی که در یک هفته باز کرده اید را
             برای تعداد هفته های بعدی نیز کپی کنید.
             مثلا اگر شما هر هفته روزهای چهارشنبه و پنجشنبه ساعت های 10 تا 12 در هر روز (اعداد تصادفی هستند) امکان مشاوره
-            دارید و نمیخواهید هر دفعه این ها را وارد تقویم کنید، برای هفته اول این زمان ها را به صورت دستی وارد کنید،
-            سپس با استفاده از ویژگی کپی کردن زمان ها در هفته های بعدی، زمان های انتخاب شده در هفته فعلی را در تعداد هفته
+            دارید و نمیخواهید هر دفعه این ها را وارد تقویم کنید، در هر هفته ای که دوست دارید زمان هارا انتخاب کنید،
+            سپس با استفاده از ویژگی کپی کردن زمان ها در هفته های بعدی، هم، زمان هارا به هفته جاری و هم این زمان ها را در
+            تعداد هفته
             های آتی که شما مشخص میکنید، کپی کنید.
             <br>
             <br>
@@ -121,11 +122,11 @@
                 </div>
             </div>
             <div class="calendar-actions">
-                <button @click="addTimes()" class="addButton">
+                <button @click="addTimes()" class="addButton" :disabled="isLoadingAdd">
                     ایجاد زمان های انتخاب شده
                     <moon-loader class="loading-icon" color="#fff" :loading="isLoadingAdd" :size="15" sizeUnit="px"/>
                 </button>
-                <button @click="removeTimes()" class="removeButton">
+                <button @click="removeTimes()" class="removeButton" :disabled="isLoadingRemove">
                     حذف زمان های انتخاب شده
                     <moon-loader class="loading-icon" color="#fff" :loading="isLoadingRemove" :size="15" sizeUnit="px"/>
                 </button>
@@ -133,7 +134,7 @@
 
             <form @submit.prevent="duplicateCurrentWeekTime" class="duplication-form isansFont--faNum">
                 <p>
-                    کپی کردن زمان های این هفته برای هفته های بعدی:
+                    اضافه کردن + کپی کردن زمان ها به این هفته و به تعداد هفته های بعدی:
                 </p>
                 <label for="weeksDuplicatorAmount">
                 <span>
@@ -141,10 +142,14 @@
                 </span>
                     <input v-model="weeksDuplicatorAmount" id="weeksDuplicatorAmount" type="number" min="1" max="8">
                 </label>
-                <button>
+                <button :disabled="isLoadingCopy">
                     کپی کردن زمان های این هفته برای {{weeksDuplicatorAmount}} هفته بعدی
                     <moon-loader class="loading-icon" color="#fff" :loading="isLoadingCopy" :size="15" sizeUnit="px"/>
                 </button>
+                <br>
+                <p class="important-text">
+                    عملیات کپی و اضافه کردن زمان به تقویم در صورت بالا بودن تعداد زمان ها ممکن است لحظاتی طول بکشد. لطفاً شکیبا بوده و از فشردن چند باره دکمه ها به شدت خودداری کنید.
+                </p>
             </form>
         </div>
     </div>
@@ -218,13 +223,13 @@
                 }
             },
             async duplicateCurrentWeekTime() {
-                console.log('duplicate current weeks times for ', this.weeksDuplicatorAmount, ' week(s).');
+                //console.log('duplicate current weeks times for ', this.weeksDuplicatorAmount, ' week(s).');
                 if (this.weeksDuplicatorAmount >= 1 && this.weeksDuplicatorAmount <= 8) {
                     let populatedSlots = [];
                     for (let i = 0; i < this.days.length; i++) {
                         for (let j = 0; j < this.days[i].slots.length; j++) {
-                            if (this.days[i].slots[j].where.startsWith('opened')) {
-                                for (let k = 1; k <= this.weeksDuplicatorAmount; k++) {
+                            if (this.days[i].slots[j].where.endsWith('selected')) {
+                                for (let k = 0; k <= this.weeksDuplicatorAmount; k++) {
                                     populatedSlots.push({
                                         "start_time_date": this.days[i].slots[j].start_time_date.clone().add(k, 'weeks'),
                                         "end_time_date": this.days[i].slots[j].end_time_date.clone().add(k, 'weeks')
@@ -233,15 +238,16 @@
                             }
                         }
                     }
-                    console.log('populated slots', populatedSlots);
-                    if(populatedSlots.length > 0) {
-                        this.addTimes(populatedSlots);
+                    // //console.log('populated slots', populatedSlots)
+                    // populatedSlots.forEach(slot => //console.log(slot.start_time_date.format() + '=>' + slot.end_time_date.format()));
+                    if (populatedSlots.length > 0) {
+                        this.addAndDuplicateTimes(populatedSlots);
                     } else {
                         this.$notify({
                             group: 'notif',
                             type: 'warn',
                             title: 'تقویم: اخطار',
-                            text: 'در هفته ای که حضور دارید تایم سبزی برای کپی کردن موجود نیست.',
+                            text: ' زمانی برای اضافه کردن و کپی انتخاب نکرده اید.',
                             duration: 5000
                         })
                     }
@@ -258,7 +264,7 @@
 
 
             async initComp() {
-                console.log('active time zone', this.$store.getters.timezone);
+                //console.log('active time zone', this.$store.getters.timezone);
                 let slotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let soldSlotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let timezoneRequest = this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
@@ -279,27 +285,27 @@
                     });
                     this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale).add('26', 'hours');
                     this.shownDate = this.justNowDate.clone();
-                    console.log(this.shownDate.format());
+                    //console.log(this.shownDate.format());
                     let timezone = this.shownDate.format('Z');
                     let sign = timezone[0];
                     let hour = Number(timezone.split(':')[0].split(sign)[1]);
                     let minute = Number(timezone.split(':')[1]);
-                    console.log(sign, hour, " ", minute);
+                    //console.log(sign, hour, " ", minute);
                     let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
-                    console.log(Number(sign + ((hour * 60) + minute)));
-                    console.log(Number("+" + 210));
+                    //console.log(Number(sign + ((hour * 60) + minute)));
+                    //console.log(Number("+" + 210));
                     this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
-                    console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
-                    console.log('slots', this.slots);
+                    //console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
+                    //console.log('slots', this.slots);
                     this.showWeek(this.activeWeekOffset);
                 }).catch(error => {
-                    console.log(error);
+                    //console.log(error);
                 })
             },
 
 
             handleWeek(now) {
-                console.log('is iran?', this.isiran);
+                //console.log('is iran?', this.isiran);
                 this.days = [];
                 this.days.push(this.generateSaturdayNew(now));
                 this.days.push(this.generateSundayNew(now));
@@ -308,7 +314,7 @@
                 this.days.push(this.generateWednesdayNew(now));
                 this.days.push(this.generateThursdayNew(now));
                 this.days.push(this.generateFridayNew(now));
-                console.log(this.days);
+                //console.log(this.days);
             },
 
 
@@ -385,7 +391,7 @@
 
             generateSlotsByDay(day) {
                 let slots = [];
-                for (let i = 0; i < 23; i++) {
+                for (let i = 0; i < 24; i++) {
                     slots.push({
                         "start_time_date": day.clone().hour(i).minute(this.minutesOffsetFromTehran),
                         "end_time_date": day.clone().hour(i + 1).minute(this.minutesOffsetFromTehran),
@@ -400,12 +406,12 @@
                         slots[i].where = 'ready'
                     }
                 }
-                console.log(slots);
+                //console.log(slots);
                 return slots;
             },
 
             slotClickHandler(slot) {
-                console.log(slot);
+                //console.log(slot);
                 switch (slot.where) {
                     case 'opened' :
                         slot.where = 'opened-selected';
@@ -422,7 +428,7 @@
                     default:
                         break;
                 }
-                console.log(slot);
+                //console.log(slot);
             },
 
             getOpenedSlotId(slot) {
@@ -461,7 +467,7 @@
                             }
                         })
                     });
-                    if(removeReqs.length > 0) {
+                    if (removeReqs.length > 0) {
                         this.loading(true, 'remove');
                         Promise
                             .all(removeReqs)
@@ -475,7 +481,6 @@
                                 })
                             })
                             .catch(error => {
-                                console.log(error);
                                 this.$notify({
                                     group: 'notif',
                                     type: 'error',
@@ -501,46 +506,71 @@
                 }
 
             },
-            addTimes(slotsToOpen) {
-                let openReqs = [];
-                if (!!slotsToOpen) {
-                    this.loading(true, 'copy');
-                    slotsToOpen.forEach(slot => {
-                        openReqs.push(
-                            this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
-                                {
-                                    "start_time": slot.start_time_date.clone().locale('en').format(),
-                                    "end_time": slot.start_time_date.clone().locale('en').format()
-                                },
-                                this.$store.getters.httpConfig)
-                        );
-                    });
-                    slotsToOpen = []
-                } else {
 
-                    this.days.forEach(day => {
-                        day.slots.forEach(slot => {
-                            if (slot.where === 'ready-selected') {
-                                openReqs.push(
-                                    this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
-                                        {
-                                            "start_time": slot.start_time_date.clone().locale('en').format(),
-                                            "end_time": slot.start_time_date.clone().locale('en').format()
-                                        },
-                                        this.$store.getters.httpConfig)
-                                );
-                            }
+
+            addAndDuplicateTimes(slots) {
+                let openReqs = [];
+                let timesHttpConfig = this.$store.getters.httpConfig;
+                timesHttpConfig.timeout = 0;
+                this.loading(true, 'copy');
+                slots.forEach(slot => {
+                    openReqs.push(
+                        this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                            {
+                                "start_time": slot.start_time_date.clone().locale('en').format(),
+                                "end_time": slot.start_time_date.clone().locale('en').format()
+                            },
+                            timesHttpConfig)
+                    );
+                });
+                slots = []
+                Promise.all(openReqs)
+                    .finally(async () => {
+                        await this.initComp()
+                        this.loading(false, 'copy')
+                        this.$notify({
+                            group: 'notif',
+                            type: 'success',
+                            title: 'تقویم: موفق',
+                            text: 'زمان های انتخاب شده با موفقیت برای رزرو باز شدند و در هفته های انتخاب شده ثبت شدند.',
+                            duration: 7000
                         })
-                    });
-                    if(openReqs.length > 0){
-                        this.loading(true, 'add');
-                    }
-                }
-                if(openReqs.length > 0) {
+                    })
+            },
+
+            addTimes() {
+                let openReqs = [];
+                let timesHttpConfig = this.$store.getters.httpConfig;
+                timesHttpConfig.timeout = 0;
+
+                this.days.forEach(day => {
+                    day.slots.forEach(slot => {
+                        if (slot.where === 'ready-selected') {
+                            openReqs.push(
+                                this.$api.post(`${this.$store.getters.getApi}/store/time-slot-sales/`,
+                                    {
+                                        "start_time": slot.start_time_date.clone().locale('en').format(),
+                                        "end_time": slot.start_time_date.clone().locale('en').format()
+                                    },
+                                    timesHttpConfig)
+                            );
+                        }
+                    })
+                });
+                this.loading(true, 'add');
+                if (openReqs.length > 0) {
                     Promise
                         .all(openReqs)
                         .then(() => {
-                            this.initComp();
+
+                        })
+                        .catch(error => {
+                            // //console.log(error);
+                        })
+                        .finally(async () => {
+                            openReqs = [];
+                            await this.initComp();
+                            this.loading(false, 'add');
                             this.$notify({
                                 group: 'notif',
                                 type: 'success',
@@ -548,21 +578,6 @@
                                 text: 'زمان های انتخاب شده با موفقیت برای رزرو باز شد.',
                                 duration: 7000
                             })
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            this.$notify({
-                                group: 'notif',
-                                type: 'error',
-                                title: 'تقویم: خطا',
-                                text: 'خطایی هنگام اضافه کردن زمان های جدید رخ داد. لطفاً زمان های انتخابی خود را یک بار دیگر مرور کنید و مطمئن شوید که حداقل 24 ساعت از زمان فعلی گذشته باشند.',
-                                duration: 15000
-                            })
-                        })
-                        .finally(() => {
-                            openReqs = [];
-                            this.loading(false, 'add');
-                            this.loading(false, 'copy');
                         })
                 } else {
                     this.$notify({
@@ -876,6 +891,16 @@
 
     .removeButton:hover {
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .duplication-form p.important-text {
+        font-weight: bold;
+        font-size: 20px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: black;
+        color: white;
+        text-align: center;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

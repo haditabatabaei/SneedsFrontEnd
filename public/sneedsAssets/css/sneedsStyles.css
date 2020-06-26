@@ -163,8 +163,8 @@
     z-index: 1050 !important;
 }
 
-a, a:hover, a:active {
-    text-decoration: none;
+a, a:hover, a:active, a:visited {
+    text-decoration: none !important;
 }
 
 *:focus {

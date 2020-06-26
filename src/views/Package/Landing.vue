@@ -108,8 +108,14 @@
         <section class="package-section section-intro">
             <div class="section-sub section-sub-intro">
                 <div class="section-intro-title-box">
+                    <a v-smooth-scroll="{offset: -100, updateHistory: false}" href="#consultant-anchor" class="intro-start isansFont">
+                        از اینجا شروع کن!
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
                     <h1 class="section-intro-title isansFont">
                         <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots">
+                        <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots left">
+                        
                         <span class="intro-title-span span-blue">
                         با اسنیدز،
                         </span>
@@ -125,16 +131,10 @@
                         موانعشآشنایی داره کنارت باشه تا با خیال راحت بتونی کشور، رشته .و کالجی که دوست داری درس بخونی
                     </p>
                 </div>
-                <iframe class="section-intro-aparat"
-                        src="https://www.aparat.com/video/video/embed/videohash/5FlGf/vt/frame"
-                        allowFullScreen="true"
-                        webkitallowfullscreen="true"
-                        mozallowfullscreen="true">
-                </iframe>
             </div>
         </section>
         <section class="package-section section-consultants">
-            <div class="section-sub section-sub-consultants">
+            <div class="section-sub section-sub-consultants" id="consultant-anchor">
                 <div class="section-consultants-info">
                     <h1 class="section-consultants-title isansFont">
                         مشاوران اسنیدز
@@ -901,7 +901,7 @@
                         title: 'سوالات متداول',
                         questions: [
                             {
-                                title: 'این ۵۰۰ هزارتومان برای چیه و چی میشه؟',
+                                title: 'این 300 هزارتومان برای چیه و چی میشه؟',
                                 answer: `این مبلغ برای رزرو پکیج کالج مورد نظر شماست، با پرداخت این مبلغ روند کار برای شما شروع میشه و اطلاعات برای مشاوران ارسال میشه، اگر بعد از مشاوره (ها)به این نتیجه برسید که تمایل به ادامه کار ندارید مبالغ مشاوره(هرجلسه معادل مبلغ مشاوره بر روی سایت)ا از هزینه 500 تومان شما کسر و مابقی به شما برگشت میخورد.`,
                                 isOpen: true,
                             },
@@ -1210,13 +1210,19 @@
     .section-sub-intro {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
     }
 
     .section-intro-title-box {
         display: flex;
         flex-direction: column;
-        width: 40%;
+        width: 80%;
+        text-align: center;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        position: relative;
+        padding-bottom: 30px;
     }
 
     .intro-title-span {
@@ -1237,19 +1243,10 @@
         background: linear-gradient(90deg, #A347FF 50%, #FFF 50%);
     }
 
-    .intro-clouds {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 1;
-        max-height: 800px;
-    }
-
     .section-intro-title {
         color: white;
         font-size: 28px;
-        margin: 10px;
+        margin: 30px;
         z-index: 5;
         position: relative;
     }
@@ -1262,29 +1259,42 @@
         color: #929493;
     }
 
+    .intro-title-dots.left {
+        left: -225px;
+        right: initial;
+    }
+
+    .intro-start {
+        position: absolute;
+        bottom: -25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        border-radius: 5px;
+        background-color: #00BFD6;
+        color: white;
+        border: none;
+        padding: 0 28px;
+        align-self: center;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .intro-start:hover {
+        background-color: #00bfa5;
+    }
+
     .section-intro-text {
         color: #707070;
         font-size: 16px;
-        margin: 30px 0;
+        margin: 30px;
         line-height: 25px;
         z-index: 5;
     }
 
-    .section-intro-aparat {
-        width: 60%;
-        height: 400px;
-        border-radius: 20px;
-        border: 5px solid white;
-        box-shadow: 0 0 13px #0000001C;
-        margin: 15px;
-        z-index: 5;
-    }
-
     .section-consultants {
-        background: white;
-        background-image: url('/sneedsAssets/img/world.png');
         background-size: contain;
-        background-position: 20px;
+        background: white url('/sneedsAssets/img/world.png') 20px;
         align-items: center;
     }
 

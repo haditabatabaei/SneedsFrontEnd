@@ -6,11 +6,6 @@
     font-family: 'isansFaNum';
     src: url('../font/iranSansFarsiNumber.ttf') format('truetype');
 }
-
-.yekanFont{
-    font-family: 'yekan' !important;
-}
-
 .gadugiFont{
     font-family: 'isans' !important;
 }

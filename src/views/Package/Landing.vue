@@ -1458,6 +1458,7 @@
 
     .step-info {
         margin-right: 20px;
+        width: calc(100% - 170px);
     }
 
     .step-image {
@@ -2642,6 +2643,7 @@
 
         .step-info {
             text-align: center;
+            width: initial;
         }
 
         .section-sub-consultants {

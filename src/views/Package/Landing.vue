@@ -251,11 +251,11 @@
                     <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
                     <div class="step-info">
                         <h2 class="step-title isansFont">
-                            رزرو پکیج
+                            رزرو پکیج و اعلام آمادگی مشاوران
                         </h2>
                         <p class="step-text isansFont">
                             بعد از رزرو پکیج و پر کردن فرم، اطلاعات شما برای مشاوران اسنیدز فرستاده میشه و حداکثر بعد از
-                            چهار روز مشاورانی که پرونده شما رو قبول کردن توی پروفایلتون قابل مشاهده خواهند بود
+                            چهار روز مشاورانی که برای پروژه شما اعلام آمادگی کردند، توی پروفایلتون قابل مشاهده خواهند بود.
                         </p>
                     </div>
                 </div>
@@ -263,11 +263,10 @@
                     <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
                     <div class="step-info">
                         <h2 class="step-title isansFont">
-                            رزرو پکیج
+                            انتخاب مشاور توسط شما و شروع پروسه
                         </h2>
                         <p class="step-text isansFont">
-                            بعد از رزرو پکیج و پر کردن فرم، اطلاعات شما برای مشاوران اسنیدز فرستاده میشه و حداکثر بعد از
-                            چهار روز مشاورانی که پرونده شما رو قبول کردن توی پروفایلتون قابل مشاهده خواهند بود
+                            بعدش شما میتونید از بین این مشاوران، بررسی کنید و یکی رو انتخاب کنید تا پروسه اپلایتون شروع بشه.
                         </p>
                     </div>
                 </div>
@@ -275,11 +274,10 @@
                     <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
                     <div class="step-info">
                         <h2 class="step-title isansFont">
-                            رزرو پکیج
+                            مراحل پروسه با توجه به پکیج و در نهایت پذیرش و ویزا
                         </h2>
                         <p class="step-text isansFont">
-                            بعد از رزرو پکیج و پر کردن فرم، اطلاعات شما برای مشاوران اسنیدز فرستاده میشه و حداکثر بعد از
-                            چهار روز مشاورانی که پرونده شما رو قبول کردن توی پروفایلتون قابل مشاهده خواهند بود
+                            با توجه به پکیجی که انتخاب کردید، مشاورتون و اسنیدز در تمام مسیرتون کنارتون خواهد بود.
                         </p>
                     </div>
                 </div>
@@ -375,7 +373,7 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج برنزی کالج</h1>
-                        <h3 class="box-title-meta isansFont">!اخذ تضمینی پذیرش کالج به وسیله مشاوران اسنیدز</h3>
+                        <h3 class="box-title-meta isansFont">اخذ تضمینی پذیرش کالج به وسیله مشاوران اسنیدز!</h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -385,20 +383,17 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    5 قست
+                                    4 قسط
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
-                                                500 هزار تومان
+                                                300 هزار تومان
                                             </span>
                                             <span>
-                                                5.5 میلیون تومان
+                                                2 میلیون و 700 هزار تومان
                                             </span>
                                             <span>
-                                                1 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
+                                                3 میلیون تومان
                                             </span>
                                             <span>
                                                 2 میلیون تومان
@@ -406,19 +401,16 @@
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
                                             <span>
-                                                رزرو پکیج
+                                                در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                عقد قرارداد
+                                                بعد از تایید مشاور و عقد قرارداد
                                             </span>
                                             <span>
-                                                جواب اپلای
+                                                بعد از سابمیت و ارائه مدارک
                                             </span>
                                             <span>
-                                                مدارک ویزا
-                                            </span>
-                                            <span>
-                                                جواب ویزا
+                                                بعد از دریافت پذیرش
                                             </span>
                                         </span>
                                     </span>
@@ -442,7 +434,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000
+                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
                         تومان
                     </button>
                 </div>
@@ -455,8 +447,9 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج نقره ای کالج</h1>
-                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک .مشاوران
-                            اسنیدز حداقل کنن</h3>
+                        <h3 class="box-title-meta isansFont">
+                            برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک مشاوران اسنیدز حداقل کنن.
+                        </h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -466,17 +459,20 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    5 قست
+                                    6 قست
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
-                                                500 هزار تومان
+                                                300 هزار تومان
                                             </span>
                                             <span>
-                                                5.5 میلیون تومان
+                                                2 میلیون و 700 هزار تومان
                                             </span>
                                             <span>
-                                                1 میلیون تومان
+                                                3 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
                                             </span>
                                             <span>
                                                 2 میلیون تومان
@@ -487,19 +483,22 @@
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
                                             <span>
-                                                رزرو پکیج
+                                                در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                عقد قرارداد
+                                                بعد از تایید مشاور و عقد قرارداد
                                             </span>
                                             <span>
-                                                جواب اپلای
+                                                بعد از سابمیت و ارائه مدارک
                                             </span>
                                             <span>
-                                                مدارک ویزا
+                                                بعد از دریافت پذیرش
                                             </span>
                                             <span>
-                                                جواب ویزا
+                                                بعد از سابمیت مدارک ویزا
+                                            </span>
+                                            <span>
+                                                بعد از اخذ ویزا
                                             </span>
                                         </span>
                                     </span>
@@ -531,7 +530,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
                 </div>
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
@@ -542,8 +541,9 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج طلایی کالج</h1>
-                        <h3 class="box-title-meta isansFont">برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور !مقصد
-                            رو از خودشون دور کنن</h3>
+                        <h3 class="box-title-meta isansFont">
+                            برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور مقصد رو از خودشون دور کنن!
+                        </h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -553,17 +553,26 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    5 قست
+                                    8 قست
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
-                                                500 هزار تومان
+                                                300 هزار تومان
                                             </span>
                                             <span>
-                                                5.5 میلیون تومان
+                                                2 میلیون و 700 هزار تومان
                                             </span>
                                             <span>
-                                                1 میلیون تومان
+                                                3 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون تومان
                                             </span>
                                             <span>
                                                 2 میلیون تومان
@@ -574,19 +583,28 @@
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
                                             <span>
-                                                رزرو پکیج
+                                                در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                عقد قرارداد
+                                                بعد از تایید مشاور و عقد قرارداد
                                             </span>
                                             <span>
-                                                جواب اپلای
+                                                بعد از سابمیت و ارائه مدارک
                                             </span>
                                             <span>
-                                                مدارک ویزا
+                                                بعد از دریافت پذیرش
                                             </span>
                                             <span>
-                                                جواب ویزا
+                                                بعد از سابمیت مدارک ویزا
+                                            </span>
+                                            <span>
+                                                بعد از اخذ ویزا
+                                            </span>
+                                            <span>
+                                                بعد از انتخاب خانه و هماهنگی با کاربر
+                                            </span>
+                                            <span>
+                                                بعد از اجاره خانه
                                             </span>
                                         </span>
                                     </span>
@@ -626,7 +644,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 500,000 تومان</button>
+                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
                 </div>
                 <button class="buy-box-compare-toggler isansFont" @click="toggleComparePackages">
                     مقایسه کامل پکیج ها
@@ -662,45 +680,32 @@
                         </h3>
                         <div class="compare-item-values">
                             <p class="compare-item-value">
-                                1200$ -> 4قسط
+                                8 میلیون تومان -> 4قسط
                             </p>
                             <p class="compare-item-value compare-item-value--bordered">
-                                1200$ -> 4قسط
+                                12 میلیون تومان -> 6قسط
                             </p>
                             <p class="compare-item-value">
-                                1200$ -> 4قسط
+                                16 میلیون تومان -> 8قسط
                             </p>
                         </div>
                     </div>
-                    <div class="compare-item isansFont--faNum">
+                    <div class="compare-item isansFont--faNum" v-for="item in compareItems">
                         <h3 class="compare-item-title isansFont">
-                            مشاوره اپلای
+                            {{item.title}}
                         </h3>
                         <div class="compare-item-values">
                             <p class="compare-item-value">
-                                <i class="material-icons compare-item-hasIcon">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-done" v-if="item.bronze">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-close" v-else>close</i>
                             </p>
                             <p class="compare-item-value compare-item-value--bordered">
-                                <i class="material-icons compare-item-hasIcon">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-done" v-if="item.silver">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-close" v-else>close</i>
                             </p>
                             <p class="compare-item-value">
-                                <i class="material-icons compare-item-hasIcon">done</i>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="compare-item isansFont--faNum">
-                        <h3 class="compare-item-title isansFont">
-                            مشاوره ویزا
-                        </h3>
-                        <div class="compare-item-values">
-                            <p class="compare-item-value">
-                                <i class="material-icons compare-item-noHasIcon">close</i>
-                            </p>
-                            <p class="compare-item-value compare-item-value--bordered">
-                                <i class="material-icons compare-item-hasIcon">done</i>
-                            </p>
-                            <p class="compare-item-value">
-                                <i class="material-icons compare-item-hasIcon">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-done" v-if="item.gold">done</i>
+                                <i class="material-icons compare-item-hasIcon icon-close" v-else>close</i>
                             </p>
                         </div>
                     </div>
@@ -937,10 +942,8 @@
                             },
                             {
                                 title: 'به جز خود پکیج چه هزینه‌های دیگه‌ای با منه؟',
-                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
-                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
-                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
-                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                answer: 'همون طور که می دونید اپلای فرآیند پر هزینه‌ایه و هزینه‌هایی مثل پرداخت اپلیکیشن‌فی، بلیط و ... کم نخواهد بود.\n' +
+                                    'اما خرید پکیج‌های کمکی اپلای اسنیدز علاوه بر خدماتی که ارائه شده به شما کمک خواهد کرد با استفاده از تجربه اونایی که خودشون اپلای کردن هزینه‌هاتون رو به حداقل برسونید و پول‌هاتون رو به بهینه‌ترین شکل ممکن خرج کنید.',
                                 isOpen: false,
                             },
                             {
@@ -971,10 +974,9 @@
                             },
                             {
                                 title: 'چطوری به شما اعتماد کنم؟',
-                                answer: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک\n' +
-                                    'است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی\n' +
-                                    'تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی\n' +
-                                    'در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم\n',
+                                answer: 'اسنیدز یه استارتاپ دانش بنیان متشکل از دانشجویان امیرکبیره، که بیش از ۲ سال سابقه‌ فعالیت در زمینه‌ اپلای و مهاجرت تحصیلی رو داره.\n' +
+                                    'ما توی این مسیر به تعداد زیادی از دانشجویانی که قصد اپلای داشتند کمک کردیم و کارنامه ما بهترین معرف ماست.\n' +
+                                    'تمام مشاوران اسنیدز تجربه کسب پذیرش از دانشگاه‌ها وکالج‌های برتر سراسر دنیا رو داشتند که با مراجعه به پروفایلشون در سایت می‌تونید به رزومه‌شون دسترسی داشته باشید و از نظرات کاربرایی که از کمکشون استفاده کردند استفاده کنید و بهترین تصمیم رو برای آیندتون بگیرین!',
                                 isOpen: false,
                             },
                             {
@@ -984,6 +986,18 @@
                             }
                         ]
                     }
+                ],
+                compareItems: [
+                    {title: 'آماده سازی مدارک اپلای', bronze: true, silver: true, gold: true},
+                    {title: 'تضمین پذیرش', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره زبان', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره انتخاب کالج', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره شرایط زندگی', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره انتخاب رشته', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره ویزا', bronze: true, silver: true, gold: true},
+                    {title: 'انجام مراحل اخذ ویزا', bronze: false, silver: true, gold: true},
+                    {title: 'مشاوره دریافت منزل در کشور مقصد', bronze: false, silver: true, gold: true},
+                    {title: 'اجاره منزل', bronze: false, silver: false, gold: true},
                 ]
             }
         },
@@ -1878,25 +1892,26 @@
         transition: display 0.2s ease-in-out;
     }
 
-    .buy-box-feature-mark:hover > .buy-box-feature-mark-modal {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-
     .buy-box-feature-mark-modal {
         position: absolute;
         top: 20px;
-        right: 0;
+        right: -100px;
         padding: 20px;
         background-color: white;
         box-shadow: 0 -4px 7px #00000017;
         z-index: 999;
         border-radius: 15px;
         display: none;
-        min-width: 270px;
-        transition: display 0.2s ease-in-out;
+        min-width: 400px;
+        transition: all 0.2s ease-in-out;
     }
+
+    .buy-box-feature-mark:hover > .buy-box-feature-mark-modal {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
 
     .box-feature-mark-modal-prices {
         display: flex;
@@ -2455,6 +2470,14 @@
 
     .loginForm-meta.error {
         color: #c9737c;
+    }
+
+    .icon-done {
+        color: #00bfa5;
+    }
+
+    .icon-close {
+        color: #963a38;
     }
 
 

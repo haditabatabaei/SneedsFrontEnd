@@ -137,7 +137,6 @@
                 ],
                 footerSwitcherItems: [
                     {name: 'درباره ما', value: 'aboutus'},
-                    {name: 'تماس با ما', value: 'contactus'}
                 ],
                 activeFooterItem: 'aboutus'
             }

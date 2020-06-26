@@ -73,10 +73,12 @@
 
                         <button class="newTaskModal-footer-create" @click="performEditTask">
                             ثبت تغییرات این کار
+                            <moon-loader class="loading-icon" color="#fff" :loading="Boolean(newTaskInput.isLoading)" :size="15" sizeUnit="px"/>
                         </button>
                         <button class="newTaskModal-footer-delete" @click="deleteTask">
                             <i class="material-icons">delete_forever</i>
                             حذف این کار
+                            <moon-loader class="loading-icon" color="#fff" :loading="Boolean(newTaskInput.isLoadingDelete)" :size="15" sizeUnit="px"/>
                         </button>
                     </div>
                 </div>
@@ -139,6 +141,7 @@
                         </p>
                         <button class="newTaskModal-footer-create" @click="createNewTask">
                             ایجاد کار جدید
+                            <moon-loader class="loading-icon" color="#fff" :loading="Boolean(newTaskInput.isLoading)" :size="15" sizeUnit="px"/>
                         </button>
                     </div>
                 </div>
@@ -183,6 +186,7 @@
                                 :class="[{'switcher-item-button--active': currentPhase.id === phase.id}]"
                                 @click="currentPhase = phase">
                             {{phase.title}}
+                            <moon-loader class="loading-icon" color="#8C3DDB" :loading="currentPhase.id === phase.id && currentPhase.isLoading" :size="15" sizeUnit="px"/>
                             <i class="material-icons-outlined" v-if="currentPhase === phase && getPhaseContentType(phase) === 'soldstorepaidpackagephase'">done</i>
                         </button>
                     </li>
@@ -289,9 +293,12 @@
 
 <script>
     import jalali from 'jalali-moment'
-
+    import {MoonLoader} from '@saeris/vue-spinners'
     export default {
         name: "ConsPackagesManager",
+        components: {
+            "moon-loader": MoonLoader
+        },
         data() {
             return {
                 soldPackage: {},
@@ -459,6 +466,7 @@
 
             async deleteTask() {
                 try {
+                    this.newTaskInput.isLoadingDelete = true;
                     let result = await this.$api.delete(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, this.httpConfig);
                     console.log(result);
                     this.hideTaskMoreInfo();
@@ -482,11 +490,14 @@
                         text: 'خطایی هنگام حذف کار رخ داد.',
                         duration: 3000,
                     })
+                } finally {
+                    this.newTaskInput.isLoadingDelete = false;
                 }
             },
 
             async performEditTask() {
                 try {
+                    this.newTaskInput.isLoading = true;
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
@@ -518,11 +529,14 @@
                         text: 'خطایی هنگام ویرایش کار رخ داد.',
                         duration: 3000,
                     })
+                } finally {
+                    this.newTaskInput.isLoading = false;
                 }
             },
 
             async createNewTask() {
                 try {
+                    this.newTaskInput.isLoading = true;
                     let payload = new FormData();
                     payload.append("status", this.newTaskInput.status);
                     payload.append("title", this.newTaskInput.title);
@@ -533,7 +547,6 @@
                         payload.append("file", this.newTaskInputFile);
                     }
                     let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.multipartHttpConfig);
-                    this.hideNewTaskModal(null, true);
                     await this.getCurrentPhaseTasks();
                     this.$notify({
                         group: 'notif',
@@ -542,6 +555,7 @@
                         text: 'کار جدید با موفقیت اضافه شد.',
                         duration: 10000,
                     });
+                    this.hideNewTaskModal(null, true);
                     console.log(result);
                 } catch (e) {
                     console.log(e);
@@ -555,6 +569,8 @@
                         text: 'خطایی هنگام ایجاد کار جدید رخ داد.',
                         duration: 3000,
                     });
+                } finally {
+                    this.newTaskInput.isLoading = false;
                 }
             },
 
@@ -612,6 +628,7 @@
 
             async getCurrentPhaseTasks() {
                 try {
+                    this.currentPhase.isLoading = true;
                     let result = await this.$api.get(`${this.api}/store/packages/sold-store-package-phase-detail-list/?object_id=${this.currentPhase.id}&content_type=${this.getPhaseContentType(this.currentPhase)}`, this.httpConfig);
                     console.log(result);
                     this.currentPhaseTasks = result.data;
@@ -620,6 +637,8 @@
                     if (e.response) {
                         console.log(e.response);
                     }
+                } finally {
+                    this.currentPhase.isLoading = false;
                 }
             },
 

@@ -1565,6 +1565,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        border-radius: 10px;
     }
 
     .support-overlay {
@@ -1576,6 +1577,7 @@
         z-index: 1;
         background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(31, 31, 31, 1) 50%, rgba(84, 84, 84, 1) 100%);
         opacity: 0.5;
+        border-radius: 10px;
     }
 
     .support-title {
@@ -1748,6 +1750,7 @@
     .package-section-buy {
         background-color: #F6F7FA;
         z-index: 28;
+        min-height: auto;
     }
 
     .section-sub-buy {
@@ -2478,6 +2481,37 @@
 
     .icon-close {
         color: #963a38;
+    }
+
+    .package-section-services {
+        min-height: auto;
+    }
+
+    .package-section-steps {
+        min-height: auto;
+        margin-bottom: 50px;
+    }
+
+    .package-section-smart {
+        min-height: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .package-section-about {
+        min-height: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .package-section-college {
+        min-height: auto;
+        margin: 50px 0;
+    }
+
+    .package-section-trust {
+        min-height: auto;
+        margin: 50px 0;
     }
 
 

@@ -76,10 +76,11 @@
                     تمامی حقوق برای شرکت نوآوران نوین پرداز برازمان محفوظ است © |
                     <router-link to="/policy" class="copyright-text-policy">قوانین و مقررات</router-link>
                 </p>
-<!--                <div class="footer-copyright-certs">-->
-<!--                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />-->
-<!--                    <img src="/sneedsAssets/img/plane.jpg" class="cert-image" />-->
-<!--                </div>-->
+                <div class="footer-copyright-certs">
+                    <a target="_blank" href="https://trustseal.enamad.ir/?id=114555&Code=7GgIgDLoG5kxYLbjuDlx">
+                        <img src="https://trustseal.enamad.ir/Content/Images/Star/star1.png?v=5.0.0.47" alt="" style="cursor:pointer" id="7GgIgDLoG5kxYLbjuDlx">
+                    </a>
+                </div>
             </div>
         </div>
     </footer>

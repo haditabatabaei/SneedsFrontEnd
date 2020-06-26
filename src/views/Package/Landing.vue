@@ -248,10 +248,10 @@
                 <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله!</h1>
                 <div class="section-steps-title-divider"></div>
                 <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
+                    <img class="step-image" src="/sneedsAssets/img/step-1.png" alt="">
                     <div class="step-info">
-                        <h2 class="step-title isansFont">
-                            رزرو پکیج و اعلام آمادگی مشاوران
+                        <h2 class="step-title isansFont--faNum">
+                            1.رزرو پکیج و اعلام آمادگی مشاوران
                         </h2>
                         <p class="step-text isansFont">
                             بعد از رزرو پکیج و پر کردن فرم، اطلاعات شما برای مشاوران اسنیدز فرستاده میشه و حداکثر بعد از
@@ -260,10 +260,10 @@
                     </div>
                 </div>
                 <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
+                    <img class="step-image" src="/sneedsAssets/img/step-2.png" alt="">
                     <div class="step-info">
-                        <h2 class="step-title isansFont">
-                            انتخاب مشاور توسط شما و شروع پروسه
+                        <h2 class="step-title isansFont--faNum">
+                            2.انتخاب مشاور توسط شما و شروع پروسه
                         </h2>
                         <p class="step-text isansFont">
                             بعدش شما میتونید از بین این مشاوران، بررسی کنید و یکی رو انتخاب کنید تا پروسه اپلایتون شروع بشه.
@@ -271,10 +271,10 @@
                     </div>
                 </div>
                 <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/landing-item.png" alt="">
+                    <img class="step-image" src="/sneedsAssets/img/step-3.png" alt="">
                     <div class="step-info">
-                        <h2 class="step-title isansFont">
-                            مراحل پروسه با توجه به پکیج و در نهایت پذیرش و ویزا
+                        <h2 class="step-title isansFont--faNum">
+                            3.مراحل پروسه با توجه به پکیج و در نهایت پذیرش و ویزا
                         </h2>
                         <p class="step-text isansFont">
                             با توجه به پکیجی که انتخاب کردید، مشاورتون و اسنیدز در تمام مسیرتون کنارتون خواهد بود.
@@ -1253,14 +1253,14 @@
 
     .intro-title-dots {
         position: absolute;
-        right: -225px;
+        right: 0;
         top: 10px;
         width: 200px;
         color: #929493;
     }
 
     .intro-title-dots.left {
-        left: -225px;
+        left: 0;
         right: initial;
     }
 
@@ -1463,6 +1463,7 @@
     .step-image {
         width: 150px;
         height: 150px;
+        border-radius: 50% 0 50% 50%;
     }
 
     .step-title {
@@ -1812,7 +1813,7 @@
         font-size: 14px;
         font-weight: normal;
         right: 45px;
-        top: -5px;
+        top: initial;
         width: 120px;
     }
 
@@ -2524,14 +2525,14 @@
         margin: 50px 0;
     }
 
+    .step {
+        margin: 20px 0;
+    }
 
     @media only screen and (max-width: 991.8px) {
-        .section-intro-aparat {
-            width: 100%;
-        }
-
         .section-intro {
             background: white;
+            min-height: auto;
         }
 
         .section-sub-intro {
@@ -2627,11 +2628,20 @@
             width: calc(100% - 150px);
         }
 
+        .intro-title-dots {
+            display: none;
+        }
+
     }
 
     @media only screen and (max-width: 567.8px) {
-        .section-intro-aparat {
-            width: 100%;
+
+        .section-intro-title {
+            line-height: 46px;
+        }
+
+        .step-info {
+            text-align: center;
         }
 
         .section-sub-consultants {
@@ -2683,6 +2693,7 @@
         .step {
             flex-wrap: wrap;
             justify-content: center;
+            margin: 20px 0;
         }
 
         .section-consultants-avatars {

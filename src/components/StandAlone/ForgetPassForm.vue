@@ -28,6 +28,8 @@
         </label>
         <button class="loginForm-button isansFont">
             {{submitChangeLabel}}
+            <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
+
         </button>
     </form>
 </template>
@@ -35,9 +37,13 @@
 <script>
     import axios from 'axios';
     import {required, email, minLength, maxLength, sameAs} from 'vuelidate/lib/validators';
+    import {MoonLoader} from "@saeris/vue-spinners";
 
     export default {
         name: "ForgetPassForm.vue",
+        components: {
+            "moon-loader": MoonLoader
+        },
         validations: {
             email: {required, email, minLength: minLength(1)},
             newPassword : {required, minLength: minLength(6), maxLength: maxLength(50)},
@@ -98,6 +104,8 @@
                 if (!this.emailIsInvalid) {
                     window.console.log("dispatching login with payload");
                     try {
+                        this.isLoading = true;
+
                         //this.$loading(true);
                         let resetResult = await this.$api.post(`${this.$store.getters.getApi}/auth/password-reset/`, {"email": this.email}, this.$store.getters.httpConfig);
                         console.log('reset result', resetResult);
@@ -110,7 +118,7 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "بازیابی: خطا", "error", 3000, "notif");
                         }
                     } finally {
-
+                        this.isLoading = false;
                     }
                 } else {
 

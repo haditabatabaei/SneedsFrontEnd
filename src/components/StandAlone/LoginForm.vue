@@ -20,15 +20,20 @@
         </label>
         <button class="loginForm-button isansFont">
             {{submitLabel}}
+            <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
         </button>
     </form>
 </template>
 
 <script>
     import {required, email, minLength} from 'vuelidate/lib/validators';
+    import {MoonLoader} from '@saeris/vue-spinners'
 
     export default {
         name: "LoginForm.vue",
+        components: {
+            "moon-loader": MoonLoader
+        },
         validations: {
             userToLogin: {
                 email: {required, email, minLength: minLength(1)},
@@ -44,6 +49,7 @@
                 },
                 loginOrReset: true,
                 submitted: false,
+                isLoading: false
             }
         },
         props: {
@@ -103,6 +109,7 @@
                 if (!this.loginFormIsInvalid) {
                     window.console.log("dispatching login with payload");
                     try {
+                        this.isLoading = true;
                         //this.$loading(true);
                         await this.$store.dispatch('login', this.userToLogin);
                         this.printMessage("شما با موفقیت وارد شدید.", "ورود: موفق", "success", 3000, "notif");
@@ -119,7 +126,7 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ورود: خطا", "error", 3000, "notif");
                         }
                     } finally {
-
+                        this.isLoading = false;
                     }
                 } else {
 

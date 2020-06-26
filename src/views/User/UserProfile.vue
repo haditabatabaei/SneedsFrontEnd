@@ -51,7 +51,7 @@
                 </form>
             </div>
             <button v-if="!isConsultant" class="profile-password-toggler isansFont" style="margin-top: 20px;" @click="isShowingCompleteForm = !isShowingCompleteForm">
-                <span v-if="!isShowingCompleteForm">مشاهده اطلاعات تکمیلی</span>
+                <span v-if="!isShowingCompleteForm" class="text-bold">مشاهده اطلاعات تکمیلی</span>
                 <span v-else>مخفی کردن اطلاعات تکمیلی</span>
                 <i class="material-icons" v-if="!isShowingCompleteForm">keyboard_arrow_left</i>
                 <i class="material-icons" v-else>keyboard_arrow_up</i>
@@ -307,6 +307,14 @@
     .info-form {
         width: 100%;
         margin-top: 15px;
+    }
+
+    .text-bold {
+        font-weight: bold;
+        background-color: #8C3DDB;
+        border-radius: 5px;
+        padding: 5px 10px;
+        color: white;
     }
 
     .info-label {

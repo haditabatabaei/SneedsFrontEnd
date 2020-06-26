@@ -42,17 +42,23 @@
         </label>
         <button class="loginForm-button isansFont">
             {{submitLabel}}
+            <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
+
         </button>
     </form>
 </template>
 
 <script>
     import {required, email, minLength, helpers} from 'vuelidate/lib/validators'
+    import {MoonLoader} from '@saeris/vue-spinners'
 
     const iranianPhone = helpers.regex('phone_number', /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig);
     const acceptPolicyValidator = (value, vm) => value === true;
     export default {
         name: "RegisterForm.vue",
+        components: {
+            "moon-loader": MoonLoader
+        },
         validations: {
             userToRegister: {
                 email: {required, email, minLength: minLength(1)},
@@ -70,6 +76,7 @@
                     password: '',
                     acceptPolicy: false
                 },
+                isLoading: false,
                 submitted: false,
             }
         },
@@ -132,7 +139,8 @@
 
                 if (!this.registerFormIsInvalid) {
                     try {
-                        //this.$loading(true);
+                        this.isLoading = true;
+                        //his.$loading(true);
                         await this.$store.dispatch('register', this.userToRegister);
                         if (this.customAction) {
                             this.printMessage("شما با موفقیت ثبت نام کردید ، در این مرحله نام و نام خانوادگی خود را وارد کنید.", "ثبت نام :‌ موفق", "success", 3000, "notif");
@@ -153,7 +161,7 @@
                             this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "ثبت نام :‌ خطا", "error", 3000, "notif");
                         }
                     } finally {
-
+                        this.isLoading = false;
                     }
                 } else {
 

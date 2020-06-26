@@ -249,18 +249,23 @@
         </section>
         <button class="package-form-submit isansFont" v-if="editPattern" @click="editForm">
             ویرایش اطلاعات فرم
+            <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
         </button>
         <button class="package-form-submit isansFont" v-else @click="createForm">
             ثبت اطلاعات فرم
+            <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
         </button>
     </section>
 </template>
 
 <script>
     import {required, decimal, between, minLength, maxLength} from 'vuelidate/lib/validators'
-
+    import {MoonLoader} from '@saeris/vue-spinners'
     export default {
         name: "PackageForm",
+        components: {
+            "moon-loader": MoonLoader
+        },
         validations: {
             packageForm: {
                 personal: {
@@ -298,6 +303,8 @@
         data() {
             return {
                 submitted: false,
+
+                isLoading: false,
 
                 maritalStatus: [],
 
@@ -490,6 +497,7 @@
                 console.log('update form:', this.$v.packageForm);
                 console.log('package form', this.packageForm);
                 if (!this.formIsInvalid) {
+                    this.isLoading = true;
                     let payload = this.getPayload();
                     let conf = {};
                     Object.assign(conf, this.httpConfig);
@@ -514,7 +522,7 @@
                             text: 'خطایی هنگام ویرایش اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
-
+                        this.isLoading = false;
                     }
                 } else {
                     //form is invalid, show notification
@@ -534,6 +542,7 @@
                 console.log('update form:', this.$v.packageForm);
                 console.log('package form', this.packageForm);
                 if (!this.formIsInvalid) {
+                    this.isLoading = true;
                     //form is valid, continue
                     let payload = this.getPayload();
                     let conf = {};
@@ -561,7 +570,7 @@
                             text: 'خطایی هنگام ارسال اطلاعات فرم رخ داد. لطفاً در صورت استمرار مشکل، با پشتیبانی اسنیدز تماس بگیرید.'
                         })
                     } finally {
-
+                        this.isLoading = false;
                     }
                 } else {
                     //form is invalid, show notification

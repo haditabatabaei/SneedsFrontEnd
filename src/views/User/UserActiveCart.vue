@@ -145,6 +145,7 @@
                                 {{cart.total}}
                             تومان
                             </span>
+                        <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
                     </button>
                 </div>
             </div>
@@ -156,18 +157,21 @@
     import axios from 'axios'
     import jalali from 'jalali-moment'
     import PackageStaging from "@/components/Packages/PackageStaging";
+    import {MoonLoader} from "@saeris/vue-spinners";
 
     export default {
         name: "UserActiveCart",
         components: {
-            'package-staging': PackageStaging
+            'package-staging': PackageStaging,
+            "moon-loader": MoonLoader
         },
         data() {
             return {
                 cart: null,
                 discounts: [],
                 inputCode: '',
-                codeStatus: 'empty'
+                codeStatus: 'empty',
+                isLoading: false,
             }
         },
         created() {
@@ -299,6 +303,7 @@
 
             async requestPayment() {
                 try {
+                    this.isLoading = true;
                     //this.$loading(true);
                     let result = await this.$api.post(`${this.$store.getters.getApi}/payment/request/`, {"cartid": this.cart.id}, this.$store.getters.httpConfig);
                     console.log(result);
@@ -325,7 +330,7 @@
                         this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "پرداخت: خطا", "error", 5000, "notif");
                     }
                 } finally {
-
+                    this.isLoading = false;
                 }
             },
 

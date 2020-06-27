@@ -187,7 +187,9 @@
 
             scrollDownMessages() {
                 console.log('scroll down messages');
-                window.document.getElementById('messagesBody').scroll(0, Number.MAX_SAFE_INTEGER);
+                let messagesBody = window.document.getElementById('messagesBody');
+                messagesBody.scrollTop = 3 * messagesBody.scrollHeight;
+                // window.document.getElementById('messagesBody').scroll(Infinity);
                 this.showScrollButton = false;
             },
 
@@ -297,7 +299,6 @@
                         console.log(e.response);
                     }
                 } finally {
-
                     this.scrollDownMessages();
                 }
             },

@@ -147,8 +147,9 @@
                     <moon-loader class="loading-icon" color="#fff" :loading="isLoadingCopy" :size="15" sizeUnit="px"/>
                 </button>
                 <br>
-                <p class="important-text">
-                    عملیات کپی و اضافه کردن زمان به تقویم در صورت بالا بودن تعداد زمان ها ممکن است لحظاتی طول بکشد. لطفاً شکیبا بوده و از فشردن چند باره دکمه ها به شدت خودداری کنید.
+                <p class="notif-warn">
+                    {{user.first_name + " " + user.last_name}} عزیز،
+                     عملیات کپی و اضافه کردن زمان به تقویم ممکن است کمی طول بکشد، لطفاً شکیبا باشید.
                 </p>
             </form>
         </div>
@@ -188,6 +189,8 @@
                 isLoadingAdd: false,
                 isLoadingRemove: false,
                 isLoadingCopy: false,
+                startWeekDate: null,
+                endWeekDate: null
             }
         },
         computed: {
@@ -262,13 +265,28 @@
                 }
             },
 
+            async setMinutesOffsetFromTehran() {
+                let timeZoneResult = await this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
+                this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale).add('26', 'hours');
+                this.shownDate = this.justNowDate.clone();
+                //console.log(this.shownDate.format());
+                let timezone = this.shownDate.format('Z');
+                let sign = timezone[0];
+                let hour = Number(timezone.split(':')[0].split(sign)[1]);
+                let minute = Number(timezone.split(':')[1]);
+                //console.log(sign, hour, " ", minute);
+                let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
+                //console.log(Number(sign + ((hour * 60) + minute)));
+                //console.log(Number("+" + 210));
+                this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
+            },
 
             async initComp() {
                 //console.log('active time zone', this.$store.getters.timezone);
+                await this.setMinutesOffsetFromTehran();
                 let slotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
                 let soldSlotsRequest = this.$api.get(`${this.$store.getters.getApi}/store/sold-time-slot-sales/?consultant=${this.consultantId}`, this.$store.getters.httpConfig);
-                let timezoneRequest = this.$api.get(`${this.$store.getters.getApi}/utils/timezone-time/${this.$store.getters.timezoneSafe}/`);
-                Promise.all([slotsRequest, soldSlotsRequest, timezoneRequest]).then(([slotsResult, soldSlotsResult, timeZoneResult]) => {
+                Promise.all([slotsRequest, soldSlotsRequest]).then(([slotsResult, soldSlotsResult]) => {
                     this.slots = slotsResult.data.map(slot => {
                         return {
                             "old_slot": slot,
@@ -283,21 +301,8 @@
                             "end_time_date": jalali(slot.end_time).locale(this.locale),
                         }
                     });
-                    this.justNowDate = jalali(timeZoneResult.data.now).locale(this.locale).add('26', 'hours');
-                    this.shownDate = this.justNowDate.clone();
                     //console.log(this.shownDate.format());
-                    let timezone = this.shownDate.format('Z');
-                    let sign = timezone[0];
-                    let hour = Number(timezone.split(':')[0].split(sign)[1]);
-                    let minute = Number(timezone.split(':')[1]);
-                    //console.log(sign, hour, " ", minute);
-                    let offsetInMinuteFromTehran = Number(sign + ((hour * 60) + minute)) - 210;
-                    //console.log(Number(sign + ((hour * 60) + minute)));
-                    //console.log(Number("+" + 210));
-                    this.minutesOffsetFromTehran = Math.abs(offsetInMinuteFromTehran - (Math.round(offsetInMinuteFromTehran / 60)) * 60);
-                    //console.log('minutes offset from tehran', this.minutesOffsetFromTehran);
-                    //console.log('slots', this.slots);
-                    this.showWeek(this.activeWeekOffset);
+                    this.showWeek(this.activeWeekOffset)
                 }).catch(error => {
                     //console.log(error);
                 })
@@ -595,6 +600,15 @@
 </script>
 
 <style scoped>
+
+    .notif-warn {
+        color: #8a6d3b !important;
+        background-color: #eec887;
+        font-weight: normal;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 30px;
+    }
 
     .calendar-wrapper {
         display: flex;

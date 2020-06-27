@@ -15,9 +15,10 @@
                 </div>
             </div>
             <div class="package-items">
+                <moon-loader class="loading-icon" style="align-self:center;margin-top:20px" color="purple" :loading="isLoading" :size="20" sizeUnit="px"/>
                 <div v-if="activeFilter.value === 'soldpackages'">
                     <user-sold-package-block v-for="soldPackage in packages" :package="soldPackage" />
-                    <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                    <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0 && !isLoading">
                         پکیجی در این دسته برای شما وجود ندارد.
                     </p>
                 </div>
@@ -30,12 +31,14 @@
 <script>
     import UserSoldPackageBlock from "@/components/Packages/UserSoldPackageBlock";
     import PackageStaging from "@/components/Packages/PackageStaging";
+    import {MoonLoader} from "@saeris/vue-spinners";
     export default {
         name: "UserPackages",
         components: {
             UserSoldPackageBlock,
             'sold-package-block': UserSoldPackageBlock,
-            'package-staging': PackageStaging
+            'package-staging': PackageStaging,
+            "moon-loader": MoonLoader
         },
         data() {
             return {
@@ -43,7 +46,8 @@
                 activeFilter: {name: 'پکیج ها', value: "soldpackages"},
                 availableFilters: [
                     {name: 'پکیج ها', value: "soldpackages"},
-                ]
+                ],
+                isLoading: false,
             }
         },
         computed: {
@@ -73,6 +77,7 @@
             async getSoldPackages() {
                 try {
                     //this.$loading(true);
+                    this.isLoading = true;
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/sold-store-package-list/`, this.httpConfig));
                     console.log(packagesResult);
                     this.packages = packagesResult.data;
@@ -82,7 +87,7 @@
                         console.log(e.response);
                     }
                 } finally {
-
+                    this.isLoading = false;
                 }
             },
         },

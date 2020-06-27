@@ -13,15 +13,16 @@
             </div>
         </div>
         <div class="package-items">
-            <div v-if="activeFilter.value === 'marketplace'">
+            <moon-loader class="loading-icon" style="align-self:center;margin-top:20px" color="purple" :loading="isLoading" :size="20" sizeUnit="px"/>
+            <div v-if="activeFilter.value === 'marketplace' && !isLoading">
                 <considering-package v-for="marketPackage in packages" :package="marketPackage"/>
-                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0 && !isLoading">
                     پکیجی در این دسته برای شما وجود ندارد.
                 </p>
             </div>
-            <div v-else-if="activeFilter.value === 'soldpackage'">
+            <div v-else-if="activeFilter.value === 'soldpackage' && !isLoading">
                 <considering-package v-for="marketPackage in packages" :package="marketPackage"/>
-                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0">
+                <p class="package-items-noresult isansFont--faNum" v-if="packages.length === 0 && !isLoading">
                     پکیجی در این دسته برای شما وجود ندارد.
                 </p>
             </div>
@@ -31,11 +32,13 @@
 
 <script>
     import ConsultantConsideringPackageBlock from "@/components/Packages/ConsultantConsideringPackageBlock";
+    import {MoonLoader} from "@saeris/vue-spinners";
 
     export default {
         name: "ConsPackages",
         components: {
-            'considering-package': ConsultantConsideringPackageBlock
+            'considering-package': ConsultantConsideringPackageBlock,
+            'moon-loader': MoonLoader
         },
         data() {
             return {
@@ -44,7 +47,8 @@
                 availableFilters: [
                     {name: 'پکیج های قابل بررسی', value: "marketplace"},
                     {name: 'پکیج های شما', value: "soldpackage"}
-                ]
+                ],
+                isLoading: false,
             }
         },
         computed: {
@@ -73,6 +77,8 @@
             async getAcceptedPackages() {
                 try {
                     //this.$loading(true);
+                    this.isLoading = true;
+
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/sold-store-package-list/`, this.httpConfig));
                     console.log(packagesResult);
                     let packagesFormsReqs = [];
@@ -89,6 +95,7 @@
                         console.log(e.response);
                     }
                 } finally {
+                    this.isLoading = false;
 
                 }
             },
@@ -117,6 +124,7 @@
             async getConsideringPackages() {
                 try {
                     //this.$loading(true);
+                    this.isLoading = true;
                     let packagesResult = (await this.$api.get(`${this.api}/store/packages/marketplace-list/`, this.httpConfig));
                     let packagesFormsReqs = [];
                     console.log(packagesResult);
@@ -133,6 +141,7 @@
                         console.log(e.response);
                     }
                 } finally {
+                    this.isLoading = false;
 
                 }
             },

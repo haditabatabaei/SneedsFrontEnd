@@ -32,7 +32,7 @@
                 <button class="profile-password-toggler" @click="isShowingPasswordChange = !isShowingPasswordChange">
                     <span v-if="!isShowingPasswordChange">میخواهم رمز عبور خود را تغییر دهم</span>
                     <span v-else>مخفی کردن تغییر رمز عبور</span>
-                    <i class="material-icons" v-if="!isShowingPasswordChange">keyboard_arrow_left</i>
+                    <i class="material-icons" v-if="!isShowingPasswordChange">keyboard_arrow_down</i>
                     <i class="material-icons" v-else>keyboard_arrow_up</i>
                 </button>
                 <transition name="fade">
@@ -57,12 +57,6 @@
                     </form>
                 </transition>
             </div>
-            <!--            <button v-if="!isConsultant" class="profile-password-toggler isansFont" style="margin-top: 20px;" @click="isShowingCompleteForm = !isShowingCompleteForm">-->
-            <!--                <span v-if="!isShowingCompleteForm" class="text-bold">مشاهده اطلاعات تکمیلی</span>-->
-            <!--                <span v-else>مخفی کردن اطلاعات تکمیلی</span>-->
-            <!--                <i class="material-icons" v-if="!isShowingCompleteForm">keyboard_arrow_down</i>-->
-            <!--                <i class="material-icons" v-else>keyboard_arrow_up</i>-->
-            <!--            </button>-->
         </section>
         <package-form class="profile-wrapper" style="margin-top: 30px;" v-if="!isConsultant"/>
 

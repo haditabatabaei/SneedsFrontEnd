@@ -160,6 +160,11 @@
                         {{`${soldPackage.sold_to.first_name} ${soldPackage.sold_to.last_name}`}}
                         <button class="head-discount" @click="createDiscountCodeForUser">ایجاد کد تخفیف برای این کاربر</button>
                     </p>
+                    <p class="package-head-info-phasestatus isansFont--faNum">
+                        هزینه {{currentPhase.title}}:
+                        {{currentPhase.price}}
+                        تومان
+                    </p>
                     <p class="package-head-info-phasestatus">
                         <span>وضعیت {{currentPhase.title}}: </span>
                         <span :class="[{'phasestatus--notstarted': currentPhase.status == 'not_started', 'phasestatus--inprogress': currentPhase.status == 'in_progress', 'phasestatus--paytostart': currentPhase.status == 'pay_to_start', 'phasestatus--done': currentPhase.status == 'done'}]">{{currentPhaseStatusName}}</span>

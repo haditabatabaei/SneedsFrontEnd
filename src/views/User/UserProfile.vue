@@ -1,4 +1,5 @@
 <template>
+    <section class="">
         <section class="profile-wrapper">
             <form @submit.prevent="updateUser" class="profile-form isansFont--faNum">
                 <label for="email" class="profile-label">
@@ -11,14 +12,16 @@
                 </label>
                 <label for="firstName" class="profile-label">
                     <span class="profile-label-name">نام:</span>
-                    <input id="firstName" :placeholder="user.first_name" type="text" class="profile-input" v-model="inputUser.first_name">
+                    <input id="firstName" :placeholder="user.first_name" type="text" class="profile-input"
+                           v-model="inputUser.first_name">
                     <span class="profile-label-error" v-if="firstNameIsInvalid">
                         لطفا یک نام معتبر وارد کنید.
                     </span>
                 </label>
                 <label for="lastName" class="profile-label">
                     <span class="profile-label-name">نام خانوادگی:</span>
-                    <input id="lastName" :placeholder="user.last_name" type="text" class="profile-input" v-model="inputUser.last_name">
+                    <input id="lastName" :placeholder="user.last_name" type="text" class="profile-input"
+                           v-model="inputUser.last_name">
                     <span class="profile-label-error" v-if="lastNameIsInvalid">
                         لطفا یک نام خانوادگی معتبر وارد کنید.
                     </span>
@@ -32,46 +35,54 @@
                     <i class="material-icons" v-if="!isShowingPasswordChange">keyboard_arrow_left</i>
                     <i class="material-icons" v-else>keyboard_arrow_up</i>
                 </button>
-                <form v-if="isShowingPasswordChange" class="profile-form" @submit.prevent="changePassword">
-                    <label for="password" class="profile-label">
-                        <span class="profile-label-name">رمز عبور:</span>
-                        <input id="password" placeholder="رمز عبور" type="password" class="profile-input" v-model="auth.password">
-                        <span class="profile-label-error" v-if="passwordIsInvalid">
+                <transition name="fade">
+                    <form v-if="isShowingPasswordChange" class="profile-form" @submit.prevent="changePassword">
+                        <label for="password" class="profile-label">
+                            <span class="profile-label-name">رمز عبور:</span>
+                            <input id="password" placeholder="رمز عبور" type="password" class="profile-input"
+                                   v-model="auth.password">
+                            <span class="profile-label-error" v-if="passwordIsInvalid">
                         لطفا رمز عبور معتبر وارد کنید.
                     </span>
-                    </label>
-                    <label for="confirmPassword" class="profile-label">
-                        <span class="profile-label-name">تکرار رمز عبور:</span>
-                        <input id="confirmPassword" placeholder="تکرار رمز عبور" type="password" class="profile-input" v-model="auth.password2">
-                        <span class="profile-label-error" v-if="confirmPasswordIsInvalid">
+                        </label>
+                        <label for="confirmPassword" class="profile-label">
+                            <span class="profile-label-name">تکرار رمز عبور:</span>
+                            <input id="confirmPassword" placeholder="تکرار رمز عبور" type="password" class="profile-input"
+                                   v-model="auth.password2">
+                            <span class="profile-label-error" v-if="confirmPasswordIsInvalid">
                         لطفا تکرار رمز عبور را معتبر وارد کنید.
                     </span>
-                    </label>
-                    <button class="profile-submit">ویرایش رمز عبور</button>
-                </form>
+                        </label>
+                        <button class="profile-submit">ویرایش رمز عبور</button>
+                    </form>
+                </transition>
             </div>
-            <button v-if="!isConsultant" class="profile-password-toggler isansFont" style="margin-top: 20px;" @click="isShowingCompleteForm = !isShowingCompleteForm">
-                <span v-if="!isShowingCompleteForm" class="text-bold">مشاهده اطلاعات تکمیلی</span>
-                <span v-else>مخفی کردن اطلاعات تکمیلی</span>
-                <i class="material-icons" v-if="!isShowingCompleteForm">keyboard_arrow_left</i>
-                <i class="material-icons" v-else>keyboard_arrow_up</i>
-            </button>
-            <package-form v-if="isShowingCompleteForm && !isConsultant" />
+            <!--            <button v-if="!isConsultant" class="profile-password-toggler isansFont" style="margin-top: 20px;" @click="isShowingCompleteForm = !isShowingCompleteForm">-->
+            <!--                <span v-if="!isShowingCompleteForm" class="text-bold">مشاهده اطلاعات تکمیلی</span>-->
+            <!--                <span v-else>مخفی کردن اطلاعات تکمیلی</span>-->
+            <!--                <i class="material-icons" v-if="!isShowingCompleteForm">keyboard_arrow_down</i>-->
+            <!--                <i class="material-icons" v-else>keyboard_arrow_up</i>-->
+            <!--            </button>-->
         </section>
+        <package-form class="profile-wrapper" style="margin-top: 30px;" v-if="!isConsultant"/>
+
+    </section>
+
 </template>
 
 <script>
     import PackageForm from "@/components/Packages/PackageForm";
     import {required, minLength, maxLength, sameAs} from 'vuelidate/lib/validators'
+
     export default {
         name: "UserProfile",
         components: {
             'package-form': PackageForm
         },
-        validations :{
-            inputUser : {
-                first_name : {required, minLength: minLength(1), maxLength: maxLength(100)},
-                last_name : {required, minLength: minLength(1), maxLength: maxLength(100)},
+        validations: {
+            inputUser: {
+                first_name: {required, minLength: minLength(1), maxLength: maxLength(100)},
+                last_name: {required, minLength: minLength(1), maxLength: maxLength(100)},
             },
             auth: {
                 password: {required, minLength: minLength(6), maxLength: maxLength(100)},
@@ -81,13 +92,13 @@
 
         data() {
             return {
-                profileSubmitted : false,
+                profileSubmitted: false,
                 passwordSubmitted: false,
                 isShowingPasswordChange: false,
-                isShowingCompleteForm: false,
-                inputUser : {
-                    first_name : '',
-                    last_name : '',
+                isShowingCompleteForm: true,
+                inputUser: {
+                    first_name: '',
+                    last_name: '',
                 },
                 auth: {
                     password: '',
@@ -100,11 +111,11 @@
             console.log(this.$store.getters.getUser);
         },
 
-        methods : {
+        methods: {
             async changePassword() {
                 this.$v.auth.$touch();
                 this.passwordSubmitted = true;
-                if(!this.passwordFormIsInvalid) {
+                if (!this.passwordFormIsInvalid) {
                     //password form is valid continue
                     let payload = {
                         "password": this.auth.password,
@@ -144,8 +155,8 @@
             async updateUser() {
                 this.$v.inputUser.$touch();
                 this.profileSubmitted = true;
-                console.log('update user called ', this.inputUser , 'is invalid : ', this.formIsInvalid);
-                if(!this.profileFormIsInvalid) {
+                console.log('update user called ', this.inputUser, 'is invalid : ', this.formIsInvalid);
+                if (!this.profileFormIsInvalid) {
                     let payload = {
                         "first_name": this.inputUser.first_name,
                         "last_name": this.inputUser.last_name,
@@ -162,7 +173,7 @@
                         })
                     } catch (e) {
                         console.log(e);
-                        if(e.response) {
+                        if (e.response) {
                             console.log(e.response);
                         }
                         this.$notify({
@@ -184,7 +195,7 @@
 
         },
 
-        computed : {
+        computed: {
             user() {
                 return this.$store.getters.getUser;
             },
@@ -262,11 +273,11 @@
     }
 
     .profile-input {
-        margin-top:5px;
-        padding:0 5px;
+        margin-top: 5px;
+        padding: 0 5px;
         height: 40px;
         border-radius: 10px;
-        border:1px solid #ccc;
+        border: 1px solid #ccc;
         color: #222;
     }
 
@@ -276,7 +287,7 @@
         color: white;
         border-radius: 10px;
         padding: 7.5px 30px;
-        margin:5px auto 5px 10px;
+        margin: 5px auto 5px 10px;
     }
 
     .profile-submit:hover {
@@ -320,17 +331,17 @@
     .info-label {
         width: 100%;
         display: flex;
-        flex-direction:column;
+        flex-direction: column;
         margin-top: 10px;
     }
 
     .info-input {
         width: 100%;
-        margin-top:5px;
-        padding:0 5px;
+        margin-top: 5px;
+        padding: 0 5px;
         height: 40px;
         border-radius: 10px;
-        border:1px solid #ccc;
+        border: 1px solid #ccc;
         color: #222;
     }
 

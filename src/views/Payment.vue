@@ -188,7 +188,7 @@
             },
 
             wasFree() {
-                return this.$route.query.hasOwnProperty('refld') && this.$route.query.refld == "00000000";
+                return this.$route.query.hasOwnProperty('refld') && this.$route.query.refld == "00000000" && this.$route.query.hasOwnProperty('order');
             },
 
             orderStorePackageId() {

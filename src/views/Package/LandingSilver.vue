@@ -178,10 +178,23 @@
                 </div>
                 <div class="section-services-items">
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/docs.png" alt="">
+                        <img class="services-item-image" src="/sneedsAssets/img/destchoose.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
                                 1.
+                            </mark>
+                            پیدا کردن کالج و دانشگاه
+                        </h3>
+                        <p class="services-item-text">
+                            مشاوران اسنیدز بعد از صحبت با شما، بهترین کالج و دانشگاه ممکن رو بر اساس بودجه، علایق و رزومتون
+                            براتون انتخاب می‌کنن و دیگه لازم نیست توی یه لیست طولانی، اطلاعات کلی کالج و دانشگاه رو زیر و رو کنی!
+                        </p>
+                    </div>
+                    <div class="services-item isansFont">
+                        <img class="services-item-image" src="/sneedsAssets/img/docs.png" alt="">
+                        <h3 class="services-item-meta isansFont--faNum">
+                            <mark class="services-item-meta-number">
+                                2.
                             </mark>
                             تکمیل مدارک
                         </h3>
@@ -194,7 +207,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/submit.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                2.
+                                3.
                             </mark>
                             سابمیت اپلیکیشن
                         </h3>
@@ -206,7 +219,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/conversations.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                3.
+                                4.
                             </mark>
                             مشاوره و کمک در انجام مکاتبات
                         </h3>
@@ -218,7 +231,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/payment.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                4.
+                                5.
                             </mark>
                             انجام پرداخت‌ها
                         </h3>
@@ -443,7 +456,7 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    4 قست
+                                    4 قسط
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
@@ -516,7 +529,7 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    6 قست
+                                    6 قسط
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>

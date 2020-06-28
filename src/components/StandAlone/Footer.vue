@@ -98,7 +98,8 @@
                             {name: 'صفحه اصلی', target: 'https://sneeds.ir/', type: 'hyper', hidden: false},
                             {name: 'مشاوره آنلاین اپلای', target: '/consultants', type: 'router', hidden: false},
                             {name: 'صفر تا صد اپلای', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d8%b5%d9%81%d8%b1-%d8%aa%d8%a7-%d8%b5%d8%af/', type: 'hyper', hidden: false},
-                            {name: 'پذیرش کالج', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%da%a9%d8%a7%d9%84%d8%ac/', type: 'hyper', hidden: false},
+                            {name: 'پذیرش کالج', target: '/packages/college', type: 'router', hidden: false},
+                            {name: 'پکیج ‌نقره‌ای', target: '/packages/silver', type: 'router', hidden: false},
                             {name: 'نگارش و تصحیح انگیز‌نامه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-sop-%d8%a7%d9%86%da%af%db%8c%d8%b2%d9%87%e2%80%8c%d9%86%d8%a7%d9%85%d9%87/', type: 'hyper', hidden: false},
                             {name: 'نگارش و تصحیح رزومه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-cv-%d8%b1%d8%b2%d9%88%d9%85%d9%87/', type: 'hyper', hidden: false},
                             {name: 'پکیج اخذ ویزا', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d9%88%db%8c%d8%b2%d8%a7/', type: 'hyper', hidden: false},
@@ -110,9 +111,9 @@
                     {
                         title: 'منابع رایگان',
                         items: [
-                            {name: 'مصاحبه‌های اپلای', target: 'https://sneeds.ir/category/conversation/', type: 'hyper', hidden: false},
-                            {name: 'بلاگ اسنیدز', target: 'https://sneeds.ir/%D8%A8%D9%84%D8%A7%DA%AF/', type: 'hyper', hidden: false},
-                            {name: 'لایو‌های اینستاگرامی', target: 'https://sneeds.ir/category/conversation/%d9%84%d8%a7%db%8c%d9%88-%d8%a7%db%8c%d9%86%d8%b3%d8%aa%d8%a7%da%af%d8%b1%d8%a7%d9%85%db%8c/', type: 'hyper', hidden: false},
+                            {name: 'مصاحبه‌های اپلای', target: 'http://blog.sneeds.ir/category/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87/', type: 'hyper', hidden: false},
+                            {name: 'بلاگ اسنیدز', target: 'http://blog.sneeds.ir/', type: 'hyper', hidden: false},
+                            {name: 'لایو‌های اینستاگرامی', target: 'http://blog.sneeds.ir/category/%d9%85%d8%b5%d8%a7%d8%ad%d8%a8%d9%87/', type: 'hyper', hidden: false},
                             {name: 'وبینار‌های رایگان', target: 'https://sneeds.ir/%d8%ab%d8%a8%d8%aa%e2%80%8c%d9%86%d8%a7%d9%85-%d8%b1%d8%a7%db%8c%da%af%d8%a7%d9%86-%d9%88%d8%a8%db%8c%d9%86%d8%a7%d8%b1-%d8%a7%d9%86%d8%aa%d8%ae%d8%a7%d8%a8-%d8%a7%d8%b3%d8%aa%d8%a7%d8%af-%d9%88/', type: 'hyper', hidden: false},
                         ]
                     },

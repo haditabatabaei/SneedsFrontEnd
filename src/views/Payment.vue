@@ -136,10 +136,10 @@
 
             async getOrderAndPackageForm() {
                 try {
-                    this.order = (await this.$api.get(`${this.api}/order/orders/${$route.query.order}/`, this.httpConfig)).data;
+                    this.order = (await this.$api.get(`${this.api}/order/orders/${this.$route.query.order}/`, this.httpConfig)).data;
                     this.currentPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                 } catch (e) {
-
+                    console.log(e);
                 } finally {
 
                 }
@@ -148,12 +148,13 @@
         created() {
             if (this.wasFree) {
                 console.log("REFLD 00000000 & payment is good");
+                this.getOrderAndPackageForm();
+
                 this.refld = this.$route.query.refld;
                 this.showResult = true;
                 this.detail = "success";
                 console.log(this.isSuccess);
                 console.log(this.showResult);
-                this.getOrderAndPackageForm();
             } else {
                 this.verifyPayment();
             }

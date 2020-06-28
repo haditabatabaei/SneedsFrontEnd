@@ -433,7 +433,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage({id: 9042})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
+                    <button @click="buyPackage({id: 12264})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
                         تومان
                     </button>
                 </div>
@@ -529,7 +529,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
+                    <button @click="buyPackage({id: 13443})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
                 </div>
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
@@ -643,7 +643,7 @@
                             </p>
                         </li>
                     </ul>
-                    <button class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
+                    <button @click="buyPackage({id: 13444})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
                 </div>
                 <button class="buy-box-compare-toggler isansFont" @click="toggleComparePackages">
                     مقایسه کامل پکیج ها

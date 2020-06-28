@@ -283,6 +283,22 @@
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
+                    {
+                        itemName: 'پکیج نقره ای',
+                        target: '/packages/silver',
+                        type: 'router',
+                        hasDropDown: false,
+                        dropdownItems: [],
+                        icon: 'supervisor_account'
+                    },
+                    {
+                        itemName: 'پکیج کالج',
+                        target: '/packages/college',
+                        type: 'router',
+                        hasDropDown: false,
+                        dropdownItems: [],
+                        icon: 'supervisor_account'
+                    },
                 ],
             }
         },

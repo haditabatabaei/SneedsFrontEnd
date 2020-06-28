@@ -284,7 +284,7 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'پکیج نقره ای',
+                        itemName: 'پکیج ‌نقره‌ای',
                         target: '/packages/silver',
                         type: 'router',
                         hasDropDown: false,

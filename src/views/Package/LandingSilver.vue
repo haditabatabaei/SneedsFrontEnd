@@ -178,23 +178,10 @@
                 </div>
                 <div class="section-services-items">
                     <div class="services-item isansFont">
-                        <img class="services-item-image" src="/sneedsAssets/img/destchoose.png" alt="">
-                        <h3 class="services-item-meta isansFont--faNum">
-                            <mark class="services-item-meta-number">
-                                1.
-                            </mark>
-                            پیدا کردن کالج
-                        </h3>
-                        <p class="services-item-text">
-                            مشاوران اسنیدز بعد از صحبت با شما، بهترین کالج ممکن رو بر اساس بودجه، علایق و رزومتون
-                            براتون انتخاب می‌کنن و دیگه لازم نیست توی یه لیست طولانی، اطلاعات کلی کالج رو زیر و رو کنی!
-                        </p>
-                    </div>
-                    <div class="services-item isansFont">
                         <img class="services-item-image" src="/sneedsAssets/img/docs.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                2.
+                                1.
                             </mark>
                             تکمیل مدارک
                         </h3>
@@ -207,7 +194,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/submit.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                3.
+                                2.
                             </mark>
                             سابمیت اپلیکیشن
                         </h3>
@@ -219,7 +206,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/conversations.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                4.
+                                3.
                             </mark>
                             مشاوره و کمک در انجام مکاتبات
                         </h3>
@@ -231,7 +218,7 @@
                         <img class="services-item-image" src="/sneedsAssets/img/payment.png" alt="">
                         <h3 class="services-item-meta isansFont--faNum">
                             <mark class="services-item-meta-number">
-                                5.
+                                4.
                             </mark>
                             انجام پرداخت‌ها
                         </h3>
@@ -374,7 +361,6 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج نقره ای</h1>
-                        <h3 class="box-title-meta isansFont">اخذ تضمینی پذیرش کالج به وسیله مشاوران اسنیدز!</h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -448,9 +434,6 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج نقره ای پلاس</h1>
-                        <h3 class="box-title-meta isansFont">
-                            برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور مقصد رو از خودشون دور کنن!
-                        </h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -524,9 +507,6 @@
                     </h2>
                     <div class="buy-box-title ">
                         <h1 class="box-title-text isansFont">پکیج نقره ای کارآمد</h1>
-                        <h3 class="box-title-meta isansFont">
-                            برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک مشاوران اسنیدز حداقل کنن.
-                        </h3>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">

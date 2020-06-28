@@ -137,7 +137,7 @@
         computed: {
             isSuccess() {
                 if (this.detail.length != 0) {
-                    return this.detail.toLowerCase() === 'success' && this.hasOrder;
+                    return this.detail.toLowerCase() === 'success' && this.hasOrder || this.wasFree;
                 } else {
                     return false;
                 }
@@ -164,7 +164,7 @@
             },
 
             wasFree() {
-                !!this.$route.query.refld && this.$route.query.refld === "00000000";
+               return this.$route.query.hasOwnProperty('refld') && this.$route.query.refld == "00000000";
             },
 
             orderStorePackageId() {
@@ -184,7 +184,6 @@
             }
         },
         created() {
-            console.log(this.$route.query);
             if (this.wasFree) {
                 console.log("REFLD 00000000 & payment is good");
                 this.refld = this.$route.query.refld;

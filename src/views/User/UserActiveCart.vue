@@ -311,7 +311,7 @@
                     if (result.data.redirect) {
                         window.location.replace(result.data.redirect);
                     } else {
-                        this.$router.push('/user/payment/accept?refld=00000000');
+                        this.$router.push(`/user/payment/accept?refld=00000000&order=${result.data.order}`);
                     }
                 } catch (e) {
                     console.log(e);

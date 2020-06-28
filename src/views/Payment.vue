@@ -132,6 +132,30 @@
                 } finally {
                     this.showResult = true;
                 }
+            },
+
+            async getOrderAndPackageForm() {
+                try {
+                    this.order = (await this.$api.get(`${this.api}/order/orders/${$route.query.order}/`, this.httpConfig)).data;
+                    this.currentPackageForm = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
+                } catch (e) {
+
+                } finally {
+
+                }
+            }
+        },
+        created() {
+            if (this.wasFree) {
+                console.log("REFLD 00000000 & payment is good");
+                this.refld = this.$route.query.refld;
+                this.showResult = true;
+                this.detail = "success";
+                console.log(this.isSuccess);
+                console.log(this.showResult);
+                this.getOrderAndPackageForm();
+            } else {
+                this.verifyPayment();
             }
         },
         computed: {
@@ -164,7 +188,7 @@
             },
 
             wasFree() {
-               return this.$route.query.hasOwnProperty('refld') && this.$route.query.refld == "00000000";
+                return this.$route.query.hasOwnProperty('refld') && this.$route.query.refld == "00000000";
             },
 
             orderStorePackageId() {
@@ -181,18 +205,6 @@
 
             hasFilledPackageForm() {
                 return !!this.currentPackageForm;
-            }
-        },
-        created() {
-            if (this.wasFree) {
-                console.log("REFLD 00000000 & payment is good");
-                this.refld = this.$route.query.refld;
-                this.showResult = true;
-                this.detail = "success";
-                console.log(this.isSuccess);
-                console.log(this.showResult);
-            } else {
-                this.verifyPayment();
             }
         },
     }

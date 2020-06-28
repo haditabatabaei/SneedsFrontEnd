@@ -108,14 +108,15 @@
         <section class="package-section section-intro">
             <div class="section-sub section-sub-intro">
                 <div class="section-intro-title-box">
-                    <a v-smooth-scroll="{offset: -100, updateHistory: false}" href="#consultant-anchor" class="intro-start isansFont">
+                    <a v-smooth-scroll="{offset: -100, updateHistory: false}" href="#consultant-anchor"
+                       class="intro-start isansFont">
                         از اینجا شروع کن!
                         <i class="material-icons">keyboard_arrow_down</i>
                     </a>
                     <h1 class="section-intro-title isansFont">
                         <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots">
                         <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots left">
-                        
+
                         <span class="intro-title-span span-blue">
                         با اسنیدز،
                         </span>
@@ -127,8 +128,9 @@
                         <span class="intro-title-span span-black">اپلای کنی!</span>
                     </h1>
                     <p class="section-intro-text isansFont">
-                        وقتی می‌خوای برای کالج اپلای کنی، خیلی خوبه که یکی که تمام این مسیر رو طی کرده و با
-                        موانعش آشنایی داره کنارت باشه تا با خیال راحت بتونی کشور، رشته و کالجی که دوست داری رو انتخاب کنی و توش درس بخونی.
+                        وقتی می‌خوای برای کالج یا دانشگاه اپلای کنی، خیلی خوبه که یکی که تمام این مسیر رو طی کرده و با
+                        موانعش آشنایی داره کنارت باشه تا با خیال راحت بتونی کشور، رشته و دانشگاه یا کالجی که دوست داری
+                        رو انتخاب کنی و توش درس بخونی.
                     </p>
                 </div>
             </div>
@@ -171,8 +173,7 @@
             <div class="section-sub section-sub-services">
                 <div class="section-services-title">
                     <h1 class="services-title-text isansFont">به این کارها فکر نکن!</h1>
-                    <h2 class="services-title-subtext isansFont">با پکیج کامل اپلای اسنیدز همه این کارا با مشاوران
-                        اسنیدزه.</h2>
+                    <h2 class="services-title-subtext isansFont">با پکیج کامل اپلای اسنیدز، فکر کردن به مراحل اپلای را به مشاور بسپار.</h2>
                     <div class="services-title-divider"></div>
                 </div>
                 <div class="section-services-items">
@@ -220,11 +221,10 @@
                             <mark class="services-item-meta-number">
                                 4.
                             </mark>
-                            انجام مکاتبات
+                            مشاوره و کمک در انجام مکاتبات
                         </h3>
                         <p class="services-item-text">
-                            زبانت خوب نیس؟ فکر می‌کنی ممکنه به خاطر اشتباه در مکاتبات پذیرشت رو به خطر بندازی؟ بسپرش به
-                            مشاورایی که تو کشور مقصد تحصیل کردن!
+                            زبانت خوب نیس؟ فکر می‌کنی ممکنه به خاطر اشتباه در مکاتبات پذیرشت رو به خطر بندازی؟ مشاور بهت کمک میکنه که بهترین متن و بهترین جواب رو به استادت بدی.
                         </p>
                     </div>
                     <div class="services-item isansFont">
@@ -266,7 +266,8 @@
                             2.انتخاب مشاور توسط شما و شروع پروسه
                         </h2>
                         <p class="step-text isansFont">
-                            بعدش میتونی از بین این مشاورا، که خیلیم کارشون درسته، بررسی کنی و یکی رو انتخاب کنی تا پروسه اپلایت شروع بشه.
+                            بعدش میتونی از بین این مشاورا، که خیلیم کارشون درسته، بررسی کنی و یکی رو انتخاب کنی تا پروسه
+                            اپلایت شروع بشه.
                         </p>
                     </div>
                 </div>
@@ -331,7 +332,8 @@
                         دانشجو‌ها که اپلای و تحصیل و در خارج از کشوره یه استارتاپ راه انداختیم. هدفمون وصل کردن
                         دانشجو‌هایی که یک بار اپلای کردن و مسیر رو به طور کامل طی کردن، به شمایی که به تجربه‌ این افراد
                         نیاز دارین، بوده تا با خیال راحت بتونین همون جایی که دوست دارین درس بخونید. توی این مسیر موفق
-                        شدیم به صدها دانشجو برای گرفتن پذیرش تحصیلی کمک کنیم و خدارو برای اینکه تونستیم راهنماییشون کنیم، همیشه شکر می‌کنیم.
+                        شدیم به صدها دانشجو برای گرفتن پذیرش تحصیلی کمک کنیم و خدارو برای اینکه تونستیم راهنماییشون
+                        کنیم، همیشه شکر می‌کنیم.
                     </p>
                 </div>
                 <img class="smart-image" src="/sneedsAssets/img/team.png" alt="تیم اسنیدز">
@@ -365,13 +367,13 @@
             <div class="section-sub section-sub-buy" :class="[{'section-sub-buy--full': showComparePackages}]">
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--brown isansFont--faNum">
-                        8
+                        5
                         <span class="buy-box-title-price-sup">
                             میلیون تومان
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج برنزی کالج</h1>
+                        <h1 class="box-title-text isansFont">پکیج نقره ای</h1>
                         <h3 class="box-title-meta isansFont">اخذ تضمینی پذیرش کالج به وسیله مشاوران اسنیدز!</h3>
                     </div>
                     <ul class="buy-box-features isansFont">
@@ -389,13 +391,13 @@
                                                 300 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون و 700 هزار تومان
+                                                1 میلیون و 700 هزار تومان
                                             </span>
                                             <span>
-                                                3 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
@@ -406,10 +408,10 @@
                                                 بعد از تایید مشاور و عقد قرارداد
                                             </span>
                                             <span>
-                                                بعد از سابمیت و ارائه مدارک
+                                                بعد از ارائه مدارک
                                             </span>
                                             <span>
-                                                بعد از دریافت پذیرش
+                                                بعد از سابمیت
                                             </span>
                                         </span>
                                     </span>
@@ -433,19 +435,95 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage({id: 12264})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
+                    <button @click="buyPackage({id: 13893})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
                         تومان
                     </button>
                 </div>
                 <div class="buy-box">
                     <h2 class="buy-box-title-price title-price--gray isansFont--faNum">
-                        12
+                        6
                         <span class="buy-box-title-price-sup">
                             میلیون تومان
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج نقره ای کالج</h1>
+                        <h1 class="box-title-text isansFont">پکیج نقره ای پلاس</h1>
+                        <h3 class="box-title-meta isansFont">
+                            برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور مقصد رو از خودشون دور کنن!
+                        </h3>
+                    </div>
+                    <ul class="buy-box-features isansFont">
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                پرداخت در
+                                <mark class="buy-box-feature-mark isansFont--faNum">
+                                    4 قست
+                                    <span class="buy-box-feature-mark-modal">
+                                        <span class="box-feature-mark-modal-prices">
+                                            <span>
+                                                300 هزار تومان
+                                            </span>
+                                            <span>
+                                                1 میلیون و 700 هزار تومان
+                                            </span>
+                                            <span>
+                                                1 میلیون و 500 هزار تومان
+                                            </span>
+                                            <span>
+                                                2 میلیون و 500 هزار تومان
+                                            </span>
+                                        </span>
+                                        <span class="box-feature-mark-modal-infos">
+                                            <span>
+                                                در هنگام رزرو پکیج
+                                            </span>
+                                            <span>
+                                                بعد از تایید مشاور و عقد قرارداد
+                                            </span>
+                                            <span>
+                                                بعد از ارائه مدارک
+                                            </span>
+                                            <span>
+                                                بعد از پر کردن اپلیکیشن و سابمیت
+                                            </span>
+                                        </span>
+                                    </span>
+                                </mark>
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                مشاوره اپلای
+                            </p>
+                        </li>
+                        <li class="buy-box-feature">
+                            <i class="material-icons buy-box-feature-icon">
+                                done
+                            </i>
+                            <p class="buy-box-feature-text">
+                                نگارش کامل مدارک
+                            </p>
+                        </li>
+                    </ul>
+                    <button @click="buyPackage({id: 13920})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
+                        تومان
+                    </button>
+                </div>
+                <div class="buy-box buy-box--noborder">
+                    <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
+                        8
+                        <span class="buy-box-title-price-sup">
+                            میلیون تومان
+                        </span>
+                    </h2>
+                    <div class="buy-box-title ">
+                        <h1 class="box-title-text isansFont">پکیج نقره ای کارآمد</h1>
                         <h3 class="box-title-meta isansFont">
                             برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک مشاوران اسنیدز حداقل کنن.
                         </h3>
@@ -465,19 +543,19 @@
                                                 300 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون و 700 هزار تومان
+                                                1 میلیون و 700 هزار تومان
                                             </span>
                                             <span>
-                                                3 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                             <span>
-                                                2 میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
@@ -488,16 +566,16 @@
                                                 بعد از تایید مشاور و عقد قرارداد
                                             </span>
                                             <span>
-                                                بعد از سابمیت و ارائه مدارک
+                                                بعد از ارائه مدارک
                                             </span>
                                             <span>
-                                                بعد از دریافت پذیرش
+                                                بعد از سابمیت مدارک اپلای
                                             </span>
                                             <span>
-                                                بعد از سابمیت مدارک ویزا
+                                                شروع کار ویزا
                                             </span>
                                             <span>
-                                                بعد از اخذ ویزا
+                                                ارائه مدارک و سابمیت مدارک ویزا
                                             </span>
                                         </span>
                                     </span>
@@ -529,121 +607,9 @@
                             </p>
                         </li>
                     </ul>
-                    <button @click="buyPackage({id: 13443})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
-                </div>
-                <div class="buy-box buy-box--noborder">
-                    <h2 class="buy-box-title-price title-price--gold isansFont--faNum">
-                        16
-                        <span class="buy-box-title-price-sup">
-                            میلیون تومان
-                        </span>
-                    </h2>
-                    <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج طلایی کالج</h1>
-                        <h3 class="box-title-meta isansFont">
-                            برای اونایی که می‌خوان استرس پیدا کردن خونه در کشور مقصد رو از خودشون دور کنن!
-                        </h3>
-                    </div>
-                    <ul class="buy-box-features isansFont">
-                        <li class="buy-box-feature">
-                            <i class="material-icons buy-box-feature-icon">
-                                done
-                            </i>
-                            <p class="buy-box-feature-text">
-                                پرداخت در
-                                <mark class="buy-box-feature-mark isansFont--faNum">
-                                    8 قست
-                                    <span class="buy-box-feature-mark-modal">
-                                        <span class="box-feature-mark-modal-prices">
-                                            <span>
-                                                300 هزار تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون و 700 هزار تومان
-                                            </span>
-                                            <span>
-                                                3 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
-                                            </span>
-                                            <span>
-                                                2 میلیون تومان
-                                            </span>
-                                        </span>
-                                        <span class="box-feature-mark-modal-infos">
-                                            <span>
-                                                در هنگام رزرو پکیج
-                                            </span>
-                                            <span>
-                                                بعد از تایید مشاور و عقد قرارداد
-                                            </span>
-                                            <span>
-                                                بعد از سابمیت و ارائه مدارک
-                                            </span>
-                                            <span>
-                                                بعد از دریافت پذیرش
-                                            </span>
-                                            <span>
-                                                بعد از سابمیت مدارک ویزا
-                                            </span>
-                                            <span>
-                                                بعد از اخذ ویزا
-                                            </span>
-                                            <span>
-                                                بعد از انتخاب خانه و هماهنگی با کاربر
-                                            </span>
-                                            <span>
-                                                بعد از اجاره خانه
-                                            </span>
-                                        </span>
-                                    </span>
-                                </mark>
-                            </p>
-                        </li>
-                        <li class="buy-box-feature">
-                            <i class="material-icons buy-box-feature-icon">
-                                done
-                            </i>
-                            <p class="buy-box-feature-text">
-                                مشاوره اپلای
-                            </p>
-                        </li>
-                        <li class="buy-box-feature">
-                            <i class="material-icons buy-box-feature-icon">
-                                done
-                            </i>
-                            <p class="buy-box-feature-text">
-                                مشاوره ویزا
-                            </p>
-                        </li>
-                        <li class="buy-box-feature">
-                            <i class="material-icons buy-box-feature-icon">
-                                done
-                            </i>
-                            <p class="buy-box-feature-text">
-                                نگارش کامل مدارک
-                            </p>
-                        </li>
-                        <li class="buy-box-feature">
-                            <i class="material-icons buy-box-feature-icon">
-                                done
-                            </i>
-                            <p class="buy-box-feature-text">
-                                اجاره خانه پیش از رسیدن
-                            </p>
-                        </li>
-                    </ul>
-                    <button @click="buyPackage({id: 13444})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000 تومان</button>
+                    <button @click="buyPackage({id: 13919})" class="buy-box-action isansFont--faNum">رزرو پکیج | 300,000
+                        تومان
+                    </button>
                 </div>
                 <button class="buy-box-compare-toggler isansFont" @click="toggleComparePackages">
                     مقایسه کامل پکیج ها
@@ -661,16 +627,13 @@
                 <div class="section-sub section-sub-compare">
                     <div class="compare-title isansFont">
                         <p class="compare-title-item">
-                            پکیج برنزی کالج
+                            پکیج نقره ای
                         </p>
                         <p class="compare-title-item">
-                            پکیج نقره ای کالج
-                            <mark class="compare-title-item-marked">
-                                پر فروش ترین!
-                            </mark>
+                            پکیج نقره ای پلاس
                         </p>
                         <p class="compare-title-item">
-                            پکیج طلایی کالج
+                            پکیج نقره ای کارآمد
                         </p>
                     </div>
                     <div class="compare-item isansFont--faNum">
@@ -679,13 +642,13 @@
                         </h3>
                         <div class="compare-item-values">
                             <p class="compare-item-value">
-                                8 میلیون تومان -> 4قسط
-                            </p>
-                            <p class="compare-item-value compare-item-value--bordered">
-                                12 میلیون تومان -> 6قسط
+                                5 میلیون تومان -> 4قسط
                             </p>
                             <p class="compare-item-value">
-                                16 میلیون تومان -> 8قسط
+                                6 میلیون تومان -> 4قسط
+                            </p>
+                            <p class="compare-item-value compare-item-value--bordered">
+                                8 میلیون تومان -> 6قسط
                             </p>
                         </div>
                     </div>
@@ -714,26 +677,20 @@
         <section class="package-section package-section-college">
             <div class="section-sub section-sub-college">
                 <h1 class="college-title isansFont">
-                    چرا کالج؟
+                    چرا پکیج های نقره ای اسنیدز؟
                 </h1>
                 <p class="college-info isansFont">
-                    کالج یه موسسه آموزشیه، مثل دانشگاه، اما با یه سری تفاوتا، که برای افرادی که بیشتر از تحصیلات آکادمیک، به کارکردن علاقه دارن، انتخاب راحتتر‌ و منطقی‌تریه.
-                    <br>
-                    <br>
-                    شهریه کالج‌ها معمولا نسبتاً به دانشگاه‌ها کمتره و این مسئله کالج رو تبدیل به یه انتخاب ایده‌آل
-                    برای افرادی که نمی‌خوان بودجه زیادی برای شهریه بپردازن می‌کنه.
-                    <br>
-                    <br>
-                    آموزش‌هایی که توی کالج دریافت خواهید کرد Skill Based هستن.
-                    این مسئله یعنی اینکه که بعد از گرفتن مدرک، به راحتی می‌تونید با توانایی‌هایی که دارید
-                    وارد بازار کار بشین
-                    و بعد از دریافت ویزای کار هم می‌تونید راحت تر اون رو تبدیل به ویزای اقامت دائم بکنید!
-                    <br>
-                    <br>
-                    شرایط پذیرش تو کالج خیلی راحت‌تر از دانشگاهه و نیاز به رزومه و زبان خیلی قوی برای اپلای بهش
-                    نخواهید داشت.
-                    تازه با توجه به زمان آزاد بیشتری که به احتمالاً دارید، می‌تونید در کنار کالج به راحتی کار
-                    کنید که همچین شرایطی برای دانشجویای در حال تحصیل در دانشگاه خیلی فراهم نیست.
+                    ما تو اسنیدز معتقدیم که همه می‌تونند با داشتن زمان کافی و همراهی کسی که اطلاعات جامعی تو این زمینه
+                    دارن، خودشون اپلای کنن و تو پکیج نقره‌ای اپلای این فرصت رو براتون فراهم می‌کنیم.
+                    <br><br>
+                    تو این پکیج در تمام طول مسیر یکی با تجربه‌ترین مشاوران اپلای در کنار شماست تا اطلاعات کافی و مناسب
+                    رو در اختیارتون بزاره تا بتونید با صرفه جویی در زمان و وقت بهترین مسیر رو طی کنید.
+                    <br><br>0
+                    در طی این پکیج مشاوران ما رزومه و انگیزه نامتون رو می‌نویسن و تو پیدا کردن استاد و دانشگاه مناسب
+                    بهترین راهنمایی‌ها رو براتون دارن. به علاوه در مدت زمان ترم اپلایتون می‌تونید هر زمان که بخواید با
+                    مشاورتون صحبت کنید و سوالاتون رو در 15 جلسه مشاوره بپرسید.
+                    <br><br>
+                    با پکیج نقره‌ای اپلای، بهترین و مطمئن‌ترین مسیر اپلای رو طی کنید.
                 </p>
             </div>
         </section>
@@ -900,54 +857,73 @@
                         questions: [
                             {
                                 title: 'این 300 هزارتومان برای چیه و چی میشه؟',
-                                answer: `این مبلغ برای رزرو پکیج کالج مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما شروع میشه و اطلاعات شما برای مشاوران ارسال میشه، اگر بعد از جلسات مشاورتون، به این نتیجه برسید که تمایل به ادامه کار ندارید، مبالغ مشاوره (که هرجلسه آن همان مبلغ مشاوره بر روی سایت است)، از این هزینه 300 هزار تومان شما کسر و مابقی به شما برگشت داده می‌شود.`,
+                                answer: `این مبلغ برای رزرو پکیج نقره ای مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما
+شروع میشه و اطلعات شما برای مشاوران ارسال میشه، اگر بعد از جلسات مشاورتون، به این
+نتیجه برسید که تمایل به ادامه کار ندارید، مبالغ مشاوره (که هرجلسه آن همان مبلغ مشاوره بر
+روی سایت است)، از این هزینه 300 هزار تومان شما کسر و مابقی به شما برگشت داده
+میشود.`,
                                 isOpen: true,
                             },
                             {
                                 title: 'گرفتن پذیرش قطعیه؟',
-                                answer: `بله، مشاوران ما در صورت اطمینان از رزومه و اخذ پذیرش برای شما، پروژه شما رو قبول می‌کنند.`,
-                                isOpen: false,
-                            },
-                            {
-                                title: 'کالج فاند داره؟ اگه آره براش اقدام می‌کنید؟',
-                                answer: `برای کالج فاند تعریف نمی‌شود پس اقدامی هم برای اون انجام نمیشه اما هزینه‌های تحصیل در کالج نسبت به دانشگاه کمتر هست.`,
+                                answer: `مشاورای ما در این پکیج تضمین قطعی برای پذیرش نمی دهند ولی با توجه به فعالیتی که انجام
+میشه و اینکه مشاور تا آخر مسیر کنارته و راهنمایی میکنه با کمک خودتون پذیرش با احتمال بالا
+.اخذ میشه`,
                                 isOpen: false,
                             },
                             {
                                 title: 'برای ویزا هم اقدام میشه؟',
-                                answer: `پکیج‌های اخذ پذیرش کالج اسنیدز سه نوع هستند که در پکیج نقره‌ای و طلایی علاوه بر پذیرش کالج، خدمات اخذ ویزا هم ارائه میشه.`,
-                                isOpen: false,
-                            },
-                            {
-                                title: 'کالج محدودیت سنی داره؟',
-                                answer: `برای اخذ پذیرش کالج هیچ محدودیت سنی وجود نداره اما برای گرفتن ویزا، هرچی سنتون کمتر باشه بهتره.`,
+                                answer: `پکیج های نقره ای اسنیدز سه نوع هستند که در پکیج نقرهای کارامد، خدمات اخذ ویزا هم ارائه
+میشه.`,
                                 isOpen: false,
                             },
                             {
                                 title: 'امکان تغییر قسط‌ها وجود داره؟',
-                                answer: `با توجه به اینکه اسنیدز برای پیشبرد روند کار و پرداخت به مشاورین، دارای پروتکل مشخصی است، متاسفانه امکان تغییر قسط وجود ندارد و پرداخت هزینه با توجه به پکیج و مطابق قرارداد انجام می‌شود.`,
+                                answer: 'با توجه به اینکه اسنیدز برای پیشبرد روند کار و پرداخت به مشاورین، دارای پروتکل مشخصی\n' +
+                                    'است، متاسفانه امکان تغییر قسط وجود ندارد و پرداخت هزینه با توجه به پکیج و مطابق قرارداد\n' +
+                                    'انجام میشود.',
                                 isOpen: false,
                             },
                             {
                                 title: 'چطوری باید مشاور مورد نظرم رو انتخاب کنم؟',
-                                answer: `رزومه شما برای مشاوران ما ارسال میشه و مشاوران بعد از بررسی در صورتی که تمایل به انجام پروژه داشته باشند، برای انجام پروژتون اعلام آمادگی می‌کند و شما می‌توانید از بین مشاورانی که اعلام آمادگی کرده اند، یکی را انتخاب کنید.`,
+                                answer: `رزومه شما برای مشاوران ما ارسال میشه و مشاوران بعد از بررسی در صورتی که تمایل به انجام
+پروژه داشته باشند، برای انجام پروژتون اعلام آمادگی میکنند و شما میتوانید از بین مشاورانی
+که اعلام آمادگی کرده اند، یکی را انتخاب کنید.`,
                                 isOpen: false,
                             },
                             {
                                 title: 'چطوری در جریان روند کار قرار می‌گیرم؟',
-                                answer: `بعد از عقد قرارداد، شما به طور مستقیم با مشاورتون در ارتباط هستید و در جریان روند کار قرار می‌گیرید، به علاوه با مراجعه به پروفایلتون هم می‌تونید ببینید دقیقًا پروژه شما در چه مرحله ای هست.`,
+                                answer: `بعد از تایید مشاور از طرف شما، شما به طور مستقیم با مشاورتون در ارتباط هستید و در جریان
+روند کار قرار میگیرید، به علاوه با مراجعه به پروفایلتون هم میتونید ببینید دقیًقاً پروژتون در چه
+.مرحله ای هست`,
                                 isOpen: false,
                             },
                             {
                                 title: 'به جز خود پکیج چه هزینه‌های دیگه‌ای با منه؟',
-                                answer: 'همون طور که می‌دانید اپلای فرآیند پر هزینه‌ای هست و هزینه‌هایی مثل پرداخت اپلیکیشن‌فی، بلیط و... کم نخواهد بود.\n' +
-                                    'اما با خرید پکیج‌های کمکی اپلای اسنیدز، علاوه بر خدماتی که ارائه شده، به شما کمک می‌کنه تا با استفاده از تجربه اونایی که خودشون اپلای کردن، هزینه‌هاتون رو به حداقل برسونید و پول‌هاتون رو به بهینه‌ترین شکل ممکن خرج کنید.',
+                                answer: 'همون طور که میدانید اپلای فرآیند پر هزینه ای هست و هزینه هایی مثل پرداخت اپلیکیشن فی، بلیط\n' +
+                                    'و... کم نخواهد بود. اما با خرید پکیج های کمکی اپلای اسنیدز، علاوه بر خدماتی که ارائه شده، به\n' +
+                                    'شما کمک میکنه تا با استفاده از تجربه اونایی که خودشون اپلای کردن، هزینه هاتون رو به حداقل\n' +
+                                    'برسونید و پول هاتون رو به بهینه ترین شکل ممکن خرج کنید.',
                                 isOpen: false,
                             },
                             {
-                                title: 'قرار داد حتما باید حضوری بسته بشه؟',
-                                answer: `نه، اسنیدز یه پلتفرم کاملاً آنلاین هست و قرارداد برای شما ارسال میشه و شما از هر جای جهان بعد از امضای قرارداد و اسکن اون، قرارداد رو برای ما می‌فرستید.`,
+                                title: 'آیا قرارداد بسته می شود؟',
+                                answer: `نه، با توجه به نوع خدمات و شکل کاری که در این پکیج ارائه میشود قراردادی بسته نمی شود.`,
                                 isOpen: false,
+                            },
+                            {
+                                title: 'این پکیج پیشنهاد را میدید یا پکیج های طلایی؟',
+                                answer: 'مهم ترین تفاوت این پکیج با پکیج های طلایی این هستش که مشاورا تضمینی برای پذیرش نمی\n' +
+                                    'دهند که یکی از مهم ترین دلیل تو کاهش هزینه این پکیج هست، تو این پکیج مشاور از ابتدا تا\n' +
+                                    'انتهای کار در کنار شما هست و هرگاه شما سوالی داشته باشید و یا کمکی بخواید، مشاور\n' +
+                                    'به شما پاسخ می دهد. بنابراین اگر دوست دارید داخل پروسه اپلای خودتون دخیل باشید و میخواهید هزینه کمی\n' +
+                                    'برای رسیدن به بهترین نتیجه خرج کنید، بهتون این پکیج رو پیشنهاد میدیم.',
+                                isOpen: false
+                            },
+                            {
+                                title: 'این پکیج برای چه مدتی هستش؟\n',
+                                answer: 'مشاور به مدت یک ترم در کنار شما خواهد بود.',
+                                isOpen: false
                             }
                         ]
                     },
@@ -987,15 +963,15 @@
                 ],
                 compareItems: [
                     {title: 'آماده سازی مدارک اپلای', bronze: true, silver: true, gold: true},
-                    {title: 'تضمین پذیرش', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره زبان', bronze: true, silver: true, gold: true},
-                    {title: 'مشاوره انتخاب کالج', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره انتخاب کالج و دانشگاه', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره شرایط زندگی', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره انتخاب رشته', bronze: true, silver: true, gold: true},
-                    {title: 'مشاوره ویزا', bronze: true, silver: true, gold: true},
-                    {title: 'انجام مراحل اخذ ویزا', bronze: false, silver: true, gold: true},
-                    {title: 'مشاوره دریافت منزل در کشور مقصد', bronze: false, silver: true, gold: true},
-                    {title: 'اجاره منزل', bronze: false, silver: false, gold: true},
+                    {title: 'تخمین شانس پذیرش', bronze: true, silver: true, gold: true},
+                    {title: 'نگارش ایمیل', bronze: false, silver: true, gold: true},
+                    {title: 'مشاوره ویزا', bronze: false, silver: false, gold: true},
+                    {title: 'انجام مراحل اخذ ویزا', bronze: false, silver: false, gold: true},
+                    {title: 'تضمین پذیرش', bronze: false, silver: false, gold: false},
                 ]
             }
         },
@@ -1170,7 +1146,6 @@
 
             },
         },
-
     }
 </script>
 
@@ -1211,7 +1186,7 @@
         text-align: center;
         background-color: white;
         border-radius: 10px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         position: relative;
         padding-bottom: 30px;
     }

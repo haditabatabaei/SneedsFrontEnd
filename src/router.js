@@ -34,6 +34,14 @@ const router = new Router({
             }
         },
         {
+            path: '/packages/silver',
+            name: 'landing-packages-silver',
+            component: () => import("@/views/Package/LandingSilver"),
+            meta: {
+                auth: 'optional'
+            }
+        },
+        {
             path: '/auth',
             name: 'auth',
             redirect: '/auth/login',

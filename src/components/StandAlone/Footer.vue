@@ -42,7 +42,7 @@
                         <span>021 - 2842 8353</span>
                         <br>
                         <mark class="desc-about-box-text-marked">
-                            (هر روز هفته ساعت ۹ تا 19)
+                            (شنبه تا پنجشنبه ساعت ۹ تا 19)
                         </mark>
                     </p>
                 </div>

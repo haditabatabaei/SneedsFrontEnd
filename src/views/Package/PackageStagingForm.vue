@@ -56,15 +56,15 @@
                             <input v-for="status in maritalStatus"
                                    class="form-input-control--radio"
                                    type="radio"
-                                   :id="`personal.marriage.${status.slug}`"
+                                   :id="`personal.marriage.${status.id}`"
                                    name="personal.marriage"
                                    :value="status"
                                    v-model="$v.packageForm.personal.marriage.$model">
                             <label class="form-input-label--radio"
                                    v-for="status in maritalStatus"
-                                   :for="`personal.marriage.${status.slug}`">
+                                   :for="`personal.marriage.${status.id}`">
                         <span class="input-label--radio_box">
-                            <i class="material-icons" v-if="packageForm.personal.marriage.slug === status.slug">done</i>
+                            <i class="material-icons" v-if="packageForm.personal.marriage.id === status.id">done</i>
                         </span>
                                 {{status.name}}
                             </label>
@@ -141,48 +141,48 @@
                     </div>
 
                     <div class="form-input form-input--small"
-                         :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                         :class="[{'form-input--disabled': packageForm.languageLevel.title.name === 'ندارم'}]">
                         <label class="form-input-label" for="languageLevel.listening">Listening</label>
                         <input v-model.trim="$v.packageForm.languageLevel.listening.$model" class="form-input-control"
                                type="text" id="languageLevel.listening"
                                :class="[{'form-input-control--invalid': listeningIsInvalid}]"
-                               :disabled="packageForm.languageLevel.title.slug === 'none'">
+                               :disabled="packageForm.languageLevel.title.name === 'ندارم'">
                     </div>
 
                     <div class="form-input form-input--small"
-                         :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                         :class="[{'form-input--disabled': packageForm.languageLevel.title.name === 'ندارم'}]">
                         <label class="form-input-label" for="languageLevel.speaking">Speaking</label>
                         <input v-model.trim="$v.packageForm.languageLevel.speaking.$model" class="form-input-control"
                                type="text" id="languageLevel.speaking"
                                :class="[{'form-input-control--invalid': speakingIsInvalid}]"
-                               :disabled="packageForm.languageLevel.title.slug === 'none'">
+                               :disabled="packageForm.languageLevel.title.name === 'ندارم'">
                     </div>
 
                     <div class="form-input form-input--small"
-                         :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                         :class="[{'form-input--disabled': packageForm.languageLevel.title.name === 'ندارم'}]">
                         <label class="form-input-label" for="languageLevel.reading">Reading</label>
                         <input v-model.trim="$v.packageForm.languageLevel.reading.$model" class="form-input-control"
                                type="text" id="languageLevel.reading"
                                :class="[{'form-input-control--invalid': readingIsInvalid}]"
-                               :disabled="packageForm.languageLevel.title.slug === 'none'">
+                               :disabled="packageForm.languageLevel.title.name === 'ندارم'">
                     </div>
 
                     <div class="form-input form-input--small"
-                         :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                         :class="[{'form-input--disabled': packageForm.languageLevel.title.name === 'ندارم'}]">
                         <label class="form-input-label" for="languageLevel.writing">Writing</label>
                         <input v-model.trim="$v.packageForm.languageLevel.writing.$model" class="form-input-control"
                                type="text" id="languageLevel.writing"
                                :class="[{'form-input-control--invalid': writingIsInvalid}]"
-                               :disabled="packageForm.languageLevel.title.slug === 'none'">
+                               :disabled="packageForm.languageLevel.title.name === 'ندارم'">
                     </div>
 
                     <div class="form-input form-input--small"
-                         :class="[{'form-input--disabled': packageForm.languageLevel.title.slug === 'none'}]">
+                         :class="[{'form-input--disabled': packageForm.languageLevel.title.name === 'ندارم'}]">
                         <label class="form-input-label" for="languageLevel.writing">Overall</label>
                         <input v-model.trim="$v.packageForm.languageLevel.overall.$model" class="form-input-control"
                                type="text" id="languageLevel.overall"
                                :class="[{'form-input-control--invalid': writingIsInvalid}]"
-                               :disabled="packageForm.languageLevel.title.slug === 'none'">
+                               :disabled="packageForm.languageLevel.title.name === 'ندارم'">
                     </div>
                 </div>
             </section>
@@ -425,7 +425,7 @@
                 this.packageForm.applyInfo.grade = this.applyGrades[0];
                 this.packageForm.applyInfo.country = this.applyCountries[0];
                 this.packageForm.applyInfo.mainland = this.applyMainlands[0];
-                this.packageForm.languageLevel.title = this.languageCertificates.find(cert => cert.slug === 'none');
+                this.packageForm.languageLevel.title = this.languageCertificates.find(cert => cert.name === 'ندارم');
                 this.packageForm.applyInfo.semester = this.semesterChoices[0];
             },
 

@@ -106,34 +106,6 @@
             </div>
         </transition>
         <section class="package-section section-intro">
-            <div class="section-sub section-sub-intro">
-                <div class="section-intro-title-box">
-                    <a v-smooth-scroll="{offset: -100, updateHistory: false}" href="#consultant-anchor"
-                       class="intro-start isansFont">
-                        از اینجا شروع کن!
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </a>
-                    <h1 class="section-intro-title isansFont">
-                        <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots">
-                        <img src="/sneedsAssets/img/dots.svg" alt="dots" class="intro-title-dots left">
-
-                        <span class="intro-title-span span-blue">
-                        با اسنیدز،
-                        </span>
-                        <span class="intro-title-span span-black">
-                        لازم نیس سخت
-                        </span>
-                        <br>
-                        <br>
-                        <span class="intro-title-span span-black">اپلای کنی!</span>
-                    </h1>
-                    <p class="section-intro-text isansFont">
-                        وقتی می‌خوای برای کالج یا دانشگاه اپلای کنی، خیلی خوبه که یکی که تمام این مسیر رو طی کرده و با
-                        موانعش آشنایی داره کنارت باشه تا با خیال راحت بتونی کشور، رشته و دانشگاه یا کالجی که دوست داری
-                        رو انتخاب کنی و توش درس بخونی.
-                    </p>
-                </div>
-            </div>
         </section>
         <section class="package-section section-consultants">
             <div class="section-sub section-sub-consultants" id="consultant-anchor">
@@ -173,7 +145,8 @@
             <div class="section-sub section-sub-services">
                 <div class="section-services-title">
                     <h1 class="services-title-text isansFont">به این کارها فکر نکن!</h1>
-                    <h2 class="services-title-subtext isansFont">با پکیج کامل اپلای اسنیدز، فکر کردن به مراحل اپلای را به مشاور بسپار.</h2>
+                    <h2 class="services-title-subtext isansFont">با پکیج کامل اپلای اسنیدز، فکر کردن به مراحل اپلای را
+                        به مشاور بسپار.</h2>
                     <div class="services-title-divider"></div>
                 </div>
                 <div class="section-services-items">
@@ -186,8 +159,10 @@
                             پیدا کردن کالج و دانشگاه
                         </h3>
                         <p class="services-item-text">
-                            مشاوران اسنیدز بعد از صحبت با شما، بهترین کالج و دانشگاه ممکن رو بر اساس بودجه، علایق و رزومتون
-                            براتون انتخاب می‌کنن و دیگه لازم نیست توی یه لیست طولانی، اطلاعات کلی کالج و دانشگاه رو زیر و رو کنی!
+                            مشاوران اسنیدز بعد از صحبت با شما، بهترین کالج و دانشگاه ممکن رو بر اساس بودجه، علایق و
+                            رزومتون
+                            براتون انتخاب می‌کنن و دیگه لازم نیست توی یه لیست طولانی، اطلاعات کلی کالج و دانشگاه رو زیر
+                            و رو کنی!
                         </p>
                     </div>
                     <div class="services-item isansFont">
@@ -224,7 +199,8 @@
                             مشاوره و کمک در انجام مکاتبات
                         </h3>
                         <p class="services-item-text">
-                            زبانت خوب نیس؟ فکر می‌کنی ممکنه به خاطر اشتباه در مکاتبات پذیرشت رو به خطر بندازی؟ مشاور بهت کمک میکنه که بهترین متن و بهترین جواب رو به استادت بدی.
+                            زبانت خوب نیس؟ فکر می‌کنی ممکنه به خاطر اشتباه در مکاتبات پذیرشت رو به خطر بندازی؟ مشاور بهت
+                            کمک میکنه که بهترین متن و بهترین جواب رو به استادت بدی.
                         </p>
                     </div>
                     <div class="services-item isansFont">
@@ -1160,6 +1136,10 @@
         justify-content: center;
     }
 
+    .section-intro {
+        background: url("/sneedsAssets/img/silver.png") no-repeat center top;
+    }
+
     .section-sub {
         width: 100%;
         max-width: 1170px;
@@ -1196,10 +1176,6 @@
 
     .span-black {
         color: #303143
-    }
-
-    .section-intro {
-        background: linear-gradient(90deg, #A347FF 50%, #FFF 50%);
     }
 
     .section-intro-title {
@@ -2491,8 +2467,7 @@
 
     @media only screen and (max-width: 991.8px) {
         .section-intro {
-            background: white;
-            min-height: auto;
+            background: url("/sneedsAssets/img/silver.png") no-repeat center top;
         }
 
         .section-sub-intro {

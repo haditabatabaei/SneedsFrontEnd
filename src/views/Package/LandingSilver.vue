@@ -1137,7 +1137,7 @@
     }
 
     .section-intro {
-        background: url("/sneedsAssets/img/silver.png") no-repeat center top;
+        background: url("/sneedsAssets/img/silver.png") no-repeat center / cover;
     }
 
     .section-sub {
@@ -2467,7 +2467,7 @@
 
     @media only screen and (max-width: 991.8px) {
         .section-intro {
-            background: url("/sneedsAssets/img/silver.png") no-repeat center top;
+            background: url("/sneedsAssets/img/silver.png") no-repeat center / cover;
         }
 
         .section-sub-intro {

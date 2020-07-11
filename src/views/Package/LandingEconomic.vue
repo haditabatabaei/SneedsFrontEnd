@@ -950,6 +950,7 @@
                     {title: 'پیدا کردن 20 دانشگاه', bronze: true, silver: true, gold: true},
                     {title: '۱۲ ساعت فیلم خودآموز اپلای (ارزش +۱ میلیون تومان)', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره انتخاب استاد', bronze: true, silver: true, gold: true},
+                    {title: 'پر کردن اپلیکیشن دانشگاه‌ها', bronze: false, silver: true, gold: true},
                     {title: 'مشاوره ویزا', bronze: false, silver: false, gold: true},
                     {title: 'انجام مراحل اخذ ویزا', bronze: false, silver: false, gold: true},
                     {title: 'تضمین پذیرش', bronze: false, silver: false, gold: false},

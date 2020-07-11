@@ -137,9 +137,9 @@
             <div class="section-sub section-sub-consultants" id="consultant-anchor">
                 <div class="section-consultants-info">
                     <h1 class="section-consultants-title isansFont">
-                        مشاوران اسنیدز
+                        ما و مشاوران اسنیدز
                         <br>
-                        توی این مسیر طولانی کنارت هستن...
+                        توی این مسیر طولانی کنارت هستیم...
                     </h1>
                     <div class="section-consultants-divider"></div>
                     <p class="section-consultants-text isansFont">
@@ -244,7 +244,10 @@
         </section>
         <section class="package-section package-section-steps">
             <div class="section-sub section-sub-steps">
-                <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله!</h1>
+                <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله...</h1>
+                <h2 class="section-steps-title-subtext isansFont">
+                    اپلای کردن می‌تونه خیلی راحت تر از اون چیزی که فکر می‌کنی باشه!
+                </h2>
                 <div class="section-steps-title-divider"></div>
                 <div class="step">
                     <img class="step-image" src="/sneedsAssets/img/step-1.png" alt="">
@@ -339,7 +342,10 @@
         <section class="package-section package-section-support">
             <div class="section-sub section-sub-support">
                 <div class="support-overlay"></div>
-                <h1 class="support-title isansFont--faNum">شنبه تا پنجشنبه، ساعت 9 تا 19</h1>
+                <h2 class="support-title-sup isansFont--faNum">
+                    شنبه تا پنجشنبه، ساعت 9 تا 19
+                </h2>
+                <h1 class="support-title isansFont">پاسخگوی شما هستیم!</h1>
                 <ul class="support-items isansFont--faNum">
                     <li class="support-item item--hasLtr">
                         <i class="material-icons">call</i>
@@ -361,6 +367,9 @@
             </div>
         </section>
         <section class="package-section package-section-buy">
+            <h1 class="buy-title isansFont">پکیج‌های اخذ پذیرش</h1>
+            <h2 class="buy-title-sub isansFont">صفر تا صد پروسه اپلای رو به مشاوری اسنیدز بسپار!</h2>
+            <div class="buy-title-divider"></div>
             <div class="section-sub section-sub-buy" :class="[{'section-sub-buy--full': showComparePackages}]">
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--brown isansFont--faNum">
@@ -444,7 +453,7 @@
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج نقره ای کالج</h1>
+                        <h1 class="box-title-text isansFont">پکیج نقره‌ای کالج</h1>
                         <h3 class="box-title-meta isansFont">
                             برای اونایی که می‌خوان ریسک رد شدن ویزا رو با کمک مشاوران اسنیدز حداقل کنن.
                         </h3>
@@ -663,7 +672,7 @@
                             پکیج برنزی کالج
                         </p>
                         <p class="compare-title-item">
-                            پکیج نقره ای کالج
+                            پکیج نقره‌ای کالج
                             <mark class="compare-title-item-marked">
                                 پر فروش ترین!
                             </mark>
@@ -723,7 +732,7 @@
                     برای افرادی که نمی‌خوان بودجه زیادی برای شهریه بپردازن می‌کنه.
                     <br>
                     <br>
-                    آموزش‌هایی که توی کالج دریافت خواهید کرد Skill Based هستن.
+                    آموزش‌هایی که توی کالج دریافت خواهید کرد مهارت محور هستن.
                     این مسئله یعنی اینکه که بعد از گرفتن مدرک، به راحتی می‌تونید با توانایی‌هایی که دارید
                     وارد بازار کار بشین
                     و بعد از دریافت ویزای کار هم می‌تونید راحت تر اون رو تبدیل به ویزای اقامت دائم بکنید!
@@ -1421,6 +1430,13 @@
         line-height: 24px;
     }
 
+    .section-steps-title-subtext {
+        text-align: center;
+        color: #707070;
+        margin: 0 0 15px 0;
+        font-size: 16px;
+    }
+
     .section-sub-steps {
         display: flex;
         flex-direction: column;
@@ -1431,6 +1447,7 @@
         font-weight: bold;
         margin: 50px 0 25px 0;
         color: #303143;
+        text-align: center;
     }
 
     .section-steps-title-divider {
@@ -1438,7 +1455,7 @@
         height: 4px;
         border-radius: 30px;
         background-color: #8C3DDB;
-        margin: 5px 0;
+        margin: 20px auto;
     }
 
     .step {
@@ -1590,6 +1607,15 @@
         font-weight: bold;
     }
 
+    .support-title-sup {
+        color: white;
+        margin: 0;
+        font-size: 18px;
+        position: relative;
+        z-index: 3;
+        font-weight: bold;
+    }
+
     .support-items {
         list-style: none;
         display: flex;
@@ -1627,6 +1653,8 @@
         color: #00BFD6;
         border-radius: 20px;
         transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
     }
 
     .item--link a:hover {
@@ -1753,6 +1781,9 @@
         background-color: #F6F7FA;
         z-index: 28;
         min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .section-sub-buy {
@@ -1781,6 +1812,29 @@
         display: flex;
         flex-direction: column;
     }
+
+    .buy-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 50px 0 25px 0;
+        color: #303143;
+    }
+
+    .buy-title-sub {
+        font-size: 16px;
+        color: #707070;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+    }
+
+    .buy-title-divider {
+        width: 100px;
+        height: 4px;
+        border-radius: 30px;
+        background-color: #00BFD6;
+        margin: 20px auto;
+    }
+
 
     .buy-box--noborder {
         border: none;
@@ -2292,7 +2346,7 @@
     }
 
     .trusts-comments-sender-text {
-        padding: 15px;
+        padding: 15px 30px;
         color: #FFFFFF;
         text-align: center;
         line-height: 25px;

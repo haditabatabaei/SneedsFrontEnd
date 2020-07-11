@@ -40,11 +40,6 @@
                                 <i class="material-icons">done</i>
                                 <p>بررسی رایگان فرم اطلاعات تحصیلی شما به دست مشاوران اسنیدز.</p>
                             </li>
-                            <li class="package-detail-item isansFont">
-                                <i class="material-icons">done</i>
-                                <p>امکان انجام مشاوره تصویری رایگان قبل از تایید با مشاورانی که پروژه شما رو قبول
-                                    کرده‌اند.</p>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -137,14 +132,14 @@
 
 
                     <button class="cartsWrapper-item-paybutton" @click="requestPayment()">
-                        پرداخت |
-                        <span v-if="Number(cart.total) == 0">
+                         پرداخت |
+                        <span style="margin-right:5px" v-if="Number(cart.total) == 0">
                                رایگان !
                             </span>
-                        <span v-else>
+                        <span style="margin-right:5px" v-else>
                                 {{cart.total}}
                             تومان
-                            </span>
+                        </span>
                         <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
                     </button>
                 </div>

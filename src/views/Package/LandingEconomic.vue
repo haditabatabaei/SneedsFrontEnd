@@ -35,10 +35,6 @@
                                 <i class="material-icons">done</i>
                                 میتونی به طور مداوم با مشاورت در ارتباط باشی.
                             </li>
-                            <li class="intro-content-item">
-                                <i class="material-icons">done</i>
-                                میتونی با توجه به نوع پکیجی بی نهایت جلسه مشاوره بگیری.
-                            </li>
                         </ul>
                     </div>
                     <div class="intro-action isansFont">
@@ -111,9 +107,9 @@
             <div class="section-sub section-sub-consultants" id="consultant-anchor">
                 <div class="section-consultants-info">
                     <h1 class="section-consultants-title isansFont">
-                        مشاوران اسنیدز
+                        ما و مشاوران اسنیدز
                         <br>
-                        توی این مسیر طولانی کنارت هستن...
+                        توی این مسیر طولانی کنارت هستیم...
                     </h1>
                     <div class="section-consultants-divider"></div>
                     <p class="section-consultants-text isansFont">
@@ -221,7 +217,10 @@
         </section>
         <section class="package-section package-section-steps">
             <div class="section-sub section-sub-steps">
-                <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله!</h1>
+                <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله...</h1>
+                <h2 class="section-steps-title-subtext isansFont">
+                    اپلای کردن می‌تونه خیلی راحت تر از اون چیزی که فکر می‌کنی باشه!
+                </h2>
                 <div class="section-steps-title-divider"></div>
                 <div class="step">
                     <img class="step-image" src="/sneedsAssets/img/step-1.png" alt="">
@@ -318,7 +317,10 @@
         <section class="package-section package-section-support">
             <div class="section-sub section-sub-support">
                 <div class="support-overlay"></div>
-                <h1 class="support-title isansFont--faNum">شنبه تا پنجشنبه، ساعت 9 تا 19</h1>
+                <h2 class="support-title-sup isansFont--faNum">
+                    شنبه تا پنجشنبه، ساعت 9 تا 19
+                </h2>
+                <h1 class="support-title isansFont">پاسخگوی شما هستیم!</h1>
                 <ul class="support-items isansFont--faNum">
                     <li class="support-item item--hasLtr">
                         <i class="material-icons">call</i>
@@ -340,6 +342,9 @@
             </div>
         </section>
         <section class="package-section package-section-buy">
+            <h1 class="buy-title isansFont">پکیج‌های اقتصادی اپلای</h1>
+            <h2 class="buy-title-sub isansFont">صفر تا صد پروسه اپلای رو به مشاوری اسنیدز بسپار!</h2>
+            <div class="buy-title-divider"></div>
             <div class="section-sub section-sub-buy" :class="[{'section-sub-buy--full': showComparePackages}]">
                 <div class="buy-box buy-box--noborder">
                     <h2 class="buy-box-title-price title-price--brown isansFont--faNum">
@@ -349,7 +354,7 @@
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج نقره ای</h1>
+                        <h1 class="box-title-text isansFont">پکیج اقتصادی</h1>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -380,7 +385,7 @@
                                                 در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                بعد از تایید مشاور و عقد قرارداد
+                                                بعد از تایید مشاورد
                                             </span>
                                             <span>
                                                 بعد از ارائه مدارک
@@ -422,7 +427,7 @@
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج نقره ای پلاس</h1>
+                        <h1 class="box-title-text isansFont">پکیج اقتصادی پلاس</h1>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -453,7 +458,7 @@
                                                 در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                بعد از تایید مشاور و عقد قرارداد
+                                                بعد از تایید مشاور
                                             </span>
                                             <span>
                                                 بعد از ارائه مدارک
@@ -495,7 +500,7 @@
                         </span>
                     </h2>
                     <div class="buy-box-title ">
-                        <h1 class="box-title-text isansFont">پکیج نقره ای کارآمد</h1>
+                        <h1 class="box-title-text isansFont">پکیج اقتصادی ویژه</h1>
                     </div>
                     <ul class="buy-box-features isansFont">
                         <li class="buy-box-feature">
@@ -532,7 +537,7 @@
                                                 در هنگام رزرو پکیج
                                             </span>
                                             <span>
-                                                بعد از تایید مشاور و عقد قرارداد
+                                                بعد از تایید مشاور
                                             </span>
                                             <span>
                                                 بعد از ارائه مدارک
@@ -596,13 +601,16 @@
                 <div class="section-sub section-sub-compare">
                     <div class="compare-title isansFont">
                         <p class="compare-title-item">
-                            پکیج نقره ای
+                            پکیج اقتصادی
                         </p>
                         <p class="compare-title-item">
-                            پکیج نقره ای پلاس
+                            پکیج اقتصادی پلاس
+                            <mark class="compare-title-item-marked">
+                                پر فروش ترین!
+                            </mark>
                         </p>
                         <p class="compare-title-item">
-                            پکیج نقره ای کارآمد
+                            پکیج اقتصادی ویژه
                         </p>
                     </div>
                     <div class="compare-item isansFont--faNum">
@@ -622,7 +630,7 @@
                         </div>
                     </div>
                     <div class="compare-item isansFont--faNum" v-for="item in compareItems">
-                        <h3 class="compare-item-title isansFont">
+                        <h3 class="compare-item-title isansFont--faNum">
                             {{item.title}}
                         </h3>
                         <div class="compare-item-values">
@@ -646,11 +654,11 @@
         <section class="package-section package-section-college">
             <div class="section-sub section-sub-college">
                 <h1 class="college-title isansFont">
-                    چرا پکیج های نقره ای اسنیدز؟
+                    چرا پکیج های اقتصادی اسنیدز؟
                 </h1>
                 <p class="college-info isansFont">
                     ما تو اسنیدز معتقدیم که همه می‌تونند با داشتن زمان کافی و همراهی کسی که اطلاعات جامعی تو این زمینه
-                    دارن، خودشون اپلای کنن و تو پکیج نقره‌ای اپلای این فرصت رو براتون فراهم می‌کنیم.
+                    دارن، خودشون اپلای کنن و تو پکیج اقتصادی اپلای این فرصت رو براتون فراهم می‌کنیم.
                     <br><br>
                     تو این پکیج در تمام طول مسیر یکی با تجربه‌ترین مشاوران اپلای در کنار شماست تا اطلاعات کافی و مناسب
                     رو در اختیارتون بزاره تا بتونید با صرفه جویی در زمان و وقت بهترین مسیر رو طی کنید.
@@ -659,7 +667,7 @@
                     بهترین راهنمایی‌ها رو براتون دارن. به علاوه در مدت زمان ترم اپلایتون می‌تونید هر زمان که بخواید با
                     مشاورتون صحبت کنید و سوالاتون رو در 15 جلسه مشاوره بپرسید.
                     <br><br>
-                    با پکیج نقره‌ای اپلای، بهترین و مطمئن‌ترین مسیر اپلای رو طی کنید.
+                    با پکیج اقتصادی اپلای، بهترین و مطمئن‌ترین مسیر اپلای رو طی کنید.
                 </p>
             </div>
         </section>
@@ -777,7 +785,7 @@
     import LoginForm from '@/components/StandAlone/LoginForm';
 
     export default {
-        name: "Landing",
+        name: "LandingEconomic",
         components: {
             "login-form": LoginForm,
             "register-form": RegisterForm
@@ -826,7 +834,7 @@
                         questions: [
                             {
                                 title: 'این 300 هزارتومان برای چیه و چی میشه؟',
-                                answer: `این مبلغ برای رزرو پکیج نقره ای مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما
+                                answer: `این مبلغ برای رزرو پکیج اقتصادی مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما
 شروع میشه و اطلعات شما برای مشاوران ارسال میشه، اگر بعد از جلسات مشاورتون، به این
 نتیجه برسید که تمایل به ادامه کار ندارید، مبالغ مشاوره (که هرجلسه آن همان مبلغ مشاوره بر
 روی سایت است)، از این هزینه 300 هزار تومان شما کسر و مابقی به شما برگشت داده
@@ -842,7 +850,7 @@
                             },
                             {
                                 title: 'برای ویزا هم اقدام میشه؟',
-                                answer: `پکیج های نقره ای اسنیدز سه نوع هستند که در پکیج نقرهای کارامد، خدمات اخذ ویزا هم ارائه
+                                answer: `پکیج های اقتصادی اسنیدز سه نوع هستند که در پکیج اقتصادی ویژه، خدمات اخذ ویزا هم ارائه
 میشه.`,
                                 isOpen: false,
                             },
@@ -931,13 +939,17 @@
                     }
                 ],
                 compareItems: [
-                    {title: 'آماده سازی مدارک اپلای', bronze: true, silver: true, gold: true},
+                    {title: 'نگارش رزومه (CV)', bronze: true, silver: true, gold: true},
+                    {title: 'نگارش انگیزه نامه (SOP)', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره زبان', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره انتخاب کالج و دانشگاه', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره شرایط زندگی', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره انتخاب رشته', bronze: true, silver: true, gold: true},
                     {title: 'تخمین شانس پذیرش', bronze: true, silver: true, gold: true},
-                    {title: 'نگارش ایمیل', bronze: false, silver: true, gold: true},
+                    {title: 'نگارش ایمیل', bronze: true, silver: true, gold: true},
+                    {title: 'پیدا کردن 20 دانشگاه', bronze: true, silver: true, gold: true},
+                    {title: '۱۲ ساعت فیلم خودآموز اپلای (ارزش +۱ میلیون تومان)', bronze: true, silver: true, gold: true},
+                    {title: 'مشاوره انتخاب استاد', bronze: true, silver: true, gold: true},
                     {title: 'مشاوره ویزا', bronze: false, silver: false, gold: true},
                     {title: 'انجام مراحل اخذ ویزا', bronze: false, silver: false, gold: true},
                     {title: 'تضمین پذیرش', bronze: false, silver: false, gold: false},
@@ -1137,7 +1149,7 @@
     }
 
     .section-intro {
-        background: url("/sneedsAssets/img/silver.png") no-repeat center / cover;
+        background: url("/sneedsAssets/img/silver.jpg") no-repeat center / cover;
     }
 
     .section-sub {
@@ -1376,6 +1388,14 @@
         font-weight: bold;
         margin: 50px 0 25px 0;
         color: #303143;
+        text-align: center;
+    }
+
+    .section-steps-title-subtext {
+        text-align: center;
+        color: #707070;
+        margin: 0 0 15px 0;
+        font-size: 16px;
     }
 
     .section-steps-title-divider {
@@ -1383,7 +1403,7 @@
         height: 4px;
         border-radius: 30px;
         background-color: #8C3DDB;
-        margin: 5px 0;
+        margin: 20px auto;
     }
 
     .step {
@@ -1399,7 +1419,6 @@
     .step-image {
         width: 150px;
         height: 150px;
-        border-radius: 50% 0 50% 50%;
     }
 
     .step-title {
@@ -1535,6 +1554,15 @@
         font-weight: bold;
     }
 
+    .support-title-sup {
+        color: white;
+        margin: 0;
+        font-size: 18px;
+        position: relative;
+        z-index: 3;
+        font-weight: bold;
+    }
+
     .support-items {
         list-style: none;
         display: flex;
@@ -1572,6 +1600,8 @@
         color: #00BFD6;
         border-radius: 20px;
         transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
     }
 
     .item--link a:hover {
@@ -1698,6 +1728,9 @@
         background-color: #F6F7FA;
         z-index: 28;
         min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .section-sub-buy {
@@ -1717,6 +1750,29 @@
     .section-sub-buy--full {
         margin-bottom: 0;
     }
+
+    .buy-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 50px 0 25px 0;
+        color: #303143;
+    }
+
+    .buy-title-sub {
+        font-size: 16px;
+        color: #707070;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+    }
+
+    .buy-title-divider {
+        width: 100px;
+        height: 4px;
+        border-radius: 30px;
+        background-color: #00BFD6;
+        margin: 20px auto;
+    }
+
 
     .buy-box {
         width: 33%;
@@ -2237,7 +2293,7 @@
     }
 
     .trusts-comments-sender-text {
-        padding: 15px;
+        padding: 15px 30px;
         color: #FFFFFF;
         text-align: center;
         line-height: 25px;

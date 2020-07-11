@@ -34,9 +34,9 @@ const router = new Router({
             }
         },
         {
-            path: '/packages/silver',
-            name: 'landing-packages-silver',
-            component: () => import("@/views/Package/LandingSilver"),
+            path: '/packages/economic',
+            name: 'landing-packages-economic',
+            component: () => import("@/views/Package/LandingEconomic"),
             meta: {
                 auth: 'optional'
             }

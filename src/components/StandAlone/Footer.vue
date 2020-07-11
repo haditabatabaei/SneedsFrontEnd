@@ -99,7 +99,7 @@
                             {name: 'مشاوره آنلاین اپلای', target: '/consultants', type: 'router', hidden: false},
                             {name: 'صفر تا صد اپلای', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d8%b5%d9%81%d8%b1-%d8%aa%d8%a7-%d8%b5%d8%af/', type: 'hyper', hidden: false},
                             {name: 'پذیرش کالج', target: '/packages/college', type: 'router', hidden: false},
-                            {name: 'پکیج ‌نقره‌ای', target: '/packages/silver', type: 'router', hidden: false},
+                            {name: 'پکیج اقتصادی', target: '/packages/economic', type: 'router', hidden: false},
                             {name: 'نگارش و تصحیح انگیز‌نامه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-sop-%d8%a7%d9%86%da%af%db%8c%d8%b2%d9%87%e2%80%8c%d9%86%d8%a7%d9%85%d9%87/', type: 'hyper', hidden: false},
                             {name: 'نگارش و تصحیح رزومه', target: 'https://sneeds.ir/%d9%86%da%af%d8%a7%d8%b1%d8%b4-cv-%d8%b1%d8%b2%d9%88%d9%85%d9%87/', type: 'hyper', hidden: false},
                             {name: 'پکیج اخذ ویزا', target: 'https://sneeds.ir/%d9%be%da%a9%db%8c%d8%ac-%d9%88%db%8c%d8%b2%d8%a7/', type: 'hyper', hidden: false},

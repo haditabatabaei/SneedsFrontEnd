@@ -284,8 +284,8 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'پکیج ‌نقره‌ای',
-                        target: '/packages/silver',
+                        itemName: 'پکیج اقتصادی',
+                        target: '/packages/economic',
                         type: 'router',
                         hasDropDown: false,
                         dropdownItems: [],
@@ -471,6 +471,7 @@
 
     .profile-menu-list-item:last-child .profile-menu-list-link {
         border-radius: 0 0 15px 15px;
+        justify-content: flex-start;
     }
 
     .profile-menu-list-link {

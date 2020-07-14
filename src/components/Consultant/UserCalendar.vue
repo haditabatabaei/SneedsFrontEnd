@@ -1,5 +1,6 @@
 <template>
     <section v-if="consultantId" class="userCalendarWrapper">
+
         <div class="userCalendarWeekWrapper isansFont--faNum">
             <button class="userCalendarWeekWrapper-button" @click.prevent="showPrevWeek()">
                 <i class="material-icons">keyboard_arrow_right</i>

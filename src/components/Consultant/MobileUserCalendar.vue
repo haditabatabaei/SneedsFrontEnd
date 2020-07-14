@@ -1,6 +1,11 @@
 <template>
     <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]"
          v-if="this.days.length !== 0 && activeDay.format">
+        <p class="timezone-desc isansFont--faNum">
+            تقویم به وقت محلی منطقه زمانی
+            {{$store.getters.timezone}}
+            است.
+        </p>
         <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek" v-if="canGoPrev"
                     :class="[{'cal-week-switcher-button--hasfree': hasFreeSlotsInWeek('prev')}]">
@@ -487,6 +492,15 @@
     .consultantBlock-calendar-warn-icon {
         color: #B82020;
         margin-left: 10px;
+    }
+
+    .timezone-desc {
+        background-color: #FFFCF4;
+        color: #a28220;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 5px 10px;
+        margin: 15px;
     }
 
     @media only screen and (max-width: 767.8px) {

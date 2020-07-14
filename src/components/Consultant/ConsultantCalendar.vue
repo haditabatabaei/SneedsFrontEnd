@@ -73,6 +73,12 @@
             هفته های آتی که شما مشخص میکنید کپی می شوند.
         </p>
 
+        <p class="timezone-desc isansFont--faNum">
+            تقویم به وقت محلی منطقه زمانی
+            {{$store.getters.timezone}}
+            است.
+        </p>
+
         <div class="myTable isansFont" v-if="days.length != 0">
             <div class="userCalendarWeekWrapper isansFont--faNum">
                 <button @click.prevent="showPrevWeek()">
@@ -89,7 +95,7 @@
                 <div class="myTableCell dayTitleCell" v-for="day in days">
                     <p v-if="isiran">{{day.day.format('dddd')}}</p>
                     <p v-else>{{day.day.format('dddd')}}</p>
-                    <p class="monthSmallText" v-if="isiran">{{day.day.format('DD MMMM')}}</p>
+                    <p class="monthSmallText isansFont--faNum" v-if="isiran">{{day.day.format('DD MMMM')}}</p>
                     <p class="monthSmallText" v-else>{{day.day.format('DD MMMM')}}</p>
                 </div>
             </div>
@@ -915,6 +921,14 @@
         background-color: black;
         color: white;
         text-align: center;
+    }
+
+    .timezone-desc {
+        background-color: #FFFCF4;
+        color: #a28220;
+        border-radius: 5px;
+        font-size: 18px;
+        padding: 5px 10px;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 0) {

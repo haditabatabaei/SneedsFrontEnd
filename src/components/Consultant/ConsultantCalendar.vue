@@ -74,9 +74,9 @@
         </p>
 
         <p class="timezone-desc isansFont--faNum">
-            تقویم به وقت محلی منطقه زمانی
+            تقویم شما به وقت محلی منطقه زمانی
             {{$store.getters.timezone}}
-            است.
+            است. نیازی به تبدیل تاریخ توسط شما وجود ندارد و سیستم به طور خودکار زمان های مناطق زمانی مختلف را به هم تبدیل می کند.
         </p>
 
         <div class="myTable isansFont" v-if="days.length != 0">

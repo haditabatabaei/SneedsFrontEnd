@@ -228,6 +228,7 @@
                         </div>
                     </div>
                     <div :class="[{'col-md-12' : windowWidth < 991.8, 'col-md-9' : windowWidth >= 991.8}]">
+                        <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="isLoading" :size="20" sizeUnit="px"/>
                         <div class="row consultantListRow">
                             <div class="col-sm-12" v-for="(consultant, index) in activeConsultants"
                                  :key="index">
@@ -261,13 +262,14 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import ConsultantBlock from '@/components/Consultant/ConsultantBlock';
+    import {MoonLoader} from "@saeris/vue-spinners";
 
     export default {
         name: "ConsultantListLayout",
         components: {
             ConsultantBlock,
+            'moon-loader': MoonLoader
         },
         data() {
             return {
@@ -287,6 +289,7 @@
                 itemsPerPage: 10,
                 currentPage: 1,
                 allItems: 1,
+                isLoading: false,
             }
         },
         computed: {
@@ -407,7 +410,7 @@
 
             async doFilter(toggleIndicator, resetCurrentPage) {
                 console.log('do filter called');
-                //this.$loading(true);
+                this.isLoading = true;
                 try {
                     window.scrollTo(0, 0);
                     let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
@@ -420,7 +423,7 @@
                 } catch (e) {
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif");
                 } finally {
-
+                    this.isLoading = false;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
                     }

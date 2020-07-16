@@ -2523,10 +2523,6 @@
     }
 
     @media only screen and (max-width: 991.8px) {
-        .section-intro {
-            background: url("/sneedsAssets/img/silver.png") no-repeat center / cover;
-        }
-
         .section-sub-intro {
             flex-direction: column;
         }

@@ -411,7 +411,7 @@
         width: 100%;
         height: 200px;
         background: transparent linear-gradient(270deg, #9C44F5 0%, #430B7C 100%) 0 0 no-repeat padding-box;
-        z-index: 8;
+        z-index: 0;
         top: 70px;
     }
 
@@ -428,6 +428,8 @@
     .package-detail-back {
         color: white;
         margin: 0 auto 15px 0;
+        display: flex;
+        align-items: center;
     }
 
     .package-detail-box {

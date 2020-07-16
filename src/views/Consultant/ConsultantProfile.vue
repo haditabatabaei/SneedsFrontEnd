@@ -401,8 +401,11 @@
                     this.consultant = result.data;
                     console.log(result);
                 } catch (e) {
-                    console.log(e.response);
-                    this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
+                    if(e.response.status == 404) {
+                        this.$router.push('/notfound');
+                    } else {
+                        this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "مشاور :‌ خطا", "error", 3000, "notif");
+                    }
                 } finally {
 
                 }

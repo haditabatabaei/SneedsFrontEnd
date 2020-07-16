@@ -252,13 +252,13 @@ const router = new Router({
             }
         },
         {
-            path: '/404',
+            path: '/notfound',
             name: 'Error404',
             component: () => import("@/views/Error404"),
         },
         {
             path: '*',
-            redirect: '/404',
+            redirect: '/notfound',
         }
     ],
     scrollBehavior() {

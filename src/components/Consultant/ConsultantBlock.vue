@@ -20,17 +20,14 @@
                     <p class="isansFont consultantBio--mobile">
                         {{studyTextMobile}}
                     </p>
+                    <p class="isansFont--faNum consultantBio--mobile">
+                        قیمت هر جلسه: {{consultant.time_slot_price}} تومان
+                    </p>
                 </div>
                 <div class="consultantBlockInfoItem">
                     <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
-                    <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">5 / {{consultant.rate}}</span>
-                    <span class="rate badRate isansFont--faNum" v-else>5 / {{consultant.rate}}</span>
-                    <router-link
-                            class="isansFont--faNum comments"
-                            :to="'/consultants/' + consultant.slug">
-                        {{consultant.comment_number}}
-                        نظر ثبت شده
-                    </router-link>
+                    <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">امتیاز: 5 / {{consultant.rate}}</span>
+                    <span class="rate badRate isansFont--faNum" v-else>امتیاز: 5 / {{consultant.rate}}</span>
                 </div>
             </div>
         </div>
@@ -39,6 +36,11 @@
             <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton isansFont">
                 مشـاهده مشاور
             </router-link>
+            <p class="consultantPrice isansFont--faNum">
+                قیمت هر جلسه:
+                {{consultant.time_slot_price}}
+                تومان
+            </p>
         </div>
 
     </router-link>
@@ -143,8 +145,7 @@
 
     .consultantBlockInfoItem {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
         flex-wrap: wrap;
     }
 
@@ -238,6 +239,12 @@
         display: none;
     }
 
+    .consultantPrice {
+        font-size: 12px;
+        margin-top: 5px;
+        color: #666;
+    }
+
     @media only screen and (max-width: 576.8px) and (min-width: 0) {
         .consultantBlockImage {
             width: 100px !important;
@@ -278,6 +285,7 @@
         .rate {
             font-size: 10px;
             padding: 5px 10px;
+            margin-top: 10px;
         }
 
 
@@ -288,8 +296,14 @@
         .consultantBio--mobile {
             display: initial;
             color: #666;
+            margin: 10px 0 0 0;
+            font-size: 12px;
         }
 
+
+        .consultantPrice {
+            display: none;
+        }
     }
 
 </style>

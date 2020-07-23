@@ -361,8 +361,9 @@
             }
         },
         methods: {
-            async getAllFormCategories() {
-                let reqs = [
+            getAllFormCategories() {
+                return new Promise((resolve, reject) => {
+                    let reqs = [
                     this.$api.get(`${this.api}/account/student-form-fields-choices/?category=grade`, this.httpConfig),
                     this.$api.get(`${this.api}/account/student-form-fields-choices/?category=apply_grade`, this.httpConfig),
                     this.$api.get(`${this.api}/account/student-form-fields-choices/?category=apply_country`, this.httpConfig),
@@ -382,11 +383,14 @@
                         this.maritalStatus = responses[4].data;
                         this.languageCertificates = responses[5].data;
                         this.semesterChoices = responses[6].data;
-                        this.initSelectableInputs();
+                        resolve();
                     })
                     .catch(error => {
                         console.log(error);
+                        reject();
                     })
+                })
+                
             },
 
             initSelectableInputs() {
@@ -411,8 +415,9 @@
                 try {
                     let result = (await this.$api.get(`${this.api}/account/student-detailed-info/`, this.httpConfig)).data[0];
                     console.log('has form?', !!result);
-                    console.log(result);
+                    console.log(!!result);
                     if (result) {
+                        //Sync visual form with users current data
                         this.packageForm.id = result.id;
                         this.editPattern = true;
                         this.packageForm.personal.age = result.age;
@@ -442,7 +447,9 @@
                         this.packageForm.description = result.comment;
                         this.packageForm.currentResumeLink = result.resume;
                     } else {
+                        //there is no syncing required. reset visual form to basic state
                         this.editPattern = false;
+                        this.initSelectableInputs();
                     }
                 } catch (e) {
                     console.log(e);

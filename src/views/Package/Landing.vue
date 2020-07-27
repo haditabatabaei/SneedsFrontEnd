@@ -330,7 +330,7 @@
                     <div class="smart-info-divider"></div>
                     <p class="smart-info-text isansFont">
                         حدود ۲ سال پیش با چندتا بچه‌های امیرکبیر جمع شدیم و برای برطرف کردن یکی از مهم‌ترین نیازهای
-                        دانشجو‌ها که اپلای و تحصیل و در خارج از کشوره یه استارتاپ راه انداختیم. هدفمون وصل کردن
+                        دانشجو‌ها که اپلای و تحصیل در خارج از کشوره یه استارتاپ راه انداختیم. هدفمون وصل کردن
                         دانشجو‌هایی که یک بار اپلای کردن و مسیر رو به طور کامل طی کردن، به شمایی که به تجربه‌ این افراد
                         نیاز دارین، بوده تا با خیال راحت بتونین همون جایی که دوست دارین درس بخونید. توی این مسیر موفق
                         شدیم به صدها دانشجو برای گرفتن پذیرش تحصیلی کمک کنیم و خدارو برای اینکه تونستیم راهنماییشون کنیم، همیشه شکر می‌کنیم.
@@ -343,7 +343,9 @@
             <div class="section-sub section-sub-support">
                 <div class="support-overlay"></div>
                 <h2 class="support-title-sup isansFont--faNum">
-                    شنبه تا پنجشنبه، ساعت 9 تا 19
+                    شنبه تا چهارشنبه، ساعت 10:00 تا 19:00
+                    <br>
+                    پنجشبه، ساعت 10:00 تا 14:00
                 </h2>
                 <h1 class="support-title isansFont">پاسخگوی شما هستیم!</h1>
                 <ul class="support-items isansFont--faNum">
@@ -466,7 +468,7 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    6 قست
+                                    6 قسط
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
@@ -560,7 +562,7 @@
                             <p class="buy-box-feature-text">
                                 پرداخت در
                                 <mark class="buy-box-feature-mark isansFont--faNum">
-                                    8 قست
+                                    8 قسط
                                     <span class="buy-box-feature-mark-modal">
                                         <span class="box-feature-mark-modal-prices">
                                             <span>
@@ -970,7 +972,7 @@
                             },
                             {
                                 title: 'منظورتون از پلتفرم بودن چیه؟',
-                                answer: `اسنیدز خدماتش رو از طریق مشاورانش در سراسر جهان ارائه میده و منظور از پلتفرم بونش این هست که بین شما به عنوان کسانی که نیاز به خدمات اپلای دارید و مشاوران ما که همگی از افراد با تجربه در این زمینه هستند برای انجام خدمات ارتباط برقرار می‌کنیم.`,
+                                answer: `اسنیدز خدماتش رو از طریق مشاورانش در سراسر جهان ارائه میده و منظور از پلتفرم بودنش این هست که بین شما به عنوان کسانی که نیاز به خدمات اپلای دارید و مشاوران ما که همگی از افراد با تجربه در این زمینه هستند برای انجام خدمات ارتباط برقرار می‌کنیم.`,
                                 isOpen: false,
                             },
                             {
@@ -1614,6 +1616,8 @@
         position: relative;
         z-index: 3;
         font-weight: bold;
+        text-align: center;
+        line-height: 26px;
     }
 
     .support-items {

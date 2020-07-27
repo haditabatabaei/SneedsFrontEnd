@@ -2,7 +2,7 @@
     <footer class="footer">
         <div class="footer-overlay isansFont">
             <p class="footer-overlay-text">
-                برای به دست آوردن کلی اطلاعات به درد بخور در مورد اپلای اسنیدز رو توی
+                برای به دست آوردن کلی اطلاعات به درد بخور در مورد اپلای، اسنیدز رو توی
                 <mark class="footer-overlay-text-marked">شبکه‌های اجتماعی</mark>
                 دنبال کن!
             </p>

@@ -3,7 +3,7 @@
         <notifications group="notif" position="bottom left" classes="notif isansFont"/>
         <top-menu v-if="showTopMenu"/>
         <transition name="fade" mode="out-in">
-            <router-view style="padding-bottom:200px" :style="computedTopMargin" :key="$route.fullPath"/>
+            <router-view :style="routerViewGlobalStyles" :key="$route.fullPath"/>
         </transition>
         <sneeds-footer v-if="showFooter" />
     </div>
@@ -20,9 +20,6 @@
             "sneeds-footer": Footer
         },
         computed: {
-            showFooter() {
-                return true
-            },
             showTopMenu() {
                 if(!!this.$route.name) {
                     return !this.$route.name.startsWith("analysis-form");                
@@ -30,9 +27,31 @@
                     return true;
                 }
             },
+
+            showFooter() {
+                if(!!this.$route.name) {
+                    return !this.$route.name.startsWith("analysis-form");
+                } else {
+                    return true;
+                }
+            },
+
+
+            routerViewGlobalStyles() {
+                return `${this.computedTopMargin};${this.computedBottomPadding}`;
+            },
+
             computedTopMargin() {
                 if(this.showTopMenu) {
                     return 'margin-top:70px'
+                } else {
+                    return ''
+                }
+            },
+
+            computedBottomPadding() {
+                if(this.showTopMenu) {
+                    return 'padding-bottom:200px'
                 } else {
                     return ''
                 }

@@ -55,9 +55,19 @@ const router = new Router({
                     name: 'analysis-form-marriage',
                     component: () => import("@/views/Form/MarriageInput"),
                     meta: {
-                        auth: 'optional'
+                        auth: 'optional',
+                        formPartName: 'marriage'
                     }
-                }
+                },
+                {
+                    path: 'militaryservice',
+                    name: 'analysis-form-militaryservice',
+                    component: () => import("@/views/Form/MilitaryServiceInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'militaryservice'
+                    }
+                },
             ]
         },
         {

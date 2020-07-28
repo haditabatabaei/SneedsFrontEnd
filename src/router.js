@@ -68,6 +68,51 @@ const router = new Router({
                         formPartName: 'militaryservice'
                     }
                 },
+                {
+                    path: 'educationalgap',
+                    name: 'analysis-form-educationalgap',
+                    component: () => import("@/views/Form/EducationalGapInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'educationalgap'
+                    }
+                },
+                {
+                    path: 'gender',
+                    name: 'analysis-form-gender',
+                    component: () => import("@/views/Form/GenderInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'gender'
+                    }
+                },
+                {
+                    path: 'workexperience',
+                    name: 'analysis-form-workexperience',
+                    component: () => import("@/views/Form/WorkExperienceInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'workexperience'
+                    }
+                },
+                {
+                    path: 'lasteducationallevel',
+                    name: 'analysis-form-lasteducationallevel',
+                    component: () => import("@/views/Form/LastEducationalLevelInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'lasteducationallevel'
+                    }
+                },
+                {
+                    path: 'papers',
+                    name: 'analysis-form-papers',
+                    component: () => import("@/views/Form/PaperInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'papers'
+                    }
+                },
             ]
         },
         {

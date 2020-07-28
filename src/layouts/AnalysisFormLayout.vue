@@ -243,6 +243,7 @@ export default {
         justify-content: stretch;
         background-color: white;
         padding-right: 35px;
+        max-width: 800px;
     }
 
     .form-layout-view {
@@ -250,9 +251,9 @@ export default {
         min-height: calc(100vh - 200px);
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         width: 100%;
-        max-width: 800px;
+        padding-top: 100px;
     }
 
     .form-progress {

@@ -1,9 +1,9 @@
 <template>
     <div>
         <notifications group="notif" position="bottom left" classes="notif isansFont"/>
-        <top-menu/>
+        <top-menu v-if="showTopMenu"/>
         <transition name="fade" mode="out-in">
-            <router-view style="margin-top:70px;padding-bottom:200px" :key="$route.fullPath"/>
+            <router-view :style="routerViewGlobalStyles" :key="$route.fullPath"/>
         </transition>
         <sneeds-footer v-if="showFooter" />
     </div>
@@ -20,8 +20,41 @@
             "sneeds-footer": Footer
         },
         computed: {
+            showTopMenu() {
+                if(!!this.$route.name) {
+                    return !this.$route.name.startsWith("analysis-form");                
+                } else {
+                    return true;
+                }
+            },
+
             showFooter() {
-                return true
+                if(!!this.$route.name) {
+                    return !this.$route.name.startsWith("analysis-form");
+                } else {
+                    return true;
+                }
+            },
+
+
+            routerViewGlobalStyles() {
+                return `${this.computedTopMargin};${this.computedBottomPadding}`;
+            },
+
+            computedTopMargin() {
+                if(this.showTopMenu) {
+                    return 'margin-top:70px'
+                } else {
+                    return ''
+                }
+            },
+
+            computedBottomPadding() {
+                if(this.showTopMenu) {
+                    return 'padding-bottom:200px'
+                } else {
+                    return ''
+                }
             }
         }
     }

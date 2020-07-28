@@ -42,6 +42,35 @@ const router = new Router({
             }
         },
         {
+            path: '/analysis/form',
+            name: 'analysis-form',
+            component: () => import("@/layouts/AnalysisFormLayout"),
+            redirect: '/analysis/form/marriage',
+            meta: {
+                auth: 'optional'
+            },
+            children: [
+                {
+                    path: 'marriage',
+                    name: 'analysis-form-marriage',
+                    component: () => import("@/views/Form/MarriageInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'marriage'
+                    }
+                },
+                {
+                    path: 'militaryservice',
+                    name: 'analysis-form-militaryservice',
+                    component: () => import("@/views/Form/MilitaryServiceInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'militaryservice'
+                    }
+                },
+            ]
+        },
+        {
             path: '/auth',
             name: 'auth',
             redirect: '/auth/login',

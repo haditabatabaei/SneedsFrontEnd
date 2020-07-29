@@ -24,7 +24,7 @@
                     {{sessionStartDate.format('HH:mm')}}
                     <span v-if="$store.getters.isiran" class="session-date-time--separator">تا</span>
                     <span v-else class="session-date-time--separator">till</span>
-                    {{sessionEndDate.format('HH:mm')}}
+                    {{sessionStartDate.clone().add('50', 'minutes').format('HH:mm')}}
                 </time>
             </p>
             <p class="session-remain session-ongoing" v-if="sessionIsOngoing">

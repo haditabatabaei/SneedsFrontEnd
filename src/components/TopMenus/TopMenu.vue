@@ -1,5 +1,5 @@
 <template>
-    <nav class="topNavWrapper">
+    <nav class="topNavWrapper" :class="[{'top-0': isNavFixedOnZero}]" id="topnav">
         <div v-if="profileDropdownMenuOpen" class="before-profileDropdown-overlay" @click="toggleProfileDropdown"></div>
         <div class="container navbarContainer">
             <div class="mobileNavbarToggleWrapper">
@@ -183,8 +183,7 @@
 </template>
 
 <script>
-    import Logo from './LogoComponent';
-
+    import Logo from '@/components/TopMenus/LogoComponent';
 
     export default {
         name: "TopMenu",
@@ -194,6 +193,7 @@
         data() {
             return {
                 profileDropdownMenuOpen: false,
+                isNavFixedOnZero: false,
                 userProfileDropDownItems: [
                     {
                         name: 'اطلاعات کاربری',
@@ -316,6 +316,24 @@
                 return this.$store.getters.getMobileMenuShow;
             }
         },
+        mounted() {
+            document.addEventListener('scroll', event => {
+                // console.log(event);
+                console.log(scrollY);
+                if(scrollY > 0) {
+                    if(!this.isNavFixedOnZero) {
+                        this.isNavFixedOnZero = true;
+                    }
+                } else {
+                    if(this.isNavFixedOnZero) {
+                        this.isNavFixedOnZero = false;
+                    }
+                }
+            })
+        },
+        beforeDestroy() {
+            document.removeEventListener('scroll', () => {});
+        },
         methods: {
             toggleProfileDropdown() {
                 this.profileDropdownMenuOpen = !this.profileDropdownMenuOpen;
@@ -333,7 +351,7 @@
         width: 100%;
         position: fixed;
         min-height: 70px;
-        top: 0;
+        top: 43px;
         left: 0;
         background-color: white;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
@@ -341,6 +359,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 100ms ease-in-out;
+    }
+
+    .topNavWrapper.top-0 {
+        top: 0;
     }
 
     .navbarContainer {

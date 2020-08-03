@@ -1,7 +1,7 @@
 <template>
     <div>
         <notifications group="notif" position="bottom left" classes="notif isansFont"/>
-        <top-menu/>
+        <sneeds-header/>
         <transition name="fade" mode="out-in">
             <router-view style="margin-top:70px;padding-bottom:200px" :key="$route.fullPath"/>
         </transition>
@@ -13,10 +13,12 @@
 <script>
     import TopMenu from "@/components/TopMenus/TopMenu";
     import Footer from "@/components/StandAlone/Footer";
+    import SneedsHeader from "@/components/TopMenus/SneedsHeader";
     export default {
         name: 'App',
         components: {
             "top-menu": TopMenu,
+            "sneeds-header": SneedsHeader,
             "sneeds-footer": Footer
         },
         computed: {

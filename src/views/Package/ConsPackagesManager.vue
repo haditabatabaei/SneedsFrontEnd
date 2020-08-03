@@ -81,6 +81,7 @@
                             <moon-loader class="loading-icon" color="#fff" :loading="Boolean(newTaskInput.isLoadingDelete)" :size="15" sizeUnit="px"/>
                         </button>
                     </div>
+                    <div class="upload-progress isansFont--faNum" v-if="isFileUploading" :style="`width:${percentCompleted}%`">{{percentCompleted}}%</div>
                 </div>
             </div>
             <div class="modal-overlay" v-if="isShowingNewTaskModal" id="closable-overlay"
@@ -144,6 +145,7 @@
                             <moon-loader class="loading-icon" color="#fff" :loading="Boolean(newTaskInput.isLoading)" :size="15" sizeUnit="px"/>
                         </button>
                     </div>
+                    <div class="upload-progress isansFont--faNum" v-if="isFileUploading" :style="`width:${percentCompleted}%`">{{percentCompleted}}%</div>
                 </div>
             </div>
         </transition>
@@ -247,7 +249,7 @@
                               :class="[{'status--done': task.status === 'done' || task.status === 'finished', 'status--inprogress': task.status === 'in_progress'}]">
                             {{getTaskStatusName(task)}}
                         </mark>
-                    </p>
+                       </p>
                     <div class="body-tab-row-text more-info-row">
                         <span v-if="!isOnMobile">
                             <a v-if="task.file" :href="task.file" target="_blank">
@@ -313,6 +315,8 @@
                 isShowingNewTaskModal: false,
                 isShowingTaskMoreInfoModal: false,
                 isShowingCurrentPhaseDescription: false,
+                percentCompleted: 0,
+                isFileUploading: false,
                 newTaskInput: {
                     title: '',
                     status: 'in_progress',
@@ -509,9 +513,13 @@
                     payload.append("description", this.newTaskInput.description);
                     if (this.newTaskInputFile) {
                         payload.append("file", this.newTaskInputFile);
+                        this.isFileUploading = true;
                     }
-
-                    let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, this.multipartHttpConfig);
+                    let result = await this.$api.patch(`${this.api}/store/packages/sold-store-package-phase-detail-detail/${this.newTaskInput.id}/`, payload, {...this.multipartHttpConfig,
+                        onUploadProgress: progressEvent => {
+                            this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                        }
+                    });
                     this.hideTaskMoreInfo();
                     await this.getCurrentPhaseTasks();
                     this.$notify({
@@ -535,6 +543,7 @@
                         duration: 3000,
                     })
                 } finally {
+                    this.isFileUploading = false;
                     this.newTaskInput.isLoading = false;
                 }
             },
@@ -550,8 +559,13 @@
                     payload.append("description", this.newTaskInput.description);
                     if (this.newTaskInputFile) {
                         payload.append("file", this.newTaskInputFile);
+                        this.isFileUploading = true;
                     }
-                    let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, this.multipartHttpConfig);
+                    let result = await this.$api.post(`${this.api}/store/packages/sold-store-package-phase-detail-list/`, payload, {...this.multipartHttpConfig,
+                        onUploadProgress: progressEvent => {
+                            this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                        }
+                    });
                     await this.getCurrentPhaseTasks();
                     this.$notify({
                         group: 'notif',
@@ -575,6 +589,7 @@
                         duration: 3000,
                     });
                 } finally {
+                    this.isFileUploading = false;
                     this.newTaskInput.isLoading = false;
                 }
             },
@@ -662,6 +677,9 @@
             }
         },
         created() {
+            let fooObj = {name: 'hadi'}
+            let foo2 = {...fooObj, lastName: "tabatabaei"};
+            console.log(foo2);
             this.getSoldPackage();
         }
     }
@@ -677,6 +695,16 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .upload-progress {
+        height: 15px;
+        background-color: #00bfa5;
+        font-size: 10px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .package-title {

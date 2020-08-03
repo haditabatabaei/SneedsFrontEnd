@@ -193,7 +193,6 @@ export default new Vuex.Store({
                         "Content-Type": "multipart/form-data",
                         "CLIENT-TIMEZONE": state.timezone,
                     },
-                    timeout: 10000,
                 }
             } else {
                 return {
@@ -201,7 +200,6 @@ export default new Vuex.Store({
                         "Content-Type": "multipart/form-data",
                         "CLIENT-TIMEZONE": state.timezone,
                     },
-                    timeout: 10000,
                 }
             }
         },

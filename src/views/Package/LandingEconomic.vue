@@ -621,13 +621,13 @@
                         </h3>
                         <div class="compare-item-values">
                             <p class="compare-item-value">
-                                5 میلیون تومان -> 4قسط
-                            </p>
-                            <p class="compare-item-value">
                                 6 میلیون تومان -> 4قسط
                             </p>
+                            <p class="compare-item-value">
+                                7 میلیون تومان -> 4قسط
+                            </p>
                             <p class="compare-item-value compare-item-value--bordered">
-                                8 میلیون تومان -> 6قسط
+                                9 میلیون تومان -> 6قسط
                             </p>
                         </div>
                     </div>

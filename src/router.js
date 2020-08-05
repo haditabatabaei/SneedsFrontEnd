@@ -113,6 +113,42 @@ const router = new Router({
                         formPartName: 'papers'
                     }
                 },
+                {
+                    path: 'languagecerts',
+                    name: 'analysis-form-languagecerts',
+                    component: () => import("@/views/Form/LanguageCertificateInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'languagecerts'
+                    }
+                },
+                {
+                    path: 'destination',
+                    name: 'analysis-form-destination',
+                    component: () => import("@/views/Form/DestinationInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'destination'
+                    }
+                },
+                {
+                    path: 'funds',
+                    name: 'analysis-form-funds',
+                    component: () => import("@/views/Form/FundsInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'funds'
+                    }
+                },
+                {
+                    path: 'otherinformation',
+                    name: 'analysis-form-otherinformation',
+                    component: () => import("@/views/Form/OtherInformationInput"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'otherinformation'
+                    }
+                },
             ]
         },
         {

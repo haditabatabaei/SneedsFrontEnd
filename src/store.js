@@ -45,7 +45,11 @@ export default new Vuex.Store({
                 [4, 'gender'],
                 [5, 'workexperience'],
                 [6, 'lasteducationallevel'],
-                [7, 'papers']
+                [7, 'papers'],
+                [8, 'languagecerts'],
+                [9, 'destination'],
+                [10, 'funds'],
+                [11, 'otherinformation']
             ]
             )
         },

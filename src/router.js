@@ -105,12 +105,21 @@ const router = new Router({
                     }
                 },
                 {
-                    path: 'papers',
-                    name: 'analysis-form-papers',
+                    path: 'paper',
+                    name: 'analysis-form-paper',
                     component: () => import("@/views/Form/PaperInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'papers'
+                        formPartName: 'paper'
+                    }
+                },
+                {
+                    path: 'paperitems',
+                    name: 'analysis-form-paperitems',
+                    component: () => import("@/views/Form/PaperItems"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'paperitems'
                     }
                 },
                 {

@@ -36,7 +36,19 @@ export default new Vuex.Store({
         timezoneSafe: ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
 
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    },
+
+        analysisFormPageMapping: new Map(
+            [   
+                [1, 'marriage'],
+                [2, 'militaryservice'],
+                [3, 'educationalgap'],
+                [4, 'gender'],
+                [5, 'workexperience'],
+                [6, 'lasteducationallevel'],
+                [7, 'papers']
+            ]
+            )
+        },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
             state.userIsLoggedIn = loggedInStatus;
@@ -237,6 +249,7 @@ export default new Vuex.Store({
             } else {
                 return 'en'
             }
-        }
+        },
+        analysisFormPageMapping: state => state.analysisFormPageMapping
     }
 })

@@ -1,0 +1,141 @@
+<template>
+    <div class="form-dropdown isansFont--faNum" :class="[{'dropdown-opened': isDropdownOpen}]" @click.self="toggleDropdown">
+        <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-if="selectedOption">{{selectedOption.name}}</p>
+        <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-else>{{label}}</p>
+        <select style="display:none;" v-model="selectedOption" name="dropdown-input" id="dropdown-input">
+            <option :value="option.id" v-for="option in options">
+                {{option.name}}
+            </option>
+        </select>
+        <transition name="fade">
+            <ul class="dropdown-items" v-if="isDropdownOpen">
+                <li class="dropdown-item" :class="[{'dropdown-item-selected': selectedOption == option}]" v-for="option in options" @click="selectOption(option)">{{option.name}}</li>
+            </ul>
+        </transition>
+        <transition name="fade">
+            <i class="material-icons" @click.self="toggleDropdown" v-if="isDropdownOpen">
+                keyboard_arrow_up
+            </i>
+            <i class="material-icons" @click.self="toggleDropdown" v-else>
+                keyboard_arrow_down
+            </i>
+        </transition>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "DropdownInput",
+        data() {
+            return {
+                selectedOption: null,
+                isDropdownOpen: false
+            }
+        },
+        props: {
+            options: {
+                type: Array,
+                default: () => [
+                    {name: 'آپشن 1', id: 1},
+                    {name: 'آپشن 2', id: 2},
+                ]
+            },
+            label: {
+                type: String,
+                default: () => "منو دراپ داون"
+            }
+        },
+        computed: {},
+        methods: {
+            toggleDropdown() {
+                this.isDropdownOpen = !this.isDropdownOpen;
+            },
+
+            selectOption(option) {
+                this.selectedOption = option;
+                this.isDropdownOpen = false;
+            }
+        },
+        mounted() {
+            // document.body.addEventListener('click', () => {
+            //     this.isDropdownOpen = false;
+            // })
+        },
+        beforeDestroy() {
+            // document.body.onclick = null;
+        },
+        created() {
+        }
+    }
+</script>
+
+<style scoped>
+    .form-dropdown {
+        min-height: 40px;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        position: relative;
+        background-color: #F8F8F8;
+        border: 1px solid #F2F2F2;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .form-dropdown.dropdown-opened {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .form-dropdown i {
+        color: #9B9999;
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .dropdown-selectdoption {
+        color: #9B9999;
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .dropdown-items {
+        position: absolute;
+        top: 40px;
+        list-style: none;
+        background-color: #F8F8F8;
+        align-self: stretch;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+        margin: 0;
+        border-radius: 0 0 10px 10px;
+        z-index: 15;
+    }
+
+    .dropdown-item {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        cursor: pointer;
+        transition: all 100ms ease-in-out;
+        color: #9B9999;
+    }
+
+    .dropdown-item:hover {
+        background-color: #d7d5d5;
+    }
+
+    .dropdown-item.dropdown-item-selected {
+        background-color: #eeecec;
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+        border-radius: 0 0 10px 10px;
+    }
+</style>

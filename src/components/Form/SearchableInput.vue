@@ -1,7 +1,7 @@
 <template>
     <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen}]">
-        <input type="text" autocomplete="off" v-model="inputValue" class="searchable-input" id="searchable-input" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
-        <label for="searchable-input" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
+        <input type="text" autocomplete="off" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
+        <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
         <i class="material-icons">
             search
         </i>
@@ -18,7 +18,8 @@
         data() {
             return {
                 inputValue: null,
-                isSearchableOpen: false
+                isSearchableOpen: false,
+                id: Math.floor(Math.random() * 1000)
             }
         },
         props: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="number-input-wrapper isansFont--faNum">
+    <div class="number-input-wrapper" :class="[{'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
         <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" v-model="value">
         <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
         <div class="number-input-controls gadugiFont" v-if="hasKeys">
@@ -46,6 +46,10 @@
             hasLabel: {
                 type: Boolean,
                 default: () => true
+            },
+            isLtr: {
+                type: Boolean,
+                default: () => false
             }
         },
         watch: {
@@ -98,7 +102,6 @@
         margin: 0 5px;
         width: 25px;
         height: 25px;
-        /*font-weight: bold;*/
         font-size: 20px;
         background-color: #FFFFFF;
         border-radius: 7px;
@@ -133,4 +136,22 @@
         border: none;
         border-left: 2px solid #9B9999;
     }
+
+    /** LTR Config **/
+
+    .number-input-wrapper.wrapper--ltr {
+        flex-direction: row-reverse;
+    }
+
+    .number-input-wrapper.wrapper--ltr .number-input-value {
+        border-left: none;
+        border-right: 2px solid #9B9999;
+        text-align: center;
+    }
+
+    .number-input-wrapper.wrapper--ltr .number-input-label {
+        justify-content: flex-end;
+    }
+
+
 </style>

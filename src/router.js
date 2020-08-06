@@ -105,6 +105,15 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'educationallevelsitems',
+                    name: 'analysis-form-educationallevelsitems',
+                    component: () => import("@/views/Form/EducationalLevelsItems"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'educationallevelsitems'
+                    }
+                },
+                {
                     path: 'paper',
                     name: 'analysis-form-paper',
                     component: () => import("@/views/Form/PaperInput"),
@@ -132,12 +141,30 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'languagecertsitems',
+                    name: 'analysis-form-languagecertsitems',
+                    component: () => import("@/views/Form/LanguageCertificateItems"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'languagecertsitems'
+                    }
+                },
+                {
                     path: 'destination',
                     name: 'analysis-form-destination',
                     component: () => import("@/views/Form/DestinationInput"),
                     meta: {
                         auth: 'optional',
                         formPartName: 'destination'
+                    }
+                },
+                {
+                    path: 'destinationitems',
+                    name: 'analysis-form-destinationitems',
+                    component: () => import("@/views/Form/DestinationItems"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'destinationitems'
                     }
                 },
                 {

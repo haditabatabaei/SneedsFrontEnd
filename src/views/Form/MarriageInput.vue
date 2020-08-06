@@ -108,4 +108,28 @@ export default {
         display: flex;
         align-items: center;
     }
+
+    @media only screen and (max-width: 767.8px) {
+        .marriage-wrapper {
+            margin: 0 20px;
+        }
+
+        .marriage-holder {
+            margin: 0;
+            padding: 10px;
+            width: calc(50%);
+        }
+
+        .marriage-holder[for*="single"] {
+            margin-left: 10px;
+        }
+
+        .marriage-holder[for*="married"] {
+            margin-right: 10px;
+        }
+
+        .marriage-holder-image {
+            width: 80%;
+        }
+    }
 </style>

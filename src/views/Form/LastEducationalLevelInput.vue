@@ -80,4 +80,17 @@
         width: calc(50% - 40px);
         margin: 10px 20px;
     }
+    
+    @media only screen and (max-width: 767.8px) {
+        .edulevel-wrapper {
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .edulevel-input {
+            width: auto;
+            matgin: 10px 0;
+        }
+    }
 </style>

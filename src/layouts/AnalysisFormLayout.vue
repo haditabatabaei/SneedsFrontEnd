@@ -20,19 +20,21 @@
             </aside>
             <main class="form-layout-view-wrapper">
                 <router-view @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view> 
-                <div class="form-confirm isansFont">
-                    <button @click="submitAndMoveNext()" class="form-confirm-next">
+                <div class="progress-wrapper">
+                    <div class="form-confirm isansFont">
+                        <button @click="submitAndMoveNext()" class="form-confirm-next">
                         <span>
                         ادامه
                         </span>
-                        <i class="material-icons">keyboard_arrow_left</i>
-                    </button>
-                    <button @click="goBack()" class="form-confirm-back">
-                        <i class="material-icons">keyboard_arrow_right</i>
-                    </button>
-                 </div>
-                <div class="form-progress">
-                    <span class="form-progress-value" :style="currentPageWidthStyle"></span>
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </button>
+                        <button @click="goBack()" class="form-confirm-back">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                    </div>
+                    <div class="form-progress">
+                        <span class="form-progress-value" :style="currentPageWidthStyle"></span>
+                    </div>
                 </div>
             </main>
         </section>
@@ -74,7 +76,7 @@ export default {
         nextPageRoute() {
             let nextPage = this.currentPage + 1;
             if(nextPage > this.lastPage) {
-                this.nextPage = this.lastPage;
+                nextPage = this.lastPage;
             }
             return `/analysis/form/${this.pageMap.get(nextPage)}`
         },
@@ -118,7 +120,13 @@ export default {
     },
 
     created() {
-        
+        console.log('analysis layout created.');
+        if(!localStorage.hasOwnProperty('aformid')) {
+            console.log('create new form')
+            localStorage.setItem('aformid', 10)
+        } else {
+            console.log(`continue as ${localStorage.getItem('aformid')}`)
+        }
     }
 }
 </script>
@@ -330,5 +338,64 @@ export default {
         background-color: #707070;
         color: #F2F2F2;
     }
+
+    .progress-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    @media only screen and (max-width: 767.8px) {
+        .form-title {
+            display: none;
+        }
+
+        .form-layout-view-wrapper {
+            width: 100%;
+            padding: 0;
+        }
+
+        .progress-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -11px 16px #0000001A;
+            justify-content: center;
+        }
+
+        .form-confirm-back {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #959D9D;
+            padding: 10px;
+            background: none;
+        }
+
+        .form-confirm-back i {
+            font-size: 24px;
+        }
+
+        .form-confirm {
+            align-self: stretch;
+            margin: 20px 20px 0 20px;
+        }
+
+        .form-confirm-next {
+            width: 100%;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 </style>

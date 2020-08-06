@@ -132,4 +132,34 @@
     .edu-gap {
         width: calc(50% - 27px);
     }
+
+    @media only screen and (max-width: 767.8px) {
+        .militaryservice-wrapper {
+            margin: 0 20px;
+            flex-wrap: nowrap;
+        }
+
+        .militaryservice-holder {
+            margin: 0;
+            padding: 10px;
+            width: calc(50%);
+        }
+
+        .militaryservice-holder[for*="-have"] {
+            margin-left: 10px;
+        }
+
+        .militaryservice-holder[for*="-donthave"] {
+            margin-right: 10px;
+        }
+
+        .militaryservice-holder-image {
+            width: 80%;
+        }
+
+        .edu-gap {
+            width: auto;
+            height: 50px;
+        }
+    }
 </style>

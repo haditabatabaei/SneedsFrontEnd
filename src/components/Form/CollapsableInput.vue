@@ -2,11 +2,11 @@
     <div class="collapsable-wrapper isansFont--faNum">
         <p class="collapsable-title" @click="toggleOpen">
                 <i class="material-icons collapsable-open-icon" v-if="isOpen">
-                    add_circle_outline
-                </i>
-            <i class="material-icons collapsable-open-icon" v-else>
                     remove
                 </i>
+            <i class="material-icons collapsable-open-icon" v-else>
+                add_circle_outline
+            </i>
             {{title}}
             <i class="material-icons collapsable-done-icon" v-if="isFilled">done</i>
         </p>

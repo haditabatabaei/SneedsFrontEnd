@@ -1,5 +1,6 @@
 <template>
     <div class="form-dropdown isansFont--faNum" :class="[{'dropdown-opened': isDropdownOpen}]" @click.self="toggleDropdown">
+        <div class="overlay-dropdown-closable" v-if="isDropdownOpen" @click="isDropdownOpen = false"></div>
         <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-if="selectedOption">{{selectedOption.name}}</p>
         <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-else>{{label}}</p>
         <select style="display:none;" v-model="selectedOption" name="dropdown-input" id="dropdown-input">
@@ -80,6 +81,17 @@
         border: 1px solid #F2F2F2;
         border-radius: 10px;
         cursor: pointer;
+    }
+
+    .overlay-dropdown-closable {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        z-index: 14;
+        background: rgba(255, 255, 255, 0);
+        cursor: default;
     }
 
     .form-dropdown.dropdown-opened {

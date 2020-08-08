@@ -1,6 +1,7 @@
 <template>
     <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen}]">
-        <input type="text" autocomplete="off" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
+        <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
+        <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
         <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
         <i class="material-icons">
             search
@@ -32,10 +33,18 @@
                 default: () => [
                     {name: 'مقدار تست 1', id: 1},
                     {name: 'علاقه تست 2', id: 2},
-                    {name: 'تقی', id: 3},
-                    {name: 'نقی', id: 4},
+                    {name: 'نقی', id: 3},
                 ]
             },
+        },
+        computed: {
+            openInputStyle() {
+                if(this.isSearchableOpen) {
+                    return 'position:relative;z-index:15'
+                } else {
+                    return ''
+                }
+            }
         },
         methods: {
             focusOnInput(e) {
@@ -50,14 +59,6 @@
                 this.isSearchableOpen = true;
                 this.$emit('input', this.inputValue);
             }
-        },
-        mounted() {
-            document.body.onclick = () => {
-                this.isSearchableOpen = false;
-            }
-        },
-        beforeDestroy() {
-            document.body.onclick = null;
         },
         created() {
 
@@ -75,6 +76,16 @@
         background-color: #F8F8F8;
         border: 1px solid #F2F2F2;
         border-radius: 10px;
+    }
+
+    .overlay-dropdown-closable {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        z-index: 14;
+        background: rgba(255, 255, 255, 0);
     }
 
     .searchable-wrapper.searchable--open {

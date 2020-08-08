@@ -62,12 +62,11 @@
 
     .militaryservice-wrapper  {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+
     }
 
     .militaryservice-holder {
-        width: 50%;
+        width: calc(100% - 360px);
         max-width: 335px;
         border-radius: 12px;
         background-color: white;
@@ -131,6 +130,18 @@
 
     .edu-gap {
         width: calc(50% - 27px);
+    }
+
+    @media only screen and (max-width: 991.8px) and (min-width: 767.8px) {
+        .militaryservice-wrapper {
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
+
+        .militaryservice-holder {
+            max-width: initial;
+            height: 296px;
+        }
     }
 
     @media only screen and (max-width: 767.8px) {

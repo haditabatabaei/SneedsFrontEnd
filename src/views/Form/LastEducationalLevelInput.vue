@@ -27,26 +27,26 @@
         },
         data() {
             return {
-                searchRes: []
+                searchRes: [],
+                dataset: []
             }
         },
         methods: {
             searchByVal(query) {
+
                 if(!!query) {
                     console.log('search by ', query);
-                    this.searchRes = [
-                        {name: 'مقدار تست 1', id: 1},
-                        {name: 'علاقه تست 2', id: 2},
-                        {name: 'تقی', id: 3},
-                        {name: 'نقی', id: 4},
-                    ].filter(item => item.name.includes(query));
+                    this.searchRes = this.dataset.filter(item => item.name.includes(query));
                 } else {
                     return this.searchRes = [];
                 }
             }
         },
         created() {
-
+            this.dataset = []
+            for(let i = 0; i < 100; i++) {
+                this.dataset.push({name: `تست ${i}`, id: i})
+            }
         }
     }
 </script>
@@ -56,7 +56,6 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        /* padding-right: 50px; */
     }
 
     .edulevel-title {
@@ -80,6 +79,8 @@
         width: calc(50% - 40px);
         margin: 10px 20px;
     }
+
+
     
     @media only screen and (max-width: 767.8px) {
         .edulevel-wrapper {

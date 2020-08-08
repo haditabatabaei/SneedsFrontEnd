@@ -59,4 +59,15 @@
         width: calc(50% - 40px);
         margin: 0 20px 20px 20px;
     }
-</style>ظ
+    
+    @media only screen and (max-width: 767.8px) {
+        .form-destination-wrapper {
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+
+        .dest-input {
+            width: auto;
+        }
+    }
+</style>

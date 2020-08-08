@@ -146,4 +146,11 @@
     .fund-input {
         width: 50%;
     }
+
+    @media only screen and (max-width: 767.8px) {
+        .fund-input {
+            width: auto;
+        }
+
+    }
 </style>

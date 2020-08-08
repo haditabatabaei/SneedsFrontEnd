@@ -126,4 +126,36 @@
         padding: 5px 15px;
     }
 
+    @media only screen and (max-width: 767.8px) {
+        .paper-items-item {
+            flex-direction: column;
+            position: relative;
+        }
+
+        .paper-item-icon {
+            margin: 20px 0 10px 0;
+        }
+
+        .paper-item-info {
+            text-align: center;
+            margin: 10px 0 0 0;
+        }
+
+        .paper-item-remove {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin: 0;
+        }
+
+        .paper-items-addnew {
+            align-self: center;
+        }
+
+        .paper-items-notif {
+            justify-content: center;
+        }
+    }
+
+
 </style>

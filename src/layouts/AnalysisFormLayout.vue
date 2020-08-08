@@ -5,17 +5,17 @@
       
         <section class="form-container">
             <aside class="form-title">
-                <!-- <h1 class="form-title-text" style="font-family: Sans-Serif !important">
+                <h1 class="form-title-text" style="font-family: Sans-Serif !important">
                     sneeds.ir
-                </h1> -->
-                <!-- <p class="form-title-desc danaFont">
+                </h1>
+                <p class="form-title-desc danaFont">
                     برای رسید به اهدافت نیاز به کمک داری؟
                     <br>
                     <span class="form-title-desc-emphase">
                         درست اومدی!
                         <span class="form-title-desc-star"></span>
                     </span>
-                </p> -->
+                </p>
                 <img draggable="false" class="form-title-image" src="/sneedsAssets/img/takhminstars.svg" alt="کاربران اسنیدز">
             </aside>
             <main class="form-layout-view-wrapper">
@@ -93,6 +93,18 @@ export default {
 
         pageMap() {
             return this.$store.getters.analysisFormPageMapping;
+        },
+
+        api() {
+            return this.$store.getters.getApi
+        },
+
+        httpConfig() {
+            return this.$store.getters.httpConfig
+        },
+
+        multipartHttpConfig() {
+            return this.$store.getters.multipartHttpConfig
         }
     },
 
@@ -121,12 +133,13 @@ export default {
 
     created() {
         console.log('analysis layout created.');
-        if(!localStorage.hasOwnProperty('aformid')) {
-            console.log('create new form')
-            localStorage.setItem('aformid', 10)
-        } else {
-            console.log(`continue as ${localStorage.getItem('aformid')}`)
-        }
+        // this.$api.get(`${this.api}/`)
+        // if(!localStorage.hasOwnProperty('aformid')) {
+        //     console.log('create new form')
+        //     localStorage.setItem('aformid', 10)
+        // } else {
+        //     console.log(`continue as ${localStorage.getItem('aformid')}`)
+        // }
     }
 }
 </script>
@@ -134,7 +147,6 @@ export default {
 <style scoped>
     .analysis-form {
         width: 100%;
-        /*background-color: orange;*/
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -159,8 +171,6 @@ export default {
     .form-container {
         width: 100%;
         min-height: 100vh;
-        /* max-width: 1140px; */
-        /*background: red;*/
         display: flex;
         justify-content: flex-start;
         z-index: 5;
@@ -170,11 +180,7 @@ export default {
         width: 40%;
         max-width: 600px;
         align-self: stretch;
-        /* background: url('/sneedsAssets/img/takhmin.jpg') no-repeat 100% center; */
-        /* background-size: cover; */
         position: relative;
-        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#20639b+0,051c30+100 */
-
     }
 
     .form-title-circle {
@@ -186,7 +192,6 @@ export default {
         background-color: #0F4775;
         border-radius: 50% 0 50% 50%;
         z-index: 5;
-        display:
     }
 
     .form-title-image {
@@ -244,8 +249,6 @@ export default {
     .form-layout-view-wrapper {
         min-height: 100vh;
         width: 60%;
-        /* background-color: blue; */
-        /* height: 400px; */
         display: flex;
         flex-direction: column;
         justify-content: stretch;
@@ -255,7 +258,6 @@ export default {
     }
 
     .form-layout-view {
-        /* background-color: orange; */
         min-height: calc(100vh - 200px);
         display: flex;
         align-items: center;
@@ -290,7 +292,6 @@ export default {
         justify-content: center;
         flex-direction: row-reverse;
         height: 45px;
-        /* width: 100px; */
         max-width: 800px;
         align-self: flex-end;
         margin-left: 20px;
@@ -345,6 +346,31 @@ export default {
     }
 
 
+    @media only screen and (max-width: 991.8px ) and (min-width: 767.8px) {
+        .form-title {
+            display: none;
+        }
+
+        .form-container {
+            flex-direction: column;
+        }
+
+        .analysis-form-bluebg {
+            display: none;
+        }
+
+        .form-title-circle {
+            display: none;
+        }
+
+        .form-layout-view-wrapper {
+            width: auto;
+            padding: 0;
+            max-width: initial;
+        }
+    }
+
+
     @media only screen and (max-width: 767.8px) {
         .form-title {
             display: none;
@@ -387,15 +413,4 @@ export default {
             width: 100%;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 </style>

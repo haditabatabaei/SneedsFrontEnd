@@ -257,6 +257,11 @@ const router = new Router({
             component: () => import("@/views/Error404"),
         },
         {
+            path: '/contactus',
+            name: "ConactUs",
+            component: () => import("@/views/ContactUs")
+        },
+        {
             path: '*',
             redirect: '/notfound',
         }

@@ -124,7 +124,7 @@
                             {name: 'آموزش شرکت در وبینار', target: '/', hidden: true},
                             {name: 'رزرو مشاوره آنلاین', target: '/', hidden: true},
                             {name: 'درباره‌ ما', target: 'https://sneeds.ir/%D8%AF%D8%B1%D8%A8%D8%A7%D8%B1%D9%87-%D9%85%D8%A7/', type: 'hyper', hidden: false},
-                            {name: 'تماس با ما', target: 'https://sneeds.ir/%D8%AA%D9%85%D8%A7%D8%B3/', type: 'hyper', hidden: false},
+                            {name: 'تماس با ما', target: '/contactus', type: 'router', hidden: false},
                             {name: 'فرصت های شغلی', target: 'https://jobinja.ir/companies/sneeds/jobs', type: 'hyper', hidden: false},
                         ]
                     }

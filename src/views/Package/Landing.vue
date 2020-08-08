@@ -2736,6 +2736,21 @@
             justify-content: center;
         }
 
+        .section-sub-support {
+            height: auto;
+            border-radius: 0;
+        }
+
+        .support-overlay {
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .support-title-sup {
+            margin-top: 20px;
+            font-weight: normal;
+        }
+
         .faq-box {
             padding: 0;
         }

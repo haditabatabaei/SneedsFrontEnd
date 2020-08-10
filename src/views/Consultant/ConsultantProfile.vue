@@ -326,10 +326,9 @@
                             this.showNameModal = true;
                         } else {
                             try {
-                                //this.$loading(true);
                                 let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                                 console.log(result);
-                                payload.products.forEach(slot => this.$store.commit('removeItemFromStash', {itemToRemove: slot,  type: 'time-slot'}))
+                                payload.products.forEach(slotId => this.$store.commit('removeSlotFromStashById', slotId ))
                                 this.$router.push(`/carts/${result.data.id}`);
                             } catch (e) {
                                 console.log(e);

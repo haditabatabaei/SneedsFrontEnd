@@ -102,6 +102,10 @@ export default new Vuex.Store({
             state.stash.push(newItem);
         },
 
+        removeSlotFromStashById(state, slotIdToRemove) {
+            state.stash = state.stash.filter(slot => slotIdToRemove != slot.id);
+        },
+
         removeItemFromStash(state, {itemToRemove, type}) {
             console.log('remove item fired by', {itemToRemove, type});
             switch (type) {

@@ -11,7 +11,7 @@
 
                 <div class="card-info-box">
                     <i class="material-icons info-box-icon">local_phone</i>
-                    <p class="info-box-text info-box-text--hasLtr">
+                    <p class="info-box-text info-box-text--hasLtr info-box-text--bold">
                         021 2842 8353
                         <br>
                         <span class="box-text-sub">
@@ -23,10 +23,9 @@
                 </div>
 
 
-
                 <div class="card-info-box card-info-box--centered">
                     <i class="material-icons info-box-icon">mail</i>
-                    <p class="info-box-text">
+                    <p class="info-box-text info-box-text--bold ">
                         info@sneeds.ir
                     </p>
                 </div>
@@ -35,21 +34,24 @@
                 <div class="card-info-box">
                     <i class="material-icons info-box-icon">location_on</i>
                     <p class="info-box-text">
-                        تهران، چهار راه ولیعصر، خ ولیعصر ،
-                        ساختمان مرکز رشد دانشگاه امیرکبیر شتابدهنده سامسونگ
+                        تهران، چهارراه ولیعصر، خیابان ولیعصر،
+                        ساختمان مرکز رشد دانشگاه امیرکبیر، شتابدهنده سامسونگ
                     </p>
                 </div>
 
 
-                <a href="#" class="card-info-link link--telegram"> پشتیبانی تلگرام</a>
-                <a href="#" class="card-info-link link--insta">پشتیبانی اینستاگرام</a>
-                <a href="#" class="card-info-link">همکاری با اسنیزد</a>
+                <a href="http://bit.ly/2FPshaR" target="_blank" class="card-info-link link--telegram"> پشتیبانی
+                    تلگرام</a>
+                <a href="http://bit.ly/3581UUU" target="_blank" class="card-info-link link--insta">پشتیبانی
+                    اینستاگرام</a>
+                <a href="https://jobinja.ir/companies/sneeds/jobs" target="_blank" class="card-info-link link--sneeds">
+                    همکاری با اسنیدز
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </a>
 
             </div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.935633226956!
-                2d51.41175488553077!3d35.703201536375715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!
-                1s0x3f8e010d267b1425%3A0xe28f491d82aa8c83!2z2K_Yp9mG2LTar9in2YfigIwg2LXZhti52KrbjCDYp9mF
-                24zYsdqp2KjbjNix!5e0!3m2!1sfa!2s!4v1595505949474!5m2!1sfa!2s" width="98%" height="585px"
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10897.77831034992!2d51.414102256476326!3d35.703367810843105!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe28f491d82aa8c83!2z2K_Yp9mG2LTar9in2YfigIwg2LXZhti52KrbjCDYp9mF24zYsdqp2KjbjNix!5e0!3m2!1sfa!2sus!4v1597061352663!5m2!1sfa!2sus"
+                    width="98%" height="585px"
                     frameborder="0" allowfullscreen="true" aria-hidden="false" tabindex="0" class="card-info-map">
             </iframe>
         </div>
@@ -63,7 +65,7 @@
 </script>
 
 <style scoped>
-    section {
+    .contactus {
         margin-top: 120px;
         font-size: 18px;
         background-color: #F5F7FA;
@@ -79,7 +81,7 @@
     .curve {
         width: 100%;
         min-height: 300px;
-        background: linear-gradient(-2deg,#00D5EE 22%,#009FB3 22.5%);
+        background: linear-gradient(-2deg, #00D5EE 22%, #009FB3 22.5%);
         color: bisque;
         clip-path: polygon(0 0, 100% 0, 100% 83%, 0% 100%);
         z-index: 10;
@@ -119,16 +121,12 @@
 
     .dots {
         width: 150px;
-
         min-height: 120px;
-
         margin-top: 30px;
-        background-color:#F5F7FA ;
-        background-image: radial-gradient(#9B9999 1px,transparent 1px);
+        background-color: #F5F7FA;
+        background-image: radial-gradient(#9B9999 1px, transparent 1px);
         background-size: 20px 20px;
-
         justify-self: center;
-
     }
 
     .card-title {
@@ -149,8 +147,8 @@
 
     .card-info-box {
         display: flex;
-        flex-direction: flex-end;
         margin-bottom: 20px;
+        margin-top: 40px;
     }
 
     .card-info-box--centered {
@@ -161,6 +159,11 @@
         margin: 0;
         padding-left: 10px;
         font-size: 16px;
+        width: calc(100% - 30px);
+    }
+
+    .info-box-text.info-box-text--bold {
+        font-weight: bold;
     }
 
     .info-box-text.info-box-text--hasLtr {
@@ -169,32 +172,60 @@
 
     .box-text-sub {
         font-size: 13px;
+        font-weight: normal;
     }
 
     .info-box-icon {
-        margin-left: 5px;
         color: #00D5EE;
+        height: 30px;
+        width: 30px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #00D5EE;
+        border-radius: 50%;
+        margin-left: 15px;
     }
 
     .card-info-link {
         margin: 0 0 10px 10px;
-        padding: 5px 15px;
+        padding: 10px 15px;
         text-align: center;
         border-radius: 5px;
         background-color: #F7FFFF;
         color: #009FB3;
         font-size: 16px;
+        transition: all 100ms ease-in-out;
     }
 
     .card-info-link.link--telegram {
         background-color: #eff8ff;
         color: #00D4ED;
-        margin-top: auto
+        margin-top: auto;
+        font-size: 13px;
     }
 
     .card-info-link.link--insta {
         background-color: #F8F5F8;
         color: #FF64F9;
+        font-size: 13px;
+    }
+
+    .card-info-link.link--sneeds {
+        box-shadow: 0 8px 46px #6E6E6E29;
+        margin-bottom: -30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-info-link:hover {
+        filter: brightness(95%);
+    }
+
+    .card-info-link.link--sneeds i {
+        margin-right: 10px;
     }
 
     .card-info-map {
@@ -205,6 +236,7 @@
         right: -35px;
         border-radius: 20px;
         border: 5px solid white;
+        background-color: white;
     }
 
 
@@ -241,6 +273,10 @@
 
         .card-info-link {
             margin-left: 0;
+        }
+
+        .card-info-link.link--sneeds {
+            margin-bottom: 10px;
         }
     }
 

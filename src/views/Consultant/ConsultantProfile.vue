@@ -142,19 +142,19 @@
                                 <span class="isansFont--faNum" v-else>بدون امتیاز</span>
                             </div>
                         </div>
-                        <div class="consultantSidebarBlock--selectedItems isansFont--faNum">
+                        <div class="consultantSidebarBlock--selectedItems isansFont--faNum" style="max-height:400px;overflow: auto">
                             <ul class="consultantSidebarBlock--selectedItems_list">
                                 <li v-if="stash.length === 0">
                                     زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
                                     انتخاب شود.
                                 </li>
                                 <li v-for="item in stash">
-                                    <i class="material-icons" role="button"
-                                       @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
-                                    <span v-if="$store.getters.isiran">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
-                                    <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " till " + item.end_time_date.format('HH:mm') }}</span>
-                                    <br>
-                                    <span class="stash-item-consultant-name">{{item.old_slot.consultant.first_name + " " + item.old_slot.consultant.last_name}}</span>
+                                   <i class="material-icons" role="button"
+                                   @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
+                                <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <br>
+                                    <span class="stash-item-consultant-name">{{item.consultant.first_name + " " + item.consultant.last_name}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -193,10 +193,10 @@
                             <li v-for="item in stash">
                                 <i class="material-icons" role="button"
                                    @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
-                                <span v-if="$store.getters.isiran">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " تا " + item.end_time_date.format('HH:mm') }}</span>
-                                <span v-else class="isansFont">{{item.start_time_date.format('dddd') + " - " + item.start_time_date.format('HH:mm') + " till " + item.end_time_date.format('HH:mm') }}</span>
+                                <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
                                 <br>
-                                <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.old_slot.consultant.first_name + " " + item.old_slot.consultant.last_name}}</strong>
+                                <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.consultant.first_name + " " + item.consultant.last_name}}</strong>
                             </li>
                         </ul>
                     </div>
@@ -246,6 +246,9 @@
             isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
+            locale() {
+                return this.$store.getters.locale;
+            },
             stash() {
                 return this.$store.getters.getStash;
             },
@@ -277,6 +280,10 @@
         },
 
         methods: {
+            getJalaliLocale(date) {
+                return jalali(date).locale(this.locale);
+            },
+
             scrollEnoughToShowAvatar() {
                 this.showSidebarAvatar = window.scrollY >= 150 && this.windowWidth > 991.8;
             },
@@ -308,7 +315,7 @@
                 console.log(this.stash);
                 let payload = {"products": []};
                 this.stash.forEach(item => {
-                    payload.products.push(item.old_slot.id);
+                    payload.products.push(item.id);
                 });
 
                 console.log(payload);
@@ -322,6 +329,7 @@
                                 //this.$loading(true);
                                 let result = await this.$api.post(`${this.$store.getters.getApi}/cart/carts/`, payload, this.$store.getters.httpConfig);
                                 console.log(result);
+                                payload.products.forEach(slot => this.$store.commit('removeItemFromStash', {itemToRemove: slot,  type: 'time-slot'}))
                                 this.$router.push(`/carts/${result.data.id}`);
                             } catch (e) {
                                 console.log(e);

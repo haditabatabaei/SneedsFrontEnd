@@ -8,27 +8,26 @@
             حداقل یک گزینه را انتخاب کنید.
         </h3>
         <div class="marriage-wrapper isansFont">
-            <input v-model="selectedFundStatus" id="fullfund" type="radio" name="marriage" value="fullfund">
-            <input v-model="selectedFundStatus" id="halffund" type="radio" name="marriage" value="halffund">
-            <input v-model="selectedFundStatus" id="selffund" type="radio" name="marriage" value="selffund">
-            <input v-model="selectedFundStatus" id="nomatter" type="radio" name="marriage" value="nomatter">
-            <label for="fullfund" class="marriage-holder" :class="[{'holder--selected': selectedFundStatus == 'fullfund'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedFundStatus == 'fullfund'">done</i>
+            <input v-model="fullFund" id="fullfund" type="checkbox" value="fullfund">
+            <input v-model="halfFund" id="halffund" type="checkbox" value="halffund">
+            <input v-model="selfFund" id="selffund" type="checkbox" value="selffund">
+            <label for="fullfund" class="marriage-holder" :class="[{'holder--selected': fullFund}]">
+                <i class="material-icons holder-selected-icon" v-if="fullFund">done</i>
                 <img draggable="false" src="/sneedsAssets/img/fullfund.svg" class="marriage-holder-image" alt="بورسیه کامل تحصیلی">
                 <p class="marriage-holder-text">Full-Fund</p>
             </label>
-            <label for="halffund" class="marriage-holder" :class="[{'holder--selected': selectedFundStatus == 'halffund'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedFundStatus == 'halffund'">done</i>
+            <label for="halffund" class="marriage-holder" :class="[{'holder--selected': halfFund}]">
+                <i class="material-icons holder-selected-icon" v-if="halfFund">done</i>
                 <img draggable="false" src="/sneedsAssets/img/halffund.svg" class="marriage-holder-image" alt="بورسه نصف تحصیلی">
                 <p class="marriage-holder-text">Half-Fund</p>
             </label>
-            <label for="selffund" class="marriage-holder" :class="[{'holder--selected': selectedFundStatus == 'selffund'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedFundStatus == 'selffund'">done</i>
+            <label for="selffund" class="marriage-holder" :class="[{'holder--selected': selfFund}]">
+                <i class="material-icons holder-selected-icon" v-if="selfFund">done</i>
                 <img draggable="false" src="/sneedsAssets/img/selffund.svg" class="marriage-holder-image" alt="خود بورسیه تحصیلی">
                 <p class="marriage-holder-text">Self-Fund</p>
             </label>
-            <label for="nomatter" class="marriage-holder" :class="[{'holder--selected': selectedFundStatus == 'nomatter'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedFundStatus == 'nomatter'">done</i>
+            <label for="nomatter" class="marriage-holder" :class="[{'holder--selected': nomatter}]">
+                <i class="material-icons holder-selected-icon" v-if="nomatter">done</i>
                 <img draggable="false" src="/sneedsAssets/img/nomatter.svg" class="marriage-holder-image" alt="فرقی نمی کند">
                 <p class="marriage-holder-text">فرقی نمی کند</p>
             </label>
@@ -48,18 +47,48 @@
         },
         data() {
             return {
-                selectedFundStatus: 'nomatter'
+                fullFund: null,
+                halfFund: null,
+                selfFund: null,
+                moneyItems: []
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            },
+
+            nomatter() {
+                return !(this.fullFund || this.halfFund || this.selfFund) || (this.fullFund && this.selfFund && this.halfFund);
             }
         },
         methods: {},
         created() {
-
+            this.fullFund = this.detailedForm.prefers_full_fund;
+            this.halfFund = this.detailedForm.prefers_half_fund;
+            this.selfFund = this.detailedForm.prefers_self_fund;
         }
     }
 </script>
 
 <style scoped>
-    input[type="radio"] {
+    input[type="checkbox"] {
         display: none;
     }
 

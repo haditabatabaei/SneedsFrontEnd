@@ -95,6 +95,14 @@ export default {
             return this.$store.getters.analysisFormPageMapping;
         },
 
+        user() {
+            return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+        },
+
+        detailedForm() {
+            return this.$store.getters.detailedForm;
+        },
+
         api() {
             return this.$store.getters.getApi
         },
@@ -131,8 +139,14 @@ export default {
         }
     },
 
-    created() {
-        console.log('analysis layout created.');
+    async created() {
+
+        console.log('analysis layout created.', this.user);
+        if(this.detailedForm == null) {
+            let result = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig)
+            console.log(result.data);
+            this.$store.commit('setDetailedForm', result.data)
+        }
         // this.$api.get(`${this.api}/`)
         // if(!localStorage.hasOwnProperty('aformid')) {
         //     console.log('create new form')

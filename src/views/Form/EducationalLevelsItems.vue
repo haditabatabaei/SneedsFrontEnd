@@ -4,13 +4,13 @@
             <i class="material-icons">done</i>
             اطلاعات این مقطع با موفقیت اضافه شد.
         </p>
-        <div class="paper-items-wrapper">
-            <div class="paper-items-item">
+        <div class="paper-items-wrapper isansFont--faNum">
+            <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
-                    <p class="paper-item-summary">کارشناسی ارشد دانشگاه شریف تهران</p>
-                    <p class="paper-item-title">گروه تجربی رشته مهندسی پزشکی تا سال ۲۰۲۱ معدل ۱۷.۹۸</p>
-                    <p class="paper-item-title">عنوان پایان نامه: معرفی سیستم های نگه دارنده</p>
+                    <p class="paper-item-summary">{{getSummary(item)}}</p>
+                    <p class="paper-item-title">{{getDesc(item)}}</p>
+                    <p class="paper-item-title">عنوان پایان نامه: {{item.thesis_title}}</p>
                 </div>
                 <button class="paper-item-remove">
                     <i class="material-icons">close</i>
@@ -26,7 +26,61 @@
 
 <script>
     export default {
-        name: "EducationalLevelsItems"
+        name: "EducationalLevelsItems",
+        data() {
+            return {
+                items: []
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        methods: {
+            getGrade(grade) {
+                switch (grade.toLowerCase()) {
+                    case 'bachelor':
+                        return 'کارشناسی'
+                    case 'master':
+                        return 'کارشناسی ارشد';
+                    case 'phd':
+                        return 'دکتری';
+                    case 'post_doc':
+                        return 'پسا دکتری';
+
+                }
+            },
+
+            getSummary(item) {
+                return `${this.getGrade(item.grade)} ${item.university.name}`
+            },
+
+            getDesc(item) {
+                return ` ${item.major.name} تا سال ${item.graduate_in} معدل ${item.gpa}`
+            }
+
+
+        },
+        created() {
+            this.items = this.detailedForm.universities;
+        }
     }
 </script>
 
@@ -120,7 +174,7 @@
         border-radius: 5px;
         padding: 5px 15px;
     }
-    
+
     @media only screen and (max-width: 767.8px) {
         .paper-items-item {
             flex-direction: column;

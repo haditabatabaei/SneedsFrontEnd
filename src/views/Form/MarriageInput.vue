@@ -29,8 +29,30 @@ export default {
             selectedMarriageStatus: null
         }
     },
-    created() {
+    computed: {
+        user() {
+            return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+        },
 
+        detailedForm() {
+            return this.$store.getters.detailedForm;
+        },
+
+        api() {
+            return this.$store.getters.getApi
+        },
+
+        httpConfig() {
+            return this.$store.getters.httpConfig
+        },
+
+        multipartHttpConfig() {
+            return this.$store.getters.multipartHttpConfig
+        }
+    },
+    created() {
+        console.log('in marriage input', this.detailedForm);
+        this.selectedMarriageStatus = this.detailedForm.is_married ? 'married' : 'single'
     }
 }
 </script>

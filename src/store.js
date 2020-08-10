@@ -25,6 +25,8 @@ export default new Vuex.Store({
             "phone_number": ''
         },
 
+        detailedForm: null,
+
         api: process.env.VUE_APP_ROOT_API,
 
         authApi: process.env.VUE_APP_ROOT_API,
@@ -68,6 +70,14 @@ export default new Vuex.Store({
 
         toggleMobileMenuShow(state) {
             state.mobileMenuShow = !state.mobileMenuShow;
+        },
+
+        setDetailedForm(state, form) {
+            state.detailedForm = form;
+        },
+
+        setDetailedFormProperty(state, {prop, value}) {
+            state.detailedForm[prop] = value;
         },
 
         logout(state) {
@@ -250,6 +260,8 @@ export default new Vuex.Store({
         timezoneSafe: state => state.timezoneSafe,
 
         isiran: state => state.timezoneSafe === 'Asia-Tehran',
+
+        detailedForm: state => state.detailedForm,
 
         locale: state => {
             if (state.timezoneSafe === 'Asia-Tehran') {

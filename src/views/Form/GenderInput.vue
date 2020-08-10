@@ -19,7 +19,7 @@
             </label>
         </div>
         <div class="inputs">
-            <c-number-input class="edu-gap" :step="1" :default-value="18" @set-number="setGapYears" label="سال سن" />
+            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears" label="سال سن" />
         </div>
     </section>
 </template>
@@ -34,7 +34,7 @@
         data() {
             return {
                 selectedEducationalGapStatus: null,
-                gapYears: null
+                gapYears: 18
             }
         },
         methods: {
@@ -42,8 +42,31 @@
                 this.gapYears = newGapYear;
             }
         },
-        created() {
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
 
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        created() {
+            console.log('in ms input', this.detailedForm);
+            this.selectedEducationalGapStatus = this.detailedForm.gender == "MALE" ? 'male' : 'female'
+            this.setGapYears(this.detailedForm.age)
         }
     }
 </script>

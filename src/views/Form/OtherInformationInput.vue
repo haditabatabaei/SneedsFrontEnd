@@ -9,11 +9,11 @@
         </h3>
 
         <div class="form-other-items">
-            <c-collapsable-input title="آدرس لینکدین" :is-open="true" />
-            <c-collapsable-input title="سابقه المپیاد" />
-            <c-collapsable-input title="آدرس وبسایت شخصی" />
+            <c-collapsable-input title="آدرس لینکدین" :is-open="true" :default-value="detailedForm.linkedin_url" />
+            <c-collapsable-input title="سابقه المپیاد" :default-value="detailedForm.olympiad" />
+            <c-collapsable-input title="آدرس وبسایت شخصی" :default-value="detailedForm.homepage_url" />
             <c-collapsable-input title="آپلود رزومه" />
-            <c-collapsable-input title="سایر توضیحات" />
+            <c-collapsable-input title="سایر توضیحات" :default-value="detailedForm.comment" />
         </div>
     </section>
 </template>
@@ -26,11 +26,43 @@
             'c-collapsable-input': CollapsableInput
         },
         data() {
-            return {}
+            return {
+                fullFund: null,
+                halfFund: null,
+                selfFund: null,
+                moneyItems: []
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            },
+
+            nomatter() {
+                return !(this.fullFund || this.halfFund || this.selfFund) || (this.fullFund && this.selfFund && this.halfFund);
+            }
         },
         methods: {},
         created() {
-
+            this.fullFund = this.detailedForm.prefers_full_fund;
+            this.halfFund = this.detailedForm.prefers_half_fund;
+            this.selfFund = this.detailedForm.prefers_self_fund;
         }
     }
 </script>

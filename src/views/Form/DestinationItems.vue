@@ -4,18 +4,15 @@
             <i class="material-icons">done</i>
             اطلاعات این مقصد با موفقیت اضافه شد.
         </p>
-        <div class="paper-items-wrapper">
-            <div class="paper-items-item">
+        <div class="paper-items-wrapper isansFont--faNum">
+            <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
-                    <p class="paper-item-summary">کشور کانادا، سال ۲۰۲۰</p>
-                    <p class="paper-item-title">گروه هنر مقطع کارشناسی ارشد رشته نقاشی</p>
+                    <p class="paper-item-summary">کشور {{item.country.name}}، {{item.semester_year.semester}} {{item.semester_year.year}}</p>
+                    <p class="paper-item-title">مقطع {{getGrade(item.grade)}} رشته {{item.major.name}}</p>
                     <div class="paper-item-universitytags">
-                        <span class="university-tag">
-                            Amirkabir (AUT)
-                        </span>
-                        <span class="university-tag">
-                            Amirkabir uni (AUT)
+                        <span class="university-tag" v-for="uni in item.universities">
+                            {{uni.name}}
                         </span>
                     </div>
                 </div>
@@ -33,7 +30,79 @@
 
 <script>
     export default {
-        name: "DestinationItems"
+        name: "DestinationItems",
+        data() {
+            return {
+                items: []
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        methods: {
+            getGrade(grade) {
+                switch (grade.toLowerCase()) {
+                    case 'bachelor':
+                        return 'کارشناسی'
+                    case 'master':
+                        return 'کارشناسی ارشد';
+                    case 'phd':
+                        return 'دکتری';
+                    case 'post_doc':
+                        return 'پسا دکتری';
+
+                }
+            },
+
+            getAuthorNumber(authorNumber) {
+                switch (authorNumber.toLowerCase()) {
+                    case 'first':
+                        return 'اول'
+                    case 'second':
+                        return 'دوم'
+                    case 'third':
+                        return 'سوم'
+                    case 'fourth_or_more':
+                        return 'چهارم به بعد'
+                }
+            },
+
+            getJournalReputation(rp) {
+                switch (rp.toLowerCase()) {
+                    case 'one_to_three':
+                        return '1 تا 3';
+                    case 'four_to_then':
+                        return '4 تا 10'
+                    case 'above_ten':
+                        return 'بالای 10'
+                }
+            },
+
+            getSummary(item) {
+                return `${this.getType(item.type)}، ${item.publish_year}، نویسنده ${this.getAuthorNumber(item.which_author)}`
+            },
+        },
+        created() {
+            this.items = this.detailedForm.want_to_applies;
+        }
     }
 </script>
 

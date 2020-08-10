@@ -64,6 +64,11 @@
             resizableVertical: {
                 type: Boolean,
                 default: () => false
+            },
+
+            defaultValue: {
+                type: String,
+                default: () => null
             }
         },
         methods: {
@@ -72,7 +77,7 @@
             }
         },
         created() {
-
+            this.inputValue = this.defaultValue
         }
     }
 </script>

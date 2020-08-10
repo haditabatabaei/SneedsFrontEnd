@@ -19,7 +19,7 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
-            <c-number-input class="edu-gap" :step="0.5" @set-number="setGapYears" label="سال وقفه تحصیلی" />
+            <c-number-input class="edu-gap" :step="0.5" :default-value="gapYears" @set-number="setGapYears" label="سال وقفه تحصیلی" />
         </div>
     </section>
 </template>
@@ -42,8 +42,33 @@
                 this.gapYears = newGapYear;
             }
         },
-        created() {
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
 
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        created() {
+            console.log('in ms input', this.detailedForm);
+            this.selectedEducationalGapStatus = !!this.detailedForm.academic_break ? 'have' : 'donthave'
+            if(this.selectedEducationalGapStatus == 'have') {
+                this.setGapYears(this.detailedForm.academic_break)
+            }
         }
     }
 </script>

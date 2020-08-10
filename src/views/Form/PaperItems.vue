@@ -4,22 +4,12 @@
             <i class="material-icons">done</i>
             اطلاعات این مقاله با موفقیت اضافه شد.
         </p>
-        <div class="paper-items-wrapper">
-            <div class="paper-items-item">
+        <div class="paper-items-wrapper isansFont--faNum">
+            <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
-                    <p class="paper-item-summary">مقاله کنفرانسی، ۲۰۱۹، نویسنده اول</p>
-                    <p class="paper-item-title">عنوان مقاله: معرفی سیستم‌های نگهداری</p>
-                </div>
-                <button class="paper-item-remove">
-                    <i class="material-icons">close</i>
-                </button>
-            </div>
-            <div class="paper-items-item">
-                <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info">
-                    <p class="paper-item-summary">مقاله کنفرانسی، ۲۰۱۹، نویسنده اول</p>
-                    <p class="paper-item-title">عنوان مقاله: معرفی سیستم‌های نگهداری</p>
+                    <p class="paper-item-summary">{{getSummary(item)}}</p>
+                    <p class="paper-item-title">عنوان مقاله: {{item.title}}</p>
                 </div>
                 <button class="paper-item-remove">
                     <i class="material-icons">close</i>
@@ -35,7 +25,74 @@
 
 <script>
     export default {
-        name: "PaperItems"
+        name: "PaperItems",
+        data() {
+            return {
+                items: []
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        methods: {
+            getType(type) {
+                switch (type.toLowerCase()) {
+                    case 'journal':
+                        return 'مقاله ژورنالی'
+                    case 'conference':
+                        return 'مقاله کنفرانسی';
+                }
+            },
+
+            getAuthorNumber(authorNumber) {
+                switch (authorNumber.toLowerCase()) {
+                    case 'first':
+                        return 'اول'
+                    case 'second':
+                        return 'دوم'
+                    case 'third':
+                        return 'سوم'
+                    case 'fourth_or_more':
+                        return 'چهارم به بعد'
+                }
+            },
+
+            getJournalReputation(rp) {
+                switch (rp.toLowerCase()) {
+                    case 'one_to_three':
+                        return '1 تا 3';
+                    case 'four_to_then':
+                        return '4 تا 10'
+                    case 'above_ten':
+                        return 'بالای 10'
+                }
+            },
+
+            getSummary(item) {
+                return `${this.getType(item.type)}، ${item.publish_year}، نویسنده ${this.getAuthorNumber(item.which_author)}`
+            },
+        },
+        created() {
+            this.items = this.detailedForm.publications;
+        }
     }
 </script>
 

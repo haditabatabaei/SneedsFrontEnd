@@ -29,8 +29,30 @@ export default {
             selectedMilitaryserviceStatus: null
         }
     },
-    created() {
+    computed: {
+        user() {
+            return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+        },
 
+        detailedForm() {
+            return this.$store.getters.detailedForm;
+        },
+
+        api() {
+            return this.$store.getters.getApi
+        },
+
+        httpConfig() {
+            return this.$store.getters.httpConfig
+        },
+
+        multipartHttpConfig() {
+            return this.$store.getters.multipartHttpConfig
+        }
+    },
+    created() {
+        console.log('in ms input', this.detailedForm);
+        this.selectedMilitaryserviceStatus = this.detailedForm.military_service_status == 'PASSED' ? 'donthave' : 'have'
     }
 }
 </script>

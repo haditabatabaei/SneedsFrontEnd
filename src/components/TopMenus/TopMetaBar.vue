@@ -4,7 +4,7 @@
             <p class="meta-slogan">
                 تمام سرمایه ما کاربرانمان هستند، همیشه پاسخگوی شما هستیم
                 |
-                <a href="https://sneeds.ir/%d8%aa%d9%85%d8%a7%d8%b3/" class="slogan-link">تماس با ما</a>
+                <router-link to="/contactus" class="slogan-link">تماس با ما</router-link>
             </p>
             <ul class="meta-socials">
                 <li class="social-item" v-for="social in socials">

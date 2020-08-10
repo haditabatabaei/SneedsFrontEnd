@@ -3,7 +3,6 @@
         <div class="commentWrapper">
             <div class="commentSender">
                 <h5 class="senderName isansFont"> {{comment.user.first_name}} </h5>
-                <h6 class="dateCreated isansFont">{{this.fromNow}}</h6>
             </div>
             <div class="commentMessage">
                 <p class="isansFont" v-if="!showEditPanel">{{comment.message}}</p>
@@ -28,7 +27,6 @@
         <div class="commentWrapper adminWrapper" v-if="comment.admin_reply != null">
             <div class="commentSender">
                 <h5 class="senderName isansFont"> ادمین </h5>
-                <h6 class="dateCreated isansFont">{{this.adminFromNow}}</h6>
             </div>
 
             <div class="commentMessage">

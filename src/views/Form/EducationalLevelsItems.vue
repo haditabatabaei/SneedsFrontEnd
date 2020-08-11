@@ -12,7 +12,7 @@
                     <p class="paper-item-title">{{getDesc(item)}}</p>
                     <p class="paper-item-title">عنوان پایان نامه: {{item.thesis_title}}</p>
                 </div>
-                <button class="paper-item-remove">
+                <button class="paper-item-remove" @click="deleteUniversityItem(item)">
                     <i class="material-icons">close</i>
                 </button>
             </div>
@@ -81,12 +81,20 @@
 
             getDesc(item) {
                 return ` ${item.major.name} تا سال ${item.graduate_in} معدل ${item.gpa}`
+            },
+
+            async deleteUniversityItem(item) {
+                let result = await this.$api.delete(`${this.api}/account/student-detailed-university-throughs/${item.id}/`, this.httpConfig);
+                console.log(result);
+                this.$store.commit('setDetailedFormProperty', {prop: 'universities', value: this.detailedForm.universities.filter(uni => uni.id != item.id)})
             }
 
 
         },
         created() {
-            this.items = this.detailedForm.universities;
+            if(this.detailedForm) {
+                this.items = this.detailedForm.universities;
+            }
         }
     }
 </script>

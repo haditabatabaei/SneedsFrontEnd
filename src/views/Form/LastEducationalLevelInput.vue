@@ -1,16 +1,18 @@
 <template>
     <section class="form-edulevel">
         <h1 class="edulevel-title isansFont">
-            آخرین مقطع تحصیلی
+            مقطع تحصیلی
             <i class="material-icons">info</i>
         </h1>
         <div class="edulevel-wrapper">
-            <c-dropdown-input class="edulevel-input"/>
-            <c-searchable-input class="edulevel-input" @input="searchByVal" :dataset="searchRes"/>
-            <c-searchable-input class="edulevel-input" @input="searchByVal" :dataset="searchRes"/>
-            <c-number-input class="edulevel-input" :defaultValue="16.25" :step="0.25" label="معدل از 20" :has-keys="false" />
-            <c-number-input class="edulevel-input" :defaultValue="2020"  label="سال فراقت از تحصیل" :max-value="10000" />
+            <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی" :options="gradeOptions" @select-option="gradeSelected" />
+            <c-searchable-input class="edulevel-input" :loading="majorLoading" @input="searchMajorByVal" label="رشته" :dataset="availableMajors" @select-option="setSelectedMajor" />
+            <c-searchable-input class="edulevel-input" :loading="uniLoading" @input="searchUniversityByVal" label="دانشگاه" :dataset="availableUniversities" @select-option="setSelectedUniversity" />
+            <c-number-input class="edulevel-input" :defaultValue="16.25" :step="0.25" label="معدل از 20" :has-keys="false" @set-number="setGpa" />
+            <c-number-input class="edulevel-input" :defaultValue="2020"  label="سال فراقت از تحصیل" :max-value="10000" @set-number="setGraduateIn" />
+            <c-simple-input class="edulevel-input" label="عنوان پایان نامه" @input="setThesisTitle"/>
         </div>
+        <button @click="addUniversityThrough">Add uni through</button>
     </section>
 </template>
 
@@ -18,35 +20,137 @@
     import DropdownInput from "@/components/Form/DropdownInput";
     import NumberInput from "@/components/Form/NumberInput";
     import SearchableInput from "@/components/Form/SearchableInput";
+    import SimpleInput from "@/components/Form/SimpleInput";
     export default {
         name: "LastEducationalLevel",
         components: {
             "c-number-input": NumberInput,
             "c-dropdown-input": DropdownInput,
-            "c-searchable-input": SearchableInput
+            "c-searchable-input": SearchableInput,
+            "c-simple-input": SimpleInput
         },
         data() {
             return {
-                searchRes: [],
-                dataset: []
+                availableMajors: [],
+                availableUniversities: [],
+                selectedGrade: null,
+                selectedMajor: null,
+                selectedUniversity: null,
+                thesisTitle: null,
+                gpa: null,
+                graduateIn: null,
+                majorLoading: false,
+                uniLoading: false,
+                gradeOptions: [
+                    {name: 'کارشناسی', nameEnglish: 'BACHELOR'},
+                    {name: 'کارشناسی ارشد', nameEnglish: 'MASTER'},
+                    {name: 'دکتری', nameEnglish: 'PHD'},
+                    {name: 'پسا دکتری', nameEnglish: 'POST_DOC'}
+                ]
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
             }
         },
         methods: {
-            searchByVal(query) {
-
-                if(!!query) {
-                    console.log('search by ', query);
-                    this.searchRes = this.dataset.filter(item => item.name.includes(query));
-                } else {
-                    return this.searchRes = [];
+            async addUniversityThrough() {
+                if(this.detailedForm && this.gpa != null && this.graduateIn != null && this.selectedGrade != null && this.selectedMajor != null && this.selectedUniversity != null) {
+                    let payload = {
+                        student_detailed_info: this.detailedForm.id,
+                        university: this.selectedUniversity.id,
+                        grade: this.selectedGrade.nameEnglish,
+                        major: this.selectedMajor.id,
+                        thesis_title: this.thesisTitle,
+                        graduate_in: this.graduateIn,
+                        gpa: this.gpa
+                    }
+                    console.log(payload)
+                    let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
+                    console.log(res.data);
                 }
+            },
+
+            async searchMajorByVal(query) {
+                try {
+                    if(!!query && query.length > 3) {
+                        console.log('search by ', query);
+                        this.majorLoading = true;
+                        this.availableMajors = (await this.$api.get(`${this.api}/account/form-field-of-studies/?&search=${query}`, this.httpConfig)).data;
+                        // this.dataset.filter(item => item.name.includes(query));
+                    } else {
+                        return this.availableMajors = [];
+                    }
+                } catch (e) {
+
+                } finally {
+                    this.majorLoading = false;
+                }
+            },
+            async searchUniversityByVal(query) {
+                try {
+                    if(!!query && query.length > 3) {
+                        this.uniLoading = true;
+                        console.log('search by ', query);
+                        this.availableUniversities = (await this.$api.get(`${this.api}/account/form-universities/?&search=${query}`, this.httpConfig)).data;
+                        // this.dataset.filter(item => item.name.includes(query));
+                    } else {
+                        return this.availableUniversities = [];
+                    }
+                } catch (e) {
+
+                } finally {
+                    this.uniLoading = false;
+                }
+
+            },
+
+            setSelectedMajor(item) {
+                this.selectedMajor = item;
+                console.log(item);
+            },
+
+            setSelectedUniversity(item) {
+                this.selectedUniversity = item;
+                console.log(item)
+            },
+
+            setGpa(gpa) {
+                this.gpa = gpa;
+            },
+
+            setGraduateIn(graduateIn) {
+                this.graduateIn = graduateIn;
+            },
+
+            setThesisTitle(title) {
+                this.thesisTitle = title;
+            },
+
+            gradeSelected(grade) {
+                this.selectedGrade = grade;
+                console.log(this.selectedGrade);
             }
         },
         created() {
-            this.dataset = []
-            for(let i = 0; i < 100; i++) {
-                this.dataset.push({name: `تست ${i}`, id: i})
-            }
+
         }
     }
 </script>

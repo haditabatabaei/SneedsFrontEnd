@@ -5,27 +5,35 @@
             <i class="material-icons">info</i>
         </h1>
         <div class="militaryservice-wrapper isansFont">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice" value="female">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-donthave" type="radio" name="militaryservice" value="male">
-            <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': selectedEducationalGapStatus == 'female'}]">
+            <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice"
+                   value="female">
+            <input v-model="selectedEducationalGapStatus" id="militaryservice-donthave" type="radio"
+                   name="militaryservice" value="male">
+            <label for="militaryservice-have" class="militaryservice-holder"
+                   :class="[{'holder--selected': selectedEducationalGapStatus == 'female'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'female'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/female.svg" class="militaryservice-holder-image" alt="دارای وقفه تحصیلی">
+                <img draggable="false" src="/sneedsAssets/img/female.svg" class="militaryservice-holder-image"
+                     alt="دارای وقفه تحصیلی">
                 <p class="militaryservice-holder-text">خانم</p>
             </label>
-            <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': selectedEducationalGapStatus == 'male'}]">
+            <label for="militaryservice-donthave" class="militaryservice-holder"
+                   :class="[{'holder--selected': selectedEducationalGapStatus == 'male'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'male'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/male.svg" class="militaryservice-holder-image" alt="عدم وقفه تحصیلی">
+                <img draggable="false" src="/sneedsAssets/img/male.svg" class="militaryservice-holder-image"
+                     alt="عدم وقفه تحصیلی">
                 <p class="militaryservice-holder-text">آقا</p>
             </label>
         </div>
         <div class="inputs">
-            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears" label="سال سن" />
+            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears"
+                            label="سال سن"/>
         </div>
     </section>
 </template>
 
 <script>
     import NumberInput from "@/components/Form/NumberInput";
+
     export default {
         name: 'GenderInput',
         components: {
@@ -39,7 +47,7 @@
         },
         methods: {
             setGapYears(newGapYear) {
-                this.gapYears = newGapYear;
+                this.gapYears = Number(newGapYear);
             }
         },
         computed: {
@@ -63,10 +71,26 @@
                 return this.$store.getters.multipartHttpConfig
             }
         },
+        watch: {
+            gapYears(newVal) {
+                console.log(newVal);
+                this.$store.commit('setDetailedFormProperty', {prop: 'age', value: newVal})
+            },
+            selectedEducationalGapStatus(newVal) {
+                console.log(newVal);
+                if(newVal != null) {
+                    this.$store.commit('setDetailedFormProperty', {prop: 'gender', value: newVal == 'male' ? 'MALE' : 'FEMALE'})
+                } else {
+                    this.$store.commit('setDetailedFormProperty', {prop: 'gender', value: null})
+                }
+            }
+        },
         created() {
             console.log('in ms input', this.detailedForm);
-            this.selectedEducationalGapStatus = this.detailedForm.gender == "MALE" ? 'male' : 'female'
-            this.setGapYears(this.detailedForm.age)
+            if (this.detailedForm) {
+                this.selectedEducationalGapStatus = this.detailedForm.gender == "MALE" ? 'male' : 'female'
+                this.setGapYears(this.detailedForm.age)
+            }
         }
     }
 </script>
@@ -82,7 +106,7 @@
         align-items: stretch;
     }
 
-    .militaryservice-wrapper  {
+    .militaryservice-wrapper {
         display: flex;
     }
 
@@ -91,7 +115,7 @@
         max-width: 335px;
         border-radius: 12px;
         background-color: white;
-        box-shadow:0 3px 26px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 26px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;

@@ -39,7 +39,7 @@
         },
         methods: {
             setGapYears(newGapYear) {
-                this.gapYears = newGapYear;
+                this.gapYears = Number(newGapYear);
             }
         },
         computed: {
@@ -63,11 +63,24 @@
                 return this.$store.getters.multipartHttpConfig
             }
         },
+        watch: {
+            gapYears(newVal) {
+                console.log(newVal);
+                this.$store.commit('setDetailedFormProperty', {prop: 'related_work_experience', value: newVal})
+            },
+            selectedEducationalGapStatus(newVal) {
+                if(newVal == null || newVal == 'donthave') {
+                    this.$store.commit('setDetailedFormProperty', {prop: 'related_work_experience', value: 0 })
+                }
+            }
+        },
         created() {
             console.log('in ms input', this.detailedForm);
-            this.selectedEducationalGapStatus = !!this.detailedForm.gender ? 'have' : 'donthave'
-            if(this.selectedEducationalGapStatus == 'have') {
-                this.setGapYears(this.detailedForm.related_work_experience)
+            if(this.detailedForm) {
+                this.selectedEducationalGapStatus = !!this.detailedForm.related_work_experience ? 'have' : 'donthave'
+                if(this.selectedEducationalGapStatus == 'have') {
+                    this.setGapYears(this.detailedForm.related_work_experience)
+                }
             }
         }
     }

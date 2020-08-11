@@ -16,8 +16,16 @@
                 </button>
             </div>
 
-            <button class="paper-items-addnew">
+            <p class="paper-items-empty" v-if="items.length == 0">
+                مقاله ای وارد نشده است.
+            </p>
+
+            <button class="paper-items-addnew" v-if="items.length > 0">
                 افزودن مقاله دیگر
+            </button>
+
+            <button class="paper-items-addnew" v-else>
+                افزودن مقاله جدید
             </button>
         </div>
     </section>
@@ -171,6 +179,11 @@
         margin: 5px 0 0 0;
         font-size: 14px;
         color: #9B9999;
+    }
+
+    .paper-items-empty {
+        align-self: center;
+        margin-top: 20px;
     }
 
     .paper-items-addnew {

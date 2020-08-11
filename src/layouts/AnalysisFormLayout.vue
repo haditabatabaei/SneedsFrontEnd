@@ -103,6 +103,10 @@ export default {
             return this.$store.getters.detailedForm;
         },
 
+        detailedFormId() {
+            return this.$store.getters.detailedFormId;
+        },
+
         api() {
             return this.$store.getters.getApi
         },
@@ -121,13 +125,27 @@ export default {
             this.currentPage = currentPageNumber;
         },
 
-        submitAndMoveNext() {
+        async submitAndMoveNext() {
             if(this.$route.path != this.nextPageRoute) {
+                //try this.submitmarriage()
+                await this[`submit${this.pageMap.get(this.currentPage)}`]();
+                console.log('going to ', this.nextPageRoute)
                 this.$router.push(this.nextPageRoute);
             } else {
                 console.log('nowhere to go.')
             }
-            console.log('going to ', this.nextPageRoute)
+        },
+
+        async submitmarriage() {
+            console.log(this.detailedForm.is_married);
+            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'is_married': this.detailedForm.is_married}, this.httpConfig)
+            console.log('marriage status code', result.status)
+        },
+
+        async submitmilitaryservice() {
+            console.log(this.detailedForm.military_service_status);
+            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
+            console.log('military_service_status status code', result.status)
         },
 
         goBack() {
@@ -140,13 +158,38 @@ export default {
     },
 
     async created() {
+        if(this.isLoggedIn) {
+            //user is logged in
+            if(!!this.detailedForm) {
+                //user has form
+            } else {
+                //user doesnt have form
+            }
+        } else {
+            //user is not logged in
+            //check if there is form id present in storage
+           if(!Boolean(this.detailedFormId)) {
+               //there is no id, create an empty form and set form id and empty form data
+               let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+               console.log(formResult);
+               this.$store.commit('setDetailedForm', formResult.data)
+           } else {
+               //there is an id available
+               if(!Boolean(this.detailedForm)) {
+                    //there is id but there is no form try fetch and set form
+                   let formResult = await this.$api.get(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, this.httpConfig);
+                   console.log(formResult)
+                   this.$store.commit('setDetailedForm', formResult.data)
+               }
+           }
 
-        console.log('analysis layout created.', this.user);
-        if(this.detailedForm == null) {
-            let result = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig)
-            console.log(result.data);
-            this.$store.commit('setDetailedForm', result.data)
         }
+        // console.log('analysis layout created.', this.user);
+        // if(this.detailedForm == null) {
+        //     let result = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig)
+        //     console.log(result.data);
+        //     this.$store.commit('setDetailedForm', result.data)
+        // }
         // this.$api.get(`${this.api}/`)
         // if(!localStorage.hasOwnProperty('aformid')) {
         //     console.log('create new form')

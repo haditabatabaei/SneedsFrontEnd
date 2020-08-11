@@ -50,9 +50,17 @@ export default {
             return this.$store.getters.multipartHttpConfig
         }
     },
+    watch: {
+        selectedMarriageStatus(newStatusValue) {
+            console.log(newStatusValue);
+            this.$store.commit('setDetailedFormProperty', {prop: 'is_married', value: newStatusValue === 'married' })
+        },
+    },
     created() {
         console.log('in marriage input', this.detailedForm);
-        this.selectedMarriageStatus = this.detailedForm.is_married ? 'married' : 'single'
+        if(this.detailedForm) {
+            this.selectedMarriageStatus = this.detailedForm.is_married ? 'married' : 'single'
+        }
     }
 }
 </script>

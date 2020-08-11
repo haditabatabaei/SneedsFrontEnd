@@ -50,9 +50,18 @@ export default {
             return this.$store.getters.multipartHttpConfig
         }
     },
+    watch: {
+        selectedMilitaryserviceStatus(newStatusValue) {
+            console.log(newStatusValue);
+            let value = newStatusValue == 'donthave' ? 'PASSED' : 'UNDID'
+            this.$store.commit('setDetailedFormProperty', {prop: 'military_service_status', value })
+        },
+    },
     created() {
         console.log('in ms input', this.detailedForm);
-        this.selectedMilitaryserviceStatus = this.detailedForm.military_service_status == 'PASSED' ? 'donthave' : 'have'
+        if(this.detailedForm) {
+            this.selectedMilitaryserviceStatus = this.detailedForm.military_service_status == 'PASSED' ? 'donthave' : 'have'
+        }
     }
 }
 </script>

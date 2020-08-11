@@ -128,7 +128,11 @@ export default {
         async submitAndMoveNext() {
             if(this.$route.path != this.nextPageRoute) {
                 //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
-                await this[`submit${this.pageMap.get(this.currentPage)}`]();
+                try {
+                    await this[`submit${this.pageMap.get(this.currentPage)}`]();
+                } catch (e) {
+                    this.$router.push(this.nextPageRoute);
+                }
                 console.log('going to ', this.nextPageRoute)
                 this.$router.push(this.nextPageRoute);
             } else {
@@ -164,6 +168,13 @@ export default {
             console.log(this.detailedForm.related_work_experience);
             let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
             console.log('work exp status code', result.status)
+        },
+
+        async submitfunds() {
+            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                {'prefers_full_fund': this.detailedForm.prefers_full_fund, 'prefers_half_fund': this.detailedForm.prefers_half_fund, 'prefers_self_fund': this.detailedForm.prefers_self_fund},
+                this.httpConfig)
+            console.log('funds status code', result.status)
         },
 
         goBack() {

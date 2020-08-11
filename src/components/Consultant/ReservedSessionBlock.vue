@@ -67,6 +67,10 @@
                     :border-width="2"
                     @rating-selected="submitRate"
                     v-model="inputRate"/>
+            <p class="" style="width: 100%;display:flex;align-items: center;justify-content: space-between;padding:0 20px">
+                <span>1</span><span>5</span>
+
+            </p>
         </div>
     </div>
 </template>
@@ -156,6 +160,10 @@
                 console.log('submit rate for session', this.session.id, ' rate ', rate);
                 try {
                     //this.$loading(true);
+                    if(rate == 0) {
+                        //fix rate 0 bug buy fixing it to 1
+                        rate = 1;
+                    }
                     let result = await this.$api.post(
                         `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
                         {"sold_time_slot": this.session.id, "rate": rate},

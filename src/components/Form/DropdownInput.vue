@@ -55,6 +55,7 @@
             selectOption(option) {
                 this.selectedOption = option;
                 this.isDropdownOpen = false;
+                this.$emit('select-option', option)
             }
         },
         mounted() {

@@ -3,9 +3,11 @@
         <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
         <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
         <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
-        <i class="material-icons">
+        <i class="material-icons" v-if="!loading">
             search
         </i>
+        <moon-loader class="loading-icon searchable-loading-icon" color="purple" :loading="loading" :size="15" sizeUnit="px" v-else />
+
         <ul class="searchable-items" v-if="isSearchableOpen">
             <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
             <li class="searchable-item" :class="[{'searchable-item-selected': inputValue == item.name}]" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
@@ -14,6 +16,7 @@
 </template>
 
 <script>
+    import {MoonLoader} from "@saeris/vue-spinners";
     export default {
         name: "SearchableInput",
         data() {
@@ -22,6 +25,9 @@
                 isSearchableOpen: false,
                 id: Math.floor(Math.random() * 1000)
             }
+        },
+        components: {
+            "moon-loader": MoonLoader
         },
         props: {
             label: {
@@ -36,6 +42,10 @@
                     {name: 'نقی', id: 3},
                 ]
             },
+            loading: {
+                type: Boolean,
+                default: () => false,
+            }
         },
         computed: {
             openInputStyle() {
@@ -53,6 +63,7 @@
             setInputValue(item) {
                 this.inputValue = item.name;
                 this.isSearchableOpen = false;
+                this.$emit('select-option', item);
             },
 
             inputEmitter(){
@@ -92,7 +103,7 @@
         border-radius: 10px 10px 0 0;
     }
 
-    .searchable-wrapper i {
+    .searchable-wrapper i, .searchable-loading-icon {
         display: flex;
         align-items: center;
         margin-left: 10px;

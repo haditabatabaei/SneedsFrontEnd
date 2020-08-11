@@ -27,6 +27,8 @@ export default new Vuex.Store({
 
         detailedForm: null,
 
+        detailedFormId: Number(localStorage.getItem('detailedFormId')) || null,
+
         api: process.env.VUE_APP_ROOT_API,
 
         authApi: process.env.VUE_APP_ROOT_API,
@@ -74,10 +76,18 @@ export default new Vuex.Store({
 
         setDetailedForm(state, form) {
             state.detailedForm = form;
+            state.detailedFormId = form.id;
+            localStorage.setItem('detailedFormId', form.id)
+            if(form == null) {
+                localStorage.removeItem('detailedFormId')
+            }
         },
 
         setDetailedFormProperty(state, {prop, value}) {
             state.detailedForm[prop] = value;
+            if(prop == 'id') {
+                localStorage.setItem('detailedFormId', value)
+            }
         },
 
         logout(state) {
@@ -262,6 +272,8 @@ export default new Vuex.Store({
         isiran: state => state.timezoneSafe === 'Asia-Tehran',
 
         detailedForm: state => state.detailedForm,
+
+        detailedFormId: state => state.detailedFormId,
 
         locale: state => {
             if (state.timezoneSafe === 'Asia-Tehran') {

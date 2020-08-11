@@ -78,11 +78,24 @@
                 return !(this.fullFund || this.halfFund || this.selfFund) || (this.fullFund && this.selfFund && this.halfFund);
             }
         },
+        watch: {
+            fullFund(newVal) {
+                this.$store.commit('setDetailedFormProperty', {prop: 'prefers_full_fund', value: newVal})
+            },
+            halfFund(newVal) {
+                this.$store.commit('setDetailedFormProperty', {prop: 'prefers_half_fund', value: newVal})
+            },
+            selfFund(newVal) {
+                this.$store.commit('setDetailedFormProperty', {prop: 'prefers_self_fund', value: newVal})
+            }
+        },
         methods: {},
         created() {
-            this.fullFund = this.detailedForm.prefers_full_fund;
-            this.halfFund = this.detailedForm.prefers_half_fund;
-            this.selfFund = this.detailedForm.prefers_self_fund;
+            if(this.detailedForm) {
+                this.fullFund = this.detailedForm.prefers_full_fund;
+                this.halfFund = this.detailedForm.prefers_half_fund;
+                this.selfFund = this.detailedForm.prefers_self_fund;
+            }
         }
     }
 </script>

@@ -12,7 +12,7 @@
             <c-number-input class="edulevel-input" :defaultValue="2020"  label="سال فراقت از تحصیل" :max-value="10000" @set-number="setGraduateIn" />
             <c-simple-input class="edulevel-input" label="عنوان پایان نامه" @input="setThesisTitle"/>
         </div>
-        <button @click="addUniversityThrough">Add uni through</button>
+        <button @click="addUniversityThrough" class="edulevel-add isansFont">ایجاد مقطع</button>
     </section>
 </template>
 
@@ -83,8 +83,14 @@
                         gpa: this.gpa
                     }
                     console.log(payload)
-                    let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
-                    console.log(res.data);
+                    try {
+                        let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
+                        this.$emit('edulevel-add', res);
+                    } catch (e) {
+                        console.log(e);
+                    } finally {
+
+                    }
                 }
             },
 
@@ -182,6 +188,21 @@
     .edulevel-input {
         width: calc(50% - 40px);
         margin: 10px 20px;
+    }
+
+    .edulevel-add {
+        align-self: flex-end;
+        margin-left: 20px;
+        border-radius: 5px;
+        border: none;
+        padding: 7px 30px;
+        color: white;
+        background-color: #00bfa5;
+        transition: all 200ms ease-in-out;
+    }
+
+    .edulevel-add:hover {
+        border-bottom: 3px solid #00a992;
     }
 
 

@@ -19,7 +19,7 @@
                 <img draggable="false" class="form-title-image" src="/sneedsAssets/img/takhminstars.svg" alt="کاربران اسنیدز">
             </aside>
             <main class="form-layout-view-wrapper">
-                <router-view @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view> 
+                <router-view @edulevel-add="edulevelAddHandler" @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view>
                 <div class="progress-wrapper">
                     <div class="form-confirm isansFont">
                         <button @click="submitAndMoveNext()" class="form-confirm-next">
@@ -131,13 +131,18 @@ export default {
                 try {
                     await this[`submit${this.pageMap.get(this.currentPage)}`]();
                 } catch (e) {
+                    console.log(e)
+                } finally {
+                    console.log('going to ', this.nextPageRoute)
                     this.$router.push(this.nextPageRoute);
                 }
-                console.log('going to ', this.nextPageRoute)
-                this.$router.push(this.nextPageRoute);
             } else {
                 console.log('nowhere to go.')
             }
+        },
+
+        edulevelAddHandler() {
+            console.log('edu level add handler');
         },
 
         async submitmarriage() {
@@ -464,7 +469,7 @@ export default {
 
         .form-layout-view-wrapper {
             width: 100%;
-            padding: 0;
+            padding: 0 0 122px 0;
         }
 
         .progress-wrapper {

@@ -1,8 +1,8 @@
 <template>
     <div class="radio-wrapper isansFont--faNum" :class="[{'radio--column': direction == 'column'}]">
         <input v-model="selectedRadio" class="radio-input" type="radio" v-for="(item, index) in items" :value="item" :name="name" :id="correspondingIds[index]" >
-        <label class="radio-holder" :class="[{'holder--selected': selectedRadio == item, 'holder--column': direction == 'column'}]" v-for="(item, index) in items" :for="correspondingIds[index]" >
-            {{item}}
+        <label @click="$emit('select-option', item)" class="radio-holder" :class="[{'holder--selected': selectedRadio == item, 'holder--column': direction == 'column'}]" v-for="(item, index) in items" :for="correspondingIds[index]" >
+            {{item.name}}
             <i class="material-icons" v-if="selectedRadio == item">done</i>
         </label>
     </div>

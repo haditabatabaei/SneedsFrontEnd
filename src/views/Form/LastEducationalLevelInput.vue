@@ -125,7 +125,6 @@
                 } finally {
                     this.uniLoading = false;
                 }
-
             },
 
             setSelectedMajor(item) {

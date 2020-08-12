@@ -21,12 +21,12 @@
                 مقطعی وارد نشده است.
             </p>
 
-            <button class="paper-items-addnew" v-if="items.length > 0">
+            <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-if="items.length > 0">
                 افزودن مقطع دیگر
-            </button>
-            <button class="paper-items-addnew" v-else>
+            </router-link>
+            <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-else>
                 اضافه کردن مقطع جدید
-            </button>
+            </router-link>
         </div>
     </section>
 </template>

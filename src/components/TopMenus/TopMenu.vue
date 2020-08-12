@@ -15,45 +15,33 @@
             </div>
             <div class="menuWrapper">
                 <ul class="menuList isansFont">
-                    <li class="menuList--item"
+                    <li class="menuList-item"
                         v-for="(item, index) in this.topMenuListItems"
                         :key="index"
-                        v-bind:class="[{'dropdown':item.hasDropdown}]">
-                        <a
-                                href="#"
-                                v-if="item.hasDropdown && item.type === 'router'"
-                                class="dropdown-toggle"
-                                data-toggle="dropdown menuList--linkItem">
-                            <span>{{item.itemName}}</span>
-                            <b class="caret"/>
-                        </a>
-
-                        <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
-                           class="dropdown-toggle menuList--linkItem" target="_blank" data-toggle="dropdown">
-                            <span>{{item.itemName}}</span>
-                            <b class="caret"/>
-                        </a>
-
-                        <router-link v-else-if="!item.hasDropdown && item.type === 'router'" :to="item.target"
-                                     class="menuList--linkItem">
+                        :class="[{'menuList-item--dropdown': item.hasDropdown}]">
+                        <router-link :to="item.target" class="menuList-item-link"
+                                     v-if="!item.hasDropdown && item.type == 'router'">
                             {{item.itemName}}
                         </router-link>
-
-                        <a class="menuList--linkItem" :href="item.target"
-                           v-else-if="!item.hasDropdown && item.type === 'hyper'"
-                           target="_blank">{{item.itemName}}</a>
-
-                        <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
-                            <li v-for="(dropdownItem, index) in item.dropdownItems"
-                                :key="index"
-                                v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
-                                <router-link v-bind:to="dropdownItem.target" v-if="dropdownItem.type === 'router'">
-                                    {{dropdownItem.itemName}}
-                                </router-link>
-                                <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
-                                   target="_blank">{{dropdownItem.itemName}}</a>
-                            </li>
-                        </ul>
+                        <a :href="item.target" class="menuList-item-link"
+                           v-else-if="!item.hasDropdown && item.type == 'hyper'">{{item.itemName}}</a>
+                        <a v-else-if="item.hasDropdown" class="menuList-item-link">
+                            {{item.itemName}}
+                            <i class="material-icons">keyboard_arrow_down</i>
+                        </a>
+                        <div class="dropdown-megamenu" v-if="item.hasDropdown">
+                            <ul class="megamenu-list" v-for="droplist in item.dropdownItems">
+                                <li class="megamenu-list-item--title">{{droplist.itemName}}</li>
+                                <li class="megamenu-list-item" v-for="listitem in droplist.dropdownItems">
+                                    <router-link class="megamenu-list-item-link" :to="listitem.target"
+                                                 v-if="listitem.type == 'router'">
+                                        {{listitem.itemName}}
+                                    </router-link>
+                                    <a :href="listitem.target" target="_blank" class="megamenu-list-item-link"
+                                       v-else-if="listitem.type == 'hyper'">{{listitem.itemName}}</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -93,21 +81,13 @@
             </div>
 
             <transition name="slide-fade">
-                <div class="mobileMenu" v-if="mobileMenuShow">
+                <div class="mobileMenu" :class="[{'mobileMenu--larger': isNavFixedOnZero}]" v-if="mobileMenuShow">
                     <div class="mobileMenuListWrapper">
                         <ul class="mobileMenuList isansFont--faNum">
-                            <li class="mobileMenuList--item" v-for="(item, index) in this.topMenuListItems" :key="index"
-                                v-bind:class="[{'dropdown':item.hasDropdown}]">
-                                <a href="#" v-if="item.hasDropdown && item.type === 'router'" class="dropdown-toggle"
-                                   data-toggle="dropdown mobileMenuList--linkItem">
-                                    <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
-                                    <span>{{item.itemName}}</span>
-                                    <b class="caret"></b>
-                                </a>
-
-                                <a :href="item.target" v-else-if="item.hasDropdown && item.type === 'hyper'"
-                                   class="dropdown-toggle mobileMenuList--linkItem" target="_blank"
-                                   data-toggle="dropdown">
+                            <li class="mobileMenuList--item" v-for="item in this.topMenuListItems"
+                                :class="[{'dropdown':item.hasDropdown}]">
+                                <a v-if="item.hasDropdown" class="dropdown-toggle dropdown mobileMenuList--linkItem"
+                                   @click="toggleMobileDropdown(item)">
                                     <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
                                     <span>{{item.itemName}}</span>
                                     <b class="caret"></b>
@@ -124,18 +104,18 @@
                                     <i class="material-icons" v-if="item.icon">{{item.icon}}</i>
                                     {{item.itemName}}
                                 </a>
+                                <transition name="fade">
+                                    <div v-if="item.hasDropdown && item.showDropdown" class="megamenu-mobile">
+                                        <ul class="megamenu-mobile-list" v-for="droplist in item.dropdownItems">
+                                            <li class="megamenu-mobile-item item--title">{{droplist.itemName}}</li>
+                                            <li class="megamenu-mobile-item" v-for="ditem in droplist.dropdownItems">
+                                                <router-link class="megamenu-mobile-link" :to="ditem.target" v-if="ditem.type == 'router'">{{ditem.itemName}}</router-link>
+                                                <a class="megamenu-mobile-link" target="_blank" :href="ditem.target" v-else-if="ditem.type == 'hyper'">{{ditem.itemName}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <ul v-if="item.hasDropdown" class="dropdown-menu customRadius">
-                                    <li v-for="(dropdownItem, index) in item.dropdownItems" :key="index"
-                                        v-bind:class="[{'dropdown' : dropdownItem.hasDropdown}]">
-                                        <router-link v-bind:to="dropdownItem.target"
-                                                     v-if="dropdownItem.type === 'router'">
-                                            {{dropdownItem.itemName}}
-                                        </router-link>
-                                        <a v-bind:href="dropdownItem.target" v-else-if="dropdownItem.type === 'hyper'"
-                                           target="_blank">{{dropdownItem.itemName}}</a>
-                                    </li>
-                                </ul>
+                                </transition>
                             </li>
                             <li class="mobileMenuList--item" v-if="!isLoggedIn">
                                 <router-link class="mobileMenuList--linkItem special" to="/auth/login">
@@ -179,7 +159,6 @@
             </transition>
         </div>
     </nav>
-
 </template>
 
 <script>
@@ -279,7 +258,8 @@
                         itemName: 'مشاوران',
                         target: '/consultants',
                         type: 'router',
-                        hasDropDown: false,
+                        hasDropdown: false,
+                        showDropdown: false,
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
@@ -287,16 +267,375 @@
                         itemName: 'پکیج اقتصادی',
                         target: '/packages/economic',
                         type: 'router',
-                        hasDropDown: false,
+                        hasDropdown: false,
+                        showDropdown: false,
                         dropdownItems: [],
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'پکیج کالج',
-                        target: '/packages/college',
+                        itemName: 'منابع رایگان',
+                        target: '/',
                         type: 'router',
-                        hasDropDown: false,
-                        dropdownItems: [],
+                        hasDropdown: true,
+                        showDropdown: false,
+                        dropdownItems: [
+                            {
+                                itemName: 'بلاگ',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'همه مطالب',
+                                        target: 'http://blog.sneeds.ir/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'پروسه اپلای',
+                                        target: 'http://blog.sneeds.ir/category/%D9%BE%D8%B1%D9%88%D8%B3%D9%87-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'ددلاین دانشگاه‌ها',
+                                        target: 'http://blog.sneeds.ir/2020/06/%D8%AF%D8%AF%D9%84%D8%A7%DB%8C%D9%86-%D8%AF%D8%A7%D9%86%D8%B4%DA%AF%D8%A7%D9%87/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'ایمیل به اساتید',
+                                        target: 'http://blog.sneeds.ir/2020/06/%D8%A7%DB%8C%D9%85%DB%8C%D9%84-%D8%A8%D9%87-%D8%A7%D8%B3%D8%A7%D8%AA%DB%8C%D8%AF/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'فاند چیست؟',
+                                        target: 'http://blog.sneeds.ir/2020/06/%D8%A7%D9%86%D9%88%D8%A7%D8%B9-%D9%81%D8%A7%D9%86%D8%AF-%D8%AA%D8%AD%D8%B5%DB%8C%D9%84%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    }
+                                ]
+                            },
+                            {
+                                itemName: 'فیلم‌های آموزشی رایگان',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'مصاحبه‌های اپلای',
+                                        target: 'http://blog.sneeds.ir/category/%D9%85%D8%B5%D8%A7%D8%AD%D8%A8%D9%87/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'لایو‌های اینستاگرامی',
+                                        target: 'http://blog.sneeds.ir/category/%D9%85%D8%B5%D8%A7%D8%AD%D8%A8%D9%87/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'وبینارهای آموزش اپلای',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'اپلای به کانادا',
+                                        target: 'http://blog.sneeds.ir/category/%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%DA%A9%D8%A7%D9%86%D8%A7%D8%AF%D8%A7/ ',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'اپلای به اروپا',
+                                        target: 'http://blog.sneeds.ir/category/%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%D8%A7%D8%B1%D9%88%D9%BE%D8%A7/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    }
+                                ]
+                            }
+                        ],
+                        icon: 'supervisor_account'
+                    },
+                    {
+                        itemName: 'وبینار‌ها و کلاس‌ها',
+                        target: '/',
+                        type: 'router',
+                        hasDropdown: true,
+                        showDropdown: false,
+                        dropdownItems: [
+                            {
+                                itemName: 'وبینار‌ها',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'همه وبینارها',
+                                        target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'آموزش نگارش CV SOP',
+                                        target: 'http://new.sneeds.ir/videos/product/cv-sop-webinar-2020/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'چطوری اپلای کنم؟',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1how-to-apply-%D8%AE%D8%B1%D8%AF%D8%A7%D8%AF-99/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'هزینه‌های اپلای',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D9%87%D8%B2%DB%8C%D9%86%D9%87-%D9%87%D8%A7%DB%8C-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%D8%AA%D9%81%DA%A9%DB%8C%DA%A9-%D9%82%D8%A8%D9%84-%D9%88-%D8%A8/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'خرید فیلم وبینار‌ها',
+                                        target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    }
+                                ]
+                            },
+                            {
+                                itemName: 'کلاس‌های اپلای',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'همه کلاس‌ها',
+                                        target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3%E2%80%8C%D9%87%D8%A7%DB%8C-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'صفر تا صد ویزا',
+                                        target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D9%88%DB%8C%D8%B2%D8%A7-%D8%A8%D8%A7-%D9%85%D8%AD%D9%85%D8%AF-%D8%AA%D9%88%D9%84%D8%A7%DB%8C%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'مقاله نویسی',
+                                        target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D9%85%D9%82%D8%A7%D9%84%D9%87-%D9%86%D9%88%DB%8C%D8%B3%DB%8C-%DA%A9%D8%A7%D9%88%D9%87-%D8%B1%D9%88%D8%B4%D9%86-%D8%A8%DB%8C%D9%86-%D9%81%D8%B1/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                ]
+                            },
+                            {
+                                itemName: 'وبینار‌های رایگان',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'همه وبینار‌های رایگان',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'آموزش انتخاب استاد و دانشگاه',
+                                        target: 'https://sneeds.ir/%D8%AB%D8%A8%D8%AA%E2%80%8C%D9%86%D8%A7%D9%85-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8-%D8%A7%D8%B3%D8%AA%D8%A7%D8%AF-%D9%88/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'تجربه تحصیل در قاره‌های مختلف',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D9%85%D9%82%D8%A7%DB%8C%D8%B3%D9%87-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D9%88-%D8%B2%D9%86%D8%AF%DA%AF%DB%8C-%D8%AF%D8%B1-%D8%A7%D8%B1%D9%88%D9%BE%D8%A7%D8%8C%DA%A9/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'اپلای به کالج',
+                                        target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%DA%A9%D8%A7%D9%84%D8%AC-%D8%B3%D9%84%D9%81-%D9%81%D8%A7%D9%86%D8%AF/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                ]
+                            },
+                            {
+                                itemName: 'فیلم‌های خود آموز اپلای',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'همه فیلم‌ها',
+                                        target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%87%D8%A7%DB%8C-%D8%AE%D9%88%D8%AF-%D8%A2%D9%85%D9%88%D8%B2-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'پکیج‌‌های فیلم',
+                                        target: 'https://sneeds.ir/%D9%BE%DA%A9%E2%80%8C%D9%87%D8%A7%DB%8C-%D9%81%DB%8C%D9%84%D9%85-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'مکاتبه با اساتید',
+                                        target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D8%A7%DB%8C%D9%85%DB%8C%D9%84-%D8%A8%D9%87-%D8%A7%D8%B3%D8%A7%D8%AA%DB%8C%D8%AF-%DA%A9%D8%A7%D9%88%D9%87-%D8%B1%D9%88%D8%B4%D9%86-%D8%A8%DB%8C%D9%86/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'آیلتس برای اپلای',
+                                        target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D8%B2%D8%A8%D8%A7%D9%86-ielts/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                ]
+                            }
+                        ],
+                        icon: 'supervisor_account'
+                    },
+                    {
+                        itemName: 'خدمات',
+                        target: '/',
+                        type: 'router',
+                        hasDropdown: true,
+                        showDropdown: false,
+                        dropdownItems: [
+                            {
+                                itemName: 'پکیج‌های پذیرش تحصیلی',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'اقتصادی',
+                                        target: '/packages/economic',
+                                        type: 'router',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'صفر تا صد',
+                                        target: 'https://sneeds.ir/%D9%BE%DA%A9%DB%8C%D8%AC-%D8%B5%D9%81%D8%B1-%D8%AA%D8%A7-%D8%B5%D8%AF/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'کالج',
+                                        target: '/packages/college',
+                                        type: 'router',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'ویزا',
+                                        target: 'https://sneeds.ir/%D9%BE%DA%A9%DB%8C%D8%AC-%D9%88%DB%8C%D8%B2%D8%A7/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                ]
+                            },
+                            {
+                                itemName: 'ویرایش و نگارش مدارک',
+                                target: '/',
+                                type: 'router',
+                                hasDropdown: true,
+                                showDropdown: false,
+                                dropdownItems: [
+                                    {
+                                        itemName: 'رزومه (CV)',
+                                        target: 'https://sneeds.ir/%D9%86%DA%AF%D8%A7%D8%B1%D8%B4-cv-%D8%B1%D8%B2%D9%88%D9%85%D9%87/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'انگیزه‌نامه (SOP)',
+                                        target: 'https://sneeds.ir/%D9%86%DA%AF%D8%A7%D8%B1%D8%B4-sop-%D8%A7%D9%86%DA%AF%DB%8C%D8%B2%D9%87%E2%80%8C%D9%86%D8%A7%D9%85%D9%87/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                    {
+                                        itemName: 'کاورلتر',
+                                        target: 'https://sneeds.ir/%D8%AA%D8%B5%D8%AD%DB%8C%D8%AD-%DA%A9%D8%A7%D9%88%D8%B1%D9%84%D8%AA%D8%B1/',
+                                        type: 'hyper',
+                                        hasDropdown: false,
+                                        showDropdown: false,
+                                        dropdownItems: []
+                                    },
+                                ]
+                            }
+                        ],
                         icon: 'supervisor_account'
                     },
                 ],
@@ -320,23 +659,33 @@
             document.addEventListener('scroll', event => {
                 // console.log(event);
                 console.log(scrollY);
-                if(scrollY > 0) {
-                    if(!this.isNavFixedOnZero) {
+                if (scrollY > 0) {
+                    if (!this.isNavFixedOnZero) {
                         this.isNavFixedOnZero = true;
                     }
                 } else {
-                    if(this.isNavFixedOnZero) {
+                    if (this.isNavFixedOnZero) {
                         this.isNavFixedOnZero = false;
                     }
                 }
             })
         },
         beforeDestroy() {
-            document.removeEventListener('scroll', () => {});
+            document.removeEventListener('scroll', () => {
+            });
         },
         methods: {
             toggleProfileDropdown() {
                 this.profileDropdownMenuOpen = !this.profileDropdownMenuOpen;
+            },
+            toggleMobileDropdown(item) {
+                item.showDropdown = !item.showDropdown
+                this.topMenuListItems.forEach(mitem => {
+                    if(mitem != item) {
+                        mitem.showDropdown = false;
+                    }
+                })
+                console.log(item, 'toggled', item.showDropdown);
             },
             logout() {
                 this.$store.dispatch('logout');
@@ -389,31 +738,99 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 0;
+        margin: 0 30px 0 0;
         padding-right: 0;
         list-style: none;
     }
 
-    .menuList--item {
-        margin-left: 5px;
-        margin-right: 5px;
+    .menuList-item {
+        margin: 0 0 0 30px;
+        display: flex;
+        align-items: center;
+        transition: all 100ms ease-in-out;
+    }
+
+    .menuList-item:last-child {
+        margin-left: 0;
+    }
+
+    .menuList-item:hover {
+        padding-bottom: 3px;
+        border-bottom: 3px solid #A347FF;
+        margin-top: 3px;
+    }
+
+    .menuList-item.menuList-item--dropdown {
+        position: relative;
+        transition: all 100ms ease-in-out;
+        cursor: pointer;
+    }
+
+    .dropdown-megamenu {
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 0 12px #00000029;
+        border-radius: 8px;
+        display: none;
+        top: 30px;
+        right: 0;
+        padding: 30px;
+        transition: all 100ms ease-in-out;
+        cursor: default;
+    }
+
+    .menuList-item--dropdown:hover > .dropdown-megamenu {
+        display: flex;
+        justify-content: center;
+        transition: all 100ms ease-in-out;
+    }
+
+    .megamenu-list {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin-left: 50px;
+        min-width: max-content;
+        transition: all 100ms ease-in-out;
+    }
+
+    .megamenu-list:last-child {
+        margin-left: 0;
     }
 
 
-    .menuList--linkItem {
+    .megamenu-list-item--title {
+        color: #374957;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .megamenu-list-item {
+        margin-top: 5px;
+    }
+
+    .megamenu-list-item-link {
+        color: #585858;
+        font-size: 14px;
+    }
+
+    .menuList-item-link {
         color: #333;
-        padding: 10px 15px;
         border-radius: 5px;
         transition: all 0.1s ease-in-out;
         font-size: 13px;
+        display: flex;
+        align-items: center;
     }
 
-    .menuList--linkItem.router-link-exact-active {
-        background-color: #eee;
+    .menuList-item-link.router-link-exact-active {
+        color: #A347FF;
     }
 
-    .menuList--linkItem[aria-expanded="true"] {
-        background-color: #eee;
+    .megamenu-list-item-link.router-link-exact-active {
+        color: #A347FF;
     }
 
     .mobileMenu {
@@ -438,6 +855,10 @@
     .menu-login-button:hover {
         background-color: #8C3DDB;
         color: white;
+    }
+
+    .megamenu-list-item-link:hover {
+        color: #A347FF;
     }
 
     .profile-menu-button {
@@ -580,6 +1001,12 @@
             background-color: rgba(255, 255, 255, 1);
             width: 100%;
             z-index: 998;
+            overflow:  scroll;
+        }
+
+        .mobileMenu.mobileMenu--larger {
+            height: calc(100vh - 70px);
+            margin-top: 70px;
         }
 
         .mobileMenuListWrapper {
@@ -609,6 +1036,8 @@
             padding: 10px;
             width: 100%;
             font-size: 13px;
+            display: flex;
+            align-items: center;
         }
 
         .mobileMenuList--linkItem:hover {
@@ -638,6 +1067,40 @@
             display: flex;
             width: 50%;
             margin-top: 10px;
+        }
+
+        .mobileMenuList--item.dropdown {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .megamenu-mobile {
+            padding-right: 30px;
+            font-size: 13px;
+        }
+
+        .megamenu-mobile-list {
+            padding: 0;
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .megamenu-mobile-list:first-child {
+            margin-top: 10px;
+        }
+
+        .megamenu-mobile-item.item--title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .megamenu-mobile-item {
+            display: flex;
+        }
+
+        .megamenu-mobile-link {
+            margin: 5px 0;
         }
     }
 </style>

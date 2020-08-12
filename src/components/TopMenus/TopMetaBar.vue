@@ -3,8 +3,12 @@
         <div class="meta-container isansFont">
             <p class="meta-slogan">
                 تمام سرمایه ما کاربرانمان هستند، همیشه پاسخگوی شما هستیم
-                |
-                <router-link to="/contactus" class="slogan-link">تماس با ما</router-link>
+                <router-link to="/contactus" class="slogan-link isansFont--faNum">
+                    <i class="material-icons">
+                        local_phone
+                    </i>
+                    021 - 2842 8353
+                </router-link>
             </p>
             <ul class="meta-socials">
                 <li class="social-item" v-for="social in socials">
@@ -42,7 +46,7 @@
     .top-meta {
         height: 43px;
         width: 100%;
-        background-color: #6b42ca;
+        background-color: #A347FF;
         display: flex;
         justify-content: center;
         align-items: stretch;
@@ -59,10 +63,29 @@
     .meta-slogan {
         color: white;
         margin: 0;
+        display: flex;
+        align-items: center;
     }
 
     .slogan-link {
-        color: #ffab73;
+        color: white;
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        background-color: #8C3DDB;
+        font-size: 12px;
+        padding: 5px 10px   ;
+        border-radius: 5px;
+        margin-right: 20px;
+        direction: ltr !important;
+    }
+
+    .slogan-link i {
+        border: 1px solid white;
+        font-size: 10px;
+        border-radius: 50%;
+        padding: 2px;
+        margin-left: 5px;
     }
 
     .meta-socials {

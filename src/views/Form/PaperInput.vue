@@ -19,10 +19,12 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
-            <c-dropdown-input class="edu-gap" label="نوع مقاله" />
-            <c-simple-input class="edu-gap" label="عنوان مقاله" />
-            <c-number-input class="edu-gap" :step="1" :default-value="18" @set-number="setGapYears" label="سال پابلیش مقاله" />
-            <c-radio-group direction="column" :items="authorItems" />
+            <c-dropdown-input class="edu-gap" label="نوع مقاله" :options="typeOptions" @select-option="setType" />
+            <c-simple-input class="edu-gap" label="عنوان مقاله" @input="setTitle" />
+            <c-number-input class="edu-gap" :step="1" :default-value="1900" @set-number="setGapYears" label="سال پابلیش مقاله"  />
+            <c-radio-group direction="column" :items="authorItems" @select-option="setAuthor" />
+            <c-dropdown-input class="edu-gap" label="شاخص تاثیر" :options="reputationOptions" @select-option="setReputation" />
+            <button @click="addNewPublication" class="publication-add isansFont">ایجاد مقاله جدید</button>
         </div>
     </section>
 </template>
@@ -44,16 +46,85 @@
             return {
                 selectedEducationalGapStatus: null,
                 gapYears: null,
+                selectedType: null,
+                selectedAuthor: null,
+                selectedReputation: null,
+                title: null,
+                typeOptions: [
+                    {name: 'ژورنالی', nameEnglish: 'JOURNAL'},
+                    {name: 'کنفرانسی', nameEnglish: 'CONFERENCE'}
+                ],
                 authorItems: [
-                    'نویسنده اول',
-                    'نویسنده دوم',
-                    'نویسنده سوم به بعد'
+                    {name: 'نویسنده اول', nameEnglish: 'FIRST'},
+                    {name: 'نویسنده دوم', nameEnglish: 'SECOND'},
+                    {name: 'نویسنده سوم', nameEnglish: 'THIRD'},
+                    {name: 'نویسنده چهارم به بعد', nameEnglish: 'FOURTH_OR_MORE'},
+                ],
+
+                reputationOptions: [
+                    {name: 'یک تا سه', nameEnglish: 'ONE_TO_THREE'},
+                    {name: 'چهار تا ده', nameEnglish: 'FOUR_TO_TEN'},
+                    {name: 'بیش از 10', nameEnglish: 'ABOVE_TEN'},
                 ]
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
             }
         },
         methods: {
             setGapYears(newGapYear) {
                 this.gapYears = newGapYear;
+            },
+            async addNewPublication() {
+                if(this.selectedAuthor != null && this.selectedReputation != null && this.selectedType != null) {
+                    let payload = {
+                        student_detailed_info: this.detailedFormId,
+                        title: this.title,
+                        publish_year: this.gapYears,
+                        which_author: this.selectedAuthor.nameEnglish,
+                        type: this.selectedType.nameEnglish,
+                        journal_reputation: this.selectedReputation.nameEnglish
+                    }
+                    console.log('add new publication' , payload)
+                    let result = await this.$api.post(`${this.api}/account/publications/`, payload, this.httpConfig)
+                    console.log(result);
+                } else {
+                    console.log('bad input')
+                }
+            },
+            setType(type) {
+                this.selectedType = type;
+            },
+            setTitle(title) {
+                this.title = title;
+            },
+            setAuthor(authorType) {
+                this.selectedAuthor = authorType
+            },
+            setReputation(reputation) {
+                this.selectedReputation = reputation;
             }
         },
         created() {
@@ -71,7 +142,6 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        /* padding-right: 50px; */
     }
 
     .militaryservice-wrapper  {
@@ -151,6 +221,20 @@
 
     .edu-gap:first-child {
         margin-top: 0;
+    }
+
+    .publication-add {
+        color: white;
+        background-color: #00bfa5;
+        border-radius: 5px;
+        border: none;
+        padding: 7px 30px;
+        transition: all 200ms ease-in-out;
+        margin-top: 10px;
+    }
+
+    .publication-add:hover {
+        border-bottom: 3px solid #00a992;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 767.8px) {

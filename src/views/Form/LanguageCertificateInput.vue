@@ -30,113 +30,114 @@
                               @select-option="setSelectedCert"/>
             <div v-if="selectedCert">
                 <div class="inputs-certs" v-if="shownType == 'regular'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.listening = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.listening = Number(val)"
                                     label="Listening"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.writing = Number(val)"
                                     label="Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.speaking = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.speaking = Number(val)"
                                     label="Speaking"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.reading = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.reading = Number(val)"
                                     label="Reading"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.overall = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.overall = Number(val)"
                                     label="Overall"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'gmat'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => gmat.analytical_writing_assessment = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.analytical_writing_assessment = Number(val)"
                                     label="Analytic Writing Assessment"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => gmat.integrated_reasoning = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.integrated_reasoning = Number(val)"
                                     label="Integrated Reasoning"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => gmat.quantitative_and_verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.quantitative_and_verbal = Number(val)"
                                     label="Quantitative and Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => gmat.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePhys'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantitative = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.analytical_writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.classical_mechanics = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.classical_mechanics = Number(val)"
                                     label="Classical Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.electromagnetism = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.electromagnetism = Number(val)"
                                     label="Electromagnetism"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantum_mechanics = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantum_mechanics = Number(val)"
                                     label="Quantum Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePsycho'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.quantitative = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.analytical_writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.biological = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.biological = Number(val)"
                                     label="Biological"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.cognitive = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.cognitive = Number(val)"
                                     label="Cognitive"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.social = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.social = Number(val)"
                                     label="Social"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.developmental = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.developmental = Number(val)"
                                     label="Developmental"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.clinical = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.clinical = Number(val)"
                                     label="Clinical"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.measurement_or_methodology = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.measurement_or_methodology = Number(val)"
                                     label="Measurement or Methodology"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greBio'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.quantitative = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.analytical_writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.cellular_and_molecular = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.cellular_and_molecular = Number(val)"
                                     label="Cellular and Molecular"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.organismal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.organismal = Number(val)"
                                     label="Organismal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.ecology_and_evolution = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.ecology_and_evolution = Number(val)"
                                     label="Ecologyand Evolution"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greGen'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.quantitative = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.analytical_writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greSub'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.quantitative = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.verbal = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.analytical_writing = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.total = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'duolingo'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.literacy = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.literacy = Number(val)"
                                     label="Literacy"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.comprehension = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.comprehension = Number(val)"
                                     label="Comprehension"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.conversation = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.conversation = Number(val)"
                                     label="Conversation"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.production = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.production = Number(val)"
                                     label="Production"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.overall = val"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.overall = Number(val)"
                                     label="Overall"/>
                 </div>
+                <button class="certificate-add" @click="addCertificate">اضافه کردن مدرک زبان جدید</button>
             </div>
         </div>
     </section>
@@ -161,7 +162,7 @@
                 selectedLanguageCertificateStatus: null,
                 selectedCert: null,
                 regularCert: {
-                    isMock: false,
+                    is_mock: false,
                     speaking: null,
                     writing: null,
                     listening: null,
@@ -170,7 +171,7 @@
                 },
 
                 gmat: {
-                    isMock: false,
+                    is_mock: false,
                     analytical_writing_assessment: null,
                     integrated_reasoning: null,
                     quantitative_and_verbal: null,
@@ -178,7 +179,7 @@
                 },
 
                 duolingo: {
-                    isMock: false,
+                    is_mock: false,
                     overall: null,
                     literacy: null,
                     comprehension: null,
@@ -187,7 +188,7 @@
                 },
 
                 greSubject: {
-                    isMock: false,
+                    is_mock: false,
                     quantitative: null,
                     verbal: null,
                     analytical_writing: null,
@@ -195,7 +196,7 @@
                 },
 
                 greGeneral: {
-                    isMock: false,
+                    is_mock: false,
                     quantitative: null,
                     verbal: null,
                     analytical_writing: null,
@@ -203,7 +204,7 @@
                 },
 
                 greBiology: {
-                    isMock: false,
+                    is_mock: false,
                     quantitative: null,
                     verbal: null,
                     analytical_writing: null,
@@ -214,7 +215,7 @@
                 },
 
                 grePhysics: {
-                    isMock: false,
+                    is_mock: false,
                     quantitative: null,
                     verbal: null,
                     analytical_writing: null,
@@ -225,7 +226,7 @@
                 },
 
                 grePsychology: {
-                    isMock: false,
+                    is_mock: false,
                     quantitative: null,
                     verbal: null,
                     analytical_writing: null,
@@ -280,6 +281,29 @@
                             return 'duolingo'
                     }
                 }
+            },
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
             }
         },
         methods: {
@@ -288,6 +312,105 @@
             },
             setSelectedCert(cert) {
                 this.selectedCert = cert;
+            },
+            async addCertificate() {
+                if(this.selectedCert) {
+                    let payload = {
+                        student_detailed_info: this.detailedFormId,
+                        certificate_type: this.selectedCert.nameEnglish
+                    }
+                    let result = {}
+                    switch (this.selectedCert.nameEnglish) {
+                        case 'IELTS_GENERAL' :
+                        // break;
+                        case 'IELTS_ACADEMIC' :
+                        // break;
+                        case 'TOEFL' :
+                            payload = {
+                                ...payload,
+                                ...this.regularCert,
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/regular-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GMAT' :
+                            payload = {
+                                ...payload,
+                                ...this.gmat
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/gmat-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_PHYSICS':
+                            payload = {
+                                ...payload,
+                                ...this.grePhysics
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/gre-psychology-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_BIOLOGY':
+                            payload = {
+                                ...payload,
+                                ...this.greBiology
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account​/gre-biology-certificates​/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_PSYCHOLOGY':
+                            payload = {
+                                ...payload,
+                                ...this.grePsychology
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/gre-psychology-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_GENERAL':
+                            payload = {
+                                ...payload,
+                                ...this.greGeneral
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/gre-general-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_MATHEMATICS':
+                        case 'GRE_LITERATURE':
+                        case 'GRE_CHEMISTRY':
+                            payload = {
+                                ...payload,
+                                ...this.greSubject
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/gre-subject-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'DUOLINGO':
+                            payload = {
+                                ...payload,
+                                ...this.duolingo
+                            }
+                            console.log('certificate payload ', payload);
+
+                            result = await this.$api.post(`${this.api}/account/duolingo-certificates/`, payload, this.httpConfig);
+                            console.log(result);
+                            break;
+                    }
+                } else {
+                    console.log('bad certificate input')
+                }
             }
         },
         created() {
@@ -375,7 +498,7 @@
         margin: 20px;
         display: flex;
         flex-direction: column;
-        width: calc(50% - 45px);
+        width: calc(100% - 45px);
     }
 
     .edu-gap {

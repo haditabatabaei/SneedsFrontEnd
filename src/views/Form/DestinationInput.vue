@@ -8,18 +8,8 @@
             <c-searchable-input class="dest-input" :loading="countryLoading" @input="searchCountryByVal" label="کشور مقصد" :dataset="availableCountries" @select-option="setSelectedCountry" />
             <c-dropdown class="dest-input" label="مقطع مورد نظر" :options="gradeOptions" @select-option="setSelectedGrade" />
             <c-dropdown class="dest-input" label="ترم مورد نظر" :options="semesterOptions" @select-option="setSelectedSemester" />
-            <c-searchable-input class="dest-input" :loading="majorLoading" @input="searchMajorByVal" label="رشته" :dataset="availableMajors" @select-option="setSelectedMajor"/>
-            <c-searchable-input class="dest-input" :loading="uniLoading" @input="searchUniversityByVal" label="دانشگاه" :dataset="availableUniversities" @select-option="addSelectedUniversity"/>
-
-<!--            <p v-if="selectedCountry">{{selectedCountry.name}}</p>w-->
-<!--            <p v-if="selectedMajor">{{selectedMajor.name}}</p>-->
-<!--            <p v-if="selectedGrade">{{selectedGrade.name}}</p>-->
-        </div>
-        <div class="destination-universities isansFont">
-            <p class="selected-item item--valid" v-for="uni in selectedUniversities">
-                {{uni.name}}
-                <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i class="material-icons">close</i></button>
-            </p>
+            <c-searchable-input class="dest-input" :loading="majorLoading" :clearselect="true" @input="searchMajorByVal" label="رشته" :dataset="availableMajors" @select-option="setSelectedMajor"/>
+            <c-searchable-input class="dest-input" :loading="uniLoading" :clearselect="true" @input="searchUniversityByVal" label="دانشگاه" :dataset="availableUniversities" @select-option="addSelectedUniversity"/>
         </div>
         <div class="destination-universities isansFont" v-if="selectedMajor != null">
             <p class="selected-item item--valid">
@@ -27,6 +17,14 @@
                 <button class="selected-item-remove" @click="selectedMajor = null"><i class="material-icons">close</i></button>
             </p>
         </div>
+        <div class="destination-universities isansFont">
+            <p class="selected-item item--valid" v-for="uni in selectedUniversities">
+                {{uni.name}}
+                <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i class="material-icons">close</i></button>
+            </p>
+        </div>
+
+        <button class="destination-add isansFont" @click="addDestination">اضافه کردن مقصد</button>
     </section>
 
 </template>
@@ -74,6 +72,10 @@
                 return this.$store.getters.detailedForm;
             },
 
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
+            },
+
             api() {
                 return this.$store.getters.getApi
             },
@@ -87,6 +89,23 @@
             }
         },
         methods: {
+            async addDestination() {
+                if(this.selectedCountry != null && this.selectedUniversities.length > 0 && this.selectedGrade != null && this.selectedMajor != null && this.selectedSemester != null) {
+                    let payload = {
+                        student_detailed_info: this.detailedFormId,
+                        country: this.selectedCountry.id,
+                        universities: this.selectedUniversities.map(selectedUni => selectedUni.id),
+                        grade: this.selectedGrade.nameEnglish,
+                        major: this.selectedMajor.id,
+                        semester_year: this.selectedSemester.id
+                    }
+                    console.log(payload)
+                    let result = await this.$api.post(`${this.api}/account/want-to-applies/`, payload, this.httpConfig)
+                    console.log(result);
+                } else {
+                    console.log('bad input')
+                }
+            },
             async searchCountryByVal(query) {
                 try {
                     if(!!query && query.length > 3) {
@@ -158,11 +177,26 @@
             },
             removeSelectedUni(uni) {
                 this.selectedUniversities = this.selectedUniversities.filter(currentUni => currentUni.id != uni.id);
-            }
+            },
+            async getSemesters() {
+                try {
+                    let result = await this.$api.get(`${this.api}/account/apply-semester-years/`, this.httpConfig);
+                    this.semesterOptions = result.data.map(semesterObj => {
+                        return {
+                            ...semesterObj,
+                            name: `${semesterObj.semester} ${semesterObj.year}`
+                        }
+                    })
+                    console.log(this.semesterOptions);
+                } catch (e) {
 
+                } finally {
+
+                }
+            }
         },
         created() {
-
+            this.getSemesters();
         }
     }
 </script>
@@ -221,6 +255,21 @@
         background: none;
         color: #00BFD6;
         font-size: 16px;
+    }
+
+    .destination-add {
+        align-self: flex-end;
+        margin-left: 20px;
+        border-radius: 5px;
+        border: none;
+        padding: 7px 30px;
+        color: white;
+        background-color: #00bfa5;
+        transition: all 200ms ease-in-out;
+    }
+
+    .destination-add:hover {
+        border-bottom: 3px solid #00a992;
     }
 
     @media only screen and (max-width: 767.8px) {

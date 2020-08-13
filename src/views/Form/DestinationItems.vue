@@ -25,12 +25,12 @@
                 مقصدی وارد نشده است.
             </p>
 
-            <button class="paper-items-addnew" v-if="items.length > 0">
+            <router-link to="/analysis/form/destination" class="paper-items-addnew" v-if="items.length > 0">
                 افزودن مقصد دیگر
-            </button>
-            <button class="paper-items-addnew" v-else>
+            </router-link>
+            <router-link to="/analysis/form/destination" class="paper-items-addnew" v-else>
                 افزودن مقصد جدید
-            </button>
+            </router-link>
         </div>
     </section>
 </template>

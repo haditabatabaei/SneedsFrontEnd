@@ -132,6 +132,15 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'powerfulrecom',
+                    name: 'analysis-form-powerfulrecom',
+                    component: () => import("@/views/Form/PowerfulRecommendation"),
+                    meta: {
+                        auth: 'optional',
+                        formPartName: 'powerfulrecom'
+                    }
+                },
+                {
                     path: 'languagecerts',
                     name: 'analysis-form-languagecerts',
                     component: () => import("@/views/Form/LanguageCertificateInput"),

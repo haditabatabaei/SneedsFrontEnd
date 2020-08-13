@@ -52,12 +52,13 @@ export default new Vuex.Store({
                 [7, 'educationallevelsitems'],
                 [8, 'paper'],
                 [9, 'paperitems'],
-                [10, 'languagecerts'],
-                [11, 'languagecertsitems'],
-                [12, 'destination'],
-                [13, 'destinationitems'],
-                [14, 'funds'],
-                [15, 'otherinformation']
+                [10, 'powerfulrecom'],
+                [11, 'languagecerts'],
+                [12, 'languagecertsitems'],
+                [13, 'destination'],
+                [14, 'destinationitems'],
+                [15, 'funds'],
+                [16, 'otherinformation']
             ]
             )
         },

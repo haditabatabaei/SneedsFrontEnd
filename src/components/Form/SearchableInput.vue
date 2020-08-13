@@ -10,7 +10,7 @@
 
         <ul class="searchable-items" v-if="isSearchableOpen">
             <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
-            <li class="searchable-item" :class="[{'searchable-item-selected': inputValue == item.name}]" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
+            <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
         </ul>
     </div>
 </template>
@@ -45,6 +45,10 @@
             loading: {
                 type: Boolean,
                 default: () => false,
+            },
+            clearselect: {
+                type: Boolean,
+                default: () => false
             }
         },
         computed: {
@@ -60,10 +64,15 @@
             focusOnInput(e) {
                 console.log(e);
             },
+
             setInputValue(item) {
                 this.inputValue = item.name;
                 this.isSearchableOpen = false;
                 this.$emit('select-option', item);
+                if(this.clearselect) {
+                    console.log('clear select')
+                    this.inputValue = null;
+                }
             },
 
             inputEmitter(){
@@ -156,7 +165,8 @@
     }
 
     .searchable-item {
-        height: 40px;
+        min-height: 40px;
+        max-height: 40px;
         display: flex;
         align-items: center;
         padding: 0 10px;

@@ -117,6 +117,8 @@
         position: absolute;
         top: 40px;
         list-style: none;
+        max-height: 400px;
+        overflow: auto;
         background-color: #F8F8F8;
         align-self: stretch;
         width: 100%;
@@ -130,7 +132,7 @@
     }
 
     .dropdown-item {
-        height: 40px;
+        min-height: 40px;
         display: flex;
         align-items: center;
         padding: 0 10px;

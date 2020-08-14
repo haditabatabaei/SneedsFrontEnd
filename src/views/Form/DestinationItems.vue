@@ -16,7 +16,7 @@
                         </span>
                     </div>
                 </div>
-                <button class="paper-item-remove">
+                <button class="paper-item-remove" @click="deleteDestination(item)">
                     <i class="material-icons">close</i>
                 </button>
             </div>
@@ -106,9 +106,28 @@
             getSummary(item) {
                 return `${this.getType(item.type)}، ${item.publish_year}، نویسنده ${this.getAuthorNumber(item.which_author)}`
             },
+
+            async getDestinations() {
+                let result = await this.$api.get(`${this.api}/account/want-to-applies/?student_detailed_form=${this.detailedFormId}`, this.httpConfig);
+                this.items = result.data;
+            },
+
+            async deleteDestination(dest) {
+                let result = await this.$api.delete(`${this.api}/account/want-to-applies/${dest.id}/`, this.httpConfig);
+                console.log(result);
+                this.getDestinations();
+            }
+        },
+        watch: {
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.getDestinations();
+            }
         },
         created() {
-            this.items = this.detailedForm.want_to_applies;
+            if(this.detailedForm) {
+                this.getDestinations();
+            }
         }
     }
 </script>

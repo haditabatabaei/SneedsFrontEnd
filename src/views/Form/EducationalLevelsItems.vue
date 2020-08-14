@@ -48,6 +48,10 @@
                 return this.$store.getters.detailedForm;
             },
 
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
+            },
+
             api() {
                 return this.$store.getters.getApi
             },
@@ -87,13 +91,23 @@
                 let result = await this.$api.delete(`${this.api}/account/student-detailed-university-throughs/${item.id}/`, this.httpConfig);
                 console.log(result);
                 this.$store.commit('setDetailedFormProperty', {prop: 'universities', value: this.detailedForm.universities.filter(uni => uni.id != item.id)})
+            },
+
+            async getUniversityThroughs() {
+                let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student_detailed_form=${this.detailedFormId}`, this.httpConfig);
+                this.items = result.data;
+                console.log('uni throughs results ', result)
             }
-
-
+        },
+        watch: {
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.getUniversityThroughs();
+            }
         },
         created() {
-            if(this.detailedForm) {
-                this.items = this.detailedForm.universities;
+            if (this.detailedForm) {
+                this.getUniversityThroughs();
             }
         }
     }

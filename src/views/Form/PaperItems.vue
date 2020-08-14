@@ -20,13 +20,13 @@
                 مقاله ای وارد نشده است.
             </p>
 
-            <button class="paper-items-addnew" v-if="items.length > 0">
+            <router-link to="/analysis/form/paper" class="paper-items-addnew" v-if="items.length > 0">
                 افزودن مقاله دیگر
-            </button>
+            </router-link>
 
-            <button class="paper-items-addnew" v-else>
+            <router-link to="/analysis/form/paper" class="paper-items-addnew" v-else>
                 افزودن مقاله جدید
-            </button>
+            </router-link>
         </div>
     </section>
 </template>
@@ -46,6 +46,10 @@
 
             detailedForm() {
                 return this.$store.getters.detailedForm;
+            },
+
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
             },
 
             api() {
@@ -97,9 +101,23 @@
             getSummary(item) {
                 return `${this.getType(item.type)}، ${item.publish_year}، نویسنده ${this.getAuthorNumber(item.which_author)}`
             },
+
+            async getPublications() {
+                let result = await this.$api.get(`${this.api}/account/publications/?student_detailed_form=${this.detailedFormId}`, this.httpConfig);
+                this.items = result.data;
+                console.log('publications results ', result)
+            }
+        },
+        watch: {
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.getPublications();
+            }
         },
         created() {
-            this.items = this.detailedForm.publications;
+            if(this.detailedForm) {
+                this.getPublications();
+            }
         }
     }
 </script>

@@ -177,9 +177,22 @@ export default {
 
         async submitfunds() {
             let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
-                {'prefers_full_fund': this.detailedForm.prefers_full_fund, 'prefers_half_fund': this.detailedForm.prefers_half_fund, 'prefers_self_fund': this.detailedForm.prefers_self_fund},
+                {
+                    'prefers_full_fund': this.detailedForm.prefers_full_fund,
+                    'prefers_half_fund': this.detailedForm.prefers_half_fund,
+                    'prefers_self_fund': this.detailedForm.prefers_self_fund,
+                    'payment_affordability': this.detailedForm.payment_affordability
+                },
                 this.httpConfig)
             console.log('funds status code', result.status)
+        },
+
+        async submitpowerfulrecom() {
+            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                {'powerful_recommendation': this.detailedForm.powerful_recommendation},
+                this.httpConfig);
+            console.log('powerful recom status code ', result.status)
+
         },
 
         goBack() {

@@ -117,6 +117,10 @@ export default {
 
         multipartHttpConfig() {
             return this.$store.getters.multipartHttpConfig
+        },
+
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn;
         }
     },
 
@@ -205,13 +209,54 @@ export default {
     },
 
     async created() {
+        console.log('is logged in ', this.isLoggedIn)
+        this.isFormReady = false;
         if(this.isLoggedIn) {
             //user is logged in
-            if(!!this.detailedForm) {
-                //user has form
-            } else {
-                //user doesnt have form
+            //check user has form or not;
+            //check if current user has available form
+            try {
+                console.log('is logged in try getting user form')
+                let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
+
+                console.log(formResult)
+                //user already has form
+                this.$store.commit('setDetailedForm', formResult.data);
+            } catch (e) {
+                //this user doesnt have form, try creating one for him and set the user prop of form
+                console.log(e);
+                if(e.response) {
+                    console.log(e.response)
+                }
+                console.log('exception catched')
+                // if(Number(e.status) == 404) {
+                    console.log('not found')
+                    //create new form.
+                    let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+                    console.log('form create user on user logged in ', formResult);
+                    //set this user id for form
+                    let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${formResult.data.id}/`,
+                        {
+                            'user': this.user.id
+                        }, this.httpConfig);
+
+                    console.log('form patch user id to created form result ', formUserSetResult);
+                    this.$store.commit('setDetailedForm', formUserSetResult.data)
+
+                // }
             }
+            // if(!Boolean(this.detailedFormId)) {
+            //     //there is no id present
+            //
+            //     //check form
+            //     let formResult = await this.$api.get(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, this.httpConfig);
+            //
+            //     console.log(formResult)
+            //     this.$store.commit('setDetailedForm', formResult.data)
+            //
+            // } else {
+            //     //user doesnt have form
+            // }
         } else {
             //user is not logged in
             //check if there is form id present in storage

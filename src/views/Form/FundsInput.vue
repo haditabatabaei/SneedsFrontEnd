@@ -33,7 +33,7 @@
             </label>
         </div>
         <div class="fund-input-wrapper">
-            <c-dropdown class="fund-input" />
+            <c-dropdown class="fund-input" label="توانایی مالی" :options="moneyOptions" @select-option="setAffordability" :defaultSelectedIndex="moneyOptions.indexOf(selectedAffordability)"/>
         </div>
     </section>
 </template>
@@ -50,7 +50,12 @@
                 fullFund: null,
                 halfFund: null,
                 selfFund: null,
-                moneyItems: []
+                selectedAffordability: null,
+                moneyOptions: [
+                    {name: 'کم', nameEnglish: 'LOW'},
+                    {name: 'متوسط', nameEnglish: 'MIDDLE'},
+                    {name: 'زیاد', nameEnglish: 'MUCH'}
+                ]
             }
         },
         computed: {
@@ -89,12 +94,25 @@
                 this.$store.commit('setDetailedFormProperty', {prop: 'prefers_self_fund', value: newVal})
             }
         },
-        methods: {},
+        methods: {
+            setAffordability(option) {
+                this.selectedAffordability = option;
+                if(this.detailedForm) {
+                    this.$store.commit('setDetailedFormProperty', {prop: 'payment_affordability', value: option.nameEnglish})
+                }
+            },
+            async getAffordabilityChoices() {
+                let result = await this.$api.get(`${this.api}/account/payment-affordability-choices/`, this.httpConfig);
+                console.log(result)
+            }
+        },
         created() {
             if(this.detailedForm) {
                 this.fullFund = this.detailedForm.prefers_full_fund;
                 this.halfFund = this.detailedForm.prefers_half_fund;
                 this.selfFund = this.detailedForm.prefers_self_fund;
+                this.selectedAffordability = this.moneyOptions.find(item => item.nameEnglish == this.detailedForm.payment_affordability);
+                // this.getAffordabilityChoices();
             }
         }
     }

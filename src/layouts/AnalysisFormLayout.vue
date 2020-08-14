@@ -216,6 +216,7 @@ export default {
             //check user has form or not;
             //check if current user has available form
             if(!(this.detailedForm && this.detailedForm.user.id == this.user.id)) {
+                //form obj is not present or is present but the owner is not logged in user
                 try {
                     console.log('is logged in try getting user form')
                     let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
@@ -248,18 +249,6 @@ export default {
                 }
             }
 
-            // if(!Boolean(this.detailedFormId)) {
-            //     //there is no id present
-            //
-            //     //check form
-            //     let formResult = await this.$api.get(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, this.httpConfig);
-            //
-            //     console.log(formResult)
-            //     this.$store.commit('setDetailedForm', formResult.data)
-            //
-            // } else {
-            //     //user doesnt have form
-            // }
         } else {
             //user is not logged in
             //check if there is form id present in storage
@@ -279,19 +268,6 @@ export default {
            }
 
         }
-        // console.log('analysis layout created.', this.user);
-        // if(this.detailedForm == null) {
-        //     let result = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig)
-        //     console.log(result.data);
-        //     this.$store.commit('setDetailedForm', result.data)
-        // }
-        // this.$api.get(`${this.api}/`)
-        // if(!localStorage.hasOwnProperty('aformid')) {
-        //     console.log('create new form')
-        //     localStorage.setItem('aformid', 10)
-        // } else {
-        //     console.log(`continue as ${localStorage.getItem('aformid')}`)
-        // }
     }
 }
 </script>

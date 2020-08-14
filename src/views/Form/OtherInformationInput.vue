@@ -8,29 +8,41 @@
             این اطلاعات برای مقایسه خیلی به ما کمک می‌کنه.
         </h3>
 
-        <div class="form-other-items">
-            <c-collapsable-input title="آدرس لینکدین" :is-open="true" :default-value="detailedForm.linkedin_url" />
-            <c-collapsable-input title="سابقه المپیاد" :default-value="detailedForm.olympiad" />
-            <c-collapsable-input title="آدرس وبسایت شخصی" :default-value="detailedForm.homepage_url" />
-            <c-collapsable-input title="آپلود رزومه" />
-            <c-collapsable-input title="سایر توضیحات" :default-value="detailedForm.comment" />
+        <div class="form-other-items" v-if="detailedForm">
+            <c-collapsable-input title="آدرس لینکدین" :isOpenByDefault="true" >
+                <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`" cols="30" rows="10" placeholder="آدرس لینکدین" v-model="linkedin" />
+            </c-collapsable-input>
+            <c-collapsable-input title="سابقه المپیاد" >
+                <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`" cols="30" rows="10" placeholder="المپیاد" v-model="olympiad" />
+            </c-collapsable-input>
+            <c-collapsable-input title="آدرس وبسایت شخصی" >
+                <c-simple-input label="آدرس وبسایت شخصی" @input="val => homepage = val" />
+            </c-collapsable-input>
+            <c-collapsable-input title="آپلود رزومه" >
+                <input type="file">
+            </c-collapsable-input>
+            <c-collapsable-input title="سایر توضیحات">
+                <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`" cols="30" rows="10" placeholder="توضیحات" v-model="comment" />
+            </c-collapsable-input>
         </div>
     </section>
 </template>
 
 <script>
     import CollapsableInput from "@/components/Form/CollapsableInput";
+    import SimpleInput from "@/components/Form/SimpleInput";
     export default {
         name: "OtherInformationInput",
         components: {
-            'c-collapsable-input': CollapsableInput
+            'c-collapsable-input': CollapsableInput,
+            'c-simple-input': SimpleInput
         },
         data() {
             return {
-                fullFund: null,
-                halfFund: null,
-                selfFund: null,
-                moneyItems: []
+                linkedin: null,
+                olympiad: null,
+                homepage: null,
+                comment: null
             }
         },
         computed: {
@@ -40,6 +52,10 @@
 
             detailedForm() {
                 return this.$store.getters.detailedForm;
+            },
+
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
             },
 
             api() {
@@ -53,16 +69,25 @@
             multipartHttpConfig() {
                 return this.$store.getters.multipartHttpConfig
             },
-
-            nomatter() {
-                return !(this.fullFund || this.halfFund || this.selfFund) || (this.fullFund && this.selfFund && this.halfFund);
+        },
+        watch: {
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.init();
             }
         },
-        methods: {},
+        methods: {
+            init() {
+
+            }
+        },
         created() {
-            this.fullFund = this.detailedForm.prefers_full_fund;
-            this.halfFund = this.detailedForm.prefers_half_fund;
-            this.selfFund = this.detailedForm.prefers_self_fund;
+            if(this.detailedForm) {
+                this.init();
+            }
+            // this.fullFund = this.detailedForm.prefers_full_fund;
+            // this.halfFund = this.detailedForm.prefers_half_fund;
+            // this.selfFund = this.detailedForm.prefers_self_fund;
         }
     }
 </script>

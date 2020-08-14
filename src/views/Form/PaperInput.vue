@@ -125,7 +125,7 @@
             },
             setReputation(reputation) {
                 this.selectedReputation = reputation;
-            }
+            },
         },
         created() {
 

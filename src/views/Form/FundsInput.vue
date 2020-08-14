@@ -92,6 +92,10 @@
             },
             selfFund(newVal) {
                 this.$store.commit('setDetailedFormProperty', {prop: 'prefers_self_fund', value: newVal})
+            },
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.init();
             }
         },
         methods: {
@@ -104,16 +108,19 @@
             async getAffordabilityChoices() {
                 let result = await this.$api.get(`${this.api}/account/payment-affordability-choices/`, this.httpConfig);
                 console.log(result)
+            },
+            init() {
+                if(this.detailedForm) {
+                    this.fullFund = this.detailedForm.prefers_full_fund;
+                    this.halfFund = this.detailedForm.prefers_half_fund;
+                    this.selfFund = this.detailedForm.prefers_self_fund;
+                    this.selectedAffordability = this.moneyOptions.find(item => item.nameEnglish == this.detailedForm.payment_affordability);
+                    console.log('in init s afford ', this.selectedAffordability)
+                }
             }
         },
         created() {
-            if(this.detailedForm) {
-                this.fullFund = this.detailedForm.prefers_full_fund;
-                this.halfFund = this.detailedForm.prefers_half_fund;
-                this.selfFund = this.detailedForm.prefers_self_fund;
-                this.selectedAffordability = this.moneyOptions.find(item => item.nameEnglish == this.detailedForm.payment_affordability);
-                // this.getAffordabilityChoices();
-            }
+            this.init();
         }
     }
 </script>

@@ -55,12 +55,22 @@ export default {
             console.log(newStatusValue);
             this.$store.commit('setDetailedFormProperty', {prop: 'is_married', value: newStatusValue === 'married' })
         },
+
+        detailedForm(newDetailedForm) {
+            console.log('detailed form changed ', newDetailedForm);
+            this.init();
+        }
+    },
+    methods: {
+        init() {
+            console.log('in marriage input', this.detailedForm);
+            if(this.detailedForm) {
+                this.selectedMarriageStatus = this.detailedForm.is_married ? 'married' : 'single'
+            }
+        }
     },
     created() {
-        console.log('in marriage input', this.detailedForm);
-        if(this.detailedForm) {
-            this.selectedMarriageStatus = this.detailedForm.is_married ? 'married' : 'single'
-        }
+        this.init();
     }
 }
 </script>

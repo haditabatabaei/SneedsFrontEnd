@@ -56,12 +56,21 @@
                 let value = newStatusValue == 'have'
                 this.$store.commit('setDetailedFormProperty', {prop: 'powerful_recommendation', value })
             },
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.init();
+            }
+        },
+        methods: {
+              init() {
+                  console.log('in ms input', this.detailedForm);
+                  if(this.detailedForm) {
+                      this.selectedMilitaryserviceStatus = this.detailedForm.powerful_recommendation ? 'have' : 'donthave'
+                  }
+              }
         },
         created() {
-            console.log('in ms input', this.detailedForm);
-            if(this.detailedForm) {
-                this.selectedMilitaryserviceStatus = this.detailedForm.powerful_recommendation ? 'have' : 'donthave'
-            }
+            this.init();
         }
     }
 </script>

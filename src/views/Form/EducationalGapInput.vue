@@ -40,6 +40,15 @@
         methods: {
             setGapYears(newGapYear) {
                 this.gapYears = Number(newGapYear);
+            },
+            init() {
+                console.log('in ms input', this.detailedForm);
+                if(this.detailedForm) {
+                    this.selectedEducationalGapStatus = !!this.detailedForm.academic_break ? 'have' : 'donthave'
+                    if(this.selectedEducationalGapStatus == 'have') {
+                        this.setGapYears(this.detailedForm.academic_break)
+                    }
+                }
             }
         },
         computed: {
@@ -72,17 +81,14 @@
                 if(newVal == null || newVal == 'donthave') {
                     this.$store.commit('setDetailedFormProperty', {prop: 'academic_break', value: 0 })
                 }
+            },
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.init();
             }
         },
         created() {
-            console.log('in ms input', this.detailedForm);
-            if(this.detailedForm) {
-                this.selectedEducationalGapStatus = !!this.detailedForm.academic_break ? 'have' : 'donthave'
-                if(this.selectedEducationalGapStatus == 'have') {
-                    this.setGapYears(this.detailedForm.academic_break)
-                }
-            }
-
+            this.init();
         }
     }
 </script>

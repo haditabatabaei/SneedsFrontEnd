@@ -56,12 +56,21 @@ export default {
             let value = newStatusValue == 'donthave' ? 'PASSED' : 'UNDID'
             this.$store.commit('setDetailedFormProperty', {prop: 'military_service_status', value })
         },
+        detailedForm(newDetailedForm) {
+            console.log('detailed form changed ', newDetailedForm);
+            this.init();
+        }
+    },
+    methods: {
+        init() {
+            console.log('in ms input', this.detailedForm);
+            if(this.detailedForm) {
+                this.selectedMilitaryserviceStatus = this.detailedForm.military_service_status == 'PASSED' ? 'donthave' : 'have'
+            }
+        }
     },
     created() {
-        console.log('in ms input', this.detailedForm);
-        if(this.detailedForm) {
-            this.selectedMilitaryserviceStatus = this.detailedForm.military_service_status == 'PASSED' ? 'donthave' : 'have'
-        }
+        this.init();
     }
 }
 </script>

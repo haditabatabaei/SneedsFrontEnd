@@ -48,6 +48,13 @@
         methods: {
             setGapYears(newGapYear) {
                 this.gapYears = Number(newGapYear);
+            },
+            init() {
+                console.log('in ms input', this.detailedForm);
+                if (this.detailedForm) {
+                    this.selectedEducationalGapStatus = this.detailedForm.gender == "MALE" ? 'male' : 'female'
+                    this.setGapYears(this.detailedForm.age)
+                }
             }
         },
         computed: {
@@ -83,14 +90,14 @@
                 } else {
                     this.$store.commit('setDetailedFormProperty', {prop: 'gender', value: null})
                 }
+            },
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.init();
             }
         },
         created() {
-            console.log('in ms input', this.detailedForm);
-            if (this.detailedForm) {
-                this.selectedEducationalGapStatus = this.detailedForm.gender == "MALE" ? 'male' : 'female'
-                this.setGapYears(this.detailedForm.age)
-            }
+            this.init();
         }
     }
 </script>

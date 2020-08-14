@@ -215,21 +215,22 @@ export default {
             //user is logged in
             //check user has form or not;
             //check if current user has available form
-            try {
-                console.log('is logged in try getting user form')
-                let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
+            if(!(this.detailedForm && this.detailedForm.user.id == this.user.id)) {
+                try {
+                    console.log('is logged in try getting user form')
+                    let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
 
-                console.log(formResult)
-                //user already has form
-                this.$store.commit('setDetailedForm', formResult.data);
-            } catch (e) {
-                //this user doesnt have form, try creating one for him and set the user prop of form
-                console.log(e);
-                if(e.response) {
-                    console.log(e.response)
-                }
-                console.log('exception catched')
-                // if(Number(e.status) == 404) {
+                    console.log(formResult)
+                    //user already has form
+                    this.$store.commit('setDetailedForm', formResult.data);
+                } catch (e) {
+                    //this user doesnt have form, try creating one for him and set the user prop of form
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response)
+                    }
+                    console.log('exception catched')
+                    // if(Number(e.status) == 404) {
                     console.log('not found')
                     //create new form.
                     let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
@@ -243,8 +244,10 @@ export default {
                     console.log('form patch user id to created form result ', formUserSetResult);
                     this.$store.commit('setDetailedForm', formUserSetResult.data)
 
-                // }
+                    // }
+                }
             }
+
             // if(!Boolean(this.detailedFormId)) {
             //     //there is no id present
             //

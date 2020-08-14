@@ -352,7 +352,7 @@
                             }
                             console.log('certificate payload ', payload);
 
-                            result = await this.$api.post(`${this.api}/account/gre-psychology-certificates/`, payload, this.httpConfig);
+                            result = await this.$api.post(`${this.api}/account/gre-physics-certificates/`, payload, this.httpConfig);
                             console.log(result);
                             break;
                         case 'GRE_BIOLOGY':
@@ -362,7 +362,7 @@
                             }
                             console.log('certificate payload ', payload);
 
-                            result = await this.$api.post(`${this.api}/account​/gre-biology-certificates​/`, payload, this.httpConfig);
+                            result = await this.$api.post(`${this.api}/account/gre-biology-certificates/`, payload, this.httpConfig);
                             console.log(result);
                             break;
                         case 'GRE_PSYCHOLOGY':

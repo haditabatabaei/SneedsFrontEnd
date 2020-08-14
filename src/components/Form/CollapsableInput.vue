@@ -11,7 +11,7 @@
             <i class="material-icons collapsable-done-icon" v-if="isFilled">done</i>
         </p>
         <transition name="fade">
-            <textarea name="collapsable-input" class="collapsable-input-textarea" :id="`collapsable-text-${id}`" :style="`resize:${resize};`" cols="30" rows="10" :placeholder="inputPlaceholder" v-if="isOpen" v-model="inputValue" />
+            <slot class="collapsable-input" v-if="isOpen"></slot>
         </transition>
     </div>
 </template>
@@ -21,23 +21,23 @@
         name: "CollapsableInput",
         data() {
             return {
-                id: Math.round(Math.random() * 100),
-                inputValue: null,
+                // id: Math.round(Math.random() * 100),
+                isOpen: false,
             }
         },
-        computed: {
-            resize() {
-                if(this.resizableHorizontal && this.resizableVertical) {
-                    return 'both'
-                } else if(this.resizableHorizontal) {
-                    return 'horizontal'
-                } else if(this.resizableVertical) {
-                    return 'vertical'
-                } else {
-                    return 'none'
-                }
-            }
-        },
+        // computed: {
+        //     resize() {
+        //         if(this.resizableHorizontal && this.resizableVertical) {
+        //             return 'both'
+        //         } else if(this.resizableHorizontal) {
+        //             return 'horizontal'
+        //         } else if(this.resizableVertical) {
+        //             return 'vertical'
+        //         } else {
+        //             return 'none'
+        //         }
+        //     }
+        // },
         props: {
             title: {
                 type: String,
@@ -47,29 +47,29 @@
                 type: Boolean,
                 default: () => false
             },
-            inputPlaceholder: {
-                type: String,
-                default: () => 'پلیس هولدر باکس متن'
-            },
-            isOpen: {
+            // inputPlaceholder: {
+            //     type: String,
+            //     default: () => 'پلیس هولدر باکس متن'
+            // },
+            isOpenByDefault: {
                 type: Boolean,
                 default: () => false
             },
 
-            resizableHorizontal: {
-                type: Boolean,
-                default: () => false
-            },
-
-            resizableVertical: {
-                type: Boolean,
-                default: () => false
-            },
-
-            defaultValue: {
-                type: String,
-                default: () => null
-            }
+            // resizableHorizontal: {
+            //     type: Boolean,
+            //     default: () => false
+            // },
+            //
+            // resizableVertical: {
+            //     type: Boolean,
+            //     default: () => false
+            // },
+            //
+            // defaultValue: {
+            //     type: String,
+            //     default: () => null
+            // }
         },
         methods: {
             toggleOpen() {
@@ -77,7 +77,8 @@
             }
         },
         created() {
-            this.inputValue = this.defaultValue
+            this.inputValue = this.defaultValue;
+            this.isOpen = this.isOpenByDefault;
         }
     }
 </script>

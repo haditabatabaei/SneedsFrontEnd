@@ -44,6 +44,10 @@
             label: {
                 type: String,
                 default: () => "منو دراپ داون"
+            },
+            defaultSelectedIndex: {
+                type: Number,
+                default: () => -1
             }
         },
         computed: {},
@@ -67,6 +71,9 @@
             // document.body.onclick = null;
         },
         created() {
+            if(this.defaultSelectedIndex != -1) {
+                this.selectOption(this.options[this.defaultSelectedIndex])
+            }
         }
     }
 </script>

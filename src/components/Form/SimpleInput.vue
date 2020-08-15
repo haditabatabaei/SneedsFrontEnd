@@ -1,5 +1,5 @@
 <template>
-    <input class="simple-input isansFont--faNum" type="text" :placeholder="label" v-model="inputValue" @change="$emit('change', inputValue)" @input="$emit('input', inputValue)">
+    <input class="simple-input" :class="[{'simple-input--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum': !isLtr}]" type="text" :placeholder="label" v-model="inputValue" @change="$emit('change', inputValue)" @input="$emit('input', inputValue)">
 </template>
 
 <script>
@@ -14,10 +14,22 @@
             label: {
                 type: String,
                 default: () => 'ورودی ساده'
+            },
+            defaultValue: {
+                type: String,
+                default: () => null
+            },
+            isLtr: {
+                type: Boolean,
+                default: () => false
             }
         },
         methods: {},
-        created() {}
+        created() {
+            if(this.defaultValue) {
+                this.inputValue = this.defaultValue;
+            }
+        }
     }
 </script>
 
@@ -29,5 +41,8 @@
         min-height: 40px;
         padding: 0 10px;
         color: #9B9999;
+    }
+    .simple-input--ltr {
+        direction: ltr !important;
     }
 </style>

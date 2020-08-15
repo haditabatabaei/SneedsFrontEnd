@@ -10,9 +10,7 @@
             {{title}}
             <i class="material-icons collapsable-done-icon" v-if="isFilled">done</i>
         </p>
-        <transition name="fade">
-            <slot class="collapsable-input" v-if="isOpen"></slot>
-        </transition>
+        <slot class="collapsable-input" v-if="isOpen"></slot>
     </div>
 </template>
 
@@ -21,23 +19,9 @@
         name: "CollapsableInput",
         data() {
             return {
-                // id: Math.round(Math.random() * 100),
                 isOpen: false,
             }
         },
-        // computed: {
-        //     resize() {
-        //         if(this.resizableHorizontal && this.resizableVertical) {
-        //             return 'both'
-        //         } else if(this.resizableHorizontal) {
-        //             return 'horizontal'
-        //         } else if(this.resizableVertical) {
-        //             return 'vertical'
-        //         } else {
-        //             return 'none'
-        //         }
-        //     }
-        // },
         props: {
             title: {
                 type: String,
@@ -47,29 +31,10 @@
                 type: Boolean,
                 default: () => false
             },
-            // inputPlaceholder: {
-            //     type: String,
-            //     default: () => 'پلیس هولدر باکس متن'
-            // },
             isOpenByDefault: {
                 type: Boolean,
                 default: () => false
             },
-
-            // resizableHorizontal: {
-            //     type: Boolean,
-            //     default: () => false
-            // },
-            //
-            // resizableVertical: {
-            //     type: Boolean,
-            //     default: () => false
-            // },
-            //
-            // defaultValue: {
-            //     type: String,
-            //     default: () => null
-            // }
         },
         methods: {
             toggleOpen() {
@@ -108,14 +73,5 @@
         font-size: 15px;
         margin: 0 5px 0 0;
         border-radius: 50%;
-    }
-
-    .collapsable-input-textarea {
-        background-color: #F8F8F8;
-        border-radius: 10px;
-        border: 1px solid #F2F2F2;
-        padding: 5px;
-        color: #9B9999;
-        width: 100%;
     }
 </style>

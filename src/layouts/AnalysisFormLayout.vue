@@ -1,8 +1,114 @@
 <template>
-    <section class="analysis-form"> 
-        <div class="analysis-form-bluebg"></div> 
+    <section class="analysis-form">
+        <div class="analysis-form-bluebg"></div>
         <div class="form-title-circle"></div>
-      
+        <transition name="fade">
+            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
+                 @click="hideAllModals">
+                <div class="consultant-modal consultant-modal--registerIntro" v-if="showRegisterIntro">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn isansFont">
+                        <i class="material-icons modal-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>برای ثبت نهایی فرم نیاز به حساب کاربری دارید!</strong>
+                            <br>
+                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                        </p>
+                    </div>
+                    <div class="intro-content ">
+                        <h2 class="intro-content-head isansFont">
+                            چرا ثبت نام کنم ؟
+                        </h2>
+                        <ul class="intro-content-list isansFont">
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی لیست جلسات رزرو شده رو ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                میتونی بعد از جلسه مشاوره، امتیاز بدی و کلی قابلیت دیگه
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
+                            ورود/ثبت نام و رزرو وقت
+                        </button>
+                        <button @click="hideAllModals" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            بیخیال
+                        </button>
+                    </div>
+                </div>
+                <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="authFormWrapper-switcher isansFont">
+                        <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
+                            ورود
+                        </button>
+                        <button @click="showRegisterForm" class="switcher"
+                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                        </button>
+                    </div>
+                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                                v-if="loginForm"/>
+                    <register-form :customAction="true" @custom-action-call="registerFormAction"
+                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                </div>
+
+                <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn modal--error isansFont">
+                        <i class="material-icons modal-warn-icon modal-icon--error">
+                            info
+                        </i>
+                        <p>
+                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <br>
+                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
+                            این اطلاعات  همیشه از طریق پروفایلتان قابل ویرایش است.
+                        </p>
+                    </div>
+                    <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
+                        نام :
+                        <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
+                    </label>
+                    <label class="loginForm-label isansFont" for="password">
+                        نام خانوادگی :
+                        <input class="loginForm-control" id="password" v-model.trim="last_name">
+                    </label>
+                    <div class="intro-action isansFont">
+                        <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
+                            ثبت و رزرو وقت
+                        </button>
+                        <button @click="addSelectedTimesToCart(true)" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            بعدا وارد میکنم
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <section class="form-container">
             <aside class="form-title">
                 <h1 class="form-title-text" style="font-family: Sans-Serif !important">
@@ -27,6 +133,7 @@
                         ادامه
                         </span>
                             <i class="material-icons">keyboard_arrow_left</i>
+                            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
                         </button>
                         <button @click="goBack()" class="form-confirm-back">
                             <i class="material-icons">keyboard_arrow_right</i>
@@ -42,11 +149,28 @@
 </template>
 
 <script>
+    import RegisterForm from '@/components/StandAlone/RegisterForm';
+    import LoginForm from '@/components/StandAlone/LoginForm';
+    import {MoonLoader} from "@saeris/vue-spinners";
+
 export default {
     name: 'AnalysisFormLayout',
+    components: {
+        "login-form": LoginForm,
+        "register-form": RegisterForm,
+        "moon-loader": MoonLoader
+    },
     data() {
         return {
             startPage: 1,
+            showRegisterIntro: false,
+            showRegisterModal: false,
+            showNameModal: false,
+            loginForm: true,
+            registerForm: false,
+            first_name: '',
+            last_name: '',
+            loading: false,
         }
     },
     computed: {
@@ -83,11 +207,11 @@ export default {
 
         prevPageRoute() {
             let prevPage = this.currentPage - 1;
- 
+
             if(prevPage < this.startPage ) {
                 prevPage = this.startPage;
             }
-            
+
             return `/analysis/form/${this.pageMap.get(prevPage)}`
         },
 
@@ -121,6 +245,20 @@ export default {
 
         isLoggedIn() {
             return this.$store.getters.isLoggedIn;
+        },
+
+        showModalOverlay() {
+            return this.showRegisterIntro || this.showRegisterModal || this.showNameModal;
+        },
+
+        showNameModalAfterLogin() {
+            if (this.user.first_name == null || this.user.last_name == null) {
+                return true
+            } else if (this.user.first_name.trim().length === 0 || this.user.last_name.trim().length === 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
     },
 
@@ -129,74 +267,265 @@ export default {
             this.currentPage = currentPageNumber;
         },
 
-        async submitAndMoveNext() {
-            if(this.$route.path != this.nextPageRoute) {
-                //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
-                try {
-                    await this[`submit${this.pageMap.get(this.currentPage)}`]();
-                } catch (e) {
-                    console.log(e)
-                } finally {
-                    console.log('going to ', this.nextPageRoute)
-                    this.$router.push(this.nextPageRoute);
-                }
-            } else {
-                console.log('nowhere to go.')
+        hideAllModals(event) {
+            let command = event.target.dataset.command;
+            if (command === 'consultant-modal-close') {
+                this.showRegisterIntro = false;
+                this.showRegisterModal = false;
+                this.showNameModal = false;
             }
         },
 
-        edulevelAddHandler() {
-            console.log('edu level add handler');
+        showLoginForm() {
+            this.loginForm = true;
+            this.registerForm = false;
+            this.showNameModal = false;
+        },
+
+        showRegisterForm() {
+            this.registerForm = true;
+            this.loginForm = false;
+            this.showNameModal = false;
+        },
+
+        continueRegisterFlow() {
+            this.showRegisterIntro = false;
+            this.showRegisterModal = true;
+            this.showNameModal = false;
+        },
+
+        loginFormAction() {
+            this.showRegisterIntro = false;
+            this.showRegisterModal = false;
+            if (this.showNameModalAfterLogin) {
+                this.showNameModal = true;
+            } else {
+                // this.addSelectedTimesToCart();
+            }
+        },
+
+        registerFormAction() {
+            this.showRegisterModal = false;
+            this.showRegisterIntro = false;
+            this.showNameModal = true;
+        },
+
+        async submitAndMoveNext() {
+            if(this.$route.path != this.nextPageRoute) {
+                //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
+                await this[`submit${this.pageMap.get(this.currentPage)}`]();
+                console.log('going to ', this.nextPageRoute)
+                this.$router.push(this.nextPageRoute);
+            } else {
+                if(this.currentPage == this.lastPage) {
+                    console.log('we are in last page');
+                    // this.showRegisterIntro = true;
+                    this.submitotherinformation();
+                } else {
+                    console.log('nowhere to go.')
+                }
+            }
         },
 
         async submitmarriage() {
-            console.log(this.detailedForm.is_married);
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'is_married': this.detailedForm.is_married}, this.httpConfig)
-            console.log('marriage status code', result.status)
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.is_married);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'is_married': this.detailedForm.is_married}, this.httpConfig)
+                console.log('marriage status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
         },
 
         async submitmilitaryservice() {
-            console.log(this.detailedForm.military_service_status);
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
-            console.log('military_service_status status code', result.status)
+            try {
+                this.loading = false;
+                console.log(this.detailedForm.military_service_status);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
+                console.log('military_service_status status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
         },
 
         async submiteducationalgap() {
-            console.log(this.detailedForm.academic_break);
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
-            console.log('academic break status code', result.status)
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.academic_break);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
+                console.log('academic break status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
         },
 
         async submitgender() {
-            console.log(this.detailedForm.academic_break);
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
-            console.log('academic break status code', result.status)
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.academic_break);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
+                console.log('academic break status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
         },
 
         async submitworkexperience() {
-            console.log(this.detailedForm.related_work_experience);
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
-            console.log('work exp status code', result.status)
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.related_work_experience);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
+                console.log('work exp status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
         },
 
-        async submitfunds() {
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
-                {
-                    'prefers_full_fund': this.detailedForm.prefers_full_fund,
-                    'prefers_half_fund': this.detailedForm.prefers_half_fund,
-                    'prefers_self_fund': this.detailedForm.prefers_self_fund,
-                    'payment_affordability': this.detailedForm.payment_affordability
-                },
-                this.httpConfig)
-            console.log('funds status code', result.status)
+        async submitlasteducationallevel() {
+            console.log('last educational level handler')
+        },
+
+        async submiteducationallevelsitems() {
+            console.log('educationallevelsitems handler')
+        },
+
+        async submitpaper() {
+            console.log('paper handler ')
+        },
+
+        async submitpaperitems() {
+            console.log('paperitems handler')
         },
 
         async submitpowerfulrecom() {
-            let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
-                {'powerful_recommendation': this.detailedForm.powerful_recommendation},
-                this.httpConfig);
-            console.log('powerful recom status code ', result.status)
+            try {
+                this.loading = true;
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {'powerful_recommendation': this.detailedForm.powerful_recommendation},
+                    this.httpConfig);
+                console.log('powerful recom status code ', result.status)
+            } catch (e) {
 
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async submitlanguagecerts() {
+            console.log('languagecerts handler')
+        },
+
+        async submitlanguagecertsitems() {
+            console.log('languagecertsitems handler')
+        },
+
+        async submitdestination() {
+            console.log('destination handler')
+        },
+
+        async submitdestinationitems() {
+            console.log('destinationitems handler')
+        },
+
+        async submitfunds() {
+            try {
+                this.loading = true;
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {
+                        'prefers_full_fund': this.detailedForm.prefers_full_fund,
+                        'prefers_half_fund': this.detailedForm.prefers_half_fund,
+                        'prefers_self_fund': this.detailedForm.prefers_self_fund,
+                        'payment_affordability': this.detailedForm.payment_affordability
+                    },
+                    this.httpConfig)
+                console.log('funds status code', result.status)
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
+        },
+
+        async submitotherinformation() {
+            try {
+                this.loading = true;
+                if(this.detailedForm.xInputFile) {
+                    let payload = new FormData();
+                    payload.append('homepage_url', this.detailedForm.homepage_url);
+                    payload.append('linkedin_url', this.detailedForm.linkedin_url);
+                    payload.append('comment', this.detailedForm.comment);
+                    payload.append('olympiad', this.detailedForm.olympiad);
+                    payload.append('resume', this.detailedForm.xInputFile);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                        payload,
+                        this.multipartHttpConfig
+                    )
+                    console.log(result);
+                } else {
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                        {
+                            'homepage_url': this.detailedForm.homepage_url,
+                            'linkedin_url': this.detailedForm.linkedin_url,
+                            'comment': this.detailedForm.comment,
+                            'olympiad': this.detailedForm.olympiad
+                        },
+                        this.httpConfig
+                    )
+                    console.log('other info result ', this.result);
+                }
+                this.startLastPageFlow();
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async startLastPageFlow() {
+            if(this.isLoggedIn) {
+                //user is logged in
+                //check see if form is set or not
+                if(this.detailedForm.user) {
+                    //form user is set
+                    //check if its current user
+                    if(this.detailedForm.user.id == this.user.id) {
+                        //yes its us
+                        //everything is good
+                        //show confirmation success message
+                    } else {
+                        //some serious thing is happening here !
+                        // this is not supposed to happen
+                    }
+                } else {
+                    //form has no user
+                    //set form user to current form
+                    let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${formResult.data.id}/`,
+                        {
+                            'user': this.user.id
+                        }, this.httpConfig);
+
+                    console.log(formUserSetResult);
+                }
+            } else {
+                //user is not logged in
+                //start login modal process
+                // this.show
+            }
         },
 
         goBack() {
@@ -210,7 +539,6 @@ export default {
 
     async created() {
         console.log('is logged in ', this.isLoggedIn)
-        this.isFormReady = false;
         if(this.isLoggedIn) {
             //user is logged in
             //check user has form or not;
@@ -231,7 +559,6 @@ export default {
                         console.log(e.response)
                     }
                     console.log('exception catched')
-                    // if(Number(e.status) == 404) {
                     console.log('not found')
                     //create new form.
                     let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
@@ -245,26 +572,32 @@ export default {
                     console.log('form patch user id to created form result ', formUserSetResult);
                     this.$store.commit('setDetailedForm', formUserSetResult.data)
 
-                    // }
                 }
             }
 
         } else {
             //user is not logged in
             //check if there is form id present in storage
-           if(!Boolean(this.detailedFormId)) {
-               //there is no id, create an empty form and set form id and empty form data
-               let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
-               console.log(formResult);
-               this.$store.commit('setDetailedForm', formResult.data)
-           } else {
+            console.log('user is not logged in')
+            if(this.detailedFormId) {
                //there is an id available
-               if(!Boolean(this.detailedForm)) {
-                    //there is id but there is no form try fetch and set form
+               console.log('there is id present ', this.detailedFormId)
+               if(this.detailedForm) {
+                   //there is form available
+                   //nothing to do here
+                   console.log('there is form with id nothing to add here ', this.detailedForm)
+               } else {
+                   //there is id but there is no form try fetch and set form
+                   console.log('there is id but there is no form, try fetching form')
                    let formResult = await this.$api.get(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, this.httpConfig);
                    console.log(formResult)
                    this.$store.commit('setDetailedForm', formResult.data)
                }
+           } else {
+               //there is no id, create an empty form and set form id and empty form data
+               let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+               console.log(formResult);
+               this.$store.commit('setDetailedForm', formResult.data)
            }
 
         }
@@ -471,6 +804,185 @@ export default {
     .progress-wrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    .modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1013;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .consultant-modal {
+        width: 100%;
+        max-width: 400px;
+        min-height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        z-index: 1014;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-bottom: 20px
+    }
+
+    .modal-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: flex-start;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    .modal-warn-icon {
+        color: #CAA53D;
+        margin-left: 10px;
+    }
+
+    .modal-warn p {
+        margin-bottom: 0;
+    }
+
+    .modal--error {
+        color: #891B1B;
+        background-color: #FFECEC
+    }
+
+    .modal-icon--error {
+        color: #891B1B;
+    }
+
+    .intro-content {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .intro-content-head {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #585858;
+        font-weight: bold;
+    }
+
+    .intro-content-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .intro-content-item {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #707070;
+    }
+
+    .intro-content-item i {
+        color: #00BFD6;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .intro-action {
+        margin: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .intro-action-button {
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        font-size: 12px;
+    }
+
+    .intro-action-button--active {
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .intro-action-button--passive {
+        background-color: white;
+        color: #707070;
+    }
+
+    .intro-head {
+        background-color: #FCFCFC;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .intro-head i {
+        color: #B3B3B3;
+        font-size: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .authFormWrapper-switcher {
+        border-bottom: 3px solid #eee;
+        min-height: 50px;
+        margin: 0;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .switcher {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: #aaa;
+        background: none;
+        border: none;
+    }
+
+    .switcher--active {
+        border-bottom: 3px solid #9038CC;
+        color: #9038CC;
+    }
+
+    .loginForm-label {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .loginForm-label:not(:first-child) {
+        margin-top: 0;
+    }
+
+    .loginForm-control {
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #F8F8F8;
+        margin-top: 10px;
+        color: #999;
+    }
+
+    .loginForm-meta {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    .loginForm-meta.error {
+        color: #c9737c;
     }
 
 

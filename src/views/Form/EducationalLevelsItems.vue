@@ -94,7 +94,7 @@
             },
 
             async getUniversityThroughs() {
-                let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student_detailed_form=${this.detailedFormId}`, this.httpConfig);
+                let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
                 this.items = result.data;
                 console.log('uni throughs results ', result)
             }

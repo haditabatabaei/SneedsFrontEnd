@@ -152,14 +152,14 @@
         methods: {
             getCerts() {
                 let reqs = [
-                    this.$api.get(`${this.api}/account/duolingo-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gmat-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gre-biology-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gre-general-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gre-physics-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gre-psychology-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/gre-subject-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
-                    this.$api.get(`${this.api}/account/regular-certificates/?student_detailed_form=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/duolingo-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gmat-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gre-biology-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gre-general-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gre-physics-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gre-psychology-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/gre-subject-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
+                    this.$api.get(`${this.api}/account/regular-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
                 ]
                 Promise
                     .all(reqs)

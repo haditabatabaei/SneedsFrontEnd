@@ -201,6 +201,7 @@ export default new Vuex.Store({
 
         logout({commit}) {
             commit('logout');
+            commit('setDetailedForm', null)
         },
     },
     getters: {

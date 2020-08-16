@@ -1,11 +1,18 @@
 <template>
-    <div class="number-input-wrapper" :class="[{'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
-        <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" v-model="value">
-        <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
-        <div class="number-input-controls gadugiFont" v-if="hasKeys">
-            <button class="number-input-action" @click="incrementValueByStep">+</button>
-            <button class="number-input-action" @click="decrementValueByStep">-</button>
+    <div>
+        <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
+            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" v-model="value">
+            <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
+            <div class="number-input-controls gadugiFont" v-if="hasKeys">
+                <button class="number-input-action" @click="incrementValueByStep">+</button>
+                <button class="number-input-action" @click="decrementValueByStep">-</button>
+            </div>
         </div>
+        <transition name="fade">
+            <p class="number-input-error isansFont" v-if="error">
+                {{errorText}}
+            </p>
+        </transition>
     </div>
 </template>
 
@@ -50,6 +57,14 @@
             isLtr: {
                 type: Boolean,
                 default: () => false
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را دوباره کنترل کنید."
             }
         },
         watch: {
@@ -91,6 +106,10 @@
         border-radius: 10px;
         padding: 5px;
         height: 40px;
+    }
+
+    .number-input-wrapper.input--error {
+        border-color: #963a38;
     }
 
     .number-input-controls {
@@ -151,6 +170,12 @@
 
     .number-input-wrapper.wrapper--ltr .number-input-label {
         justify-content: flex-end;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        font-size: 12px;
+        color: #963a38;
     }
 
 

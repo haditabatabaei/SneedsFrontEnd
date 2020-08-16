@@ -125,7 +125,7 @@
                 <img draggable="false" class="form-title-image" src="/sneedsAssets/img/takhminstars.svg" alt="کاربران اسنیدز">
             </aside>
             <main class="form-layout-view-wrapper">
-                <router-view @edulevel-add="edulevelAddHandler" @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view>
+                <router-view @edulevel-add="submitlasteducationallevel" @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view>
                 <div class="progress-wrapper">
                     <div class="form-confirm isansFont">
                         <button @click="submitAndMoveNext()" class="form-confirm-next">

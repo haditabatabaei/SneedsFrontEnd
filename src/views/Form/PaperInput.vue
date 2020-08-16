@@ -21,7 +21,7 @@
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
             <c-dropdown-input class="edu-gap" label="نوع مقاله" :options="typeOptions" @select-option="setType" />
             <c-simple-input class="edu-gap" label="عنوان مقاله" @input="setTitle" />
-            <c-number-input class="edu-gap" :step="1" :default-value="1900" @set-number="setGapYears" label="سال پابلیش مقاله"  />
+            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears" label="سال پابلیش مقاله"  />
             <c-radio-group direction="column" :items="authorItems" @select-option="setAuthor" />
             <c-dropdown-input class="edu-gap" label="شاخص تاثیر" :options="reputationOptions" @select-option="setReputation" />
             <button @click="addNewPublication" class="publication-add isansFont">ایجاد مقاله جدید</button>
@@ -45,7 +45,7 @@
         data() {
             return {
                 selectedEducationalGapStatus: null,
-                gapYears: null,
+                gapYears: 1900,
                 selectedType: null,
                 selectedAuthor: null,
                 selectedReputation: null,

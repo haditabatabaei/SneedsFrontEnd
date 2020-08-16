@@ -19,7 +19,7 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
-            <c-number-input class="edu-gap" :step="0.5" :default-value="gapYears" @set-number="setGapYears" label="سال وقفه تحصیلی" />
+            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears" label="سال وقفه تحصیلی" />
         </div>
     </section>
 </template>
@@ -34,7 +34,7 @@
         data() {
             return {
                 selectedEducationalGapStatus: null,
-                gapYears: null
+                gapYears: 1
             }
         },
         methods: {

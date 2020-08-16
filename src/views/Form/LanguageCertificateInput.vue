@@ -30,111 +30,111 @@
                               @select-option="setSelectedCert"/>
             <div v-if="selectedCert">
                 <div class="inputs-certs" v-if="shownType == 'regular'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.listening = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5" :default-value="regularCert.listening" @set-number="val => regularCert.listening = Number(val)"
                                     label="Listening"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5" :default-value="regularCert.writing" @set-number="val => regularCert.writing = Number(val)"
                                     label="Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.speaking = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5" :default-value="regularCert.speaking" @set-number="val => regularCert.speaking = Number(val)"
                                     label="Speaking"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.reading = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5" :default-value="regularCert.reading" @set-number="val => regularCert.reading = Number(val)"
                                     label="Reading"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => regularCert.overall = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5" :default-value="regularCert.overall" @set-number="val => regularCert.overall = Number(val)"
                                     label="Overall"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'gmat'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.analytical_writing_assessment = Number(val)"
                                     label="Analytic Writing Assessment"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.integrated_reasoning = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="gmat.integrated_reasoning" @set-number="val => gmat.integrated_reasoning = Number(val)"
                                     label="Integrated Reasoning"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.quantitative_and_verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="gmat.quantitative_and_verbal" @set-number="val => gmat.quantitative_and_verbal = Number(val)"
                                     label="Quantitative and Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6" @set-number="val => gmat.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="gmat.total" @set-number="val => gmat.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePhys'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantitative = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.quantitative" @set-number="val => grePhysics.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.verbal" @set-number="val => grePhysics.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.analytical_writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.analytical_writing" @set-number="val => grePhysics.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.classical_mechanics = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.classical_mechanics" @set-number="val => grePhysics.classical_mechanics = Number(val)"
                                     label="Classical Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.electromagnetism = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.electromagnetism" @set-number="val => grePhysics.electromagnetism = Number(val)"
                                     label="Electromagnetism"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.quantum_mechanics = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.quantum_mechanics" @set-number="val => grePhysics.quantum_mechanics = Number(val)"
                                     label="Quantum Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePhysics.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePhysics.total" @set-number="val => grePhysics.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePsycho'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.quantitative = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.quantitative" @set-number="val => grePsychology.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.verbal" @set-number="val => grePsychology.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.analytical_writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.analytical_writing" @set-number="val => grePsychology.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.biological = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.biological" @set-number="val => grePsychology.biological = Number(val)"
                                     label="Biological"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.cognitive = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.cognitive" @set-number="val => grePsychology.cognitive = Number(val)"
                                     label="Cognitive"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.social = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.social" @set-number="val => grePsychology.social = Number(val)"
                                     label="Social"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.developmental = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.developmental" @set-number="val => grePsychology.developmental = Number(val)"
                                     label="Developmental"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.clinical = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.clinical" @set-number="val => grePsychology.clinical = Number(val)"
                                     label="Clinical"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.measurement_or_methodology = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.measurement_or_methodology" @set-number="val => grePsychology.measurement_or_methodology = Number(val)"
                                     label="Measurement or Methodology"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => grePsychology.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="grePsychology.total" @set-number="val => grePsychology.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greBio'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.quantitative = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.quantitative" @set-number="val => greBiology.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.verbal" @set-number="val => greBiology.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.analytical_writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.analytical_writing" @set-number="val => greBiology.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.cellular_and_molecular = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.cellular_and_molecular" @set-number="val => greBiology.cellular_and_molecular = Number(val)"
                                     label="Cellular and Molecular"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.organismal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.organismal" @set-number="val => greBiology.organismal = Number(val)"
                                     label="Organismal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.ecology_and_evolution = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.ecology_and_evolution" @set-number="val => greBiology.ecology_and_evolution = Number(val)"
                                     label="Ecologyand Evolution"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greBiology.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greBiology.total" @set-number="val => greBiology.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greGen'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.quantitative = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greGeneral.quantitative" @set-number="val => greGeneral.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greGeneral.verbal" @set-number="val => greGeneral.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.analytical_writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greGeneral.analytical_writing" @set-number="val => greGeneral.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greGeneral.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greGeneral.total" @set-number="val => greGeneral.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greSub'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.quantitative = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greSubject.quantitative" @set-number="val => greSubject.quantitative = Number(val)"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.verbal = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greSubject.verbal" @set-number="val => greSubject.verbal = Number(val)"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.analytical_writing = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greSubject.analytical_writing" @set-number="val => greSubject.analytical_writing = Number(val)"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => greSubject.total = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="greSubject.total" @set-number="val => greSubject.total = Number(val)"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'duolingo'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.literacy = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="duolingo.literacy" @set-number="val => duolingo.literacy = Number(val)"
                                     label="Literacy"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.comprehension = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="duolingo.comprehension" @set-number="val => duolingo.comprehension = Number(val)"
                                     label="Comprehension"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.conversation = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="duolingo.conversation" @set-number="val => duolingo.conversation = Number(val)"
                                     label="Conversation"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.production = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="duolingo.production" @set-number="val => duolingo.production = Number(val)"
                                     label="Production"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="6.5" @set-number="val => duolingo.overall = Number(val)"
+                    <c-number-input class="edu-gap" :is-ltr="true" :step="1" :default-value="duolingo.overall" @set-number="val => duolingo.overall = Number(val)"
                                     label="Overall"/>
                 </div>
                 <button class="certificate-add" @click="addCertificate">اضافه کردن مدرک زبان جدید</button>
@@ -163,80 +163,80 @@
                 selectedCert: null,
                 regularCert: {
                     is_mock: false,
-                    speaking: null,
-                    writing: null,
-                    listening: null,
-                    reading: null,
-                    overall: null,
+                    speaking: 6.5,
+                    writing: 6.5,
+                    listening: 6.5,
+                    reading: 6.5,
+                    overall: 6.5,
                 },
 
                 gmat: {
                     is_mock: false,
                     analytical_writing_assessment: null,
-                    integrated_reasoning: null,
-                    quantitative_and_verbal: null,
-                    total: null,
+                    integrated_reasoning: 1,
+                    quantitative_and_verbal: 6,
+                    total: 200,
                 },
 
                 duolingo: {
                     is_mock: false,
-                    overall: null,
-                    literacy: null,
-                    comprehension: null,
-                    conversation: null,
-                    production: null,
+                    overall: 0,
+                    literacy: 0,
+                    comprehension: 0,
+                    conversation: 0,
+                    production: 10,
                 },
 
                 greSubject: {
                     is_mock: false,
-                    quantitative: null,
-                    verbal: null,
+                    quantitative: 130,
+                    verbal: 130,
                     analytical_writing: null,
-                    total: null
+                    total: 200
                 },
 
                 greGeneral: {
                     is_mock: false,
-                    quantitative: null,
-                    verbal: null,
+                    quantitative: 130,
+                    verbal: 130,
                     analytical_writing: null,
-                    total: null
+                    total: 200
                 },
 
                 greBiology: {
                     is_mock: false,
-                    quantitative: null,
-                    verbal: null,
+                    quantitative: 130,
+                    verbal: 130,
                     analytical_writing: null,
-                    total: null,
-                    cellular_and_molecular: null,
-                    organismal: null,
-                    ecology_and_evolution: null,
+                    total: 200,
+                    cellular_and_molecular: 20,
+                    organismal: 20,
+                    ecology_and_evolution: 20,
                 },
 
                 grePhysics: {
                     is_mock: false,
-                    quantitative: null,
-                    verbal: null,
+                    quantitative: 130,
+                    verbal: 130,
                     analytical_writing: null,
-                    total: null,
-                    classical_mechanics: null,
-                    electromagnetism: null,
-                    quantum_mechanics: null
+                    total: 200,
+                    classical_mechanics: 20,
+                    electromagnetism: 20,
+                    quantum_mechanics: 20
                 },
 
                 grePsychology: {
                     is_mock: false,
-                    quantitative: null,
-                    verbal: null,
+                    quantitative: 130,
+                    verbal: 130,
                     analytical_writing: null,
-                    total: null,
-                    biological: null,
-                    cognitive: null,
-                    social: null,
-                    developmental: null,
-                    clinical: null,
-                    measurement_or_methodology: null
+                    total: 200,
+                    biological: 20,
+                    cognitive: 20,
+                    social: 20,
+                    developmental: 20,
+                    clinical: 20,
+                    measurement_or_methodology: 20
                 },
 
                 certOptions: [

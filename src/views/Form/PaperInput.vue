@@ -19,11 +19,27 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
-            <c-dropdown-input class="edu-gap" label="نوع مقاله" :options="typeOptions" @select-option="setType" />
-            <c-simple-input class="edu-gap" label="عنوان مقاله" @input="setTitle" />
-            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears" label="سال پابلیش مقاله"  />
-            <c-radio-group direction="column" :items="authorItems" @select-option="setAuthor" />
-            <c-dropdown-input class="edu-gap" label="شاخص تاثیر" :options="reputationOptions" @select-option="setReputation" />
+            <c-dropdown-input class="edu-gap" label="نوع مقاله"
+                              :error="$v.selectedType.$invalid"
+                              error-text="لطفاً نوع مقاله را به درستی انتخاب کنید."
+                              :options="typeOptions" @select-option="setType" />
+            <c-simple-input class="edu-gap" label="عنوان مقاله" @
+                            :error="$v.title.$invalid"
+                            error-text="عنوان مقاله الزامی است."
+                            @input="setTitle" />
+            <c-number-input class="edu-gap" :step="1"
+                            :error="$v.gapYears.$invalid"
+                            error-text="مقدار وارد شده باید عدد صحیح بین 1900 و 2100 باشد."
+                            :default-value="gapYears"
+                            @set-number="setGapYears" label="سال پابلیش مقاله"  />
+            <c-radio-group direction="column" :items="authorOptions"
+                            :error="$v.selectedAuthor.$invalid"
+                            error-text="لطفاً نوبت نویسنده را به درستی انتخاب کنید."
+                            @select-option="setAuthor" />
+            <c-dropdown-input class="edu-gap" label="شاخص تاثیر"
+                              :error="$v.selectedReputation.$invalid"
+                              error-text="لطفاً شاخص تاثیر مقاله را به درستی انتخاب کنید."
+                              :options="reputationOptions" @select-option="setReputation" />
             <button @click="addNewPublication" class="publication-add isansFont">ایجاد مقاله جدید</button>
         </div>
     </section>
@@ -34,6 +50,20 @@
     import DropdownInput from "@/components/Form/DropdownInput";
     import SimpleInput from "@/components/Form/SimpleInput";
     import RadioGroupInput from "@/components/Form/RadioGroupInput";
+    import {required, between, integer, maxLength} from 'vuelidate/lib/validators';
+
+    const validType = (input, vm) => {
+        return vm.typeOptions.some(option => option.nameEnglish === input.nameEnglish)
+    }
+
+    const validReputation = (input, vm) => {
+        return vm.reputationOptions.some(option => option.nameEnglish === input.nameEnglish)
+    }
+
+    const validAuthor = (input, vm) => {
+         return vm.authorOptions.some(item => item.nameEnglish === input.nameEnglish);
+    }
+
     export default {
         name: 'PaperInput',
         components: {
@@ -41,6 +71,13 @@
             "c-dropdown-input": DropdownInput,
             "c-simple-input": SimpleInput,
             "c-radio-group": RadioGroupInput
+        },
+        validations: {
+            gapYears: {required, integer, between: between(1900, 2100)},
+            title: {required, maxLength: maxLength(100)},
+            selectedType: {required, validType},
+            selectedReputation: {required, validReputation},
+            selectedAuthor: {required, validAuthor}
         },
         data() {
             return {
@@ -54,7 +91,8 @@
                     {name: 'ژورنالی', nameEnglish: 'JOURNAL'},
                     {name: 'کنفرانسی', nameEnglish: 'CONFERENCE'}
                 ],
-                authorItems: [
+
+                authorOptions: [
                     {name: 'نویسنده اول', nameEnglish: 'FIRST'},
                     {name: 'نویسنده دوم', nameEnglish: 'SECOND'},
                     {name: 'نویسنده سوم', nameEnglish: 'THIRD'},
@@ -95,7 +133,7 @@
         },
         methods: {
             setGapYears(newGapYear) {
-                this.gapYears = newGapYear;
+                this.gapYears = Number(newGapYear);
             },
             async addNewPublication() {
                 if(this.selectedAuthor != null && this.selectedReputation != null && this.selectedType != null) {

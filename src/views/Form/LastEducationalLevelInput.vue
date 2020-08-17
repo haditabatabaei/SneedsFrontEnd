@@ -5,12 +5,40 @@
             <i class="material-icons">info</i>
         </h1>
         <div class="edulevel-wrapper">
-            <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی" :options="gradeOptions" @select-option="gradeSelected" />
-            <c-searchable-input class="edulevel-input" :loading="majorLoading" @input="searchMajorByVal" label="رشته" :dataset="availableMajors" @select-option="setSelectedMajor" />
+            <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی"
+                              :error="$v.selectedGrade.$invalid"
+                              error-text="لطفاً یک مقطع تحصیلی معتبر وارد کنید."
+                              :options="gradeOptions"
+                              @select-option="gradeSelected" />
+
+            <c-searchable-input class="edulevel-input" :loading="majorLoading"
+                                :error="true"
+                                @input="searchMajorByVal"
+                                label="رشته"
+                                :dataset="availableMajors"
+                                @select-option="setSelectedMajor" />
+
             <c-searchable-input class="edulevel-input" :loading="uniLoading" @input="searchUniversityByVal" label="دانشگاه" :dataset="availableUniversities" @select-option="setSelectedUniversity" />
-            <c-number-input class="edulevel-input" :defaultValue="16.25" :step="0.25" label="معدل از 20" :has-keys="false" @set-number="setGpa" />
-            <c-number-input class="edulevel-input" :defaultValue="2020"  label="سال فراقت از تحصیل" :max-value="10000" @set-number="setGraduateIn" />
-            <c-simple-input class="edulevel-input" label="عنوان پایان نامه" @input="setThesisTitle"/>
+
+            <c-number-input class="edulevel-input"
+                            :error="$v.gpa.$invalid"
+                            error-text="معدل کل باید عدد بین 0 تا 20 باشد."
+                            :defaultValue="16.25"
+                            :step="0.25"
+                            label="معدل از 20"
+                            :has-keys="false" @set-number="setGpa" />
+
+            <c-number-input class="edulevel-input" :defaultValue="2020"
+                            :error="$v.graduateIn.$invalid"
+                            error-text="سال فارغ التحصیلی باید به میلادی و عدد صحیح بین 1980 و 2100 باشد."
+                            label="سال فراغت از تحصیل"
+                            :max-value="2100"
+                            @set-number="setGraduateIn" />
+
+            <c-simple-input class="edulevel-input" label="عنوان پایان نامه"
+                            :error="$v.thesisTitle.$invalid"
+                            error-text="عنوان پایان نامه باید حداکثر 512 کاراکتر باشد."
+                            @input="setThesisTitle"/>
         </div>
         <button @click="addUniversityThrough" class="edulevel-add isansFont">ایجاد مقطع</button>
     </section>
@@ -21,6 +49,10 @@
     import NumberInput from "@/components/Form/NumberInput";
     import SearchableInput from "@/components/Form/SearchableInput";
     import SimpleInput from "@/components/Form/SimpleInput";
+    import {required, minValue, maxValue, integer, maxLength} from 'vuelidate/lib/validators'
+    const gradeValidator = (input, vm) => {
+        return vm.gradeOptions.some(item => item.nameEnglish === input.nameEnglish);
+    }
     export default {
         name: "LastEducationalLevel",
         components: {
@@ -28,6 +60,13 @@
             "c-dropdown-input": DropdownInput,
             "c-searchable-input": SearchableInput,
             "c-simple-input": SimpleInput
+        },
+        validations: {
+            selectedGrade: {required, gradeValidator},
+            graduateIn: {required, integer, minValue: minValue(1980), maxValue: maxValue(2100)},
+            thesisTitle: {maxLength: maxLength(512)},
+            gpa: {required, minValue: minValue(0), maxValue: maxValue(20)},
+            selectedMajor: {required, }
         },
         data() {
             return {

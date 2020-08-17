@@ -325,10 +325,14 @@
     import DropdownInput from "@/components/Form/DropdownInput";
     import SimpleInput from "@/components/Form/SimpleInput";
     import RadioGroupInput from "@/components/Form/RadioGroupInput";
-    import {required, between, integer, minValue, maxValue} from 'vuelidate/lib/validators';
+    import {required, between, integer} from 'vuelidate/lib/validators';
 
     const moduleTenValidator = (input, vm) => {
         return Number(input) % 10 === 0
+    }
+
+    const halfFloatValidator = (input, vm) => {
+        return (Number(input) * 10) % 5 === 0
     }
 
     export default {
@@ -350,7 +354,7 @@
             },
             gmat: {
                 is_mock: {},
-                analytical_writing_assessment: {required, between: between(0, 6)},
+                analytical_writing_assessment: {required, between: between(0, 6), halfFloatValidator},
                 integrated_reasoning: {required, between: between(1, 8), integer},
                 quantitative_and_verbal: {required, between: between(6, 51)},
                 total: {required, between: between(200, 800), integer, moduleTenValidator},
@@ -360,7 +364,7 @@
                 is_mock: {},
                 quantitative: {required, integer, between: between(130, 170)},
                 verbal: {required, integer, between: between(130, 170)},
-                analytical_writing: {required, between: between(0, 6)},
+                analytical_writing: {required, between: between(0, 6), halfFloatValidator},
                 total: {required, between: between(200, 990), moduleTenValidator},
                 classical_mechanics: {required, integer, between: between(20, 99)},
                 electromagnetism: {required, integer, between: between(20, 99)},
@@ -371,7 +375,7 @@
                 is_mock: {},
                 quantitative: {required, integer, between: between(130, 170)},
                 verbal: {required, integer, between: between(130, 170)},
-                analytical_writing: {required, between: between(0, 6)},
+                analytical_writing: {required, between: between(0, 6), halfFloatValidator},
                 total: {required, between: between(200, 990), moduleTenValidator},
                 biological: {required, integer, between: between(20, 99)},
                 cognitive: {required, integer, between: between(20, 99)},
@@ -385,7 +389,7 @@
                 is_mock: {},
                 quantitative: {required, integer, between: between(130, 170)},
                 verbal: {required, integer, between: between(130, 170)},
-                analytical_writing: {required, between: between(0, 6)},
+                analytical_writing: {required, between: between(0, 6), halfFloatValidator},
                 total: {required, between: between(200, 990), moduleTenValidator},
                 cellular_and_molecular: {required, integer, between: between(20, 99)},
                 organismal: {required, integer, between: between(20, 99)},
@@ -396,14 +400,14 @@
                 is_mock: {},
                 quantitative: {required, integer, between: between(130, 170)},
                 verbal: {required, integer, between: between(130, 170)},
-                analytical_writing: {required, between: between(0, 6)},
+                analytical_writing: {required, between: between(0, 6), halfFloatValidator},
             },
 
             greSubject: {
                 is_mock: {},
                 quantitative: {required, integer, between: between(130, 170)},
                 verbal: {required, integer, between: between(130, 170)},
-                analytical_writing: {required, between: between(0, 6)},
+                analytical_writing: {required, between: between(0, 6), halfFloatValidator},
                 total: {required, between: between(200, 990), moduleTenValidator}
             },
 

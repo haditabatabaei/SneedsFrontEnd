@@ -19,17 +19,25 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
-            <c-number-input class="edu-gap" :step="10" :default-value="gapYears" @set-number="setGapYears" label="ماه سابقه کار" />
+            <c-number-input class="edu-gap" :step="1"
+                            :error="$v.gapYears.$invalid"
+                            error-text="سابقه کاری باید عدد صحیح بالای صفر باشد."
+                            :default-value="gapYears"
+                            @set-number="setGapYears" label="ماه سابقه کار" />
         </div>
     </section>
 </template>
 
 <script>
     import NumberInput from "@/components/Form/NumberInput";
+    import {minValue, maxValue, integer} from 'vuelidate/lib/validators'
     export default {
         name: 'WorkExperienceInput',
         components: {
             "c-number-input": NumberInput
+        },
+        validations: {
+            gapYears: {minValue: minValue(0), integer, maxValue: maxValue(2147483647)}
         },
         data() {
             return {

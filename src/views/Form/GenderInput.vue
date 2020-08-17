@@ -25,7 +25,11 @@
             </label>
         </div>
         <div class="inputs">
-            <c-number-input class="edu-gap" :step="1" :default-value="gapYears" @set-number="setGapYears"
+            <c-number-input class="edu-gap" :step="1"
+                            :error="$v.gapYears.$invalid"
+                            error-text="سن باید عدد صحیح بین 15 تا 100 باشد."
+                            :default-value="18"
+                            @set-number="setGapYears"
                             label="سال سن"/>
         </div>
     </section>
@@ -33,11 +37,14 @@
 
 <script>
     import NumberInput from "@/components/Form/NumberInput";
-
+    import {required, minValue, maxValue, integer} from 'vuelidate/lib/validators'
     export default {
         name: 'GenderInput',
         components: {
             "c-number-input": NumberInput
+        },
+        validations: {
+            gapYears: {required, integer, minValue: minValue(15), maxValue: maxValue(100)}
         },
         data() {
             return {

@@ -56,6 +56,10 @@
                 type: Number,
                 default: () => -1
             },
+            clearSelect: {
+                type: Boolean,
+                default: () => false
+            },
             error: {
                 type: Boolean,
                 default: () => false
@@ -75,6 +79,9 @@
                 this.selectedOption = option;
                 this.isDropdownOpen = false;
                 this.$emit('select-option', option)
+                if(this.clearSelect) {
+                    this.selectedOption = null;
+                }
             }
         },
         mounted() {

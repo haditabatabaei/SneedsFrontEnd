@@ -11,7 +11,7 @@
                     <p class="paper-item-summary">{{getSummary(item)}}</p>
                     <p class="paper-item-title">عنوان مقاله: {{item.title}}</p>
                 </div>
-                <button class="paper-item-remove">
+                <button class="paper-item-remove" @click="deletePaper(item)">
                     <i class="material-icons">close</i>
                 </button>
             </div>
@@ -103,9 +103,19 @@
             },
 
             async getPublications() {
-                let result = await this.$api.get(`${this.api}/account/publications/?student_detailed_form=${this.detailedFormId}`, this.httpConfig);
+                let result = await this.$api.get(`${this.api}/account/publications/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
                 this.items = result.data;
                 console.log('publications results ', result)
+            },
+
+            async deletePaper(item) {
+                try {
+                    let delResult = await this.$api.delete(`${this.api}/account/publications/${item.id}/`, this.httpConfig)
+                    console.log(delResult)
+                    this.getPublications();
+                } catch (e) {
+
+                }
             }
         },
         watch: {
@@ -124,9 +134,9 @@
 
 <style scoped>
     .paper-items {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
-        align-items: stretch;
+        align-items: stretch !important;
         padding: 100px 20px 20px 20px;
     }
 

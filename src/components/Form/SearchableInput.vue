@@ -1,17 +1,24 @@
 <template>
-    <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen}]">
-        <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
-        <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
-        <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
-        <i class="material-icons" v-if="!loading">
-            search
-        </i>
-        <moon-loader class="loading-icon searchable-loading-icon" color="purple" :loading="loading" :size="15" sizeUnit="px" v-else />
+    <div>
+        <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen}]">
+            <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
+            <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
+            <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
+            <i class="material-icons" v-if="!loading">
+                search
+            </i>
+            <moon-loader class="loading-icon searchable-loading-icon" color="purple" :loading="loading" :size="15" sizeUnit="px" v-else />
 
-        <ul class="searchable-items" v-if="isSearchableOpen">
-            <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
-            <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
-        </ul>
+            <ul class="searchable-items" v-if="isSearchableOpen">
+                <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
+                <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
+            </ul>
+        </div>
+        <transition name="fade">
+            <p class="number-input-error isansFont" v-if="error">
+                {{errorText}}
+            </p>
+        </transition>
     </div>
 </template>
 
@@ -49,6 +56,14 @@
             clearselect: {
                 type: Boolean,
                 default: () => false
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را دوباره کنترل کنید."
             }
         },
         computed: {
@@ -190,5 +205,11 @@
     .searchable-item:last-child {
         border-bottom: none;
         border-radius: 0 0 10px 10px;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        font-size: 12px;
+        color: #963a38;
     }
 </style>

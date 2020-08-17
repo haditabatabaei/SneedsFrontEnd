@@ -1,10 +1,15 @@
 <template>
     <div class="radio-wrapper isansFont--faNum" :class="[{'radio--column': direction == 'column'}]">
         <input v-model="selectedRadio" class="radio-input" type="radio" v-for="(item, index) in items" :value="item" :name="name" :id="correspondingIds[index]" >
-        <label @click="$emit('select-option', item)" class="radio-holder" :class="[{'holder--selected': selectedRadio == item, 'holder--column': direction == 'column'}]" v-for="(item, index) in items" :for="correspondingIds[index]" >
+        <label @click="selectOption(item)" class="radio-holder" :class="[{'holder--selected': selectedRadio == item, 'holder--column': direction == 'column'}]" v-for="(item, index) in items" :for="correspondingIds[index]" >
             {{item.name}}
             <i class="material-icons" v-if="selectedRadio == item">done</i>
         </label>
+        <transition name="fade">
+            <p class="number-input-error isansFont--faNum" v-if="error">
+                {{errorText}}
+            </p>
+        </transition>
     </div>
 </template>
 
@@ -28,11 +33,19 @@
             direction: {
                 type: String,
                 default: () => 'row'
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را کنترل کنید."
             }
         },
         watch: {
             selectedRadio(newSelectedRadioOption) {
-                this.$emit('update', newSelectedRadioOption)
+                // this.$emit('update', newSelectedRadioOption)
             }
         },
         computed: {
@@ -40,7 +53,13 @@
                 return this.items.map(() => Math.floor(Math.random() * 1000));
             }
         },
-        methods: {},
+        methods: {
+            selectOption(item) {
+                this.selectedRadio = item;
+                this.$emit('select-option', item)
+            }
+
+        },
 
     }
 </script>
@@ -99,5 +118,11 @@
         background-color: #00BFD6;
         font-size: 14px;
         margin-right: 5px;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        font-size: 12px;
+        color: #963a38;
     }
 </style>

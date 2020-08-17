@@ -9,7 +9,7 @@
             </div>
         </div>
         <transition name="fade">
-            <p class="number-input-error isansFont" v-if="error">
+            <p class="number-input-error isansFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
                 {{errorText}}
             </p>
         </transition>
@@ -92,6 +92,7 @@
         },
         created() {
             this.value = this.defaultValue;
+            this.$emit('set-number', this.value)
         }
     }
 </script>
@@ -177,6 +178,4 @@
         font-size: 12px;
         color: #963a38;
     }
-
-
 </style>

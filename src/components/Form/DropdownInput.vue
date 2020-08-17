@@ -1,25 +1,32 @@
 <template>
-    <div class="form-dropdown isansFont--faNum" :class="[{'dropdown-opened': isDropdownOpen}]" @click.self="toggleDropdown">
-        <div class="overlay-dropdown-closable" v-if="isDropdownOpen" @click="isDropdownOpen = false"></div>
-        <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-if="selectedOption">{{selectedOption.name}}</p>
-        <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-else>{{label}}</p>
-        <select style="display:none;" v-model="selectedOption" name="dropdown-input" id="dropdown-input">
-            <option :value="option.id" v-for="option in options">
-                {{option.name}}
-            </option>
-        </select>
+    <div>
+        <div class="form-dropdown isansFont--faNum" :class="[{'dropdown-opened': isDropdownOpen, 'dropdown--error': error}]" @click.self="toggleDropdown">
+            <div class="overlay-dropdown-closable" v-if="isDropdownOpen" @click="isDropdownOpen = false"></div>
+            <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-if="selectedOption">{{selectedOption.name}}</p>
+            <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-else>{{label}}</p>
+            <select style="display:none;" v-model="selectedOption" name="dropdown-input" id="dropdown-input">
+                <option :value="option.id" v-for="option in options">
+                    {{option.name}}
+                </option>
+            </select>
+            <transition name="fade">
+                <ul class="dropdown-items" v-if="isDropdownOpen">
+                    <li class="dropdown-item" :class="[{'dropdown-item-selected': selectedOption == option}]" v-for="option in options" @click="selectOption(option)">{{option.name}}</li>
+                </ul>
+            </transition>
+            <transition name="fade">
+                <i class="material-icons" @click.self="toggleDropdown" v-if="isDropdownOpen">
+                    keyboard_arrow_up
+                </i>
+                <i class="material-icons" @click.self="toggleDropdown" v-else>
+                    keyboard_arrow_down
+                </i>
+            </transition>
+        </div>
         <transition name="fade">
-            <ul class="dropdown-items" v-if="isDropdownOpen">
-                <li class="dropdown-item" :class="[{'dropdown-item-selected': selectedOption == option}]" v-for="option in options" @click="selectOption(option)">{{option.name}}</li>
-            </ul>
-        </transition>
-        <transition name="fade">
-            <i class="material-icons" @click.self="toggleDropdown" v-if="isDropdownOpen">
-                keyboard_arrow_up
-            </i>
-            <i class="material-icons" @click.self="toggleDropdown" v-else>
-                keyboard_arrow_down
-            </i>
+            <p class="number-input-error isansFont--faNum" v-if="error">
+                {{errorText}}
+            </p>
         </transition>
     </div>
 </template>
@@ -48,6 +55,14 @@
             defaultSelectedIndex: {
                 type: Number,
                 default: () => -1
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را کنترل کنید."
             }
         },
         computed: {},
@@ -89,6 +104,10 @@
         border: 1px solid #F2F2F2;
         border-radius: 10px;
         cursor: pointer;
+    }
+
+    .form-dropdown.dropdown--error {
+        border-color: #963a38;
     }
 
     .overlay-dropdown-closable {
@@ -159,5 +178,11 @@
     .dropdown-item:last-child {
         border-bottom: none;
         border-radius: 0 0 10px 10px;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        font-size: 12px;
+        color: #963a38;
     }
 </style>

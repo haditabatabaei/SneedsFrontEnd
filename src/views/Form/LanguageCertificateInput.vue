@@ -26,295 +26,299 @@
             </label>
         </div>
         <div class="inputs" v-if="selectedLanguageCertificateStatus == 'have'">
-            <c-dropdown-input class="edu-gap" label="مدرک زبان" :options="certOptions"
+            <c-dropdown-input class="edu-gap" label="مدرک زبان"
+                              :error="selectedCert == null"
+                              error-text="لطفاً یک مدرک زبان انتخاب کنید."
+                              :options="certOptions"
                               @select-option="setSelectedCert"/>
-            <div v-if="selectedCert">
+            <div v-if="selectedLanguageCertificateStatus == 'have'">
                 <div class="inputs-certs" v-if="shownType == 'regular'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.regularCert.listening.$invalid"
+                                    :error="$v.regularCert.listening.$error"
                                     error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
-                                    :default-value="regularCert.listening"
-                                    @set-number="val => regularCert.listening = Number(val)"
+                                    :default-value="6.5"
+                                    v-model.number="regularCert.listening"
                                     label="Listening"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.regularCert.writing.$invalid"
+                                    :error="$v.regularCert.writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
-                                    :default-value="regularCert.writing"
-                                    @set-number="val => regularCert.writing = Number(val)"
+                                    :default-value="6.5"
+                                    v-model.number="regularCert.writing"
                                     label="Writing"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.regularCert.speaking.$invalid"
+                                    :error="$v.regularCert.speaking.$error"
                                     error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
-                                    :default-value="regularCert.speaking"
-                                    @set-number="val => regularCert.speaking = Number(val)"
+                                    :default-value="6.5"
+                                    v-model.number="regularCert.speaking"
                                     label="Speaking"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.regularCert.reading.$invalid"
+                                    :error="$v.regularCert.reading.$error"
                                     error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
-                                    :default-value="regularCert.reading"
-                                    @set-number="val => regularCert.reading = Number(val)"
+                                    :default-value="6.5"
+                                    v-model.number="regularCert.reading"
                                     label="Reading"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.regularCert.overall.$invalid"
+                                    :error="$v.regularCert.overall.$error"
                                     error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
-                                    :default-value="regularCert.overall"
-                                    @set-number="val => regularCert.overall = Number(val)"
+                                    :default-value="6.5"
+                                    v-model.number="regularCert.overall"
                                     label="Overall"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'gmat'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.gmat.analytical_writing_assessment.$invalid"
+                                    :error="$v.gmat.analytical_writing_assessment.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="6"
-                                    @set-number="val => gmat.analytical_writing_assessment = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="gmat.analytical_writing_assessment"
                                     label="Analytic Writing Assessment"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.gmat.integrated_reasoning.$invalid"
+                                    :error="$v.gmat.integrated_reasoning.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 1 و 8 باشد."
-                                    :default-value="gmat.integrated_reasoning" @set-number="val => gmat.integrated_reasoning = Number(val)"
+                                    :default-value="1"
+                                    v-model.number="gmat.integrated_reasoning"
                                     label="Integrated Reasoning"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.gmat.quantitative_and_verbal.$invalid"
+                                    :error="$v.gmat.quantitative_and_verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 6 و 51 باشد."
-                                    :default-value="gmat.quantitative_and_verbal"
-                                    @set-number="val => gmat.quantitative_and_verbal = Number(val)"
+                                    :default-value="6"
+                                    v-model.number="gmat.quantitative_and_verbal"
                                     label="Quantitative and Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="10"
-                                    :error="$v.gmat.total.$invalid"
+                                    :error="$v.gmat.total.$error"
                                     error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 800 باشد."
-                                    :default-value="gmat.total"
-                                    @set-number="val => gmat.total = Number(val)"
+                                    :default-value="200"
+                                    v-model.number="gmat.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePhys'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.quantitative.$invalid"
+                                    :error="$v.grePhysics.quantitative.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="grePhysics.quantitative"
-                                    @set-number="val => grePhysics.quantitative = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="grePhysics.quantitative"
                                     label="Quantitative"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.verbal.$invalid"
+                                    :error="$v.grePhysics.verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="grePhysics.verbal"
-                                    @set-number="val => grePhysics.verbal = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="grePhysics.verbal"
                                     label="Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.grePhysics.analytical_writing.$invalid"
+                                    :error="$v.grePhysics.analytical_writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="grePhysics.analytical_writing"
-                                    @set-number="val => grePhysics.analytical_writing = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="grePhysics.analytical_writing"
                                     label="Analytical Writing"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.classical_mechanics.$invalid"
+                                    :error="$v.grePhysics.classical_mechanics.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePhysics.classical_mechanics"
-                                    @set-number="val => grePhysics.classical_mechanics = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePhysics.classical_mechanics"
                                     label="Classical Mechanics"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.electromagnetism.$invalid"
+                                    :error="$v.grePhysics.electromagnetism.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePhysics.electromagnetism"
-                                    @set-number="val => grePhysics.electromagnetism = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePhysics.electromagnetism"
                                     label="Electromagnetism"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.quantum_mechanics.$invalid"
+                                    :error="$v.grePhysics.quantum_mechanics.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePhysics.quantum_mechanics"
-                                    @set-number="val => grePhysics.quantum_mechanics = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePhysics.quantum_mechanics"
                                     label="Quantum Mechanics"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePhysics.total.$invalid"
+                                    :error="$v.grePhysics.total.$error"
                                     error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
-                                    :default-value="grePhysics.total"
-                                    @set-number="val => grePhysics.total = Number(val)"
+                                    :default-value="200"
+                                    v-model.number="grePhysics.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePsycho'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.quantitative.$invalid"
+                                    :error="$v.grePsychology.quantitative.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="grePsychology.quantitative"
-                                    @set-number="val => grePsychology.quantitative = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="grePsychology.quantitative"
                                     label="Quantitative"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.verbal.$invalid"
+                                    :error="$v.grePsychology.verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="grePsychology.verbal"
-                                    @set-number="val => grePsychology.verbal = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="grePsychology.verbal"
                                     label="Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.grePsychology.analytical_writing.$invalid"
+                                    :error="$v.grePsychology.analytical_writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="grePsychology.analytical_writing"
-                                    @set-number="val => grePsychology.analytical_writing = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="grePsychology.analytical_writing"
                                     label="Analytical Writing"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.biological.$invalid"
+                                    :error="$v.grePsychology.biological.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.biological"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.biological"
                                     @set-number="val => grePsychology.biological = Number(val)"
                                     label="Biological"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.cognitive.$invalid"
+                                    :error="$v.grePsychology.cognitive.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.cognitive"
-                                    @set-number="val => grePsychology.cognitive = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.cognitive"
                                     label="Cognitive"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.social.$invalid"
+                                    :error="$v.grePsychology.social.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.social"
-                                    @set-number="val => grePsychology.social = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.social"
                                     label="Social"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.developmental.$invalid"
+                                    :error="$v.grePsychology.developmental.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.developmental"
-                                    @set-number="val => grePsychology.developmental = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.developmental"
                                     label="Developmental"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.clinical.$invalid"
+                                    :error="$v.grePsychology.clinical.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.clinical"
-                                    @set-number="val => grePsychology.clinical = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.clinical"
                                     label="Clinical"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.measurement_or_methodology.$invalid"
+                                    :error="$v.grePsychology.measurement_or_methodology.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="grePsychology.measurement_or_methodology"
-                                    @set-number="val => grePsychology.measurement_or_methodology = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="grePsychology.measurement_or_methodology"
                                     label="Measurement or Methodology"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.total.$invalid"
+                                    :error="$v.grePsychology.total.$error"
                                     error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
-                                    :default-value="grePsychology.total"
-                                    @set-number="val => grePsychology.total = Number(val)"
+                                    :default-value="200"
+                                    v-model.number="grePsychology.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greBio'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greBiology.quantitative.$invalid"
+                                    :error="$v.greBiology.quantitative.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greBiology.quantitative"
-                                    @set-number="val => greBiology.quantitative = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greBiology.quantitative"
                                     label="Quantitative"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greBiology.verbal.$invalid"
+                                    :error="$v.greBiology.verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greBiology.verbal"
-                                    @set-number="val => greBiology.verbal = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greBiology.verbal"
                                     label="Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.greBiology.analytical_writing.$invalid"
+                                    :error="$v.greBiology.analytical_writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="greBiology.analytical_writing"
-                                    @set-number="val => greBiology.analytical_writing = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="greBiology.analytical_writing"
                                     label="Analytical Writing"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greBiology.cellular_and_molecular.$invalid"
+                                    :error="$v.greBiology.cellular_and_molecular.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="greBiology.cellular_and_molecular"
-                                    @set-number="val => greBiology.cellular_and_molecular = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="greBiology.cellular_and_molecular"
                                     label="Cellular and Molecular"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greBiology.organismal.$invalid"
+                                    :error="$v.greBiology.organismal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="greBiology.organismal"
-                                    @set-number="val => greBiology.organismal = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="greBiology.organismal"
                                     label="Organismal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greBiology.ecology_and_evolution.$invalid"
+                                    :error="$v.greBiology.ecology_and_evolution.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
-                                    :default-value="greBiology.ecology_and_evolution"
-                                    @set-number="val => greBiology.ecology_and_evolution = Number(val)"
+                                    :default-value="20"
+                                    v-model.number="greBiology.ecology_and_evolution"
                                     label="Ecologyand Evolution"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.grePsychology.total.$invalid"
+                                    :error="$v.grePsychology.total.$error"
                                     error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
-                                    :default-value="greBiology.total"
-                                    @set-number="val => greBiology.total = Number(val)"
+                                    :default-value="200"
+                                    v-model.number="greBiology.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greGen'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greGeneral.quantitative.$invalid"
+                                    :error="$v.greGeneral.quantitative.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greGeneral.quantitative"
-                                    @set-number="val => greGeneral.quantitative = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greGeneral.quantitative"
                                     label="Quantitative"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greGeneral.verbal.$invalid"
+                                    :error="$v.greGeneral.verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greGeneral.verbal"
-                                    @set-number="val => greGeneral.verbal = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greGeneral.verbal"
                                     label="Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.greGeneral.analytical_writing.$invalid"
+                                    :error="$v.greGeneral.analytical_writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="greGeneral.analytical_writing"
-                                    @set-number="val => greGeneral.analytical_writing = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="greGeneral.analytical_writing"
                                     label="Analytical Writing"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greSub'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greSubject.quantitative.$invalid"
+                                    :error="$v.greSubject.quantitative.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greSubject.quantitative"
-                                    @set-number="val => greSubject.quantitative = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greSubject.quantitative"
                                     label="Quantitative"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greSubject.verbal.$invalid"
+                                    :error="$v.greSubject.verbal.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
-                                    :default-value="greSubject.verbal"
-                                    @set-number="val => greSubject.verbal = Number(val)"
+                                    :default-value="130"
+                                    v-model.number="greSubject.verbal"
                                     label="Verbal"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
-                                    :error="$v.greSubject.analytical_writing.$invalid"
+                                    :error="$v.greSubject.analytical_writing.$error"
                                     error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
-                                    :default-value="greSubject.analytical_writing"
-                                    @set-number="val => greSubject.analytical_writing = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="greSubject.analytical_writing"
                                     label="Analytical Writing"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.greSubject.total.$invalid"
+                                    :error="$v.greSubject.total.$error"
                                     error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
-                                    :default-value="greSubject.total"
-                                    @set-number="val => greSubject.total = Number(val)"
+                                    :default-value="200"
+                                    v-model.number="greSubject.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'duolingo'">
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.duolingo.literacy.$invalid"
+                                    :error="$v.duolingo.literacy.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
-                                    :default-value="duolingo.literacy"
-                                    set-number="val => duolingo.literacy = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="duolingo.literacy"
                                     label="Literacy"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.duolingo.comprehension.$invalid"
+                                    :error="$v.duolingo.comprehension.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
-                                    :default-value="duolingo.comprehension"
-                                    @set-number="val => duolingo.comprehension = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="duolingo.comprehension"
                                     label="Comprehension"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.duolingo.conversation.$invalid"
+                                    :error="$v.duolingo.conversation.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
-                                    :default-value="duolingo.conversation"
-                                    @set-number="val => duolingo.conversation = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="duolingo.conversation"
                                     label="Conversation"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.duolingo.production.$invalid"
+                                    :error="$v.duolingo.production.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
-                                    :default-value="duolingo.production"
-                                    @set-number="val => duolingo.production = Number(val)"
+                                    :default-value="0"
+                                    v-model.number="duolingo.production"
                                     label="Production"/>
                     <c-number-input class="edu-gap" :is-ltr="true" :step="1"
-                                    :error="$v.duolingo.overall.$invalid"
+                                    :error="$v.duolingo.overall.$error"
                                     error-text="مقدار وارد شده باید عدد صحیح بین 10 و 160 باشد."
-                                    :default-value="duolingo.overall"
-                                    @set-number="val => duolingo.overall = Number(val)"
+                                    :default-value="10"
+                                    v-model.number="duolingo.overall"
                                     label="Overall"/>
                 </div>
-                <button class="certificate-add" @click="addCertificate">اضافه کردن مدرک زبان جدید</button>
             </div>
         </div>
     </section>
@@ -422,8 +426,9 @@
         },
         data() {
             return {
-                selectedLanguageCertificateStatus: null,
+                selectedLanguageCertificateStatus: 'donthave',
                 selectedCert: null,
+                isSubmitted: false,
                 regularCert: {
                     is_mock: false,
                     speaking: 6.5,
@@ -443,7 +448,7 @@
 
                 duolingo: {
                     is_mock: false,
-                    overall: 0,
+                    overall: 10,
                     literacy: 0,
                     comprehension: 0,
                     conversation: 0,
@@ -567,6 +572,41 @@
 
             multipartHttpConfig() {
                 return this.$store.getters.multipartHttpConfig
+            },
+            langCertAddPermission() {
+                return this.$store.getters.langCertAddPermission;
+            },
+            isPayloadValid() {
+                return this.$store.getters.isPayloadValid;
+            }
+
+        },
+        watch: {
+            langCertAddPermission(newVal, oldVal) {
+                console.log('lang cert add permission from ', oldVal, ' switch to ', newVal)
+                if (oldVal == false && newVal == true) {
+                    if (this.selectedCert) {
+                        this.createPayload();
+                        if (this.isPayloadValid) {
+                            this.pingCertificateHandler();
+                        } else {
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مدرک: اخطار',
+                                text: 'لطفاً ورودی های مدرک را کنترل کنید.',
+                                type: 'warn',
+                                duration: 3000
+                            })
+                        }
+                    }
+                }
+                this.$store.commit('setLangCertAddPermission', false)
+            },
+            selectedLanguageCertificateStatus(newStatus) {
+                this.$store.commit('setWantsToAddCert', newStatus == 'have')
+                if (newStatus == 'donthave') {
+                    this.setSelectedCert(null);
+                }
             }
         },
         methods: {
@@ -576,118 +616,92 @@
             setSelectedCert(cert) {
                 this.selectedCert = cert;
             },
-            async addCertificate() {
-                if(this.selectedCert) {
-                    let payload = {
-                        student_detailed_info: this.detailedFormId,
-                        certificate_type: this.selectedCert.nameEnglish
-                    }
-                    console.log(this.$v.regularCert);
-                    let result = {}
-                    console.log('form is invalid?', this.$v.$invalid);
-                    switch (this.selectedCert.nameEnglish) {
-                        case 'IELTS_GENERAL' :
-                        // break;
-                        case 'IELTS_ACADEMIC' :
-                        // break;
-                        case 'TOEFL' :
-                            payload = {
-                                ...payload,
-                                ...this.regularCert,
-                            }
-                            if(!this.$v.regularCert.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/regular-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'GMAT' :
-                            payload = {
-                                ...payload,
-                                ...this.gmat
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.gmat.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gmat-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-
-                            break;
-                        case 'GRE_PHYSICS':
-                            payload = {
-                                ...payload,
-                                ...this.grePhysics
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.grePhysics.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gre-physics-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'GRE_BIOLOGY':
-                            payload = {
-                                ...payload,
-                                ...this.greBiology
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.greBiology.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gre-biology-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'GRE_PSYCHOLOGY':
-                            payload = {
-                                ...payload,
-                                ...this.grePsychology
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.grePsychology.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gre-psychology-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'GRE_GENERAL':
-                            payload = {
-                                ...payload,
-                                ...this.greGeneral
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.greGeneral.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gre-general-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'GRE_MATHEMATICS':
-                        case 'GRE_LITERATURE':
-                        case 'GRE_CHEMISTRY':
-                            payload = {
-                                ...payload,
-                                ...this.greSubject
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.greSubject.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/gre-subject-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                        case 'DUOLINGO':
-                            payload = {
-                                ...payload,
-                                ...this.duolingo
-                            }
-                            console.log('certificate payload ', payload);
-                            if(!this.$v.duolingo.$invalid) {
-                                result = await this.$api.post(`${this.api}/account/duolingo-certificates/`, payload, this.httpConfig);
-                                console.log(result);
-                            }
-                            break;
-                    }
-                } else {
-                    console.log('bad certificate input')
+            createPayload() {
+                let payload = {
+                    student_detailed_info: this.detailedFormId,
+                    certificate_type: this.selectedCert.nameEnglish
                 }
+                this.$v.$touch();
+                switch (this.selectedCert.nameEnglish) {
+                    case 'IELTS_GENERAL' :
+                    case 'IELTS_ACADEMIC' :
+                    case 'TOEFL' :
+                        payload = {
+                            ...payload,
+                            ...this.regularCert,
+                        }
+                        this.$store.commit('setIsPayloadValid', !this.$v.regularCert.$error);
+                        break;
+                    case 'GMAT' :
+                        payload = {
+                            ...payload,
+                            ...this.gmat
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.gmat.$error);
+                        break;
+                    case 'GRE_PHYSICS':
+                        payload = {
+                            ...payload,
+                            ...this.grePhysics
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.grePhysics.$error);
+                        break;
+                    case 'GRE_BIOLOGY':
+                        payload = {
+                            ...payload,
+                            ...this.greBiology
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.greBiology.$error);
+                        break;
+                    case 'GRE_PSYCHOLOGY':
+                        payload = {
+                            ...payload,
+                            ...this.grePsychology
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.grePsychology.$error);
+                        break;
+                    case 'GRE_GENERAL':
+                        payload = {
+                            ...payload,
+                            ...this.greGeneral
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.greGeneral.$error);
+                        break;
+                    case 'GRE_MATHEMATICS':
+                    case 'GRE_LITERATURE':
+                    case 'GRE_CHEMISTRY':
+                        payload = {
+                            ...payload,
+                            ...this.greSubject
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.greSubject.$error);
+                        break;
+                    case 'DUOLINGO':
+                        payload = {
+                            ...payload,
+                            ...this.duolingo
+                        }
+                        console.log('certificate payload ', payload);
+                        this.$store.commit('setIsPayloadValid', !this.$v.duolingo.$error);
+                        break;
+                }
+                console.log('form payload validity ', this.$store.getters.isPayloadValid);
+                this.$store.commit('setLangCertToAdd', payload);
+            },
+
+            pingCertificateHandler() {
+                this.$emit('langcert-add');
             }
+
         },
         created() {
-
+            this.$store.commit('setWantsToAddCert', false);
         }
     }
 </script>

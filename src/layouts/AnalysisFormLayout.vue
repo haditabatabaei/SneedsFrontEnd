@@ -125,7 +125,10 @@
                 <img draggable="false" class="form-title-image" src="/sneedsAssets/img/takhminstars.svg" alt="کاربران اسنیدز">
             </aside>
             <main class="form-layout-view-wrapper">
-                <router-view @edulevel-add="submitlasteducationallevel" @sync-current-page="syncCurrentPage" :key="$route.fullPath" class="form-layout-view"></router-view>
+                <router-view @langcert-add="sendsubmitlanguagecerts"
+                             @edulevel-add="submitlasteducationallevel"
+                             @sync-current-page="syncCurrentPage"
+                             :key="$route.fullPath" class="form-layout-view"></router-view>
                 <div class="progress-wrapper">
                     <div class="form-confirm isansFont">
                         <button @click="submitAndMoveNext()" class="form-confirm-next">
@@ -314,8 +317,7 @@ export default {
             if(this.$route.path != this.nextPageRoute) {
                 //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
                 await this[`submit${this.pageMap.get(this.currentPage)}`]();
-                console.log('going to ', this.nextPageRoute)
-                this.$router.push(this.nextPageRoute);
+                // console.log('going to ', this.nextPageRoute)
             } else {
                 if(this.currentPage == this.lastPage) {
                     console.log('we are in last page');
@@ -333,6 +335,8 @@ export default {
                 console.log(this.detailedForm.is_married);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'is_married': this.detailedForm.is_married}, this.httpConfig)
                 console.log('marriage status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -346,6 +350,8 @@ export default {
                 console.log(this.detailedForm.military_service_status);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
                 console.log('military_service_status status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -360,6 +366,8 @@ export default {
                 console.log(this.detailedForm.academic_break);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
                 console.log('academic break status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -373,6 +381,8 @@ export default {
                 console.log(this.detailedForm.academic_break);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
                 console.log('academic break status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -387,6 +397,8 @@ export default {
                 console.log(this.detailedForm.related_work_experience);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
                 console.log('work exp status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -397,18 +409,24 @@ export default {
 
         async submitlasteducationallevel() {
             console.log('last educational level handler')
+            this.$router.push(this.nextPageRoute);
+
         },
 
         async submiteducationallevelsitems() {
             console.log('educationallevelsitems handler')
+            this.$router.push(this.nextPageRoute);
+
         },
 
         async submitpaper() {
             console.log('paper handler ')
+            this.$router.push(this.nextPageRoute);
         },
 
         async submitpaperitems() {
             console.log('paperitems handler')
+            this.$router.push(this.nextPageRoute);
         },
 
         async submitpowerfulrecom() {
@@ -418,6 +436,8 @@ export default {
                     {'powerful_recommendation': this.detailedForm.powerful_recommendation},
                     this.httpConfig);
                 console.log('powerful recom status code ', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {
@@ -427,18 +447,55 @@ export default {
 
         async submitlanguagecerts() {
             console.log('languagecerts handler')
+            if(this.$store.getters.wantsToAddCert) {
+                console.log('wants to add cert')
+                this.$store.commit('setLangCertAddPermission', true)
+                console.log('toggle lang add permission to true.')
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async sendsubmitlanguagecerts() {
+            console.log('send submit called');
+            this.loading = true;
+            this.$store.dispatch('createLanguageCert')
+                .then(result => {
+                    console.log(result)
+                    this.$router.push(this.nextPageRoute);
+                })
+                .catch(e => {
+                    console.log(e)
+                    this.$notify({
+                        group: 'notif',
+                        title: 'مدرک: خطار',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        type: 'error',
+                        duration: 3000
+                    })
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+
         },
 
         async submitlanguagecertsitems() {
             console.log('languagecertsitems handler')
+            this.$router.push(this.nextPageRoute);
+
         },
 
         async submitdestination() {
             console.log('destination handler')
+            this.$router.push(this.nextPageRoute);
+
         },
 
         async submitdestinationitems() {
             console.log('destinationitems handler')
+            this.$router.push(this.nextPageRoute);
+
         },
 
         async submitfunds() {
@@ -453,6 +510,8 @@ export default {
                     },
                     this.httpConfig)
                 console.log('funds status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
             } catch (e) {
 
             } finally {

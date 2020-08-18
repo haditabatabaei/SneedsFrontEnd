@@ -84,14 +84,6 @@
                 }
             }
         },
-        mounted() {
-            // document.body.addEventListener('click', () => {
-            //     this.isDropdownOpen = false;
-            // })
-        },
-        beforeDestroy() {
-            // document.body.onclick = null;
-        },
         created() {
             if(this.defaultSelectedIndex != -1) {
                 this.selectOption(this.options[this.defaultSelectedIndex])

@@ -6,39 +6,47 @@
         </h1>
         <div class="edulevel-wrapper">
             <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی"
-                              :error="$v.selectedGrade.$invalid"
+                              :error="$v.selectedGrade.$error"
                               error-text="لطفاً یک مقطع تحصیلی معتبر وارد کنید."
                               :options="gradeOptions"
                               @select-option="gradeSelected" />
 
             <c-searchable-input class="edulevel-input" :loading="majorLoading"
-                                :error="true"
                                 @input="searchMajorByVal"
                                 label="رشته"
                                 :dataset="availableMajors"
                                 @select-option="setSelectedMajor" />
 
-            <c-searchable-input class="edulevel-input" :loading="uniLoading" @input="searchUniversityByVal" label="دانشگاه" :dataset="availableUniversities" @select-option="setSelectedUniversity" />
+            <c-searchable-input class="edulevel-input" :loading="uniLoading"
+                                @input="searchUniversityByVal"
+                                label="دانشگاه"
+                                :dataset="availableUniversities"
+                                @select-option="setSelectedUniversity" />
 
             <c-number-input class="edulevel-input"
-                            :error="$v.gpa.$invalid"
+                            :error="$v.gpa.$error"
                             error-text="معدل کل باید عدد بین 0 تا 20 باشد."
-                            :defaultValue="16.25"
+                            :defaultValue="gpa"
                             :step="0.25"
                             label="معدل از 20"
-                            :has-keys="false" @set-number="setGpa" />
+                            :has-keys="false"
+                            v-model="gpa"
+                            />
 
             <c-number-input class="edulevel-input" :defaultValue="2020"
-                            :error="$v.graduateIn.$invalid"
+                            :error="$v.graduateIn.$error"
                             error-text="سال فارغ التحصیلی باید به میلادی و عدد صحیح بین 1980 و 2100 باشد."
                             label="سال فراغت از تحصیل"
                             :max-value="2100"
-                            @set-number="setGraduateIn" />
+                            :default-value="graduateIn"
+                            v-model="graduateIn"
+                            />
 
             <c-simple-input class="edulevel-input" label="عنوان پایان نامه"
-                            :error="$v.thesisTitle.$invalid"
+                            :error="$v.thesisTitle.$error"
                             error-text="عنوان پایان نامه باید حداکثر 512 کاراکتر باشد."
-                            @input="setThesisTitle"/>
+                            v-model="thesisTitle"
+                            />
         </div>
         <button @click="addUniversityThrough" class="edulevel-add isansFont">ایجاد مقطع</button>
     </section>
@@ -76,8 +84,8 @@
                 selectedMajor: null,
                 selectedUniversity: null,
                 thesisTitle: null,
-                gpa: null,
-                graduateIn: null,
+                gpa: 16.5,
+                graduateIn: 2021,
                 majorLoading: false,
                 uniLoading: false,
                 gradeOptions: [

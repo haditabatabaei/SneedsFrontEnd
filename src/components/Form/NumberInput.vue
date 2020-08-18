@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
-            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" v-model="value">
+            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
             <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
             <div class="number-input-controls gadugiFont" v-if="hasKeys">
                 <button class="number-input-action" @click="incrementValueByStep">+</button>
@@ -21,7 +21,6 @@
         name: "NumberInput",
         data() {
             return {
-                value: null,
                 inputId: Math.floor(Math.random() * 100)
             }
         },
@@ -62,14 +61,12 @@
                 type: Boolean,
                 default: () => false
             },
+            value: {
+                type: Number,
+            },
             errorText: {
                 type: String,
                 default: () => "لطفاً ورودی را دوباره کنترل کنید."
-            }
-        },
-        watch: {
-            value(newVal) {
-                this.$emit('set-number', newVal)
             }
         },
         methods: {
@@ -90,10 +87,6 @@
                 }
             }
         },
-        created() {
-            this.value = this.defaultValue;
-            this.$emit('set-number', this.value)
-        }
     }
 </script>
 

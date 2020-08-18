@@ -86,7 +86,7 @@
             </div>
             <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
             <p class="paper-items-empty" v-if="isEmpty">
-                مقاله ای وارد نشده است.
+                مدرک زبانی وارد نشده است.
             </p>
             <router-link to="/analysis/form/languagecerts" class="paper-items-addnew" v-if="isEmpty">
                 افزودن مدرک زبان جدید

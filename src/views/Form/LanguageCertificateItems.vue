@@ -1,9 +1,5 @@
 <template>
     <section class="paper-items isansFont">
-        <p class="paper-items-notif">
-            <i class="material-icons">done</i>
-            اطلاعات این مدرک با موفقیت اضافه شد.
-        </p>
         <div class="paper-items-wrapper">
             <div class="paper-items-item" v-for="cert of regular">
                 <i class="material-icons paper-item-icon">content_paste</i>
@@ -88,10 +84,14 @@
                     <i class="material-icons">close</i>
                 </button>
             </div>
+            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
             <p class="paper-items-empty" v-if="isEmpty">
                 مقاله ای وارد نشده است.
             </p>
-            <router-link to="/analysis/form/languagecerts" class="paper-items-addnew">
+            <router-link to="/analysis/form/languagecerts" class="paper-items-addnew" v-if="isEmpty">
+                افزودن مدرک زبان جدید
+            </router-link>
+            <router-link to="/analysis/form/languagecerts" class="paper-items-addnew" v-else>
                 افزودن مدرک زبان دیگر
             </router-link>
         </div>
@@ -111,6 +111,7 @@
                 grePsycho: [],
                 greSub: [],
                 regular: [],
+                loading: false,
             }
         },
         computed: {
@@ -139,18 +140,19 @@
             },
 
             isEmpty() {
-                return this.duolingo.length > 0 &&
-                this.gmat.length > 0 &&
-                this.greBio.length > 0 &&
-                this.greGen.length > 0 &&
-                this.grePhys.length > 0 &&
-                this.grePsycho.length > 0 &&
-                this.greSub.length > 0 &&
-                this.regular.length > 0;
+                return this.duolingo.length == 0 &&
+                this.gmat.length == 0&&
+                this.greBio.length == 0 &&
+                this.greGen.length == 0 &&
+                this.grePhys.length == 0 &&
+                this.grePsycho.length == 0 &&
+                this.greSub.length == 0 &&
+                this.regular.length == 0;
             }
         },
         methods: {
             getCerts() {
+                this.loading = true;
                 let reqs = [
                     this.$api.get(`${this.api}/account/duolingo-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
                     this.$api.get(`${this.api}/account/gmat-certificates/?student-detailed-info=${this.detailedFormId}`, this.httpConfig),
@@ -180,48 +182,55 @@
                         console.log(err)
                     })
                     .finally(() => {
-
+                        this.loading = false;
                     })
             },
             async deleteCert(cert) {
-                let result = {}
-                switch (cert.certificate_type) {
-                    case 'IELTS_GENERAL' :
-                    case 'IELTS_ACADEMIC' :
-                    case 'TOEFL' :
-                        result = await this.$api.delete(`${this.api}/account/regular-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GMAT' :
-                        result = await this.$api.delete(`${this.api}/account/gmat-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GRE_PHYSICS':
-                        result = await this.$api.delete(`${this.api}/account/gre-physics-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GRE_BIOLOGY':
-                        result = await this.$api.delete(`${this.api}/account/gre-biology-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GRE_PSYCHOLOGY':
-                        result = await this.$api.delete(`${this.api}/account/gre-psychology-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GRE_GENERAL':
-                        result = await this.$api.delete(`${this.api}/account/gre-general-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'GRE_MATHEMATICS':
-                    case 'GRE_LITERATURE':
-                    case 'GRE_CHEMISTRY':
-                        result = await this.$api.delete(`${this.api}/account/gre-subject-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
-                    case 'DUOLINGO':
-                        result = await this.$api.delete(`${this.api}/account/duolingo-certificates/${cert.id}/`, this.httpConfig);
-                        console.log(result);
-                        break;
+                try {
+                    this.loading = true;
+                    let result = {}
+                    switch (cert.certificate_type) {
+                        case 'IELTS_GENERAL' :
+                        case 'IELTS_ACADEMIC' :
+                        case 'TOEFL' :
+                            result = await this.$api.delete(`${this.api}/account/regular-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GMAT' :
+                            result = await this.$api.delete(`${this.api}/account/gmat-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_PHYSICS':
+                            result = await this.$api.delete(`${this.api}/account/gre-physics-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_BIOLOGY':
+                            result = await this.$api.delete(`${this.api}/account/gre-biology-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_PSYCHOLOGY':
+                            result = await this.$api.delete(`${this.api}/account/gre-psychology-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_GENERAL':
+                            result = await this.$api.delete(`${this.api}/account/gre-general-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'GRE_MATHEMATICS':
+                        case 'GRE_LITERATURE':
+                        case 'GRE_CHEMISTRY':
+                            result = await this.$api.delete(`${this.api}/account/gre-subject-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                        case 'DUOLINGO':
+                            result = await this.$api.delete(`${this.api}/account/duolingo-certificates/${cert.id}/`, this.httpConfig);
+                            console.log(result);
+                            break;
+                    }
+                } catch (e) {
+
+                } finally {
+                    this.loading = false;
                 }
                 this.getCerts();
             }
@@ -270,6 +279,7 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
+        align-self: stretch;
         border-radius: 20px;
         background-color: #F5F7FA;
         border: 2px solid #F2F2F2;

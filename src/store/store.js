@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import api from './api'
+import api from '../api'
+import formInputs from "./formInputs";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    modules: {
+        formInputs: formInputs
+    },
     state: {
         token: localStorage.getItem('token') || '',
 
@@ -77,10 +81,11 @@ export default new Vuex.Store({
 
         setDetailedForm(state, form) {
             state.detailedForm = form;
-            state.detailedFormId = form.id;
-            localStorage.setItem('detailedFormId', form.id)
             if(form == null) {
                 localStorage.removeItem('detailedFormId')
+            } else {
+                state.detailedFormId = form.id;
+                localStorage.setItem('detailedFormId', form.id)
             }
         },
 

@@ -203,7 +203,7 @@
                         student_detailed_info: this.detailedFormId,
                         countries: this.selectedCountries.map(country => country.id),
                         universities: this.selectedUniversities.map(uni => uni.id),
-                        grades: this.selectedGrades.map(grade => grade.id),
+                        grades: this.selectedGrades.map(grade => grade.nameEnglish),
                         majors: this.selectedMajors.map(major => major.id),
                         semester_years: this.selectedSemesters.map(semester => semester.id)
                     }
@@ -216,9 +216,8 @@
 
             async searchCountryByVal(query) {
                 try {
-                    if (!!query && query.length > 3) {
+                    if (!!query && query.length > 1) {
                         this.countryLoading = true;
-                        console.log('search by ', query);
                         this.availableCountries = (await this.$api.get(`${this.api}/account/countries/?&search=${query}`, this.httpConfig)).data;
                     } else {
                         return this.availableCountries = [];
@@ -231,8 +230,7 @@
             },
             async searchMajorByVal(query) {
                 try {
-                    if (!!query && query.length > 3) {
-                        console.log('search by ', query);
+                    if (!!query && query.length > 1) {
                         this.majorLoading = true;
                         this.availableMajors = (await this.$api.get(`${this.api}/account/form-field-of-studies/?&search=${query}`, this.httpConfig)).data;
                     } else {
@@ -246,9 +244,8 @@
             },
             async searchUniversityByVal(query) {
                 try {
-                    if (!!query && query.length > 3) {
+                    if (!!query && query.length > 1) {
                         this.uniLoading = true;
-                        console.log('search by ', query);
                         this.availableUniversities = (await this.$api.get(`${this.api}/account/form-universities/?&search=${query}`, this.httpConfig)).data;
                     } else {
                         return this.availableUniversities = [];

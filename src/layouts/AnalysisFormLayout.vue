@@ -662,6 +662,7 @@ export default {
             //user is not logged in
             //check if there is form id present in storage
             console.log('user is not logged in')
+            console.log('detailed form id ', this.detailedFormId)
             if(this.detailedFormId) {
                //there is an id available
                console.log('there is id present ', this.detailedFormId)

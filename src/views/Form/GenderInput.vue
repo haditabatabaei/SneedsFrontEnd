@@ -26,10 +26,10 @@
         </div>
         <div class="inputs">
             <c-number-input class="edu-gap" :step="1"
-                            :error="$v.gapYears.$invalid"
+                            :error="$v.gapYears.$error"
                             error-text="سن باید عدد صحیح بین 15 تا 100 باشد."
-                            :default-value="18"
-                            @set-number="setGapYears"
+                            :default-value="gapYears"
+                            v-model="gapYears"
                             label="سال سن"/>
         </div>
     </section>

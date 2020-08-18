@@ -1,6 +1,9 @@
 <template>
     <div class="input-wrapper">
-        <input class="simple-input" :class="[{'simple-input--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]" type="text" :placeholder="label" v-model="inputValue" @change="$emit('change', inputValue)" @input="$emit('input', inputValue)">
+        <input class="simple-input"
+               :class="[{'simple-input--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]"
+               type="text" :placeholder="label" :value="value" @change="$emit('change', $event.target.value)"
+               @input="$emit('input', $event.target.value)">
         <transition name="fade">
             <p class="number-input-error isansFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
                 {{errorText}}
@@ -12,11 +15,6 @@
 <script>
     export default {
         name: "SimpleInput",
-        data() {
-            return {
-                inputValue: null
-            }
-        },
         props: {
             label: {
                 type: String,
@@ -37,12 +35,15 @@
             errorText: {
                 type: String,
                 default: () => "لطفاً ورودی را دوباره کنترل کنید."
+            },
+            value: {
+                type: String
             }
         },
         methods: {},
         created() {
             if(this.defaultValue) {
-                this.inputValue = this.defaultValue;
+                this.value = this.defaultValue;
             }
         }
     }
@@ -54,6 +55,7 @@
         flex-direction: column;
         align-items: stretch;
     }
+
     .simple-input {
         background-color: #F8F8F8;
         border: 1px solid #F2F2F2;
@@ -62,6 +64,7 @@
         padding: 0 10px;
         color: #9B9999;
     }
+
     .simple-input.input--error {
         border-color: #963a38;
     }

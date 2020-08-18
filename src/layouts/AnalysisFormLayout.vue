@@ -127,6 +127,7 @@
             <main class="form-layout-view-wrapper">
                 <router-view @langcert-add="sendsubmitlanguagecerts"
                              @edulevel-add="submitlasteducationallevel"
+                             @destination-add="submitdestinationhandler"
                              @sync-current-page="syncCurrentPage"
                              :key="$route.fullPath" class="form-layout-view"></router-view>
                 <div class="progress-wrapper">
@@ -468,7 +469,7 @@ export default {
                     console.log(e)
                     this.$notify({
                         group: 'notif',
-                        title: 'مدرک: خطار',
+                        title: 'مدرک: خطا',
                         text: 'خطایی هنگام ارتباط با سرور رخ داد.',
                         type: 'error',
                         duration: 3000
@@ -487,10 +488,33 @@ export default {
         },
 
         async submitdestination() {
-            console.log('destination handler')
-            this.$router.push(this.nextPageRoute);
-
+            console.log('destination add process, settings permission to true')
+            this.$store.commit('setDestinationAddPermission', true)
         },
+
+        submitdestinationhandler() {
+            console.log('destination submitting started.')
+            this.loading = true;
+            this.$store.dispatch('createDestination')
+                .then(result => {
+                    console.log(result);
+                    this.$router.push(this.nextPageRoute);
+                })
+                .catch(e => {
+                    console.log(e)
+                    this.$notify({
+                        group: 'notif',
+                        title: 'مقصد: خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        type: 'error',
+                        duration: 3000
+                    })
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+
 
         async submitdestinationitems() {
             console.log('destinationitems handler')

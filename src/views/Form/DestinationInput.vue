@@ -6,24 +6,28 @@
         </h1>
         <div class="form-destination-wrapper">
             <c-searchable-input class="dest-input"
+                                :error="$v.selectedCountries.$error"
+                                error-text="انتخاب حداقل یک کشور اجباری است."
                                 :clearselect="true"
                                 :loading="countryLoading"
                                 @input="searchCountryByVal"
                                 label="کشور مقصد"
                                 :dataset="availableCountries"
-                                @select-option="addCountry" />
+                                @select-option="addCountry"/>
 
             <c-dropdown class="dest-input"
                         :clear-select="true"
                         label="مقطع مورد نظر"
                         :options="gradeOptions"
-                        @select-option="addGrade" />
+                        @select-option="addGrade"/>
 
             <c-dropdown class="dest-input"
+                        :error="$v.selectedSemesters.$error"
+                        error-text="انتخاب حداقل یک ترم تحصیلی اجباری است."
                         :clear-select="true"
                         label="ترم مورد نظر"
                         :options="semesterOptions"
-                        @select-option="addSemester" />
+                        @select-option="addSemester"/>
 
             <c-searchable-input class="dest-input"
                                 :loading="majorLoading"
@@ -46,7 +50,8 @@
             <div class="selected-items-list">
                 <p class="selected-item item--valid" v-for="major in selectedMajors">
                     {{major.name}}
-                    <button class="selected-item-remove" @click="removeSelectedMajor(major)"><i class="material-icons">close</i></button>
+                    <button class="selected-item-remove" @click="removeSelectedMajor(major)"><i class="material-icons">close</i>
+                    </button>
                 </p>
             </div>
         </div>
@@ -55,7 +60,8 @@
             <div class="selected-items-list">
                 <p class="selected-item item--valid" v-for="uni in selectedUniversities">
                     {{uni.name}}
-                    <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i class="material-icons">close</i></button>
+                    <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i
+                            class="material-icons">close</i></button>
                 </p>
             </div>
         </div>
@@ -64,7 +70,8 @@
             <div class="selected-items-list">
                 <p class="selected-item item--valid" v-for="country in selectedCountries">
                     {{country.name}}
-                    <button class="selected-item-remove" @click="removeSelectedCountry(country)"><i class="material-icons">close</i></button>
+                    <button class="selected-item-remove" @click="removeSelectedCountry(country)"><i
+                            class="material-icons">close</i></button>
                 </p>
             </div>
         </div>
@@ -73,7 +80,8 @@
             <div class="selected-items-list">
                 <p class="selected-item item--valid" v-for="grade in selectedGrades">
                     {{grade.name}}
-                    <button class="selected-item-remove" @click="removeSelectedGrade(grade)"><i class="material-icons">close</i></button>
+                    <button class="selected-item-remove" @click="removeSelectedGrade(grade)"><i class="material-icons">close</i>
+                    </button>
                 </p>
             </div>
         </div>
@@ -82,11 +90,11 @@
             <div class="selected-items-list">
                 <p class="selected-item item--valid" v-for="semester in selectedSemesters">
                     {{semester.year}} {{semester.semester}}
-                    <button class="selected-item-remove" @click="removeSelectedSemester(semester)"><i class="material-icons">close</i></button>
+                    <button class="selected-item-remove" @click="removeSelectedSemester(semester)"><i
+                            class="material-icons">close</i></button>
                 </p>
             </div>
         </div>
-        <button class="destination-add isansFont" @click="addDestination">اضافه کردن مقصد</button>
     </section>
 
 </template>
@@ -94,11 +102,17 @@
 <script>
     import SearchableInput from "@/components/Form/SearchableInput.vue";
     import DropdownInput from "@/components/Form/DropdownInput.vue";
+    import {minLength, required} from 'vuelidate/lib/validators'
+
     export default {
         name: "DestinationInput",
         components: {
             "c-searchable-input": SearchableInput,
             "c-dropdown": DropdownInput
+        },
+        validations: {
+            selectedCountries: {required, minLength: minLength(1)},
+            selectedSemesters: {required, minLength: minLength(1)}
         },
         data() {
             return {
@@ -146,34 +160,66 @@
 
             multipartHttpConfig() {
                 return this.$store.getters.multipartHttpConfig
+            },
+
+            destinationAddPermission() {
+                return this.$store.getters.destinationAddPermission
+            },
+
+            isDestinationValid() {
+                return this.$store.getters.isDestinationValid
+            }
+        },
+        watch: {
+            destinationAddPermission(newValue, oldValue) {
+                console.log(`change from ${oldValue} to ${newValue}`)
+                if(oldValue == false && newValue == true) {
+                    this.createPayload();
+                    if(this.isDestinationValid) {
+                        this.pingDestinationHandler()
+                    } else {
+                        this.$notify({
+                            group: 'notif',
+                            title: 'مقصد: اخطار',
+                            text: 'لطفاً ورودی های مقصد را کنترل کنید.',
+                            type: 'warn',
+                            duration: 3000
+                        })
+                    }
+                }
+                this.$store.commit('setDestinationAddPermission', false)
             }
         },
         methods: {
-            async addDestination() {
-                if(this.selectedCountry != null && this.selectedUniversities.length > 0 && this.selectedGrade != null && this.selectedMajor != null && this.selectedSemester != null) {
+            pingDestinationHandler() {
+                this.$emit('destination-add');
+            },
+
+            createPayload() {
+                this.$v.$touch();
+                if(!this.$v.$error) {
+                    this.$store.commit('setIsDestinationValid', true)
                     let payload = {
                         student_detailed_info: this.detailedFormId,
-                        country: this.selectedCountry.id,
-                        universities: this.selectedUniversities.map(selectedUni => selectedUni.id),
-                        grade: this.selectedGrade.nameEnglish,
-                        major: this.selectedMajor.id,
-                        semester_year: this.selectedSemester.id
+                        countries: this.selectedCountries.map(country => country.id),
+                        universities: this.selectedUniversities.map(uni => uni.id),
+                        grades: this.selectedGrades.map(grade => grade.id),
+                        majors: this.selectedMajors.map(major => major.id),
+                        semester_years: this.selectedSemesters.map(semester => semester.id)
                     }
-                    console.log(payload)
-                    let result = await this.$api.post(`${this.api}/account/want-to-applies/`, payload, this.httpConfig)
-                    console.log(result);
+                    this.$store.commit('setDestination', payload);
+                    console.log('destination payload ', payload);
                 } else {
-                    console.log('bad input')
+                    this.$store.commit('setIsDestinationValid', false)
                 }
             },
+
             async searchCountryByVal(query) {
                 try {
-                    if(!!query && query.length > 3) {
+                    if (!!query && query.length > 3) {
                         this.countryLoading = true;
                         console.log('search by ', query);
                         this.availableCountries = (await this.$api.get(`${this.api}/account/countries/?&search=${query}`, this.httpConfig)).data;
-                        // console.log(this.availableCountries)
-                        // this.dataset.filter(item => item.name.includes(query));
                     } else {
                         return this.availableCountries = [];
                     }
@@ -185,11 +231,10 @@
             },
             async searchMajorByVal(query) {
                 try {
-                    if(!!query && query.length > 3) {
+                    if (!!query && query.length > 3) {
                         console.log('search by ', query);
                         this.majorLoading = true;
                         this.availableMajors = (await this.$api.get(`${this.api}/account/form-field-of-studies/?&search=${query}`, this.httpConfig)).data;
-                        // this.dataset.filter(item => item.name.includes(query));
                     } else {
                         return this.availableMajors = [];
                     }
@@ -201,11 +246,10 @@
             },
             async searchUniversityByVal(query) {
                 try {
-                    if(!!query && query.length > 3) {
+                    if (!!query && query.length > 3) {
                         this.uniLoading = true;
                         console.log('search by ', query);
                         this.availableUniversities = (await this.$api.get(`${this.api}/account/form-universities/?&search=${query}`, this.httpConfig)).data;
-                        // this.dataset.filter(item => item.name.includes(query));
                     } else {
                         return this.availableUniversities = [];
                     }
@@ -217,7 +261,7 @@
             },
             addCountry(country) {
                 let dupIndex = this.selectedCountries.findIndex(currentCountry => currentCountry.id == country.id);
-                if(dupIndex === -1) {
+                if (dupIndex === -1) {
                     this.selectedCountries.push(country)
                 } else {
                     console.log('duplicate country')
@@ -225,7 +269,7 @@
             },
             addGrade(grade) {
                 let dupIndex = this.selectedGrades.findIndex(currentGrade => currentGrade.nameEnglish == grade.nameEnglish);
-                if(dupIndex === -1) {
+                if (dupIndex === -1) {
                     this.selectedGrades.push(grade)
                 } else {
                     console.log('duplicate grade')
@@ -251,7 +295,7 @@
 
             addMajor(major) {
                 let dupIndex = this.selectedMajors.findIndex(currentMajor => currentMajor.id == major.id);
-                if(dupIndex === -1) {
+                if (dupIndex === -1) {
                     this.selectedMajors.push(major)
                 } else {
                     console.log('duplicate major')
@@ -260,7 +304,7 @@
 
             addSemester(semester) {
                 let dupIndex = this.selectedSemesters.findIndex(currentSemester => currentSemester.id == semester.id);
-                if(dupIndex === -1) {
+                if (dupIndex === -1) {
                     this.selectedSemesters.push(semester)
                 } else {
                     console.log('duplicate semester')
@@ -270,7 +314,7 @@
 
             addSelectedUniversity(uni) {
                 let dupIndex = this.selectedUniversities.findIndex(currentUni => currentUni.id == uni.id);
-                if(dupIndex == -1) {
+                if (dupIndex == -1) {
                     this.selectedUniversities.push(uni)
                 } else {
                     console.log('duplicate uni to add')
@@ -298,6 +342,7 @@
         },
         created() {
             this.getSemesters();
+            this.$store.commit('setWantsToAddCert', false);
         }
     }
 </script>

@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from '../api'
-import formInputs from "./formInputs";
-
+import certificate from "./certificate";
+import destination from "./destination";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        formInputs: formInputs
+        certificate,
+        destination
     },
     state: {
         token: localStorage.getItem('token') || '',

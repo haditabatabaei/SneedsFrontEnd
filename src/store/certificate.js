@@ -23,7 +23,7 @@ export default {
     },
 
     actions: {
-        createLanguageCert({commit, dispatch, getters, state}) {
+        createLanguageCert({commit, getters, state}) {
             return new Promise(async (resolve, reject) => {
                 if(state.wantsToAddCert) {
                     if(state.isPayloadValid) {

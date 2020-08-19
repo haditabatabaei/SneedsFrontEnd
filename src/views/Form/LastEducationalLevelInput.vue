@@ -12,12 +12,16 @@
                               @select-option="gradeSelected" />
 
             <c-searchable-input class="edulevel-input" :loading="majorLoading"
+                                :error="$v.selectedMajor.$error"
+                                error-text="لطفاً یک رشته معتبر وارد کنید."
                                 @input="searchMajorByVal"
                                 label="رشته"
                                 :dataset="availableMajors"
                                 @select-option="setSelectedMajor" />
 
             <c-searchable-input class="edulevel-input" :loading="uniLoading"
+                                :error="$v.selectedUniversity.$error"
+                                error-text="لطفاً یک دانشگاه معتبر وارد کنید."
                                 @input="searchUniversityByVal"
                                 label="دانشگاه"
                                 :dataset="availableUniversities"
@@ -48,7 +52,6 @@
                             v-model="thesisTitle"
                             />
         </div>
-        <button @click="addUniversityThrough" class="edulevel-add isansFont">ایجاد مقطع</button>
     </section>
 </template>
 
@@ -59,7 +62,7 @@
     import SimpleInput from "@/components/Form/SimpleInput";
     import {required, minValue, maxValue, integer, maxLength} from 'vuelidate/lib/validators'
     const gradeValidator = (input, vm) => {
-        return vm.gradeOptions.some(item => item.nameEnglish === input.nameEnglish);
+        return input != null && vm.gradeOptions.some(item => item.nameEnglish === input.nameEnglish);
     }
     export default {
         name: "LastEducationalLevel",
@@ -71,10 +74,11 @@
         },
         validations: {
             selectedGrade: {required, gradeValidator},
+            selectedMajor: {required},
+            selectedUniversity: {required},
             graduateIn: {required, integer, minValue: minValue(1980), maxValue: maxValue(2100)},
             thesisTitle: {maxLength: maxLength(512)},
             gpa: {required, minValue: minValue(0), maxValue: maxValue(20)},
-            selectedMajor: {required, }
         },
         data() {
             return {
@@ -115,30 +119,136 @@
 
             multipartHttpConfig() {
                 return this.$store.getters.multipartHttpConfig
+            },
+
+            isEducationValid() {
+                return this.$store.getters.isEducationValid
+            },
+
+            addEducationPermission() {
+                return this.$store.getters.addEducationPermission
+            },
+
+            educationToAdd() {
+                return this.$store.getters.educationToAdd
+            },
+
+            wantsToAddEducation() {
+                return this.$store.getters.wantsToAddEducation
+            },
+
+            isFormEmpty() {
+                return this.selectedMajor == null && this.selectedGrade == null && this.selectedUniversity == null;
+            }
+        },
+        watch: {
+            addEducationPermission(newVal, oldVal) {
+                if(newVal == true && oldVal == false) {
+                    console.log('add educational level permission toggled to true')
+                    this.createPayload();
+                    if(this.wantsToAddEducation) {
+                        console.log('wants to add education')
+                        if(this.isEducationValid) {
+                            console.log('payload is set and is valid, ping education handler')
+                            this.pingEducationHandler();
+                        } else {
+                            //show warn notif on bad input
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقطع تحصیلی: اخطار',
+                                text: 'لطفاً ورودی های مقطع تحصیلی را کنترل کنید.',
+                                type: 'warn',
+                                duration: 3000
+                            })
+                        }
+                    } else {
+                        this.pingEducationHandler();
+                    }
+                }
+                this.$store.commit('setAddEducationPermission', false)
             }
         },
         methods: {
-            async addUniversityThrough() {
-                if(this.detailedForm && this.gpa != null && this.graduateIn != null && this.selectedGrade != null && this.selectedMajor != null && this.selectedUniversity != null) {
-                    let payload = {
-                        student_detailed_info: this.detailedForm.id,
-                        university: this.selectedUniversity.id,
-                        grade: this.selectedGrade.nameEnglish,
-                        major: this.selectedMajor.id,
-                        thesis_title: this.thesisTitle,
-                        graduate_in: this.graduateIn,
-                        gpa: this.gpa
+            createPayload() {
+                //check if form is empty
+                console.log('is this empty? ', this.isFormEmpty)
+                if(this.isFormEmpty) {
+                    if(window.confirm('شما اطلاعات مقطع خود را وارد نکردید، می توانید آن را وارد کنید و یا به مرحله بعد بروید، در هر حالت می توانید باز به این صفحه برگردید، برای پریدن از روی این صفحه مطمئنید؟')) {
+                        this.$store.commit('setWantsToAddEducation', false);
+                        this.$store.commit('setIsEducationValid', false);
+                        this.$store.commit('setEducationToAdd', null)
+                    } else {
+                        this.$v.$touch();
+                        this.$store.commit('setWantsToAddEducation', true)
+                        console.log('is form error ?', this.$v.$error)
+                        if(!this.$v.$error) {
+                            let payload = {
+                                student_detailed_info: this.detailedForm.id,
+                                university: this.selectedUniversity.id,
+                                grade: this.selectedGrade.nameEnglish,
+                                major: this.selectedMajor.id,
+                                thesis_title: this.thesisTitle,
+                                graduate_in: this.graduateIn,
+                                gpa: this.gpa
+                            }
+                            this.$store.commit('setIsEducationValid', true);
+                            this.$store.commit('setEducationToAdd', payload);
+                        } else {
+                            this.$store.commit('setIsEducationValid', false)
+                        }
                     }
-                    console.log(payload)
-                    try {
-                        let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
-                        this.$emit('edulevel-add', res);
-                    } catch (e) {
-                        console.log(e);
-                    } finally {
-
+                } else {
+                    this.$v.$touch();
+                    this.$store.commit('setWantsToAddEducation', true)
+                    console.log('is form error ?', this.$v.$error)
+                    if(!this.$v.$error) {
+                        let payload = {
+                            student_detailed_info: this.detailedForm.id,
+                            university: this.selectedUniversity.id,
+                            grade: this.selectedGrade.nameEnglish,
+                            major: this.selectedMajor.id,
+                            thesis_title: this.thesisTitle,
+                            graduate_in: this.graduateIn,
+                            gpa: this.gpa
+                        }
+                        this.$store.commit('setIsEducationValid', true);
+                        this.$store.commit('setEducationToAdd', payload);
+                    } else {
+                        this.$store.commit('setIsEducationValid', false)
                     }
                 }
+
+            },
+
+            pingEducationHandler() {
+                this.$emit("education-add")
+            },
+
+            async addUniversityThrough() {
+                //TODO:
+                /*
+                Handle university through like certs and destination by creating a default store, set payload and then ping analysis layout for action.
+                 */
+                // if(this.detailedForm && this.gpa != null && this.graduateIn != null && this.selectedGrade != null && this.selectedMajor != null && this.selectedUniversity != null) {
+                //     let payload = {
+                //         student_detailed_info: this.detailedForm.id,
+                //         university: this.selectedUniversity.id,
+                //         grade: this.selectedGrade.nameEnglish,
+                //         major: this.selectedMajor.id,
+                //         thesis_title: this.thesisTitle,
+                //         graduate_in: this.graduateIn,
+                //         gpa: this.gpa
+                //     }
+                //     console.log(payload)
+                //     try {
+                //         let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
+                //         this.$emit('edulevel-add', res);
+                //     } catch (e) {
+                //         console.log(e);
+                //     } finally {
+                //
+                //     }
+                // }
             },
 
             async searchMajorByVal(query) {
@@ -157,6 +267,7 @@
                     this.majorLoading = false;
                 }
             },
+
             async searchUniversityByVal(query) {
                 try {
                     if(!!query && query.length > 3) {
@@ -182,18 +293,6 @@
             setSelectedUniversity(item) {
                 this.selectedUniversity = item;
                 console.log(item)
-            },
-
-            setGpa(gpa) {
-                this.gpa = gpa;
-            },
-
-            setGraduateIn(graduateIn) {
-                this.graduateIn = graduateIn;
-            },
-
-            setThesisTitle(title) {
-                this.thesisTitle = title;
             },
 
             gradeSelected(grade) {

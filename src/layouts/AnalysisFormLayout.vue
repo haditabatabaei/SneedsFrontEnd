@@ -126,7 +126,7 @@
             </aside>
             <main class="form-layout-view-wrapper">
                 <router-view @langcert-add="sendsubmitlanguagecerts"
-                             @edulevel-add="submitlasteducationallevel"
+                             @education-add="submitlasteducationallevelHandler"
                              @destination-add="submitdestinationhandler"
                              @sync-current-page="syncCurrentPage"
                              :key="$route.fullPath" class="form-layout-view"></router-view>
@@ -410,8 +410,33 @@ export default {
 
         async submitlasteducationallevel() {
             console.log('last educational level handler')
-            this.$router.push(this.nextPageRoute);
+            this.$store.commit('setAddEducationPermission', true);
+        },
 
+        submitlasteducationallevelHandler() {
+            if(this.$store.getters.wantsToAddEducation) {
+                this.loading = true;
+                this.$store.dispatch('createEducation')
+                    .then(response => {
+                        console.log(response);
+                        this.$router.push(this.nextPageRoute);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.$notify({
+                            group: 'notif',
+                            title: 'مقطع تحصیلی: خطا',
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                            type: 'error',
+                            duration: 3000
+                        })
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
         },
 
         async submiteducationallevelsitems() {

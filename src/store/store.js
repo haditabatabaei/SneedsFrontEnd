@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 import api from '../api'
 import certificate from "./certificate";
 import destination from "./destination";
+import education from "./education"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         certificate,
-        destination
+        destination,
+        education
     },
     state: {
         token: localStorage.getItem('token') || '',

@@ -224,33 +224,6 @@
                 this.$emit("education-add")
             },
 
-            async addUniversityThrough() {
-                //TODO:
-                /*
-                Handle university through like certs and destination by creating a default store, set payload and then ping analysis layout for action.
-                 */
-                // if(this.detailedForm && this.gpa != null && this.graduateIn != null && this.selectedGrade != null && this.selectedMajor != null && this.selectedUniversity != null) {
-                //     let payload = {
-                //         student_detailed_info: this.detailedForm.id,
-                //         university: this.selectedUniversity.id,
-                //         grade: this.selectedGrade.nameEnglish,
-                //         major: this.selectedMajor.id,
-                //         thesis_title: this.thesisTitle,
-                //         graduate_in: this.graduateIn,
-                //         gpa: this.gpa
-                //     }
-                //     console.log(payload)
-                //     try {
-                //         let res = await this.$api.post(`${this.api}/account/student-detailed-university-throughs/`, payload, this.httpConfig);
-                //         this.$emit('edulevel-add', res);
-                //     } catch (e) {
-                //         console.log(e);
-                //     } finally {
-                //
-                //     }
-                // }
-            },
-
             async searchMajorByVal(query) {
                 try {
                     if(!!query && query.length > 3) {

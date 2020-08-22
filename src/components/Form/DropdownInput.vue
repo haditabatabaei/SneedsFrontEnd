@@ -70,6 +70,13 @@
                 default: () => "لطفاً ورودی را کنترل کنید."
             }
         },
+        watch: {
+            defaultSelectedIndex(newVal) {
+                if(newVal != -1) {
+                    this.selectOption(this.options[this.defaultSelectedIndex])
+                }
+            }
+        },
         computed: {},
         methods: {
             toggleDropdown() {

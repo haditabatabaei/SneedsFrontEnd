@@ -2,7 +2,7 @@
     <section class="form-militaryservice">
         <h1 class="militaryservice-title isansFont">
             مقاله علمی داری؟
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="militaryservice-wrapper isansFont">
             <input v-model="hasPaper" id="militaryservice-have" type="radio" name="militaryservice" value="have">
@@ -290,6 +290,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .militaryservice-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .inputs {

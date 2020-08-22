@@ -2,7 +2,7 @@
     <section class="form-funds">
         <h1 class="funds-title isansFont">
             بورسیه و توانایی مالی
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <h3 class="funds-desc isansFont">
             حداقل یک گزینه را انتخاب کنید.
@@ -198,6 +198,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .funds-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .funds-desc {

@@ -2,7 +2,7 @@
     <section class="form-militaryservice">
         <h1 class="militaryservice-title isansFont">
             توصیه نامه قوی داری؟
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="militaryservice-wrapper isansFont">
             <input v-model="selectedMilitaryserviceStatus" id="militaryservice-have" type="radio" name="militaryservice" value="have">
@@ -147,6 +147,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .militaryservice-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     @media only screen and (max-width: 767.8px) {

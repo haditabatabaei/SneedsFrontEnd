@@ -2,7 +2,7 @@
     <section class="form-other">
         <h1 class="other-title isansFont">
             سایر موارد و رزومه
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <h3 class="other-desc isansFont">
             این اطلاعات برای مقایسه خیلی به ما کمک می‌کنه.
@@ -142,6 +142,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .other-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .other-desc {

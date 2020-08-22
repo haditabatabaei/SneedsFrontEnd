@@ -335,10 +335,23 @@
                 } finally {
 
                 }
+            },
+
+            async getGrades() {
+                //TODO: fix this grades, last time endpoint was not available due to deploying issues
+                try {
+                    let result = await this.$api.get(`${this.api}/account/grades/`, this.httpConfig);
+                    console.log(result);
+                } catch (e) {
+
+                } finally {
+
+                }
             }
         },
         created() {
             this.getSemesters();
+            this.getGrades();
             this.$store.commit('setWantsToAddCert', false);
         }
     }

@@ -2,7 +2,7 @@
     <section class="form-marriage">
         <h1 class="marriage-title isansFont">
             مجردی یا متاهل؟
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="marriage-wrapper isansFont">
             <input v-model="selectedMarriageStatus" id="marriage-single" type="radio" name="marriage" value="single">
@@ -147,6 +147,12 @@ export default {
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .marriage-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     @media only screen and (max-width: 767.8px) {

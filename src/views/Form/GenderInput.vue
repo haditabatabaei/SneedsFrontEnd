@@ -2,7 +2,7 @@
     <section class="form-militaryservice">
         <h1 class="militaryservice-title isansFont">
             مشخصات فردی
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="militaryservice-wrapper isansFont">
             <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice"
@@ -182,6 +182,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .militaryservice-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .inputs {

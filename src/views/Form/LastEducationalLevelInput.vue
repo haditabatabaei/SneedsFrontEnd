@@ -2,7 +2,7 @@
     <section class="form-edulevel">
         <h1 class="edulevel-title isansFont">
             مقطع تحصیلی
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="edulevel-wrapper">
             <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی"
@@ -295,7 +295,9 @@
     }
 
     .edulevel-title i {
-        margin-right: 5px;
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .edulevel-wrapper {

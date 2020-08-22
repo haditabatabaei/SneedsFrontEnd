@@ -33,7 +33,7 @@
             </label>
         </div>
         <div class="fund-input-wrapper">
-            <c-dropdown class="fund-input" label="توانایی مالی" :options="moneyOptions" @select-option="setAffordability" :defaultSelectedIndex="moneyOptions.indexOf(selectedAffordability)"/>
+            <c-dropdown class="fund-input" label="توانایی مالی" :options="moneyOptions" @select-option="setAffordability" :defaultSelectedIndex="defaultSelectedIndex"/>
         </div>
     </section>
 </template>
@@ -51,11 +51,8 @@
                 halfFund: null,
                 selfFund: null,
                 selectedAffordability: null,
-                moneyOptions: [
-                    {name: 'کم', nameEnglish: 'LOW'},
-                    {name: 'متوسط', nameEnglish: 'MIDDLE'},
-                    {name: 'زیاد', nameEnglish: 'MUCH'}
-                ]
+                defaultSelectedIndex: -1,
+                moneyOptions: []
             }
         },
         computed: {
@@ -102,20 +99,26 @@
             setAffordability(option) {
                 this.selectedAffordability = option;
                 if(this.detailedForm) {
-                    this.$store.commit('setDetailedFormProperty', {prop: 'payment_affordability', value: option.nameEnglish})
+                    this.$store.commit('setDetailedFormProperty', {prop: 'payment_affordability', value: option.nameEnglish.toUpperCase()})
                 }
             },
             async getAffordabilityChoices() {
                 let result = await this.$api.get(`${this.api}/account/payment-affordability-choices/`, this.httpConfig);
-                console.log(result)
+                this.moneyOptions = result.data.choices.map(item => {
+                    return {
+                        name: item[0],
+                        nameEnglish: item[1]
+                    }
+                })
+                this.defaultSelectedIndex = this.moneyOptions.findIndex(moneyOption => moneyOption.nameEnglish.toUpperCase() == this.detailedForm.payment_affordability.toUpperCase())
+                this.selectedAffordability = this.moneyOptions[this.defaultSelectedIndex]
             },
             init() {
                 if(this.detailedForm) {
                     this.fullFund = this.detailedForm.prefers_full_fund;
                     this.halfFund = this.detailedForm.prefers_half_fund;
                     this.selfFund = this.detailedForm.prefers_self_fund;
-                    this.selectedAffordability = this.moneyOptions.find(item => item.nameEnglish == this.detailedForm.payment_affordability);
-                    console.log('in init s afford ', this.selectedAffordability)
+                    this.getAffordabilityChoices();
                 }
             }
         },
@@ -214,6 +217,7 @@
 
     .fund-input-wrapper {
         padding: 20px;
+        align-self: stretch;
     }
 
     .fund-input {

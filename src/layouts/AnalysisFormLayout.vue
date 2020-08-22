@@ -347,12 +347,11 @@ export default {
 
         async submitmilitaryservice() {
             try {
-                this.loading = false;
+                this.loading = true;
                 console.log(this.detailedForm.military_service_status);
                 let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
                 console.log('military_service_status status code', result.status)
                 this.$router.push(this.nextPageRoute);
-
             } catch (e) {
 
             } finally {
@@ -362,50 +361,78 @@ export default {
         },
 
         async submiteducationalgap() {
-            try {
-                this.loading = true;
-                console.log(this.detailedForm.academic_break);
-                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
-                console.log('academic break status code', result.status)
-                this.$router.push(this.nextPageRoute);
+            if(this.$store.getters.educationalGapIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.academic_break);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
+                    console.log('academic break status code', result.status)
+                    this.$router.push(this.nextPageRoute);
 
-            } catch (e) {
+                } catch (e) {
 
-            } finally {
-                this.loading = false;
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'وقفه تحصیلی: اخطار',
+                    text: 'لطفاً مقدار وقفه تحصیلی را کنترل کنید.',
+                    duration: 3000
+                })
             }
         },
 
         async submitgender() {
-            try {
-                this.loading = true;
-                console.log(this.detailedForm.academic_break);
-                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
-                console.log('academic break status code', result.status)
-                this.$router.push(this.nextPageRoute);
+            if(this.$store.getters.ageIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.academic_break);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
+                    console.log('academic break status code', result.status)
+                    this.$router.push(this.nextPageRoute);
 
-            } catch (e) {
+                } catch (e) {
 
-            } finally {
-                this.loading = false;
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'سن: اخطار',
+                    text: 'لطفاً مقدار سن را کنترل کنید.',
+                    duration: 3000
+                })
             }
-
         },
 
         async submitworkexperience() {
-            try {
-                this.loading = true;
-                console.log(this.detailedForm.related_work_experience);
-                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
-                console.log('work exp status code', result.status)
-                this.$router.push(this.nextPageRoute);
+            if(this.$store.getters.workExperienceIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.related_work_experience);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
+                    console.log('work exp status code', result.status)
+                    this.$router.push(this.nextPageRoute);
 
-            } catch (e) {
+                } catch (e) {
 
-            } finally {
-                this.loading = false;
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'سابقه کار مرتبط: اخطار',
+                    text: 'لطفاً مقدار سابقه کار مرتبط را کنترل کنید.',
+                    duration: 3000
+                })
             }
-
         },
 
         async submitlasteducationallevel() {

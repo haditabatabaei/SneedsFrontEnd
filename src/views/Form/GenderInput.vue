@@ -28,7 +28,6 @@
             <c-number-input class="edu-gap" :step="1"
                             :error="$v.gapYears.$error"
                             error-text="سن باید عدد صحیح بین 15 تا 100 باشد."
-                            :default-value="gapYears"
                             v-model="gapYears"
                             label="سال سن"/>
         </div>
@@ -88,7 +87,9 @@
         watch: {
             gapYears(newVal) {
                 console.log(newVal);
+                this.$v.$touch();
                 this.$store.commit('setDetailedFormProperty', {prop: 'age', value: newVal})
+                this.$store.commit('setAgeIsValid', !this.$v.gapYears.$error)
             },
             selectedEducationalGapStatus(newVal) {
                 console.log(newVal);

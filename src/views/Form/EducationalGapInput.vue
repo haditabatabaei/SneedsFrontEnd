@@ -22,7 +22,6 @@
             <c-number-input class="edu-gap" :step="1"
                             :error="$v.gapYears.$error"
                             error-text="وقفه تحصیلی باید عدد صحیح بین 0 تا 100 باشد."
-                            :default-value="gapYears"
                             v-model="gapYears"
                             label="سال وقفه تحصیلی" />
         </div>
@@ -85,10 +84,13 @@
             gapYears(newVal) {
                 console.log(newVal);
                 this.$store.commit('setDetailedFormProperty', {prop: 'academic_break', value: newVal })
+                this.$v.$touch();
+                this.$store.commit('setEducationalGapIsValid', !this.$v.gapYears.$error)
             },
             selectedEducationalGapStatus(newVal) {
                 if(newVal == null || newVal == 'donthave') {
                     this.$store.commit('setDetailedFormProperty', {prop: 'academic_break', value: 0 })
+                    this.$store.commit('setEducationalGapIsValid', true)
                 }
             },
             detailedForm(newDetailedForm) {

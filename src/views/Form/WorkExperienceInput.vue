@@ -20,10 +20,10 @@
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
             <c-number-input class="edu-gap" :step="1"
-                            :error="$v.gapYears.$invalid"
+                            :error="$v.gapYears.$error"
                             error-text="سابقه کاری باید عدد صحیح بالای صفر باشد."
-                            :default-value="gapYears"
-                            @set-number="setGapYears" label="ماه سابقه کار" />
+                            v-model="gapYears"
+                            label="ماه سابقه کار" />
         </div>
     </section>
 </template>
@@ -84,10 +84,13 @@
             gapYears(newVal) {
                 console.log(newVal);
                 this.$store.commit('setDetailedFormProperty', {prop: 'related_work_experience', value: newVal})
+                this.$v.$touch();
+                this.$store.commit('setWorkExperienceIsValid', !this.$v.gapYears.$error)
             },
             selectedEducationalGapStatus(newVal) {
                 if(newVal == null || newVal == 'donthave') {
                     this.$store.commit('setDetailedFormProperty', {prop: 'related_work_experience', value: 0 })
+                    this.$store.commit('setWorkExperienceIsValid', true)
                 }
             },
             detailedForm(newDetailedForm) {

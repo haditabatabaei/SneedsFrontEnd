@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen}]">
+        <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen, 'input--error': error}]">
             <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
             <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
             <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
@@ -16,6 +16,7 @@
         </div>
         <transition name="fade">
             <p class="number-input-error isansFont" v-if="error">
+                <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>
         </transition>
@@ -111,6 +112,10 @@
         background-color: #F8F8F8;
         border: 1px solid #F2F2F2;
         border-radius: 10px;
+    }
+
+    .searchable-wrapper.input--error {
+        border-color: #DC3030;
     }
 
     .overlay-dropdown-closable {
@@ -209,7 +214,17 @@
 
     .number-input-error {
         margin: 5px 0;
+        border-radius: 10px;
+        padding: 5px;
         font-size: 12px;
-        color: #963a38;
+        color: #891B1B;
+        background-color: #FFECEC;
+        display: flex;
+        align-items: center;
+    }
+
+    .number-input-error i {
+        font-size: 18px;
+        margin: 0 5px;
     }
 </style>

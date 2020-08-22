@@ -6,6 +6,7 @@
                @input="$emit('input', $event.target.value)">
         <transition name="fade">
             <p class="number-input-error isansFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
+                <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>
         </transition>
@@ -66,7 +67,7 @@
     }
 
     .simple-input.input--error {
-        border-color: #963a38;
+        border-color: #DC3030;
     }
 
     .simple-input--ltr {
@@ -75,7 +76,17 @@
 
     .number-input-error {
         margin: 5px 0;
+        border-radius: 10px;
+        padding: 5px;
         font-size: 12px;
-        color: #963a38;
+        color: #891B1B;
+        background-color: #FFECEC;
+        display: flex;
+        align-items: center;
+    }
+
+    .number-input-error i {
+        font-size: 18px;
+        margin: 0 5px;
     }
 </style>

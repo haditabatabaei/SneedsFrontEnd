@@ -8,18 +8,11 @@
             <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
-                    <p class="paper-countries" v-for="country in items.countries">{{country.name}}</p>
-                    <p class="paper-countries" v-for="semester in items.semesters">{{semester.semester}} {{semester.year}}</p>
+                    <p class="paper-countries" v-for="country in item.countries">{{country.name}}</p>
+                    <p class="paper-countries" v-for="semester in item.semester_years">{{semester.semester}} {{semester.year}}</p>
                     <p class="paper-countries" v-for="grade in item.grades">{{grade.name}}</p>
                     <p class="paper-countries" v-for="major in item.majors">{{major.name}}</p>
                     <p class="paper-countries" v-for="university in item.universities">{{university.name}}</p>
-<!--                    <p class="paper-item-summary">کشور {{item.country.name}}، {{item.semes/ter_year.semester}} {{item.semester_year.year}}</p>-->
-<!--                    <p class="paper-item-title">مقطع {{getGrade(item.grade)}} رشته {{item.major.name}}</p>-->
-<!--                    <div class="paper-item-universitytags">-->
-<!--                        <span class="university-tag" v-for="uni in item.universities">-->
-<!--                            {{uni.name}}-->
-<!--                        </span>-->
-<!--                    </div>-->
                 </div>
                 <button class="paper-item-remove" @click="deleteDestination(item)">
                     <i class="material-icons">close</i>

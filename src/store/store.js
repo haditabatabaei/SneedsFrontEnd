@@ -5,6 +5,7 @@ import certificate from "./certificate";
 import destination from "./destination";
 import education from "./education";
 import paper from "./paper"
+import simpleValidations from "./simpleValidations"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,7 +13,8 @@ export default new Vuex.Store({
         certificate,
         destination,
         education,
-        paper
+        paper,
+        simpleValidations
     },
     state: {
         token: localStorage.getItem('token') || '',

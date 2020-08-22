@@ -16,6 +16,8 @@
                 </button>
             </div>
 
+            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
+
             <p class="paper-items-empty" v-if="items.length == 0">
                 مقاله ای وارد نشده است.
             </p>
@@ -36,7 +38,8 @@
         name: "PaperItems",
         data() {
             return {
-                items: []
+                items: [],
+                loading: false
             }
         },
         computed: {
@@ -103,18 +106,29 @@
             },
 
             async getPublications() {
-                let result = await this.$api.get(`${this.api}/account/publications/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
-                this.items = result.data;
-                console.log('publications results ', result)
+                try {
+                    this.loading = true;
+                    let result = await this.$api.get(`${this.api}/account/publications/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
+                    this.items = result.data;
+                    console.log('publications results ', result)
+                } catch (e) {
+                    console.log(e)
+                } finally {
+                    this.loading = false;
+                }
+
             },
 
             async deletePaper(item) {
                 try {
+                    this.loading = true;
                     let delResult = await this.$api.delete(`${this.api}/account/publications/${item.id}/`, this.httpConfig)
                     console.log(delResult)
                     this.getPublications();
                 } catch (e) {
 
+                } finally {
+                    this.loading = false;
                 }
             }
         },

@@ -704,7 +704,7 @@ export default {
             //user is logged in
             //check user has form or not;
             //check if current user has available form
-            if(!(this.detailedForm && this.detailedForm.user.id == this.user.id)) {
+            if(!(!!this.detailedForm && this.detailedForm.user.id == this.user.id)) {
                 //form obj is not present or is present but the owner is not logged in user
                 try {
                     console.log('is logged in try getting user form')
@@ -741,10 +741,10 @@ export default {
             //check if there is form id present in storage
             console.log('user is not logged in')
             console.log('detailed form id ', this.detailedFormId)
-            if(this.detailedFormId) {
+            if(!!this.detailedFormId) {
                //there is an id available
                console.log('there is id present ', this.detailedFormId)
-               if(this.detailedForm) {
+               if(!!this.detailedForm) {
                    //there is form available
                    //nothing to do here
                    console.log('there is form with id nothing to add here ', this.detailedForm)
@@ -757,11 +757,11 @@ export default {
                }
            } else {
                //there is no id, create an empty form and set form id and empty form data
-               let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+               console.log('there is no id present, create an empty form and set form id and form data')
+                let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
                console.log(formResult);
                this.$store.commit('setDetailedForm', formResult.data)
            }
-
         }
     }
 }

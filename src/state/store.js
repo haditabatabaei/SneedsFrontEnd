@@ -6,10 +6,12 @@ import destination from "./destination";
 import education from "./education";
 import paper from "./paper"
 import simpleValidations from "./simpleValidations"
+import analysisform from "./analysisform";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
+        analysisform,
         certificate,
         destination,
         education,
@@ -36,10 +38,6 @@ export default new Vuex.Store({
             "phone_number": ''
         },
 
-        detailedForm: null,
-
-        detailedFormId: Number(localStorage.getItem('detailedFormId')) || null,
-
         api: process.env.VUE_APP_ROOT_API,
 
         authApi: process.env.VUE_APP_ROOT_API,
@@ -51,27 +49,6 @@ export default new Vuex.Store({
         timezoneSafe: ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
 
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-
-        analysisFormPageMapping: new Map(
-            [   
-                [1, 'marriage'],
-                [2, 'militaryservice'],
-                [3, 'educationalgap'],
-                [4, 'gender'],
-                [5, 'workexperience'],
-                [6, 'lasteducationallevel'],
-                [7, 'educationallevelsitems'],
-                [8, 'paper'],
-                [9, 'paperitems'],
-                [10, 'powerfulrecom'],
-                [11, 'languagecerts'],
-                [12, 'languagecertsitems'],
-                [13, 'destination'],
-                [14, 'destinationitems'],
-                [15, 'funds'],
-                [16, 'otherinformation']
-            ]
-            )
         },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
@@ -84,23 +61,6 @@ export default new Vuex.Store({
 
         toggleMobileMenuShow(state) {
             state.mobileMenuShow = !state.mobileMenuShow;
-        },
-
-        setDetailedForm(state, form) {
-            state.detailedForm = form;
-            if(form == null) {
-                localStorage.removeItem('detailedFormId')
-            } else {
-                state.detailedFormId = form.id;
-                localStorage.setItem('detailedFormId', form.id)
-            }
-        },
-
-        setDetailedFormProperty(state, {prop, value}) {
-            state.detailedForm[prop] = value;
-            if(prop == 'id') {
-                localStorage.setItem('detailedFormId', value)
-            }
         },
 
         logout(state) {
@@ -285,10 +245,6 @@ export default new Vuex.Store({
 
         isiran: state => state.timezoneSafe === 'Asia-Tehran',
 
-        detailedForm: state => state.detailedForm,
-
-        detailedFormId: state => state.detailedFormId,
-
         locale: state => {
             if (state.timezoneSafe === 'Asia-Tehran') {
                 return 'fa';
@@ -296,6 +252,5 @@ export default new Vuex.Store({
                 return 'en'
             }
         },
-        analysisFormPageMapping: state => state.analysisFormPageMapping
     }
 })

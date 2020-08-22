@@ -10,14 +10,14 @@
 
         <div class="form-other-items" v-if="detailedForm">
             <c-collapsable-input class="form-other-collapsable" title="آدرس لینکدین" :isOpenByDefault="true">
-                <c-simple-input label="آدرس لینکدین" @input="val => linkedin = val" :default-value="linkedin" :is-ltr="true" style="width: 100%" />
+                <c-simple-input label="Linkedin profile" v-model="linkedin" :is-ltr="true" style="width: 100%" />
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="سابقه المپیاد">
                 <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`"
                           cols="30" rows="10" placeholder="المپیاد" v-model="olympiad"/>
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="آدرس وبسایت شخصی">
-                <c-simple-input label="آدرس وبسایت شخصی" @input="val => homepage = val" :default-value="homepage" :is-ltr="true" style="width: 100%"/>
+                <c-simple-input label="Personal website/Portfolio" v-model="homepage" :is-ltr="true" style="width: 100%"/>
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="آپلود رزومه">
                 <input type="file" @change="handleFile">

@@ -5,42 +5,46 @@
             <i class="material-icons">info</i>
         </h1>
         <div class="militaryservice-wrapper isansFont">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice" value="have">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-donthave" type="radio" name="militaryservice" value="donthave">
-            <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': selectedEducationalGapStatus == 'have'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'have'">done</i>
+            <input v-model="hasPaper" id="militaryservice-have" type="radio" name="militaryservice" value="have">
+            <input v-model="hasPaper" id="militaryservice-donthave" type="radio" name="militaryservice" value="donthave">
+            <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': hasPaper == 'have'}]">
+                <i class="material-icons holder-selected-icon" v-if="hasPaper == 'have'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/paper.svg" class="militaryservice-holder-image" alt="مقاله علمی دارم">
                 <p class="militaryservice-holder-text">مقاله دارم</p>
             </label>
-            <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': selectedEducationalGapStatus == 'donthave'}]">
-                <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'donthave'">done</i>
+            <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': hasPaper == 'donthave'}]">
+                <i class="material-icons holder-selected-icon" v-if="hasPaper == 'donthave'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/no-paper.svg" class="militaryservice-holder-image" alt="مقاله علمی ندارم">
                 <p class="militaryservice-holder-text">مقاله ندارم</p>
             </label>
         </div>
-        <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
+        <div class="inputs" v-if="hasPaper == 'have'">
             <c-dropdown-input class="edu-gap" label="نوع مقاله"
-                              :error="$v.selectedType.$invalid"
+                              :error="$v.selectedType.$error"
                               error-text="لطفاً نوع مقاله را به درستی انتخاب کنید."
-                              :options="typeOptions" @select-option="setType" />
+                              :options="typeOptions"
+                              @select-option="setType" />
+
             <c-simple-input class="edu-gap" label="عنوان مقاله" @
-                            :error="$v.title.$invalid"
+                            :error="$v.title.$error"
                             error-text="عنوان مقاله الزامی است."
-                            @input="setTitle" />
+                            v-model="title" />
+
             <c-number-input class="edu-gap" :step="1"
-                            :error="$v.gapYears.$invalid"
+                            :error="$v.publishYear.$error"
                             error-text="مقدار وارد شده باید عدد صحیح بین 1900 و 2100 باشد."
-                            :default-value="gapYears"
-                            @set-number="setGapYears" label="سال پابلیش مقاله"  />
+                            v-model="publishYear" label="سال پابلیش مقاله"  />
+
             <c-radio-group direction="column" :items="authorOptions"
-                            :error="$v.selectedAuthor.$invalid"
+                            :error="$v.selectedAuthor.$error"
                             error-text="لطفاً نوبت نویسنده را به درستی انتخاب کنید."
                             @select-option="setAuthor" />
+
             <c-dropdown-input class="edu-gap" label="شاخص تاثیر"
-                              :error="$v.selectedReputation.$invalid"
+                              :error="$v.selectedReputation.$error"
                               error-text="لطفاً شاخص تاثیر مقاله را به درستی انتخاب کنید."
-                              :options="reputationOptions" @select-option="setReputation" />
-            <button @click="addNewPublication" class="publication-add isansFont">ایجاد مقاله جدید</button>
+                              :options="reputationOptions"
+                              @select-option="setReputation" />
         </div>
     </section>
 </template>
@@ -53,15 +57,15 @@
     import {required, between, integer, maxLength} from 'vuelidate/lib/validators';
 
     const validType = (input, vm) => {
-        return vm.typeOptions.some(option => option.nameEnglish === input.nameEnglish)
+        return !!input && vm.typeOptions.some(option => option.nameEnglish === input.nameEnglish)
     }
 
     const validReputation = (input, vm) => {
-        return vm.reputationOptions.some(option => option.nameEnglish === input.nameEnglish)
+        return !!input && vm.reputationOptions.some(option => option.nameEnglish === input.nameEnglish)
     }
 
     const validAuthor = (input, vm) => {
-         return vm.authorOptions.some(item => item.nameEnglish === input.nameEnglish);
+         return !!input && vm.authorOptions.some(item => item.nameEnglish === input.nameEnglish);
     }
 
     export default {
@@ -73,7 +77,7 @@
             "c-radio-group": RadioGroupInput
         },
         validations: {
-            gapYears: {required, integer, between: between(1900, 2100)},
+            publishYear: {required, integer, between: between(1900, 2100)},
             title: {required, maxLength: maxLength(100)},
             selectedType: {required, validType},
             selectedReputation: {required, validReputation},
@@ -81,8 +85,8 @@
         },
         data() {
             return {
-                selectedEducationalGapStatus: null,
-                gapYears: 1900,
+                hasPaper: null,
+                publishYear: 1900,
                 selectedType: null,
                 selectedAuthor: null,
                 selectedReputation: null,
@@ -129,34 +133,77 @@
 
             multipartHttpConfig() {
                 return this.$store.getters.multipartHttpConfig
+            },
+
+            paperIsValid() {
+                return this.$store.getters.paperIsValid
+            },
+
+            wantsToAddPaper() {
+                return this.$store.getters.wantsToAddPaper
+            },
+
+            paperToAdd() {
+                return this.$store.getters.paperToAdd
+            },
+
+            paperAddPermission() {
+                return this.$store.getters.paperAddPermission
+            }
+        },
+        watch: {
+            paperAddPermission(newValue, oldValue) {
+                console.log(`paper add permission switched from ${oldValue} to ${newValue}`)
+                if(oldValue == false && newValue == true) {
+                    if(this.hasPaper) {
+                        this.createPayload();
+                        if(this.paperIsValid) {
+                            this.pingPaperAddHandler();
+                        } else {
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقاله: اخطار',
+                                text: 'لطفاً ورودی های مقاله را کنترل کنید.',
+                                type: 'warn',
+                                duration: 3000
+                            })
+                        }
+                    }
+                    this.$store.commit('setPaperAddPermission', false)
+                }
+            },
+
+            hasPaper(newValue) {
+                this.$store.commit('setWantsToAddPaper', newValue == 'have')
             }
         },
         methods: {
-            setGapYears(newGapYear) {
-                this.gapYears = Number(newGapYear);
-            },
-            async addNewPublication() {
-                if(this.selectedAuthor != null && this.selectedReputation != null && this.selectedType != null) {
+            createPayload() {
+                this.$v.$touch();
+                if(!this.$v.$error) {
+                    console.log('payload is valid')
                     let payload = {
                         student_detailed_info: this.detailedFormId,
                         title: this.title,
-                        publish_year: this.gapYears,
+                        publish_year: this.publishYear,
                         which_author: this.selectedAuthor.nameEnglish,
                         type: this.selectedType.nameEnglish,
                         journal_reputation: this.selectedReputation.nameEnglish
                     }
-                    console.log('add new publication' , payload)
-                    let result = await this.$api.post(`${this.api}/account/publications/`, payload, this.httpConfig)
-                    console.log(result);
+                    this.$store.commit('setPaperIsValid', true);
+                    this.$store.commit('setPaperToAdd', payload);
                 } else {
-                    console.log('bad input')
+                    console.log('payload is not valid')
+                    this.$store.commit('setPaperIsValid', false);
+                    this.$store.commit('setPaperToAdd', null)
                 }
+            },
+
+            pingPaperAddHandler() {
+                this.$emit('paper-add')
             },
             setType(type) {
                 this.selectedType = type;
-            },
-            setTitle(title) {
-                this.title = title;
             },
             setAuthor(authorType) {
                 this.selectedAuthor = authorType

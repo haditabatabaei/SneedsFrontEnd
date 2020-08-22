@@ -126,6 +126,7 @@
             </aside>
             <main class="form-layout-view-wrapper">
                 <router-view @langcert-add="sendsubmitlanguagecerts"
+                             @paper-add="submitpaperHandler()"
                              @education-add="submitlasteducationallevelHandler"
                              @destination-add="submitdestinationhandler"
                              @sync-current-page="syncCurrentPage"
@@ -318,7 +319,6 @@ export default {
             if(this.$route.path != this.nextPageRoute) {
                 //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
                 await this[`submit${this.pageMap.get(this.currentPage)}`]();
-                // console.log('going to ', this.nextPageRoute)
             } else {
                 if(this.currentPage == this.lastPage) {
                     console.log('we are in last page');
@@ -447,7 +447,33 @@ export default {
 
         async submitpaper() {
             console.log('paper handler ')
-            this.$router.push(this.nextPageRoute);
+            if(this.$store.getters.wantsToAddPaper) {
+                this.$store.commit('setPaperAddPermission', true)
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async submitpaperHandler() {
+            this.loading = true;
+            this.$store.dispatch('createPaper')
+                .then(response => {
+                    console.log(response)
+                    this.$router.push(this.nextPageRoute);
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.$notify({
+                        group: 'notif',
+                        title: 'مقاله: خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        type: 'error',
+                        duration: 3000
+                    })
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
         },
 
         async submitpaperitems() {

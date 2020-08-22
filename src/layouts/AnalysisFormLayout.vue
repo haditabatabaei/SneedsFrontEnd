@@ -85,8 +85,8 @@
                         <p>
                             <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
                             <br>
-                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
-                            این اطلاعات  همیشه از طریق پروفایلتان قابل ویرایش است.
+                            برای ثبت نهایی، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه و فرمتون تکمیل باشه.
+                            این اطلاعات همیشه از طریق پروفایلتان قابل ویرایش است.
                         </p>
                     </div>
                     <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
@@ -98,10 +98,10 @@
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
                     </label>
                     <div class="intro-action isansFont">
-                        <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
-                            ثبت و رزرو وقت
+                        <button class="intro-action-button intro-action-button--active" @click="setNameAndContinue">
+                            ثبت اطلاعات
                         </button>
-                        <button @click="addSelectedTimesToCart(true)" data-command="consultant-modal-close"
+                        <button @click="setFormUser" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
                             بعدا وارد میکنم
                         </button>
@@ -305,7 +305,7 @@ export default {
             if (this.showNameModalAfterLogin) {
                 this.showNameModal = true;
             } else {
-                // this.addSelectedTimesToCart();
+                this.setFormUser();
             }
         },
 
@@ -313,6 +313,44 @@ export default {
             this.showRegisterModal = false;
             this.showRegisterIntro = false;
             this.showNameModal = true;
+        },
+
+        setNameAndContinue() {
+            let requests = [];
+            let editReq = this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`, {
+                "first_name": this.first_name,
+                "last_name": this.last_name
+            }, this.$store.getters.httpConfig);
+            let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
+            requests.push(editReq);
+            requests.push(dispatchUser);
+            //this.$loading(true);
+            Promise
+                .all(requests)
+                .then(([editRes, dispatchRes]) => {
+                    this.setFormUser();
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+                .finally(() => {
+
+                })
+        },
+
+        async setFormUser() {
+            try {
+                let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {
+                        'user': this.user.id
+                    }, this.httpConfig);
+                console.log(formUserSetResult);
+                this.$router.push('/user/profile')
+            } catch (e) {
+                console.log(e)
+            } finally {
+
+            }
         },
 
         async submitAndMoveNext() {
@@ -647,45 +685,47 @@ export default {
                         },
                         this.httpConfig
                     )
-                    console.log('other info result ', this.result);
+                    console.log('other info result ', result);
                 }
                 this.startLastPageFlow();
             } catch (e) {
-
+                console.log(e)
             } finally {
                 this.loading = false;
             }
         },
 
         async startLastPageFlow() {
+            console.log('start last page flow')
             if(this.isLoggedIn) {
                 //user is logged in
                 //check see if form is set or not
-                if(this.detailedForm.user) {
+                if(!!this.detailedForm.user) {
                     //form user is set
                     //check if its current user
                     if(this.detailedForm.user.id == this.user.id) {
                         //yes its us
                         //everything is good
                         //show confirmation success message
+                        console.log('form user is set and its current logged in user going to home')
+                        this.$router.push('/')
                     } else {
                         //some serious thing is happening here !
-                        // this is not supposed to happen
+                        //this is not supposed to happen
                     }
                 } else {
                     //form has no user
                     //set form user to current form
-                    let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${formResult.data.id}/`,
-                        {
-                            'user': this.user.id
-                        }, this.httpConfig);
-
-                    console.log(formUserSetResult);
+                    console.log('form has no user, setting current user for form.')
+                    await this.setFormUser();
+                    // console.log(formUserSetResult);
                 }
             } else {
                 //user is not logged in
                 //start login modal process
-                // this.show
+                console.log('user is not logged in, show register intro')
+                this.showRegisterIntro = true;
+                //this.show
             }
         },
 

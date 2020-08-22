@@ -62,7 +62,6 @@
                 default: () => false
             },
             value: {
-                type: Number,
             },
             errorText: {
                 type: String,

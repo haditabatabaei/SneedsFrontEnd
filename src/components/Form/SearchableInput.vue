@@ -177,6 +177,7 @@
         margin: 0;
         border-radius: 0 0 10px 10px;
         z-index: 15;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .searchable-item {

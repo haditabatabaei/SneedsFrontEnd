@@ -1,5 +1,24 @@
 <template>
     <section class="form-edulevel">
+        <transition name="fade">
+            <div class="modal-confirm-overlay" v-if="showConfirm" @click.self="showConfirm = false">
+                <div class="modal-confirm isansFont">
+                    <button class="modal-confirm-close" @click="showConfirm = false"><i class="material-icons">close</i></button>
+                    <h2 class="modal-confirm-title isansFont">
+                        <i class="material-icons-outlined">info</i>
+                        توجه، فرم شما خالی است!
+                    </h2>
+                    <p class="modal-confirm-text">
+                        شما میخواهید بدون پر کردن اطلاعات مقطع تحصیلی خود به مرحله بعد بروید، امکان اضافه کردن و ویرایش چند مقطع تحصیلی قبلی به تعداد دلخواه در آینده وجود دارد.
+                    </p>
+                    <div class="modal-confirm-action">
+                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">نه، میخواهم پر کنم</button>
+                        <button class="modal-confirm-button confirm--next" @click="bypassEducation">متوجهم، به مرحله بعد برو</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
         <h1 class="edulevel-title isansFont">
             مقطع تحصیلی
             <i class="material-icons">help_outline</i>
@@ -82,6 +101,7 @@
         },
         data() {
             return {
+                hasLevel: true,
                 availableMajors: [],
                 availableUniversities: [],
                 selectedGrade: null,
@@ -97,7 +117,9 @@
                     {name: 'کارشناسی ارشد', nameEnglish: 'MASTER'},
                     {name: 'دکتری', nameEnglish: 'PHD'},
                     {name: 'پسا دکتری', nameEnglish: 'POST_DOC'}
-                ]
+                ],
+
+                showConfirm: false,
             }
         },
         computed: {
@@ -169,53 +191,41 @@
             }
         },
         methods: {
+            bypassEducation() {
+                this.$store.commit('setWantsToAddEducation', false);
+                this.$store.commit('setIsEducationValid', false);
+                this.$store.commit('setEducationToAdd', null);
+                this.pingEducationHandler();
+            },
+
+            startPayloadProcess() {
+                this.showConfirm = false;
+                this.$v.$touch();
+                this.$store.commit('setWantsToAddEducation', true)
+                console.log('is form error ?', this.$v.$error)
+                if(!this.$v.$error) {
+                    let payload = {
+                        student_detailed_info: this.detailedForm.id,
+                        university: this.selectedUniversity.id,
+                        grade: this.selectedGrade.nameEnglish,
+                        major: this.selectedMajor.id,
+                        thesis_title: this.thesisTitle,
+                        graduate_in: this.graduateIn,
+                        gpa: this.gpa
+                    }
+                    this.$store.commit('setIsEducationValid', true);
+                    this.$store.commit('setEducationToAdd', payload);
+                } else {
+                    this.$store.commit('setIsEducationValid', false)
+                }
+            },
             createPayload() {
                 //check if form is empty
                 console.log('is this empty? ', this.isFormEmpty)
                 if(this.isFormEmpty) {
-                    if(window.confirm('شما اطلاعات مقطع خود را وارد نکردید، می توانید آن را وارد کنید و یا به مرحله بعد بروید، در هر حالت می توانید باز به این صفحه برگردید، برای پریدن از روی این صفحه مطمئنید؟')) {
-                        this.$store.commit('setWantsToAddEducation', false);
-                        this.$store.commit('setIsEducationValid', false);
-                        this.$store.commit('setEducationToAdd', null)
-                    } else {
-                        this.$v.$touch();
-                        this.$store.commit('setWantsToAddEducation', true)
-                        console.log('is form error ?', this.$v.$error)
-                        if(!this.$v.$error) {
-                            let payload = {
-                                student_detailed_info: this.detailedForm.id,
-                                university: this.selectedUniversity.id,
-                                grade: this.selectedGrade.nameEnglish,
-                                major: this.selectedMajor.id,
-                                thesis_title: this.thesisTitle,
-                                graduate_in: this.graduateIn,
-                                gpa: this.gpa
-                            }
-                            this.$store.commit('setIsEducationValid', true);
-                            this.$store.commit('setEducationToAdd', payload);
-                        } else {
-                            this.$store.commit('setIsEducationValid', false)
-                        }
-                    }
+                    this.showConfirm = true;
                 } else {
-                    this.$v.$touch();
-                    this.$store.commit('setWantsToAddEducation', true)
-                    console.log('is form error ?', this.$v.$error)
-                    if(!this.$v.$error) {
-                        let payload = {
-                            student_detailed_info: this.detailedForm.id,
-                            university: this.selectedUniversity.id,
-                            grade: this.selectedGrade.nameEnglish,
-                            major: this.selectedMajor.id,
-                            thesis_title: this.thesisTitle,
-                            graduate_in: this.graduateIn,
-                            gpa: this.gpa
-                        }
-                        this.$store.commit('setIsEducationValid', true);
-                        this.$store.commit('setEducationToAdd', payload);
-                    } else {
-                        this.$store.commit('setIsEducationValid', false)
-                    }
+                    this.startPayloadProcess();
                 }
 
             },
@@ -274,7 +284,7 @@
             }
         },
         created() {
-
+            this.$store.commit('setWantsToAddEducation', true)
         }
     }
 </script>
@@ -325,6 +335,76 @@
         border-bottom: 3px solid #00a992;
     }
 
+
+    .modal-confirm-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 14;
+        background: rgba(0,0,0,0.3);
+    }
+
+    .modal-confirm {
+        width: 80%;
+        max-width: 800px;
+        background-color: white;
+        border-radius: 8px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-confirm-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #B3B3B3;
+        background: none;
+        border: none;
+    }
+
+    .modal-confirm-title {
+        color: #303143;
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        margin: 50px 60px 0 60px;
+        font-weight: bold;
+    }
+
+    .modal-confirm-title i {
+        color: #585858;
+        margin-left: 5px;
+    }
+
+    .modal-confirm-text {
+        margin: 10px 60px 0 60px;
+        color: #9B9999;
+    }
+
+    .modal-confirm-action {
+        display: flex;
+        align-self: flex-end;
+        margin: 20px;
+    }
+
+    .modal-confirm-button {
+        background: none;
+        border: none;
+        color: #707070;
+        padding: 5px 17px;
+        border-radius: 5px;
+    }
+
+    .confirm--next {
+        color: white;
+        background-color: #A347FF;
+    }
 
     
     @media only screen and (max-width: 767.8px) {

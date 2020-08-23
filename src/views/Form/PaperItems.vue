@@ -1,9 +1,5 @@
 <template>
     <section class="paper-items isansFont">
-        <p class="paper-items-notif">
-            <i class="material-icons">done</i>
-            اطلاعات این مقاله با موفقیت اضافه شد.
-        </p>
         <div class="paper-items-wrapper isansFont--faNum">
             <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>

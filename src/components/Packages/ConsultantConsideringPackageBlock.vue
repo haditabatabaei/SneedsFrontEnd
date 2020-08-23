@@ -7,9 +7,10 @@
             </div>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <p class="package-title-country isansFont" v-if="hasUserDetailedInfo">
-                        {{package.userDetailedInfo.apply_country.name}}
+                    <p class="package-title-country isansFont" v-if="hasUserDetailedInfo" v-for="country in allCountries">
+                        {{country.name}}
                     </p>
+                    <p v-if="allCountries.length == 0">کشور: تفاوتی نمی کند</p>
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">
                         {{package.title}}
                     </router-link>
@@ -19,10 +20,11 @@
                         رزرو توسط:
                         {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
                         <br>
-                        <span v-if="hasUserDetailedInfo">
-                            برای رشته:
-                            {{package.userDetailedInfo.apply_major}}
+                        برای رشته (های):
+                        <span v-if="hasUserDetailedInfo" v-for="major in allMajors">
+                            {{major.name}}
                         </span>
+                        <span v-if="allMajors.length == 0">تفاوتی نمی کند.</span>
                     </p>
                     <p class="isansFont consultantBio--mobile">
                         رزرو توسط:
@@ -65,6 +67,26 @@
                     return `/user/conspackages/manager/${this.package.id}`
                 }
             },
+            allCountries() {
+                if(this.hasUserDetailedInfo) {
+                    let toReturn = [];
+                    this.package.userDetailedInfo.want_to_applies.forEach(wta => toReturn = toReturn.concat(wta.countries))
+                    return toReturn;
+                } else {
+                    return []
+                }
+            },
+
+            allMajors() {
+                if(this.hasUserDetailedInfo) {
+                    let toReturn = [];
+                    this.package.userDetailedInfo.want_to_applies.forEach(wta => toReturn = toReturn.concat(wta.majors))
+                    return toReturn;
+                } else {
+                    return []
+                }
+            },
+
             hasUserDetailedInfo() {
                 return !!this.package.userDetailedInfo;
             },

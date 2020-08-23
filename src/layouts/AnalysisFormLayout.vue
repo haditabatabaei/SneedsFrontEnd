@@ -68,10 +68,14 @@
                                 :class="[{'switcher--active' : registerForm}]">ثبت نام
                         </button>
                     </div>
-                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                    <login-form :customAction="true"
+                                @custom-action-call="loginFormAction"
+                                submit-label="ورود و ادامه"
                                 v-if="loginForm"/>
-                    <register-form :customAction="true" @custom-action-call="registerFormAction"
-                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                    <register-form :customAction="true"
+                                   @custom-action-call="registerFormAction"
+                                   submit-label="ثبت نام و ادامه"
+                                   v-else-if="registerForm"/>
                 </div>
 
                 <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
@@ -134,11 +138,11 @@
                 <div class="progress-wrapper">
                     <div class="form-confirm isansFont">
                         <button @click="submitAndMoveNext()" class="form-confirm-next">
-                        <span>
-                        ادامه
-                        </span>
+                            <span v-if="!loading">
+                                ادامه
+                            </span>
+                            <moon-loader class="loading-icon" style="align-self:center;margin-right: auto" color="white" :loading="loading" :size="20" sizeUnit="px"/>
                             <i class="material-icons">keyboard_arrow_left</i>
-                            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
                         </button>
                         <button @click="goBack()" class="form-confirm-back">
                             <i class="material-icons">keyboard_arrow_right</i>
@@ -708,7 +712,7 @@ export default {
                         //everything is good
                         //show confirmation success message
                         console.log('form user is set and its current logged in user going to home')
-                        this.$router.push('/')
+                        this.$router.push('/user/profile')
                     } else {
                         //some serious thing is happening here !
                         //this is not supposed to happen
@@ -972,7 +976,7 @@ export default {
         justify-content: center;
         border: none;
         padding: 5px 15px;
-        border-radius: 5px 5px;
+        border-radius: 16px 0 0 16px;
         font-size: 18px;
         transition: all 100ms ease-in-out;
         width: 200px;
@@ -987,14 +991,11 @@ export default {
     }
 
     .form-confirm-next:hover {
-        background-color: white;
-        border: 2px solid #A347FF;
-        padding: 5px 13px;
-        color: #A347FF;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     .form-confirm-back {
-        border-radius: 5px;
+        border-radius: 0 16px 16px 0;
         border: none;
         background-color: #F2F2F2;
         color: #707070;
@@ -1003,8 +1004,7 @@ export default {
     }
 
     .form-confirm-back:hover {
-        background-color: #707070;
-        color: #F2F2F2;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     .progress-wrapper {
@@ -1243,6 +1243,7 @@ export default {
             right: 20px;
             color: #959D9D;
             padding: 10px;
+            border-radius: 10px;
             background: none;
         }
 
@@ -1257,6 +1258,8 @@ export default {
 
         .form-confirm-next {
             width: 100%;
+            border-radius: 20px;
+            min-height: 50px;
         }
     }
 </style>

@@ -161,6 +161,7 @@
         padding: 0;
         margin: 0;
         border-radius: 0 0 10px 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         z-index: 15;
     }
 

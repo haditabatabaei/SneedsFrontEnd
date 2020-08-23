@@ -2,7 +2,7 @@
     <section class="form-destination">
         <h1 class="destination-title isansFont">
             کجا می خوای بری؟
-            <i class="material-icons">info</i>
+            <i class="material-icons">help_outline</i>
         </h1>
         <div class="form-destination-wrapper">
             <c-searchable-input class="dest-input"
@@ -120,12 +120,7 @@
                 availableUniversities: [],
                 availableCountries: [],
                 semesterOptions: [],
-                gradeOptions: [
-                    {name: 'کارشناسی', nameEnglish: 'BACHELOR'},
-                    {name: 'کارشناسی ارشد', nameEnglish: 'MASTER'},
-                    {name: 'دکتری', nameEnglish: 'PHD'},
-                    {name: 'پسا دکتری', nameEnglish: 'POST_DOC'}
-                ],
+                gradeOptions: [],
                 selectedGrades: [],
                 selectedMajors: [],
                 selectedCountries: [],
@@ -203,7 +198,7 @@
                         student_detailed_info: this.detailedFormId,
                         countries: this.selectedCountries.map(country => country.id),
                         universities: this.selectedUniversities.map(uni => uni.id),
-                        grades: this.selectedGrades.map(grade => grade.nameEnglish),
+                        grades: this.selectedGrades.map(grade => grade.id),
                         majors: this.selectedMajors.map(major => major.id),
                         semester_years: this.selectedSemesters.map(semester => semester.id)
                     }
@@ -265,7 +260,7 @@
                 }
             },
             addGrade(grade) {
-                let dupIndex = this.selectedGrades.findIndex(currentGrade => currentGrade.nameEnglish == grade.nameEnglish);
+                let dupIndex = this.selectedGrades.findIndex(currentGrade => currentGrade.id == grade.id);
                 if (dupIndex === -1) {
                     this.selectedGrades.push(grade)
                 } else {
@@ -274,7 +269,7 @@
             },
 
             removeSelectedGrade(grade) {
-                this.selectedGrades = this.selectedGrades.filter(currentGrade => currentGrade.nameEnglish != grade.nameEnglish);
+                this.selectedGrades = this.selectedGrades.filter(currentGrade => currentGrade.id != grade.id);
             },
 
             removeSelectedSemester(semester) {
@@ -338,9 +333,9 @@
             },
 
             async getGrades() {
-                //TODO: fix this grades, last time endpoint was not available due to deploying issues
                 try {
                     let result = await this.$api.get(`${this.api}/account/grades/`, this.httpConfig);
+                    this.gradeOptions = result.data;
                     console.log(result);
                 } catch (e) {
 
@@ -371,6 +366,12 @@
         margin: 20px 25px;
         display: flex;
         align-items: center;
+    }
+
+    .destination-title i {
+        margin-right: 10px;
+        color: #707070;
+        border-radius: 50%;
     }
 
     .form-destination-wrapper {

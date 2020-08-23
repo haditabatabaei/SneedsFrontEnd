@@ -1,9 +1,5 @@
 <template>
     <section class="paper-items isansFont">
-        <p class="paper-items-notif">
-            <i class="material-icons">done</i>
-            اطلاعات این مقطع با موفقیت اضافه شد.
-        </p>
         <div class="paper-items-wrapper isansFont--faNum">
             <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
@@ -20,6 +16,7 @@
             <p class="paper-items-empty" v-if="items.length == 0">
                 مقطعی وارد نشده است.
             </p>
+            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
 
             <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-if="items.length > 0">
                 افزودن مقطع دیگر
@@ -36,7 +33,8 @@
         name: "EducationalLevelsItems",
         data() {
             return {
-                items: []
+                items: [],
+                loading: false
             }
         },
         computed: {
@@ -88,15 +86,32 @@
             },
 
             async deleteUniversityItem(item) {
-                let result = await this.$api.delete(`${this.api}/account/student-detailed-university-throughs/${item.id}/`, this.httpConfig);
-                console.log(result);
-                this.$store.commit('setDetailedFormProperty', {prop: 'universities', value: this.detailedForm.universities.filter(uni => uni.id != item.id)})
+                try {
+                    this.loading = true;
+                    let result = await this.$api.delete(`${this.api}/account/student-detailed-university-throughs/${item.id}/`, this.httpConfig);
+                    console.log(result);
+                    this.$store.commit('setDetailedFormProperty', {prop: 'universities', value: this.detailedForm.universities.filter(uni => uni.id != item.id)})
+                    this.getUniversityThroughs();
+                } catch (e) {
+                    console.log(e)
+                }
+                finally {
+                    this.loading = false;
+                }
             },
 
             async getUniversityThroughs() {
-                let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
-                this.items = result.data;
-                console.log('uni throughs results ', result)
+                try {
+                    this.loading = true;
+                    let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
+                    this.items = result.data;
+                    console.log('uni throughs results ', result)
+                } catch (e) {
+                    console.log(e)
+                } finally {
+                    this.loading = false;
+                }
+
             }
         },
         watch: {
@@ -117,7 +132,7 @@
     .paper-items {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        align-items: stretch !important;
         padding: 100px 20px 20px 20px;
     }
 

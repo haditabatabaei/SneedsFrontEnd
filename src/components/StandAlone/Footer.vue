@@ -31,7 +31,7 @@
                         location_on
                     </i>
                     <p class="desc-about-box-text">
-                        ،تهران، چهار راه ولیعصر، خیابان ولیعصر ،ساختمان مرکز رشد دانشگاه امیرکبیر شتابدهنده سامسونگ
+                        تهران، چهار راه ولیعصر، خیابان ولیعصر، ساختمان مرکز رشد دانشگاه امیرکبیر، شتابدهنده سامسونگ
                     </p>
                 </div>
                 <div class="desc-about-box" v-if="activeFooterItem === 'aboutus'">
@@ -42,7 +42,7 @@
                         <span>021 - 2842 8353</span>
                         <br>
                         <mark class="desc-about-box-text-marked">
-                            (شنبه تا پنجشنبه ساعت ۹ تا 19)
+                            شنبه تا چهارشنبه ساعت 10 تا 19 و پنجشنبه ساعت 10 تا 14
                         </mark>
                     </p>
                 </div>
@@ -124,7 +124,7 @@
                             {name: 'آموزش شرکت در وبینار', target: '/', hidden: true},
                             {name: 'رزرو مشاوره آنلاین', target: '/', hidden: true},
                             {name: 'درباره‌ ما', target: 'https://sneeds.ir/%D8%AF%D8%B1%D8%A8%D8%A7%D8%B1%D9%87-%D9%85%D8%A7/', type: 'hyper', hidden: false},
-                            {name: 'تماس با ما', target: 'https://sneeds.ir/%D8%AA%D9%85%D8%A7%D8%B3/', type: 'hyper', hidden: false},
+                            {name: 'تماس با ما', target: '/contactus', type: 'router', hidden: false},
                             {name: 'فرصت های شغلی', target: 'https://jobinja.ir/companies/sneeds/jobs', type: 'hyper', hidden: false},
                         ]
                     }

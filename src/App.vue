@@ -102,7 +102,7 @@
     .notif.error {
         background-color: #d9534f;
         border-left-color: #963a38;
-        border-left-color: #963a38;
+        border-right-color: #963a38;
     }
 
     .notif.warn {

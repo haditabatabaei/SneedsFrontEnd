@@ -26,8 +26,7 @@
                 </div>
                 <div class="consultantBlockInfoItem">
                     <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
-                    <span class="rate goodRate isansFont--faNum" v-else-if="Number(consultant.rate) >= 3.5">امتیاز: 5 / {{consultant.rate}}</span>
-                    <span class="rate badRate isansFont--faNum" v-else>امتیاز: 5 / {{consultant.rate}}</span>
+                    <span class="rate isansFont--faNum" :style="`background-color:${getRateStyle(consultant.rate)}`">امتیاز: 5 / {{consultant.rate}}</span>
                 </div>
             </div>
         </div>
@@ -54,6 +53,13 @@
                 type: Object,
                 default: () => null
             },
+        },
+        methods: {
+            getRateStyle(rate) {
+                if(!isNaN(rate)) {
+                    return `hsl(${(rate / 5) * 133}, 64%, 60%);`
+                }
+            }
         },
         computed: {
             studyText() {

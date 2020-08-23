@@ -215,134 +215,10 @@
                 </div>
             </div>
         </section>
-        <section class="package-section package-section-steps">
-            <div class="section-sub section-sub-steps">
-                <h1 class="section-steps-title isansFont--faNum">اپلای در 3 مرحله...</h1>
-                <h2 class="section-steps-title-subtext isansFont">
-                    اپلای کردن می‌تونه خیلی راحت تر از اون چیزی که فکر می‌کنی باشه!
-                </h2>
-                <div class="section-steps-title-divider"></div>
-                <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/step-1.png" alt="">
-                    <div class="step-info">
-                        <h2 class="step-title isansFont--faNum">
-                            1.رزرو پکیج و اعلام آمادگی مشاوران
-                        </h2>
-                        <p class="step-text isansFont">
-                            بعد از رزرو پکیج و پر کردن فرم، اطلاعاتت مشاورای اسنیدز فرستاده میشه و حداکثر بعد از
-                            چهار روز مشاورایی که برای پروژت اعلام آمادگی کردن، توی پروفایلت قابل مشاهده هستن.
-                        </p>
-                    </div>
-                </div>
-                <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/step-2.png" alt="">
-                    <div class="step-info">
-                        <h2 class="step-title isansFont--faNum">
-                            2.انتخاب مشاور توسط شما و شروع پروسه
-                        </h2>
-                        <p class="step-text isansFont">
-                            بعدش میتونی از بین این مشاورا، که خیلیم کارشون درسته، بررسی کنی و یکی رو انتخاب کنی تا پروسه
-                            اپلایت شروع بشه.
-                        </p>
-                    </div>
-                </div>
-                <div class="step">
-                    <img class="step-image" src="/sneedsAssets/img/step-3.png" alt="">
-                    <div class="step-info">
-                        <h2 class="step-title isansFont--faNum">
-                            3.مراحل پروسه با توجه به پکیج و در نهایت پذیرش و ویزا
-                        </h2>
-                        <p class="step-text isansFont">
-                            با توجه به پکیجی که انتخاب کردی، مشاورت و اسنیدز، در تمام مسیرت کنارت هستن.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="package-section package-section-smart">
-            <div class="section-sub section-sub-smart">
-                <img class="smart-image" src="/sneedsAssets/img/smart.png" alt="Sneeds">
-                <div class="smart-info">
-                    <h4 class="smart-info-suptitle isansFont">
-                        اپلای هوشمند
-                    </h4>
-                    <h1 class="smart-info-title isansFont">
-                        با استفاده از پلتفرم اسنیدز...
-                    </h1>
-                    <div class="smart-info-divider"></div>
-                    <p class="smart-info-text isansFont">
-                        با استفاده از پلتفرم اسنیدز از همه مراحل اپلایت با خبر باش! از زمانی که پکیج رو رزرو می‌کنی تا
-                        پایان مراحل اپلای، با یه کلیک همه چیو زیر نظر داشته باش. همین طور می‌تونی هر وقت که خواستی با
-                        مشاورت از طریق ناحیه کاربری چت کنی.
-                    </p>
-                    <ul class="smart-info-items isansFont">
-                        <li class="smart-info-item">
-                            <i class="material-icons">done</i>
-                            <span>چت با مشاور</span>
-                        </li>
-                        <li class="smart-info-item">
-                            <i class="material-icons">done</i>
-                            <span>اطلاع از وضعیت دقیق اپلای</span>
-                        </li>
-                        <li class="smart-info-item">
-                            <i class="material-icons">done</i>
-                            <span>مشاوره تصویری در بستر اسنیدز</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <section class="package-section package-section-about">
-            <div class="section-sub section-sub-smart">
-                <div class="about-info">
-                    <h4 class="smart-info-suptitle isansFont">
-                        درباره اسنیدز
-                    </h4>
-                    <h1 class="smart-info-title isansFont">
-                        ما کی هستیم؟
-                    </h1>
-                    <div class="smart-info-divider"></div>
-                    <p class="smart-info-text isansFont">
-                        حدود ۲ سال پیش با چندتا بچه‌های امیرکبیر جمع شدیم و برای برطرف کردن یکی از مهم‌ترین نیازهای
-                        دانشجو‌ها که اپلای و تحصیل در خارج از کشوره یه استارتاپ راه انداختیم. هدفمون وصل کردن
-                        دانشجو‌هایی که یک بار اپلای کردن و مسیر رو به طور کامل طی کردن، به شمایی که به تجربه‌ این افراد
-                        نیاز دارین، بوده تا با خیال راحت بتونین همون جایی که دوست دارین درس بخونید. توی این مسیر موفق
-                        شدیم به صدها دانشجو برای گرفتن پذیرش تحصیلی کمک کنیم و خدارو برای اینکه تونستیم راهنماییشون
-                        کنیم، همیشه شکر می‌کنیم.
-                    </p>
-                </div>
-                <img class="smart-image" src="/sneedsAssets/img/team.png" alt="تیم اسنیدز">
-            </div>
-        </section>
-        <section class="package-section package-section-support">
-            <div class="section-sub section-sub-support">
-                <div class="support-overlay"></div>
-                <h2 class="support-title-sup isansFont--faNum">
-                    شنبه تا چهارشنبه، ساعت 10:00 تا 19:00
-                    <br>
-                    پنجشبه، ساعت 10:00 تا 14:00
-                </h2>
-                <h1 class="support-title isansFont">پاسخگوی شما هستیم!</h1>
-                <ul class="support-items isansFont--faNum">
-                    <li class="support-item item--hasLtr">
-                        <i class="material-icons">call</i>
-                        <span>021 - 2842 8353</span>
-                    </li>
-                    <li class="support-item item--link ">
-                        <a href="http://bit.ly/2FPshaR" class="gadugiFont item--hasLtr" target="_blank">
-                            <i class="material-icons">chat</i>
-                            <span>@sneeds_admin</span>
-                        </a>
-                    </li>
-                    <li class="support-item item--link">
-                        <a href="http://bit.ly/3581UUU" class="gadugiFont item--hasLtr" target="_blank">
-                            <i class="material-icons">picture_in_picture</i>
-                            <span>@sneeds_admin</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </section>
+        <landing-steps />
+        <landing-smart />
+        <landing-about />
+        <landing-support />
         <section class="package-section package-section-buy">
             <h1 class="buy-title isansFont">پکیج‌های اقتصادی اپلای</h1>
             <h2 class="buy-title-sub isansFont">صفر تا صد پروسه اپلای رو به مشاوری اسنیدز بسپار!</h2>
@@ -525,13 +401,13 @@
                                                 ۲ میلیون تومان
                                             </span>
                                             <span>
-                                                1 میلیون و 500 هزار تومان
+                                                2 میلیون تومان
                                             </span>
                                             <span>
                                                 1 میلیون و 500 هزار تومان
                                             </span>
                                             <span>
-                                                ۲ میلیون تومان
+                                                1 میلیون و 500 هزار تومان
                                             </span>
                                         </span>
                                         <span class="box-feature-mark-modal-infos">
@@ -712,46 +588,7 @@
                 </div>
             </div>
         </section>
-        <section class="package-section package-section-awards">
-            <p class="awards-sup isansFont--faNum">
-                در 2 سال گذشته
-            </p>
-            <h1 class="awards-title isansFont">
-                دستاوردهای اسنیدز
-            </h1>
-            <div class="section-sub section-sub-awards">
-                <div class="awards-item">
-                    <img alt="2000 پذیرش اخذ شده توسط مشاوران اسنیدز" src="/sneedsAssets/img/awards-login.svg"
-                         class="awards-item-icon">
-                    <p class="isansFont--faNum awards-item-amount">56+</p>
-                    <p class="isansFont awards-item-desc">
-                        پذیرش اخذ شده
-                        <br>
-                        به دست مشاوران اسنیدز
-                    </p>
-                </div>
-                <div class="awards-item">
-                    <img alt="2000 پذیرش اخذ شده توسط مشاوران اسنیدز" src="/sneedsAssets/img/awards-people.svg"
-                         class="awards-item-icon">
-                    <p class="isansFont--faNum awards-item-amount">27,000+</p>
-                    <p class="isansFont awards-item-desc">
-                        دقیقه مشاوره آنلاین
-                        <br>
-                        انجام شده!
-                    </p>
-                </div>
-                <div class="awards-item">
-                    <img alt="2000 پذیرش اخذ شده توسط مشاوران اسنیدز" src="/sneedsAssets/img/awards-docs.svg"
-                         class="awards-item-icon">
-                    <p class="isansFont--faNum awards-item-amount">540+</p>
-                    <p class="isansFont awards-item-desc">
-                        مدارک ویرایش یا نگارش شده
-                        <br>
-                        به دست مشاوران اسنیدز
-                    </p>
-                </div>
-            </div>
-        </section>
+        <landing-awards />
         <section class="package-section package-section-faq">
             <div class="section-sub section-sub-faq">
                 <section class="faq-box" v-for="faqBox in faqBoxes">
@@ -762,6 +599,7 @@
                         <div class="faq-question-title" @click="toggleQuestion(question)">
                             <h2 class="faq-question-title-text isansFont--faNum">
                                 {{question.title}}
+                                <span class="title-highpriority" v-if="question.highPriority">پر تکرار!</span>
                             </h2>
                             <button class="faq-question-title-toggler" :class="[{'toggler--open': question.isOpen}]">
                                 <transition name="fade">
@@ -785,12 +623,21 @@
 <script>
     import RegisterForm from '@/components/StandAlone/RegisterForm';
     import LoginForm from '@/components/StandAlone/LoginForm';
-
+    import LandingSupport from "@/components/Packages/LandingSupport";
+    import LandingSmart from "@/components/Packages/LandingSmart";
+    import LandingAbout from "@/components/Packages/LandingAbout";
+    import LandingSteps from "@/components/Packages/LandingSteps";
+    import LandingAwards from "@/components/Packages/LandingAwards";
     export default {
         name: "LandingEconomic",
         components: {
             "login-form": LoginForm,
-            "register-form": RegisterForm
+            "register-form": RegisterForm,
+            "landing-support": LandingSupport,
+            "landing-smart": LandingSmart,
+            "landing-about": LandingAbout,
+            "landing-steps": LandingSteps,
+            "landing-awards": LandingAwards
         },
         data() {
             return {
@@ -835,13 +682,17 @@
                         title: 'سوالات متداول',
                         questions: [
                             {
-                                title: 'این 300 هزارتومان برای چیه و چی میشه؟',
-                                answer: `این مبلغ برای رزرو پکیج اقتصادی مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما
-شروع میشه و اطلاعات شما برای مشاوران ارسال میشه، اگر بعد از جلسات مشاورتون، به این
-نتیجه برسید که تمایل به ادامه کار ندارید، مبالغ مشاوره (که هرجلسه آن همان مبلغ مشاوره بر
-روی سایت است)، از این هزینه 300 هزار تومان شما کسر و مابقی به شما برگشت داده
-میشود.`,
+                                title: 'روند شروع کار و انتخاب مشاور چجوریه؟',
+                                answer: 'بعد از انجام رزرو اولیه از طریق سایت و پرداخت هزینه رزرو، تیم پشتیبانی اسنیدز با شما تماس می‌گیرد و برای ادامه روند پکیج هماهنگی‌های لازم انجام می‌شود. از زمان رزرو پکیج شما مدت 10 روز فرصت دارید تا مشاور مورد نظر خود را انتخاب کنید تا بلافاصله فرایند پکیج شما شروع شود.\n' +
+                                    'در این فاصله زمانی 10 روز، شما می‌توانید با 4 تن از مشاوران اسنیدز به انتخاب خودتون جهت انتخاب مشاور، جلسه مشاوره برگزار کنید. در صورت انتخاب هریک از مشاورین و قبول پکیج، شما به مشاور به صورت مستقیم متصل خواهید شد و روند کار جلو خواهد رفت. در صورتی که در 4 جلسه موفق به انتخاب مشاور نشدید، شما می‌توانید به تعداد دلخواه براساس هزینه مشخص شده در سایت، مشاوره رزرو کنید.\n' +
+                                    'در صورتی که شما در این 10 روز به این نتیجه رسیدید که قصد انصراف از پکیج را دارید، پس از کسر هزینه مشاوره باقی مبلغ به شما بازگردانده می‌شود.',
+                                highPriority: true,
                                 isOpen: true,
+                            },
+                            {
+                                title: 'این 300 هزارتومان برای چیه و چی میشه؟',
+                                answer: `این مبلغ برای رزرو پکیج اقتصادی مورد نظر شماست، با پرداخت این مبلغ، روند کار برای شما شروع می‌شود و اطلاعات شما برای مشاوران ارسال می‌شود، اگر بعد از جلسات مشاوره، به این نتیجه برسید که تمایل به ادامه کار ندارید، مبالغ مشاوره پکیج (که معادل 75 هزار تومان است)، از این هزینه 300 هزار تومان شما کسر و مابقی به شما برگشت داده می‌شود.`,
+                                isOpen: false,
                             },
                             {
                                 title: 'گرفتن پذیرش قطعیه؟',
@@ -1381,243 +1232,6 @@
         line-height: 24px;
     }
 
-    .section-sub-steps {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .section-steps-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 50px 0 25px 0;
-        color: #303143;
-        text-align: center;
-    }
-
-    .section-steps-title-subtext {
-        text-align: center;
-        color: #707070;
-        margin: 0 0 15px 0;
-        font-size: 16px;
-    }
-
-    .section-steps-title-divider {
-        width: 100px;
-        height: 4px;
-        border-radius: 30px;
-        background-color: #8C3DDB;
-        margin: 20px auto;
-    }
-
-    .step {
-        display: flex;
-        align-items: center;
-    }
-
-    .step-info {
-        margin-right: 20px;
-        width: calc(100% - 170px);
-    }
-
-    .step-image {
-        width: 150px;
-        height: 150px;
-    }
-
-    .step-title {
-        font-size: 18px;
-        margin: 10px 0;
-        color: #585858;
-        font-weight: bold;
-    }
-
-    .step-text {
-        color: #9B9999;
-        line-height: 25px;
-        margin-top: 10px;
-    }
-
-    .section-sub-smart {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .smart-image {
-        width: 50%;
-    }
-
-    .smart-info {
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-    }
-
-    .smart-info-suptitle {
-        margin: 20px 0;
-        color: #303143;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .smart-info-title {
-        color: #303143;
-        margin: 0;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .smart-info-divider {
-        width: 150px;
-        height: 5px;
-        border-radius: 20px;
-        background-color: #00BFD6;
-        margin: 20px 0;
-    }
-
-    .smart-info-text {
-        color: #707070;
-        line-height: 26px;
-    }
-
-    .smart-info-items {
-        list-style: none;
-        background-color: #00BFD6;
-        color: white;
-        border-radius: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 40px;
-        padding: 0;
-    }
-
-    .smart-info-item {
-        display: flex;
-        align-items: center;
-        padding: 15px 0;
-        margin: 0 10px;
-        font-size: 13px;
-    }
-
-    .smart-info-item i {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2px;
-        margin-left: 5px;
-        background-color: white;
-        color: #00BFD6;
-        border-radius: 50%;
-        font-size: 12px;
-    }
-
-    .about-info {
-        display: flex;
-        flex-direction: column;
-        width: calc(50% - 20px);
-    }
-
-    .package-section-support {
-        min-height: initial;
-        margin: 50px 0;
-    }
-
-    .section-sub-support {
-        height: 300px;
-        background: url("/sneedsAssets/img/support.png") no-repeat center;
-        background-size: cover;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-    }
-
-    .support-overlay {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 300px;
-        z-index: 1;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(31, 31, 31, 1) 50%, rgba(84, 84, 84, 1) 100%);
-        opacity: 0.5;
-        border-radius: 10px;
-    }
-
-    .support-title {
-        z-index: 3;
-        position: relative;
-        color: white;
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .support-title-sup {
-        color: white;
-        margin: 0;
-        font-size: 18px;
-        position: relative;
-        z-index: 3;
-        font-weight: bold;
-        text-align: center;
-        line-height: 26px;
-    }
-
-    .support-items {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        z-index: 3;
-        position: relative;
-        padding: 0;
-        flex-wrap: wrap;
-    }
-
-    .support-item {
-        background-color: #303143;
-        color: #00BFD6;
-        display: flex;
-        align-items: center;
-        direction: ltr;
-        margin: 15px;
-        padding: 10px 25px;
-        border-radius: 20px;
-    }
-
-    .support-item i {
-        font-size: 16px;
-        margin-left: 5px;
-    }
-
-    .item--link {
-        padding: 0;
-    }
-
-    .item--link a {
-        width: 100%;
-        padding: 10px 25px;
-        color: #00BFD6;
-        border-radius: 20px;
-        transition: all 0.2s ease-in-out;
-        display: flex;
-        align-items: center;
-    }
-
-    .item--link a:hover {
-        color: #303143;
-        background-color: #00BFD6;
-    }
-
-    .item--hasLtr span {
-        direction: ltr !important;
-    }
-
     .package-section-faq {
     }
 
@@ -2099,70 +1713,6 @@
         line-height: 26px;
     }
 
-    .package-section-awards {
-        background-color: #8C3DDB;
-        min-height: 250px;
-        height: 300px;
-        position: relative;
-        display: flex;
-        margin-bottom: 175px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    .section-sub-awards {
-        background-color: white;
-        height: 250px;
-        position: absolute;
-        bottom: -100px;
-        border-radius: 10px;
-        box-shadow: 0 4px 16px #00000021;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-
-    .awards-title {
-        color: white;
-        font-weight: bold;
-        font-size: 24px;
-        margin: 10px;
-    }
-
-    .awards-sup {
-        background-color: white;
-        color: #8C3DDB;
-        border-radius: 20px;
-        padding: 5px 15px;
-        margin-top: 30px;
-    }
-
-    .awards-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .awards-item-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-    .awards-item-amount {
-        color: #303143;
-        font-weight: bold;
-        margin: 10px 0;
-        font-size: 16px;
-    }
-
-    .awards-item-desc {
-        text-align: center;
-        color: #9B9999;
-        font-size: 13px;
-    }
-
     .section-sub-trust {
         flex-direction: column;
     }
@@ -2495,23 +2045,6 @@
         min-height: auto;
     }
 
-    .package-section-steps {
-        min-height: auto;
-        margin-bottom: 50px;
-    }
-
-    .package-section-smart {
-        min-height: auto;
-        margin-top: 50px;
-        margin-bottom: 50px;
-    }
-
-    .package-section-about {
-        min-height: auto;
-        margin-top: 50px;
-        margin-bottom: 50px;
-    }
-
     .package-section-college {
         min-height: auto;
         margin: 50px 0;
@@ -2522,8 +2055,14 @@
         margin: 50px 0;
     }
 
-    .step {
-        margin: 20px 0;
+    .title-highpriority {
+        font-size: 13px;
+        background-color: #c43d39;
+        color: white;
+        border-radius: 10px;
+        margin-right: 10px;
+        padding: 2px 10px;
+        font-weight: normal;
     }
 
     @media only screen and (max-width: 991.8px) {
@@ -2566,46 +2105,6 @@
             width: 100%;
         }
 
-        .section-steps-title {
-            text-align: center;
-        }
-
-        .section-steps-title-divider {
-            margin: 5px auto;
-        }
-
-        .smart-info-suptitle {
-            text-align: center;
-        }
-
-        .smart-info-title {
-            text-align: center;
-        }
-
-        .smart-info-divider {
-            margin: 20px auto;
-        }
-
-        .section-sub-smart {
-            flex-direction: column;
-        }
-
-        .smart-image {
-            width: 60%;
-        }
-
-        .smart-info {
-            width: 100%;
-        }
-
-        .about-info {
-            width: 100%;
-        }
-
-        .support-items {
-            justify-content: center;
-        }
-
         .faq-box {
             padding: 0;
         }
@@ -2632,11 +2131,6 @@
             border-bottom: 0;
         }
 
-        .step-info {
-            text-align: center;
-            width: initial;
-        }
-
         .section-sub-consultants {
             flex-direction: column;
         }
@@ -2650,43 +2144,8 @@
             width: 100%;
         }
 
-        .section-sub-smart {
-            flex-direction: column;
-            margin-top: 100px;
-        }
-
-        .smart-image {
-            width: 100%;
-            display: none;
-        }
-
-        .smart-info {
-            width: 100%;
-        }
-
-        .about-info {
-            width: 100%;
-        }
-
-        .smart-info-items {
-            margin-top: 15px;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            padding: 0 5px;
-        }
-
-        .support-items {
-            justify-content: center;
-        }
-
         .faq-box {
             padding: 0;
-        }
-
-        .step {
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px 0;
         }
 
         .section-consultants-avatars {

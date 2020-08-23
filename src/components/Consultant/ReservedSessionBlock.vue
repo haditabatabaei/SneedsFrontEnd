@@ -67,6 +67,9 @@
                     :border-width="2"
                     @rating-selected="submitRate"
                     v-model="inputRate"/>
+            <p v-if="rate == null && !isConsultant" style="width: 100%;display:flex;align-items: center;justify-content: space-between;padding:0 20px">
+                <span>1</span><span>5</span>
+            </p>
         </div>
     </div>
 </template>
@@ -96,6 +99,7 @@
                 inputRate: 0,
                 rate: null,
                 room: null,
+                showCanceledRate: false,
             }
         },
         async mounted() {
@@ -154,22 +158,45 @@
 
             async submitRate(rate) {
                 console.log('submit rate for session', this.session.id, ' rate ', rate);
-                try {
-                    //this.$loading(true);
-                    let result = await this.$api.post(
-                        `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
-                        {"sold_time_slot": this.session.id, "rate": rate},
-                        this.$store.getters.httpConfig
-                    );
-                    await this.getMyRate(true);
-                } catch (e) {
-                    console.log(e);
-                    if (e.response) {
-                        console.log(e.response);
-                    }
-                } finally {
-
+                if(rate == 0) {
+                    //fix rate 0 bug buy fixing it to 1
+                    rate = 1;
                 }
+                if(window.confirm(`شما می خواهید امتیاز ${rate} را ثبت کنید. مطمئنید ؟`)) {
+                    try {
+                        let result = await this.$api.post(
+                            `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
+                            {"sold_time_slot": this.session.id, "rate": rate},
+                            this.$store.getters.httpConfig
+                        );
+                        await this.getMyRate(true);
+                        this.$notify({
+                            group: 'notif',
+                            text: `ثبت امتیاز ${rate} با موفقیت انجام شد.`,
+                            title: 'ثبت امتیاز: موفق',
+                            type: 'success',
+                            duration: 2000
+                        })
+                    } catch (e) {
+                        console.log(e);
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                    } finally {
+
+                    }
+                } else {
+                    console.log('canceled')
+                    this.inputRate = null;
+                    this.$notify({
+                        group: 'notif',
+                        text: `ثبت امتیاز ${rate} توسط شما کنسل شد. دوباره امتیاز را انتخاب کنید.`,
+                        title: 'ثبت امتیاز: اخطار',
+                        type: 'warn',
+                        duration: 4000
+                    })
+                }
+
             },
         },
         computed: {

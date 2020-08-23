@@ -1,5 +1,23 @@
 <template>
     <section class="form-destination">
+        <transition name="fade">
+            <div class="modal-confirm-overlay" v-if="showConfirm" @click.self="showConfirm = false">
+                <div class="modal-confirm isansFont">
+                    <button class="modal-confirm-close" @click="showConfirm = false"><i class="material-icons">close</i></button>
+                    <h2 class="modal-confirm-title isansFont">
+                        <i class="material-icons-outlined">info</i>
+                        توجه، فرم شما خالی است!
+                    </h2>
+                    <p class="modal-confirm-text">
+                        شما میخواهید بدون اضافه کردن مقصد، به مرحله بعد بروید، امکان اضافه کردن و مقصد شما به تعداد دلخواه در آینده وجود دارد.
+                    </p>
+                    <div class="modal-confirm-action">
+                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">نه، میخواهم پر کنم</button>
+                        <button class="modal-confirm-button confirm--next" @click="bypassDestination">متوجهم، به مرحله بعد برو</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <h1 class="destination-title isansFont">
             کجا می خوای بری؟
             <i class="material-icons">help_outline</i>
@@ -130,6 +148,8 @@
                 majorLoading: false,
                 uniLoading: false,
                 countryLoading: false,
+
+                showConfirm: false
             }
         },
         computed: {
@@ -163,6 +183,18 @@
 
             isDestinationValid() {
                 return this.$store.getters.isDestinationValid
+            },
+
+            wantsToAddDestination() {
+                return this.$store.getters.wantsToAddDestination;
+            },
+
+            isFormEmpty() {
+                return this.selectedSemesters.length == 0 &&
+                        this.selectedCountries.length == 0 &&
+                        this.selectedUniversities.length == 0 &&
+                        this.selectedMajors.length == 0 &&
+                        this.selectedGrades.length == 0
             }
         },
         watch: {
@@ -170,28 +202,30 @@
                 console.log(`change from ${oldValue} to ${newValue}`)
                 if(oldValue == false && newValue == true) {
                     this.createPayload();
-                    if(this.isDestinationValid) {
-                        this.pingDestinationHandler()
+                    if(this.wantsToAddDestination) {
+                        if(this.isDestinationValid) {
+                            this.pingDestinationHandler()
+                        } else {
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقصد: اخطار',
+                                text: 'لطفاً ورودی های مقصد را کنترل کنید.',
+                                type: 'warn',
+                                duration: 3000
+                            })
+                        }
                     } else {
-                        this.$notify({
-                            group: 'notif',
-                            title: 'مقصد: اخطار',
-                            text: 'لطفاً ورودی های مقصد را کنترل کنید.',
-                            type: 'warn',
-                            duration: 3000
-                        })
+                        this.pingEducationHandler();
                     }
                 }
                 this.$store.commit('setDestinationAddPermission', false)
             }
         },
         methods: {
-            pingDestinationHandler() {
-                this.$emit('destination-add');
-            },
-
-            createPayload() {
+            startPayloadProcess() {
+                this.showConfirm = false;
                 this.$v.$touch();
+                this.$store.commit('setWantsToAddDestination', true)
                 if(!this.$v.$error) {
                     this.$store.commit('setIsDestinationValid', true)
                     let payload = {
@@ -206,6 +240,25 @@
                     console.log('destination payload ', payload);
                 } else {
                     this.$store.commit('setIsDestinationValid', false)
+                }
+            },
+
+            bypassDestination() {
+                this.$store.commit('setWantsToAddDestination', false);
+                this.$store.commit('setIsDestinationValid', false);
+                this.$store.commit('setDestination', null);
+                this.pingDestinationHandler();
+            },
+
+            pingDestinationHandler() {
+                this.$emit('destination-add');
+            },
+
+            createPayload() {
+                if(this.isFormEmpty) {
+                    this.showConfirm = true;
+                } else {
+                    this.startPayloadProcess();
                 }
             },
 
@@ -347,7 +400,7 @@
         created() {
             this.getSemesters();
             this.getGrades();
-            this.$store.commit('setWantsToAddCert', false);
+            this.$store.commit('setWantsToAddDestination', true);
         }
     }
 </script>
@@ -444,6 +497,77 @@
     .destination-add:hover {
         border-bottom: 3px solid #00a992;
     }
+
+    .modal-confirm-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 14;
+        background: rgba(0,0,0,0.3);
+    }
+
+    .modal-confirm {
+        width: 80%;
+        max-width: 800px;
+        background-color: white;
+        border-radius: 8px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-confirm-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #B3B3B3;
+        background: none;
+        border: none;
+    }
+
+    .modal-confirm-title {
+        color: #303143;
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        margin: 50px 60px 0 60px;
+        font-weight: bold;
+    }
+
+    .modal-confirm-title i {
+        color: #585858;
+        margin-left: 5px;
+    }
+
+    .modal-confirm-text {
+        margin: 10px 60px 0 60px;
+        color: #9B9999;
+    }
+
+    .modal-confirm-action {
+        display: flex;
+        align-self: flex-end;
+        margin: 20px;
+    }
+
+    .modal-confirm-button {
+        background: none;
+        border: none;
+        color: #707070;
+        padding: 5px 17px;
+        border-radius: 5px;
+    }
+
+    .confirm--next {
+        color: white;
+        background-color: #A347FF;
+    }
+
 
     @media only screen and (max-width: 767.8px) {
         .form-destination-wrapper {

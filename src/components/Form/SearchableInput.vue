@@ -1,8 +1,7 @@
 <template>
     <div>
         <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen, 'input--error': error}]">
-            <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
-            <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter" @change="$emit('change', inputValue)">
+            <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter">
             <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
             <i class="material-icons" v-if="!loading">
                 search
@@ -13,6 +12,7 @@
                 <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
                 <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
             </ul>
+            <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
         </div>
         <transition name="fade">
             <p class="number-input-error isansFont" v-if="error">
@@ -44,11 +44,6 @@
             },
             dataset: {
                 type: Array,
-                default: () => [
-                    {name: 'مقدار تست 1', id: 1},
-                    {name: 'علاقه تست 2', id: 2},
-                    {name: 'نقی', id: 3},
-                ]
             },
             loading: {
                 type: Boolean,
@@ -78,7 +73,7 @@
         },
         methods: {
             focusOnInput(e) {
-                console.log(e);
+                // console.log(e);
             },
 
             setInputValue(item) {

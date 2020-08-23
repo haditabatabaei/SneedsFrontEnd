@@ -733,7 +733,11 @@ export default {
             if(this.$route.path != this.prevPageRoute) {
                 this.$router.push(this.prevPageRoute);
             } else {
-                console.log('nowhere to go.')
+                if(this.isLoggedIn) {
+                    this.$router.push('/user/profile')
+                } else {
+                    this.$router.push('/')
+                }
             }
         }
     },

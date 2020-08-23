@@ -4,6 +4,7 @@ export default {
         destination: null,
         destinationAddPermission: false,
         isDestinationValid: false,
+        wantsToAddDestination: true,
     },
     mutations: {
         setDestination(state, destination) {
@@ -16,6 +17,9 @@ export default {
 
         setIsDestinationValid(state, isValid) {
             state.isDestinationValid = isValid;
+        },
+        setWantsToAddDestination(state, validityState) {
+            state.wantsToAddDestination = validityState
         }
     },
     actions: {
@@ -31,9 +35,10 @@ export default {
                         reject(e);
                     } finally {
                         commit('setDestinationAddPermission', false)
+                        commit('setDestination', null)
+                        commit('setIsDestinationValid', false)
+                        commit('setWantsToAddDestination', true)
                     }
-                    commit('setDestination', null)
-                    commit('setIsDestinationValid', false)
                 } else {
                     reject();
                 }
@@ -43,6 +48,7 @@ export default {
     getters: {
         destinationAddPermission: state => state.destinationAddPermission,
         isDestinationValid: state => state.isDestinationValid,
-        destination: state => state.destination
+        destination: state => state.destination,
+        wantsToAddDestination: state => state.wantsToAddDestination
     }
 }

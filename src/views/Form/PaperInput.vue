@@ -366,7 +366,7 @@
 
         .edu-gap {
             width: auto;
-            height: 50px;
+            min-height: 50px;
         }
 
         .inputs {

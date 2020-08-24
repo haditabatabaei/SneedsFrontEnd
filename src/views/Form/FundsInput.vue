@@ -99,18 +99,13 @@
             setAffordability(option) {
                 this.selectedAffordability = option;
                 if(this.detailedForm) {
-                    this.$store.commit('setDetailedFormProperty', {prop: 'payment_affordability', value: option.nameEnglish.toUpperCase()})
+                    this.$store.commit('setDetailedFormProperty', {prop: 'payment_affordability', value: option.value})
                 }
             },
             async getAffordabilityChoices() {
                 let result = await this.$api.get(`${this.api}/account/payment-affordability-choices/`, this.httpConfig);
-                this.moneyOptions = result.data.choices.map(item => {
-                    return {
-                        name: item[0],
-                        nameEnglish: item[1]
-                    }
-                })
-                this.defaultSelectedIndex = this.moneyOptions.findIndex(moneyOption => moneyOption.nameEnglish.toUpperCase() == this.detailedForm.payment_affordability.toUpperCase())
+                this.moneyOptions = result.data.choices.map(choice => { return {...choice, name: choice.label}});
+                this.defaultSelectedIndex = this.moneyOptions.findIndex(moneyOption => moneyOption.value == this.detailedForm.payment_affordability)
                 this.selectedAffordability = this.moneyOptions[this.defaultSelectedIndex]
             },
             init() {

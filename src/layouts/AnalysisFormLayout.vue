@@ -1,7 +1,5 @@
 <template>
     <section class="analysis-form">
-        <div class="analysis-form-bluebg"></div>
-        <div class="form-title-circle"></div>
         <transition name="fade">
             <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
                  @click="hideAllModals">
@@ -114,19 +112,20 @@
             </div>
         </transition>
         <section class="form-container">
-            <aside class="form-title">
-                <h1 class="form-title-text" style="font-family: Sans-Serif !important">
-                    sneeds.ir
-                </h1>
-                <p class="form-title-desc danaFont">
-                    برای رسید به اهدافت نیاز به کمک داری؟
-                    <br>
-                    <span class="form-title-desc-emphase">
-                        درست اومدی!
-                        <span class="form-title-desc-star"></span>
-                    </span>
-                </p>
-                <img draggable="false" class="form-title-image" src="/sneedsAssets/img/takhminstars.svg" alt="کاربران اسنیدز">
+            <aside class="form-title isansFont">
+                <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
+                    <h2 class="form-nav-group-title isansFont--faNum" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                        <span>{{index + 1}}</span>
+                        {{group.label}}
+                    </h2>
+                    <transition name="fade">
+                        <ul class="form-nav-group-items" v-if="group.isOpen">
+                            <li class="form-nav-group-item" v-for="item in group.items">
+                                <router-link :to="item.target" class="form-nav-group-link">{{item.name}}</router-link>
+                            </li>
+                        </ul>
+                    </transition>
+                </div>
             </aside>
             <main class="form-layout-view-wrapper">
                 <router-view @langcert-add="sendsubmitlanguagecerts"
@@ -180,6 +179,53 @@ export default {
             first_name: '',
             last_name: '',
             loading: false,
+            formMenuGroups: [
+                {
+                    label: 'مشخصات اولیه',
+                    isOpen: true,
+                    items: [
+                        {name: 'وضعیت تاهل', target: '/analysis/form/marriage'},
+                        {name: 'سن و جنسیت', target: '/analysis/form/gender'},
+                        {name: 'وضعیت سربازی', target: '/analysis/form/militaryservice'},
+                        {name: 'سابقه کار مرتبط', target: '/analysis/form/workexperience'}
+                    ]
+                },
+                {
+                    label: 'اطلاعات تحصیلی',
+                    isOpen: false,
+                    items: [
+                        {name: 'گپ تحصیلی', target: '/analysis/form/educationalgap'},
+                        {name: 'افزودن مقطع تحصیلی', target: '/analysis/form/lasteducationallevel'},
+                        {name: 'بازبینی مقاطع تحصیلی', target: '/analysis/form/educationallevelsitems'},
+                        {name: 'افزودن مقاله', target: '/analysis/form/paper'},
+                        {name: 'بازبینی مقالات', target: '/analysis/form/paperitems'},
+                        {name: 'ریکام قوی', target: '/analysis/form/powerfulrecom'},
+                    ]
+                },
+                {
+                    label: 'مدارک زبان',
+                    isOpen: false,
+                    items: [
+                        {name: 'افزودن مدرک زبان', target: '/analysis/form/languagecerts'},
+                        {name: 'بازبینی مدارک زبان', target: '/analysis/form/languagecertsitems'},
+                    ]
+                },
+                {
+                    label: 'مقاصد اپلای',
+                    isOpen: false,
+                    items: [
+                        {name: 'افزودن و بازبینی مقصد اپلای', target: '/analysis/form/destination'},
+                        {name: 'توانایی مالی و فاند', target: '/analysis/form/funds'},
+                    ]
+                },
+                {
+                    label: 'سایر اطلاعات',
+                    isOpen: false,
+                    items: [
+                        {name: 'سایر اطلاعات', target: '/analysis/form/otherinformation'},
+                    ]
+                }
+            ]
         }
     },
     computed: {
@@ -268,12 +314,17 @@ export default {
             } else {
                 return false;
             }
-        }
+        },
     },
 
     methods: {
         syncCurrentPage(currentPageNumber) {
             this.currentPage = currentPageNumber;
+        },
+
+        openCurrentMenuCollapse() {
+            let group = this.formMenuGroups.find(group => group.items.some(item => this.$route.path === item.target));
+            group.isOpen = true;
         },
 
         hideAllModals(event) {
@@ -752,6 +803,7 @@ export default {
 
     async created() {
         console.log('is logged in ', this.isLoggedIn)
+        this.openCurrentMenuCollapse();
         if(this.isLoggedIn) {
             //user is logged in
             //check user has form or not;
@@ -856,69 +908,12 @@ export default {
         max-width: 600px;
         align-self: stretch;
         position: relative;
-    }
-
-    .form-title-circle {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 120px;
-        height: 110px;
-        background-color: #0F4775;
-        border-radius: 50% 0 50% 50%;
-        z-index: 5;
-    }
-
-    .form-title-image {
-        position: absolute;
-        bottom:0;
-        left: 0;
-        margin-left: 15px;
-    }
-
-    .form-title-text {
-        position: absolute;
-        right: 30px;
-        top: 30px;
-        z-index: 10;
-        color: #EFF8FF;
-        background-color: #20639B;
-        border-radius: 30px;
-        font-size: 22px;
-        padding: 5px 15px;
-        margin: 0;
-    }
-
-    .form-title-desc {
-        font-size: 19px;
-        color: #F5F7FA;
-        background-color: #1A5D8E;
-        box-shadow: 0 13px 23px rgba(0,0,0,0.1);
-        border-radius: 15px;
-        margin: 150px 50px 0 50px;
-        padding: 20px;
+        background-color: white;
+        box-shadow: 0 13px 36px #00000029;
+        border-radius: 0 0 0 28px;
         display: flex;
         flex-direction: column;
-    }
-
-    .form-title-desc-emphase {
-        position: relative;
-        font-weight: bold;
-        font-size: 24px;
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        padding-right: 16px;
-    }
-
-    .form-title-desc-emphase:before {
-        position: absolute;
-        right: 0;
-        top: 10px;
-        width: 5px;
-        height: 5px;
-        content: " \2726";
-        font-size: 15px;
+        align-items: stretch;
     }
 
     .form-layout-view-wrapper {
@@ -930,6 +925,76 @@ export default {
         background-color: white;
         padding-right: 35px;
         max-width: 800px;
+    }
+
+    .form-nav-group {
+        display: flex;
+        flex-direction: column;
+        padding: 0 30px;
+    }
+
+    .form-nav-group-title {
+        font-size: 18px;
+        color: #9B9999;
+        display: flex;
+        align-items: center;
+        margin: 0 0 10px 0;
+        cursor: pointer;
+    }
+
+    .form-nav-group-title.group-title--active {
+        font-weight: bold;
+        color: #009FB3;
+    }
+
+    .form-nav-group:not(:first-child) {
+        margin-top: 20px;
+    }
+
+    .form-nav-group:first-child {
+        margin-top: 50px;
+    }
+
+    .form-nav-group-title span {
+        border: 2px solid #B3B3B3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: normal;
+        font-size: 18px;
+        margin-left: 10px;
+    }
+
+    .form-nav-group-title.group-title--active span{
+        border-color: #009FB3;
+    }
+
+    .form-nav-group-items {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        padding-right: 40px;
+        margin: 0;
+    }
+
+    .form-nav-group-item {
+        margin: 5px 0;
+    }
+
+    .form-nav-group-link {
+        font-size: 14px;
+        color: #707070;
+    }
+
+    .form-nav-group-link.router-link-exact-active {
+        font-weight: bold;
+    }
+
+    .form-nav-group-link:hover {
+        font-weight: bold;
     }
 
     .form-layout-view {

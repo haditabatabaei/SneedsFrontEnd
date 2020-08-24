@@ -126,8 +126,40 @@
                         </ul>
                     </transition>
                 </div>
+
+                <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">خروج از فرم</router-link>
+                <router-link v-else to="/" class="form-exit-button">خروج از فرم</router-link>
             </aside>
-            <main class="form-layout-view-wrapper">
+            <main class="form-layout-view-wrapper" @click.self="showMobileFormMenu = false">
+                <div class="mobile-form-menu isansFont">
+                    <h2 class="mobile-form-current" @click="showMobileFormMenu = !showMobileFormMenu">
+                        افزودن مقاله
+                        <i class="material-icons" v-if="showMobileFormMenu == false">keyboard_arrow_down</i>
+                        <i class="material-icons" v-else>keyboard_arrow_up</i>
+                    </h2>
+                    <transition name="fade">
+                        <div class="mobile-form-collapse" v-if="showMobileFormMenu">
+                            <button class="mobile-form-collapse-close" @click="showMobileFormMenu = false">
+                                <i class="material-icons">close</i>
+                            </button>
+                            <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
+                                <h2 class="form-nav-group-title isansFont--faNum" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                                    <span>{{index + 1}}</span>
+                                    {{group.label}}
+                                </h2>
+                                <transition name="fade">
+                                    <ul class="form-nav-group-items" v-if="group.isOpen">
+                                        <li class="form-nav-group-item" v-for="item in group.items">
+                                            <router-link :to="item.target" class="form-nav-group-link">{{item.name}}</router-link>
+                                        </li>
+                                    </ul>
+                                </transition>
+                            </div>
+                            <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">خروج از فرم</router-link>
+                            <router-link v-else to="/" class="form-exit-button">خروج از فرم</router-link>
+                        </div>
+                    </transition>
+                </div>
                 <router-view @langcert-add="sendsubmitlanguagecerts"
                              @paper-add="submitpaperHandler()"
                              @education-add="submitlasteducationallevelHandler"
@@ -179,6 +211,7 @@ export default {
             first_name: '',
             last_name: '',
             loading: false,
+            showMobileFormMenu: false,
             formMenuGroups: [
                 {
                     label: 'مشخصات اولیه',
@@ -968,6 +1001,15 @@ export default {
         margin-left: 10px;
     }
 
+
+    .form-exit-button {
+        background-color: #FEF3F3;
+        color: #B82020;
+        border-radius: 10px;
+        padding: 5px 15px;
+        align-self: center;
+    }
+
     .form-nav-group-title.group-title--active span{
         border-color: #009FB3;
     }
@@ -1260,6 +1302,46 @@ export default {
         color: #c9737c;
     }
 
+    .mobile-form-menu {
+        display: none;
+    }
+
+    .mobile-form-menu {
+        align-self: center;
+    }
+
+    .mobile-form-current {
+        font-size: 16px;
+        color: #00A2B5;
+        display: flex;
+        align-items: center;
+        margin: 30px 0 0 0;
+        cursor: pointer;
+    }
+
+    .mobile-form-collapse {
+        position: fixed;
+        top: 85px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 40px);
+        overflow: auto;
+        z-index: 14;
+        background-color: white;
+        box-shadow: 0 -7px 26px #00000029;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-form-collapse-close {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: none;
+        color: #707070;
+        border: none;
+    }
+
 
     @media only screen and (max-width: 991.8px ) and (min-width: 767.8px) {
         .form-title {
@@ -1270,18 +1352,14 @@ export default {
             flex-direction: column;
         }
 
-        .analysis-form-bluebg {
-            display: none;
-        }
-
-        .form-title-circle {
-            display: none;
-        }
-
         .form-layout-view-wrapper {
             width: auto;
             padding: 0;
             max-width: initial;
+        }
+
+        .mobile-form-menu {
+            display: flex;
         }
     }
 
@@ -1289,6 +1367,10 @@ export default {
     @media only screen and (max-width: 767.8px) {
         .form-title {
             display: none;
+        }
+
+        .mobile-form-menu {
+            display: flex;
         }
 
         .form-layout-view-wrapper {

@@ -42,36 +42,36 @@
                             <input id="password" placeholder="رمز عبور" type="password" class="profile-input"
                                    v-model="auth.password">
                             <span class="profile-label-error" v-if="passwordIsInvalid">
-                        لطفا رمز عبور معتبر وارد کنید.
-                    </span>
+                                لطفا رمز عبور معتبر وارد کنید.
+                            </span>
                         </label>
                         <label for="confirmPassword" class="profile-label">
                             <span class="profile-label-name">تکرار رمز عبور:</span>
                             <input id="confirmPassword" placeholder="تکرار رمز عبور" type="password" class="profile-input"
                                    v-model="auth.password2">
                             <span class="profile-label-error" v-if="confirmPasswordIsInvalid">
-                        لطفا تکرار رمز عبور را معتبر وارد کنید.
-                    </span>
+                                لطفا تکرار رمز عبور را معتبر وارد کنید.
+                            </span>
                         </label>
                         <button class="profile-submit">ویرایش رمز عبور</button>
                     </form>
                 </transition>
             </div>
         </section>
-        <package-form class="profile-wrapper" style="margin-top: 30px;" v-if="!isConsultant"/>
+<!--        <package-form class="profile-wrapper" style="margin-top: 30px;" v-if="!isConsultant"/>-->
 
     </section>
 
 </template>
 
 <script>
-    import PackageForm from "@/components/Packages/PackageForm";
+    // import PackageForm from "@/components/Packages/PackageForm";
     import {required, minLength, maxLength, sameAs} from 'vuelidate/lib/validators'
 
     export default {
         name: "UserProfile",
         components: {
-            'package-form': PackageForm
+            // 'package-form': PackageForm
         },
         validations: {
             inputUser: {

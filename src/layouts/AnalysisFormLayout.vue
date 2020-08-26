@@ -700,24 +700,46 @@ export default {
             console.log('destination submitting started.')
             if(this.$store.getters.wantsToAddDestination) {
                 this.loading = true;
-                this.$store.dispatch('createDestination')
-                    .then(result => {
-                        console.log(result);
-                        this.$router.push(this.nextPageRoute);
-                    })
-                    .catch(e => {
-                        console.log(e)
-                        this.$notify({
-                            group: 'notif',
-                            title: 'مقصد: خطا',
-                            text: 'خطایی هنگام ارتباط با سرور رخ داد.',
-                            type: 'error',
-                            duration: 3000
+                if(this.$store.getters.hasPrevDestination) {
+                    this.$store.dispatch('overrideDestination')
+                        .then(result => {
+                            console.log(result);
+                            this.$router.push(this.nextPageRoute);
                         })
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    })
+                        .catch(e => {
+                            console.log(e)
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقصد: خطا',
+                                text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                                type: 'error',
+                                duration: 3000
+                            })
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        })
+                } else {
+                    this.$store.dispatch('createDestination')
+                        .then(result => {
+                            console.log(result);
+                            this.$router.push(this.nextPageRoute);
+                        })
+                        .catch(e => {
+                            console.log(e)
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقصد: خطا',
+                                text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                                type: 'error',
+                                duration: 3000
+                            })
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        })
+                }
+
             } else {
                 this.$router.push(this.nextPageRoute);
             }

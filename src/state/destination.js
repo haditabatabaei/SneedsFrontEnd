@@ -5,6 +5,7 @@ export default {
         destinationAddPermission: false,
         isDestinationValid: false,
         wantsToAddDestination: true,
+        hasPrevDestination: false,
     },
     mutations: {
         setDestination(state, destination) {
@@ -18,14 +19,19 @@ export default {
         setIsDestinationValid(state, isValid) {
             state.isDestinationValid = isValid;
         },
+
         setWantsToAddDestination(state, validityState) {
-            state.wantsToAddDestination = validityState
+            state.wantsToAddDestination = validityState;
+        },
+
+        setHasPrevDestination(state, hasPrevDestination) {
+            state.hasPrevDestination = hasPrevDestination;
         }
     },
     actions: {
-        createDestination({state, getters, commit}) {
+        createDestination({getters, commit}) {
             return new Promise(async (resolve, reject) => {
-                if (state.isDestinationValid) {
+                if (getters.isDestinationValid) {
                     //create destination
                     try {
                         let result = await api.post(`${getters.getApi}/account/want-to-applies/`, getters.destination, getters.httpConfig)
@@ -40,15 +46,39 @@ export default {
                         commit('setWantsToAddDestination', true)
                     }
                 } else {
-                    reject();
+                    reject('Destination is not valid');
                 }
             })
         },
+
+        overrideDestination({getters, commit}) {
+            return new Promise(async (resolve, reject) => {
+                if(getters.isDestinationValid) {
+                    //override destination by put method
+                    try {
+                        let result = await api.put(`${getters.getApi}/account/want-to-applies/${getters.destination.id}/`, getters.destination, getters.httpConfig)
+                        console.log(result);
+                        resolve(result);
+                    } catch (e) {
+                        reject(e);
+                    } finally {
+                        commit('setDestinationAddPermission', false)
+                        commit('setDestination', null)
+                        commit('setIsDestinationValid', false)
+                        commit('setWantsToAddDestination', true)
+                    }
+                } else {
+                    reject('Destination is not valid.')
+                }
+            })
+        }
     },
+
     getters: {
         destinationAddPermission: state => state.destinationAddPermission,
         isDestinationValid: state => state.isDestinationValid,
         destination: state => state.destination,
-        wantsToAddDestination: state => state.wantsToAddDestination
+        wantsToAddDestination: state => state.wantsToAddDestination,
+        hasPrevDestination: state => state.hasPrevDestination
     }
 }

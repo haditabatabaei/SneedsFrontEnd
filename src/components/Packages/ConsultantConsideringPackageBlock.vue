@@ -7,10 +7,10 @@
             </div>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <p class="package-title-country isansFont" v-if="hasUserDetailedInfo" v-for="country in allCountries">
-                        {{country.name}}
-                    </p>
-                    <p v-if="allCountries.length == 0">کشور: تفاوتی نمی کند</p>
+                    <div class="package-title-countries isansFont">
+                        <span class="package-title-country" v-for="country in allCountries">{{country.name}}، </span>
+                        <span class="package-title-country" v-if="allCountries.length == 0">کشور: تفاوتی نمی کند</span>
+                    </div>
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">
                         {{package.title}}
                     </router-link>
@@ -22,7 +22,7 @@
                         <br>
                         برای رشته (های):
                         <span v-if="hasUserDetailedInfo" v-for="major in allMajors">
-                            {{major.name}}
+                            {{major.name}},
                         </span>
                         <span v-if="allMajors.length == 0">تفاوتی نمی کند.</span>
                     </p>
@@ -68,23 +68,19 @@
                 }
             },
             allCountries() {
-                if(this.hasUserDetailedInfo) {
-                    let toReturn = [];
-                    this.package.userDetailedInfo.want_to_applies.forEach(wta => toReturn = toReturn.concat(wta.countries))
-                    return toReturn;
-                } else {
-                    return []
-                }
+                return this.hasDestination ? this.destination.countries : [];
             },
 
             allMajors() {
-                if(this.hasUserDetailedInfo) {
-                    let toReturn = [];
-                    this.package.userDetailedInfo.want_to_applies.forEach(wta => toReturn = toReturn.concat(wta.majors))
-                    return toReturn;
-                } else {
-                    return []
-                }
+                return this.hasDestination ? this.destination.majors : [];
+            },
+
+            hasDestination() {
+                return this.hasUserDetailedInfo && this.package.userDetailedInfo.want_to_applies[0];
+            },
+
+            destination() {
+                return this.package.userDetailedInfo.want_to_applies[0];
             },
 
             hasUserDetailedInfo() {
@@ -175,6 +171,12 @@
 
     .field-icon {
         font-size: 16px;
+    }
+
+
+    .package-title-countries {
+        display: flex;
+        margin-bottom: 10px;
     }
 
     .consultantShowButton {

@@ -168,15 +168,6 @@ const router = new Router({
                     }
                 },
                 {
-                    path: 'destinationitems',
-                    name: 'analysis-form-destinationitems',
-                    component: () => import("@/views/Form/DestinationItems"),
-                    meta: {
-                        auth: 'optional',
-                        formPartName: 'destinationitems'
-                    }
-                },
-                {
                     path: 'funds',
                     name: 'analysis-form-funds',
                     component: () => import("@/views/Form/FundsInput"),

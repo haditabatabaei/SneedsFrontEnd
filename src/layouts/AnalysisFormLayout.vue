@@ -745,13 +745,6 @@ export default {
             }
         },
 
-
-        async submitdestinationitems() {
-            console.log('destinationitems handler')
-            this.$router.push(this.nextPageRoute);
-
-        },
-
         async submitfunds() {
             try {
                 this.loading = true;

@@ -19,9 +19,8 @@ export default {
                 [11, 'languagecerts'],
                 [12, 'languagecertsitems'],
                 [13, 'destination'],
-                [14, 'destinationitems'],
-                [15, 'funds'],
-                [16, 'otherinformation']
+                [14, 'funds'],
+                [15, 'otherinformation']
             ]
         )
     },

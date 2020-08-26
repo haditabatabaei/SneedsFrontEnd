@@ -245,7 +245,11 @@
                         universities: this.selectedUniversities.map(uni => uni.id),
                         grades: this.selectedGrades.map(grade => grade.id),
                         majors: this.selectedMajors.map(major => major.id),
-                        semester_years: this.selectedSemesters.map(semester => semester.id)
+                        semester_years: this.selectedSemesters.map(semester => semester.id),
+                    }
+                    if(this.destination) {
+                        //if has prev destination, we should add id for put http request locator. this equals to this.$store.getters.hasPrevDestination
+                        payload.id = this.destination.id
                     }
                     this.$store.commit('setDestination', payload);
                     console.log('destination payload ', payload);
@@ -406,6 +410,9 @@
                     this.selectedGrades = this.destination.grades;
                     this.selectedUniversities = this.destination.universities;
                     this.selectedSemesters = this.destination.semester_years;
+
+                    this.$store.commit('setHasPrevDestination', !!this.destination)
+
                     console.log('destination result ', result.data)
                 } catch (e) {
                     console.log(e)

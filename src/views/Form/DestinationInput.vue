@@ -23,94 +23,102 @@
             <i class="material-icons">help_outline</i>
         </h1>
         <div class="form-destination-wrapper">
-            <c-searchable-input class="dest-input"
-                                :error="$v.selectedCountries.$error"
-                                error-text="انتخاب حداقل یک کشور اجباری است."
-                                :clearselect="true"
-                                :loading="countryLoading"
-                                @input="searchCountryByVal"
-                                label="کشور مقصد"
-                                :dataset="availableCountries"
-                                @select-option="addCountry"/>
-
-            <c-dropdown class="dest-input"
-                        :clear-select="true"
-                        label="مقطع مورد نظر"
-                        :options="gradeOptions"
-                        @select-option="addGrade"/>
-
-            <c-dropdown class="dest-input"
-                        :error="$v.selectedSemesters.$error"
-                        error-text="انتخاب حداقل یک ترم تحصیلی اجباری است."
-                        :clear-select="true"
-                        label="ترم مورد نظر"
-                        :options="semesterOptions"
-                        @select-option="addSemester"/>
-
-            <c-searchable-input class="dest-input"
-                                :loading="majorLoading"
-                                :clearselect="true"
-                                @input="searchMajorByVal"
-                                label="رشته"
-                                :dataset="availableMajors"
-                                @select-option="addMajor"/>
-
-            <c-searchable-input class="dest-input"
-                                :loading="uniLoading"
-                                :clearselect="true"
-                                @input="searchUniversityByVal"
-                                label="دانشگاه"
-                                :dataset="availableUniversities"
-                                @select-option="addSelectedUniversity"/>
-        </div>
-        <div class="selected-items isansFont" v-if="selectedMajors.length > 0">
-            <h3 class="selected-items-title isansFont">رشته های انتخاب شده:</h3>
-            <div class="selected-items-list">
-                <p class="selected-item item--valid" v-for="major in selectedMajors">
-                    {{major.name}}
-                    <button class="selected-item-remove" @click="removeSelectedMajor(major)"><i class="material-icons">close</i>
-                    </button>
-                </p>
+            <div class="destination-input-wrapper">
+                <c-searchable-input class="dest-input"
+                                    :error="$v.selectedCountries.$error"
+                                    error-text="انتخاب حداقل یک کشور اجباری است."
+                                    :clearselect="true"
+                                    :loading="countryLoading"
+                                    @input="searchCountryByVal"
+                                    label="کشور مقصد"
+                                    :dataset="availableCountries"
+                                    @select-option="addCountry"/>
+                <div class="selected-items isansFont" v-if="selectedCountries.length > 0">
+                    <div class="selected-items-list">
+                        <p class="selected-item item--valid" v-for="country in selectedCountries">
+                            {{country.name}}
+                            <button class="selected-item-remove" @click="removeSelectedCountry(country)"><i
+                                    class="material-icons">close</i></button>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="selected-items isansFont" v-if="selectedUniversities.length > 0">
-            <h3 class="selected-items-title isansFont">دانشگاه های انتخاب شده:</h3>
-            <div class="selected-items-list">
-                <p class="selected-item item--valid" v-for="uni in selectedUniversities">
-                    {{uni.name}}
-                    <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i
-                            class="material-icons">close</i></button>
-                </p>
+
+            <div class="destination-input-wrapper">
+                <c-dropdown class="dest-input"
+                            :clear-select="true"
+                            label="مقطع مورد نظر"
+                            :options="gradeOptions"
+                            @select-option="addGrade"/>
+                <div class="selected-items isansFont" v-if="selectedGrades.length > 0">
+                    <div class="selected-items-list">
+                        <p class="selected-item item--valid" v-for="grade in selectedGrades">
+                            {{grade.name}}
+                            <button class="selected-item-remove" @click="removeSelectedGrade(grade)"><i class="material-icons">close</i>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div class="selected-items isansFont" v-if="selectedCountries.length > 0">
-            <h3 class="selected-items-title isansFont">کشور های انتخاب شده:</h3>
-            <div class="selected-items-list">
-                <p class="selected-item item--valid" v-for="country in selectedCountries">
-                    {{country.name}}
-                    <button class="selected-item-remove" @click="removeSelectedCountry(country)"><i
-                            class="material-icons">close</i></button>
-                </p>
+
+
+            <div class="destination-input-wrapper">
+                <c-dropdown class="dest-input"
+                            :error="$v.selectedSemesters.$error"
+                            error-text="انتخاب حداقل یک ترم تحصیلی اجباری است."
+                            :clear-select="true"
+                            label="ترم مورد نظر"
+                            :options="semesterOptions"
+                            @select-option="addSemester"/>
+
+                <div class="selected-items isansFont" v-if="selectedSemesters.length > 0">
+                    <div class="selected-items-list">
+                        <p class="selected-item item--valid" v-for="semester in selectedSemesters">
+                            {{semester.year}} {{semester.semester}}
+                            <button class="selected-item-remove" @click="removeSelectedSemester(semester)"><i
+                                    class="material-icons">close</i></button>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="selected-items isansFont" v-if="selectedGrades.length > 0">
-            <h3 class="selected-items-title isansFont">مقاطع انتخاب شده:</h3>
-            <div class="selected-items-list">
-                <p class="selected-item item--valid" v-for="grade in selectedGrades">
-                    {{grade.name}}
-                    <button class="selected-item-remove" @click="removeSelectedGrade(grade)"><i class="material-icons">close</i>
-                    </button>
-                </p>
+
+            <div class="destination-input-wrapper">
+                <c-searchable-input class="dest-input"
+                                    :loading="majorLoading"
+                                    :clearselect="true"
+                                    @input="searchMajorByVal"
+                                    label="رشته"
+                                    :dataset="availableMajors"
+                                    @select-option="addMajor"/>
+                <div class="selected-items isansFont" v-if="selectedMajors.length > 0">
+                    <div class="selected-items-list">
+                        <p class="selected-item item--valid" v-for="major in selectedMajors">
+                            {{major.name}}
+                            <button class="selected-item-remove" @click="removeSelectedMajor(major)"><i class="material-icons">close</i>
+                            </button>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="selected-items isansFont" v-if="selectedSemesters.length > 0">
-            <h3 class="selected-items-title isansFont">ترم های انتخاب شده:</h3>
-            <div class="selected-items-list">
-                <p class="selected-item item--valid" v-for="semester in selectedSemesters">
-                    {{semester.year}} {{semester.semester}}
-                    <button class="selected-item-remove" @click="removeSelectedSemester(semester)"><i
-                            class="material-icons">close</i></button>
-                </p>
+
+            <div class="destination-input-wrapper">
+                <c-searchable-input class="dest-input"
+                                    :loading="uniLoading"
+                                    :clearselect="true"
+                                    @input="searchUniversityByVal"
+                                    label="دانشگاه"
+                                    :dataset="availableUniversities"
+                                    @select-option="addSelectedUniversity"/>
+                <div class="selected-items isansFont" v-if="selectedUniversities.length > 0">
+                    <div class="selected-items-list">
+                        <p class="selected-item item--valid" v-for="uni in selectedUniversities">
+                            {{uni.name}}
+                            <button class="selected-item-remove" @click="removeSelectedUni(uni)"><i
+                                    class="material-icons">close</i></button>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -121,6 +129,7 @@
     import SearchableInput from "@/components/Form/SearchableInput.vue";
     import DropdownInput from "@/components/Form/DropdownInput.vue";
     import {minLength, required} from 'vuelidate/lib/validators'
+    import destination from "../../state/destination";
 
     export default {
         name: "DestinationInput",
@@ -144,6 +153,8 @@
                 selectedCountries: [],
                 selectedSemesters: [],
                 selectedUniversities: [],
+
+                destination: null,
 
                 majorLoading: false,
                 uniLoading: false,
@@ -385,6 +396,24 @@
                 }
             },
 
+            async getDestination() {
+                // this.loading = true;
+                try {
+                    let result = await this.$api.get(`${this.api}/account/want-to-applies/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
+                    this.destination = result.data[0];
+                    this.selectedCountries = this.destination.countries;
+                    this.selectedMajors = this.destination.majors;
+                    this.selectedGrades = this.destination.grades;
+                    this.selectedUniversities = this.destination.universities;
+                    this.selectedSemesters = this.destination.semester_years;
+                    console.log('destination result ', result.data)
+                } catch (e) {
+                    console.log(e)
+                } finally {
+                    // this.loading = false;
+                }
+            },
+
             async getGrades() {
                 try {
                     let result = await this.$api.get(`${this.api}/account/grades/`, this.httpConfig);
@@ -400,6 +429,7 @@
         created() {
             this.getSemesters();
             this.getGrades();
+            this.getDestination();
             this.$store.commit('setWantsToAddDestination', true);
         }
     }
@@ -433,17 +463,21 @@
         flex-wrap: wrap;
     }
 
-    .dest-input {
+    .destination-input-wrapper {
         width: calc(50% - 40px);
-        margin: 0 20px 20px 20px;
+        display: flex;
+        flex-direction: column;
+        margin: 0 20px 20px 0;
+    }
+
+    .dest-input {
     }
 
     .selected-items {
-        width: calc(100% - 40px);
         display: flex;
-        flex-direction: column;
         align-items: stretch;
-        margin: 5px 20px;
+        flex-wrap: wrap;
+        margin: 5px 0;
     }
 
     .selected-items-title {
@@ -455,6 +489,7 @@
     .selected-items-list {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .selected-item {
@@ -464,7 +499,7 @@
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
-        margin: 0 5px;
+        margin: 5px 0 0 5px;
     }
 
     .selected-item.item--valid {
@@ -573,6 +608,11 @@
         .form-destination-wrapper {
             flex-wrap: nowrap;
             flex-direction: column;
+        }
+
+        .destination-input-wrapper {
+            width: calc(100% - 40px);
+            margin: 0 20px 20px 20px;
         }
 
         .dest-input {

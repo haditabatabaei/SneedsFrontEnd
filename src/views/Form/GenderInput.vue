@@ -195,7 +195,7 @@
     }
 
     .edu-gap {
-        width: calc(50% - 27px);
+        width: 100%;
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 767.8px) {

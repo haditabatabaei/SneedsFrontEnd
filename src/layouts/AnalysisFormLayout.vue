@@ -133,7 +133,7 @@
             <main class="form-layout-view-wrapper" @click.self="showMobileFormMenu = false">
                 <div class="mobile-form-menu isansFont">
                     <h2 class="mobile-form-current" @click="showMobileFormMenu = !showMobileFormMenu">
-                        افزودن مقاله
+                        {{$route.meta.title}}
                         <i class="material-icons" v-if="showMobileFormMenu == false">keyboard_arrow_down</i>
                         <i class="material-icons" v-else>keyboard_arrow_up</i>
                     </h2>
@@ -232,7 +232,7 @@ export default {
                         {name: 'بازبینی مقاطع تحصیلی', target: '/analysis/form/educationallevelsitems'},
                         {name: 'افزودن مقاله', target: '/analysis/form/paper'},
                         {name: 'بازبینی مقالات', target: '/analysis/form/paperitems'},
-                        {name: 'ریکام قوی', target: '/analysis/form/powerfulrecom'},
+                        {name: 'توصیه نامه قوی', target: '/analysis/form/powerfulrecom'},
                     ]
                 },
                 {

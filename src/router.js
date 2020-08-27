@@ -56,7 +56,8 @@ const router = new Router({
                     component: () => import("@/views/Form/MarriageInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'marriage'
+                        formPartName: 'marriage',
+                        title: 'وضعیت تاهل'
                     }
                 },
                 {
@@ -65,7 +66,8 @@ const router = new Router({
                     component: () => import("@/views/Form/MilitaryServiceInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'militaryservice'
+                        formPartName: 'militaryservice',
+                        title: 'وضعیت سربازی'
                     }
                 },
                 {
@@ -74,7 +76,8 @@ const router = new Router({
                     component: () => import("@/views/Form/EducationalGapInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'educationalgap'
+                        formPartName: 'educationalgap',
+                        title: 'وقفه تحصیلی'
                     }
                 },
                 {
@@ -83,7 +86,8 @@ const router = new Router({
                     component: () => import("@/views/Form/GenderInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'gender'
+                        formPartName: 'gender',
+                        title: 'سن جنسیت'
                     }
                 },
                 {
@@ -92,7 +96,8 @@ const router = new Router({
                     component: () => import("@/views/Form/WorkExperienceInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'workexperience'
+                        formPartName: 'workexperience',
+                        title: 'سابقه کار مرتبط'
                     }
                 },
                 {
@@ -101,7 +106,8 @@ const router = new Router({
                     component: () => import("@/views/Form/LastEducationalLevelInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'lasteducationallevel'
+                        formPartName: 'lasteducationallevel',
+                        title: 'افزودن مقطع تحصیلی'
                     }
                 },
                 {
@@ -110,7 +116,8 @@ const router = new Router({
                     component: () => import("@/views/Form/EducationalLevelsItems"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'educationallevelsitems'
+                        formPartName: 'educationallevelsitems',
+                        title: 'بازبینی مقاطع تحصیلی'
                     }
                 },
                 {
@@ -119,7 +126,8 @@ const router = new Router({
                     component: () => import("@/views/Form/PaperInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'paper'
+                        formPartName: 'paper',
+                        title: 'افزودن مقاله'
                     }
                 },
                 {
@@ -128,7 +136,8 @@ const router = new Router({
                     component: () => import("@/views/Form/PaperItems"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'paperitems'
+                        formPartName: 'paperitems',
+                        title: 'بازبینی مقالات'
                     }
                 },
                 {
@@ -137,7 +146,8 @@ const router = new Router({
                     component: () => import("@/views/Form/PowerfulRecommendation"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'powerfulrecom'
+                        formPartName: 'powerfulrecom',
+                        title: 'توصیه نامه قوی'
                     }
                 },
                 {
@@ -146,7 +156,8 @@ const router = new Router({
                     component: () => import("@/views/Form/LanguageCertificateInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'languagecerts'
+                        formPartName: 'languagecerts',
+                        title: 'افزودن مدرک زبان'
                     }
                 },
                 {
@@ -155,7 +166,8 @@ const router = new Router({
                     component: () => import("@/views/Form/LanguageCertificateItems"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'languagecertsitems'
+                        formPartName: 'languagecertsitems',
+                        title: 'بازبینی مدارک زبان'
                     }
                 },
                 {
@@ -164,7 +176,8 @@ const router = new Router({
                     component: () => import("@/views/Form/DestinationInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'destination'
+                        formPartName: 'destination',
+                        title: 'افزودن و بازبینی مقاصد اپلای'
                     }
                 },
                 {
@@ -173,7 +186,8 @@ const router = new Router({
                     component: () => import("@/views/Form/FundsInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'funds'
+                        formPartName: 'funds',
+                        title: 'توانایی مالی و فاند'
                     }
                 },
                 {
@@ -182,7 +196,8 @@ const router = new Router({
                     component: () => import("@/views/Form/OtherInformationInput"),
                     meta: {
                         auth: 'optional',
-                        formPartName: 'otherinformation'
+                        formPartName: 'otherinformation',
+                        title: 'سایر اطلاعات'
                     }
                 },
             ]

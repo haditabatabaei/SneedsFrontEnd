@@ -804,7 +804,15 @@
     }
 
     .inputs-certs {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
         margin-top: 10px;
+    }
+
+    .inputs-certs .edu-gap {
+        width: calc(50% - 20px);
     }
 
     @media only screen and (max-width: 991.8px) and (min-width: 767.8px) {
@@ -850,6 +858,16 @@
 
         .inputs {
             width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 546.8px) {
+        .inputs-certs {
+            flex-direction: column;
+        }
+
+        .inputs-certs .edu-gap {
+            width: 100%;
         }
     }
 </style>

@@ -356,6 +356,7 @@ export default {
         },
 
         openCurrentMenuCollapse() {
+            this.formMenuGroups.forEach(group => group.isOpen = false)
             let group = this.formMenuGroups.find(group => group.items.some(item => this.$route.path === item.target));
             group.isOpen = true;
         },

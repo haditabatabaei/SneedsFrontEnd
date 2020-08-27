@@ -7,10 +7,10 @@ export default {
         analysisFormPageMapping: new Map(
             [
                 [1, 'marriage'],
-                [2, 'militaryservice'],
-                [3, 'educationalgap'],
-                [4, 'gender'],
-                [5, 'workexperience'],
+                [2, 'gender'],
+                [3, 'militaryservice'],
+                [4, 'workexperience'],
+                [5, 'educationalgap'],
                 [6, 'lasteducationallevel'],
                 [7, 'educationallevelsitems'],
                 [8, 'paper'],

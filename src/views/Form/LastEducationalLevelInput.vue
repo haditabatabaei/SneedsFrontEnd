@@ -47,6 +47,7 @@
                                 @select-option="setSelectedUniversity" />
 
             <c-number-input class="edulevel-input"
+                            @set-parent-value="val => gpa = val"
                             :error="$v.gpa.$error"
                             error-text="معدل کل باید عدد بین 0 تا 20 باشد."
                             :defaultValue="gpa"
@@ -57,6 +58,7 @@
                             />
 
             <c-number-input class="edulevel-input" :defaultValue="2020"
+                            @set-parent-value="val => graduateIn = val"
                             :error="$v.graduateIn.$error"
                             error-text="سال فارغ التحصیلی باید به میلادی و عدد صحیح بین 1980 و 2100 باشد."
                             label="سال فراغت از تحصیل"

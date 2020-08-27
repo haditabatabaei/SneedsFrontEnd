@@ -25,12 +25,13 @@
                               :options="typeOptions"
                               @select-option="setType" />
 
-            <c-simple-input class="edu-gap" label="عنوان مقاله" @
+            <c-simple-input class="edu-gap" label="عنوان مقاله"
                             :error="$v.title.$error"
                             error-text="عنوان مقاله الزامی است."
                             v-model="title" />
 
             <c-number-input class="edu-gap" :step="1"
+                            @set-parent-value="val => publishYear = val"
                             :error="$v.publishYear.$error"
                             error-text="مقدار وارد شده باید عدد صحیح بین 1900 و 2100 باشد."
                             v-model="publishYear" label="سال پابلیش مقاله"  />

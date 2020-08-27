@@ -71,19 +71,20 @@
         },
         methods: {
             incrementValueByStep() {
+
                 let newValue = Number(this.value) + Number(this.step);
                 if (newValue > this.maxValue) {
-                    this.value = this.maxValue;
+                    this.$emit('set-parent-value', this.maxValue)
                 } else {
-                    this.value = newValue;
+                    this.$emit('set-parent-value', newValue)
                 }
             },
             decrementValueByStep() {
                 let newValue = Number(this.value) - Number(this.step);
                 if (newValue < this.minValue) {
-                    this.value = this.minValue;
+                    this.$emit('set-parent-value', this.minValue)
                 } else {
-                    this.value = newValue;
+                    this.$emit('set-parent-value', newValue)
                 }
             }
         },

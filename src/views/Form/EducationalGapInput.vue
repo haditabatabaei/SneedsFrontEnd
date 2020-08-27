@@ -20,6 +20,7 @@
         </div>
         <div class="inputs" v-if="selectedEducationalGapStatus == 'have'">
             <c-number-input class="edu-gap" :step="1"
+                            @set-parent-valud="val => gapYears = val"
                             :error="$v.gapYears.$error"
                             error-text="وقفه تحصیلی باید عدد صحیح بین 0 تا 100 باشد."
                             v-model="gapYears"

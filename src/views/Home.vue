@@ -750,14 +750,7 @@
         position: absolute;
         z-index: 2;
     }
-    .airplane-exit-svg {
-        justify-content: flex-start;
-        width: 400px;
-        position: absolute;
-        z-index: 2;
-    }
-
-
+ 
     .achievements-section-box {
         width: 20%;
         display: flex;

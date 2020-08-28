@@ -1,10 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import api from './api'
-
+import api from '../api'
+import certificate from "./certificate";
+import destination from "./destination";
+import education from "./education";
+import paper from "./paper"
+import simpleValidations from "./simpleValidations"
+import analysisform from "./analysisform";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    modules: {
+        analysisform,
+        certificate,
+        destination,
+        education,
+        paper,
+        simpleValidations
+    },
     state: {
         token: localStorage.getItem('token') || '',
 
@@ -36,7 +49,7 @@ export default new Vuex.Store({
         timezoneSafe: ((Intl.DateTimeFormat().resolvedOptions().timeZone).replace('/', '-')),
 
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    },
+        },
     mutations: {
         setLoggedInStatus(state, loggedInStatus) {
             state.userIsLoggedIn = loggedInStatus;
@@ -165,6 +178,7 @@ export default new Vuex.Store({
 
         logout({commit}) {
             commit('logout');
+            commit('setDetailedForm', null)
         },
     },
     getters: {
@@ -242,6 +256,6 @@ export default new Vuex.Store({
             } else {
                 return 'en'
             }
-        }
+        },
     }
 })

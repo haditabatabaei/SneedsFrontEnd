@@ -7,9 +7,10 @@
             </div>
             <div class="consultantBlockInfo" style="margin-top:10px;">
                 <div class="consultantBlockInfoItem">
-                    <p class="package-title-country isansFont" v-if="hasUserDetailedInfo">
-                        {{package.userDetailedInfo.apply_country.name}}
-                    </p>
+                    <div class="package-title-countries isansFont">
+                        <span class="package-title-country" v-for="country in allCountries">{{country.name}}، </span>
+                        <span class="package-title-country" v-if="allCountries.length == 0">کشور: تفاوتی نمی کند</span>
+                    </div>
                     <router-link class="isansFont--faNum consultantName" :to="clickTarget">
                         {{package.title}}
                     </router-link>
@@ -19,10 +20,11 @@
                         رزرو توسط:
                         {{`${package.sold_to.first_name} ${package.sold_to.last_name}`}}
                         <br>
-                        <span v-if="hasUserDetailedInfo">
-                            برای رشته:
-                            {{package.userDetailedInfo.apply_major}}
+                        برای رشته (های):
+                        <span v-if="hasUserDetailedInfo" v-for="major in allMajors">
+                            {{major.name}},
                         </span>
+                        <span v-if="allMajors.length == 0">تفاوتی نمی کند.</span>
                     </p>
                     <p class="isansFont consultantBio--mobile">
                         رزرو توسط:
@@ -65,6 +67,22 @@
                     return `/user/conspackages/manager/${this.package.id}`
                 }
             },
+            allCountries() {
+                return this.hasDestination ? this.destination.countries : [];
+            },
+
+            allMajors() {
+                return this.hasDestination ? this.destination.majors : [];
+            },
+
+            hasDestination() {
+                return this.hasUserDetailedInfo && this.package.userDetailedInfo.want_to_applies[0];
+            },
+
+            destination() {
+                return this.package.userDetailedInfo.want_to_applies[0];
+            },
+
             hasUserDetailedInfo() {
                 return !!this.package.userDetailedInfo;
             },
@@ -153,6 +171,12 @@
 
     .field-icon {
         font-size: 16px;
+    }
+
+
+    .package-title-countries {
+        display: flex;
+        margin-bottom: 10px;
     }
 
     .consultantShowButton {

@@ -143,6 +143,14 @@
                         submenu: []
                     },
                     {
+                        name: "فرم پکیج و تخمین",
+                        target: '/analysis/form',
+                        icon: 'circle',
+                        tag: 0,
+                        hasSubmenu: false,
+                        submenu: []
+                    },
+                    {
                         name: "پکیج ها",
                         target: '/user/userpackages',
                         icon: 'circle',

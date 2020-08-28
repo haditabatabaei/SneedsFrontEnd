@@ -240,7 +240,7 @@
     }
 
 
-    @media only screen and (max-width: 767.8px) {
+    @media only screen and (max-width: 767.8px)  @media only screen and (max-width: 767.8px) {
         .dots {
             display: none;
         }

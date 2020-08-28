@@ -6,9 +6,9 @@
                 <img class="globe" src="/sneedsAssets/img/globe.png">
                 <div class="sneeds-intro-info">
                     <h6 class="sneeds-intro-info-small-title">با پلتفرم اسنیدز</h6>
-                    <h2 class="sneeds-intro-info-title">هوشمندانه اپلای کن!</h2>
+                    <h3 class="sneeds-intro-info-title">هوشمندانه اپلای کن!</h3>
                     <div class="sneeds-intro-info-title-line"></div>
-                    <p>هدف ما وصل کردن شما به دانشجویان ایرانی خارج از
+                    <p class="sneeds-intro-info-text">هدف ما وصل کردن شما به دانشجویان ایرانی خارج از
                         کشور برای استفاده از تجربیاتشون تو این مسیره و نمی‌دونی از کجا شروع کنی؟
                         با پر کردن فرم رایگان تعیین سطح اپلای از وضعیتت با خبر شو و پیشنهادات هوشمند دریافت کن
                     </p>
@@ -59,10 +59,6 @@
                     <p>فرآيند اپلای و پروژه‌تون بلافاصله بعد از تایید شما شروع خواهد شد و مشاور تا پایانش کنارتون هست</p>
                 </div>
             </div>
-
-
-
-
         </section>
 
 
@@ -113,10 +109,6 @@
                 </a>
                 <div class="see-all-link-line"></div>
             </div>
-
-
-
-
         </section>
 
 
@@ -170,16 +162,9 @@
                     </div>
                 </div>
             </div>
-
-
-
         </section>
 
-
-
         <section class="landing-section ">
-
-
 
             <div class="activities-section-rows --activities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
@@ -202,80 +187,76 @@
                 <div class="horizontal-items-box --different-activities">
                     <div class="different-activities-items">
                         <div class="activities-circle">
-                            <img src="/sneedsAssets/img/scholarship.svg" alt="">
+                            <img   class="activities-circle-img"src="/sneedsAssets/img/scholarship.svg" alt="">
                         </div>
-                        <p class="activities-circle-text">پکیج‌های اخذ پذیرش</p>
+                        <a  href="#" class="activities-circle-text">پکیج‌های اخذ پذیرش</a>
 
                     </div>
                     <div class="different-activities-items">
                         <div class="activities-circle">
-                            <img src="/sneedsAssets/img/book%20(1).svg" alt="">
+                            <img  class="activities-circle-img" src="/sneedsAssets/img/news.svg" alt="">
                         </div>
-                        <p class="activities-circle-text">نگارش و ویرایش کاورلتر</p>
+                        <a href="#" class="activities-circle-text">نگارش و ویرایش کاورلتر</a>
 
                     </div>
                     <div class="different-activities-items">
                         <div class="activities-circle">
-                            <img src="/sneedsAssets/img/scholarship.svg" alt="">
+                            <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
                         </div>
-                        <p class="activities-circle-text">ترجمه مدارک اپلای</p>
+                        <a  href="#" class="activities-circle-text">ترجمه مدارک اپلای</a>
                     </div>
                 </div>
-            </div >
+
             <div class="horizontal-items-box --different-activities">
                 <div class="different-activities-items">
                     <div class="activities-circle">
-                        <img src="/sneedsAssets/img/news.svg" alt="">
+                        <img class="activities-circle-img" src="/sneedsAssets/img/list.svg" alt="">
                     </div>
-                    <p class="activities-circle-text">(SOP) ویرایش و نگارش انگیزه‌نامه</p>
+                    <a href="#" class="activities-circle-text">(SOP) ویرایش و نگارش انگیزه‌نامه</a>
 
                 </div>
                 <div class="different-activities-items">
                     <div class="activities-circle">
-                        <img src="/sneedsAssets/img/scholarship.svg" alt="">
+                        <img  class="activities-circle-img" src="/sneedsAssets/img/book%20(1).svg" alt="">
                     </div>
-                    <p class="activities-circle-text">(CV) ویرایش و نگارش رزومه</p>
+                    <a  href="#" class="activities-circle-text">(CV) ویرایش و نگارش رزومه</a>
 
                 </div>
                 <div class="different-activities-items">
                     <div class="activities-circle">
-                        <img src="/sneedsAssets/img/subject.svg" alt="">
+                        <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
                     </div>
-                    <p class="activities-circle-text">پکیج‌های اخذ پذیرش</p>
+                    <a href="#" class="activities-circle-text">پکیج‌های اخذ پذیرش</a>
 
                 </div>
             </div>
-
-
+            </div>
 
             <div class="achievements-section">
+                <img class="airplane-enter-svg" src="/sneedsAssets/img/airplane-enter.svg" alt="">
                 <div class="achievements-section-box --first">
-                    <img class="achievements-svg" src="sneedsAssets/img/login.svg" alt="">
+                    <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
                     <h3 class="achievements-section-header">56+ پذیرش</h3>
                     <p class="achievements-section-text">اخذ شده به دست مشاوران اسنیدز در تمامی مقاطع</p>
                 </div>
                 <div class="achievements-section-box --center">
-                    <img class="achievements-svg" src="sneedsAssets/img/people.svg" alt="">
+                    <img class="achievements-svg" src="/sneedsAssets/img/people.svg" alt="">
                     <h3 class="achievements-section-header">+۲۷,۰۰۰ دقیقه</h3>
                     <p class="achievements-section-text">مشاوره آنلاین تصویری انجام شده با مشاوران اسنیدز</p>
                 </div>
                 <div class="achievements-section-box --last">
-                    <img class="achievements-svg" src="sneedsAssets/img/document%20(1).svg" alt="">
+                    <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
                     <h3 class="achievements-section-header">+۵۴۰ مدرک</h3>
                     <p class="achievements-section-text">ترجمه، تصحیح یا نگارش شده به دست مشاوران اسنیدز</p>
                 </div>
             </div>
+          </section>
 
 
-
+        <section class="landing-section video-section">
+            <img class="airplane-exit-svg" src="/sneedsAssets/img/airplane-exit.svg" alt="">
 
         </section>
-
-
-
-
-
-
     </main>
 
 
@@ -338,7 +319,6 @@
         position: relative;
         min-height: 100vh;
         direction: rtl;
-        font-family: 'AIranianSans' !important;
         color: #707070;
         max-width: 100%;
         z-index: -20;
@@ -368,9 +348,9 @@
 
 
     .globe {
-        width: 50%;
-        margin-right: -100px;
-        margin-top: -150px;
+        width: 70%;
+        margin-right: -350px;
+        margin-top: -280px;
         z-index: -19;
     }
 
@@ -384,6 +364,8 @@
         justify-content: center;
         background-color: white;
         padding-right: 5%;
+        padding-left: 5%;
+        padding-top: 100px;
         font-size: 14px;
     }
 
@@ -398,6 +380,7 @@
     .sneeds-intro-info-title {
 
         color: #303143;
+        font-weight: bold;
 
     }
 
@@ -411,13 +394,18 @@
 
     }
 
+    .sneeds-intro-info-text {
+        padding: 5% 0px;
+        font-size: 12px;
+    }
+
     .sneeds-intro-info-links {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        flex-wrap: wrap;
+        align-items: center;
         font-size: 12px;
-
+        cursor: pointer;
     }
 
 
@@ -430,23 +418,26 @@
         padding: 7px;
         margin-right: 5px;
         margin-bottom: 10px;
+        cursor: pointer;
 
     }
 
     .link--level {
         color: white;
-        background-color:#00D4ED;
+        background: transparent linear-gradient(91deg, #00BFD6 0%, #04AEC2 100%) 0% 0%
+        no-repeat padding-box;
         border-radius: 10px;
-        font-size: 14px;
+        font-size: 10px;
         margin-left: 10px;
         margin-bottom: 10px;
-        padding: 10px;
+        padding: 10px 15px;
     }
 
     .link--level--free {
         background-color: #008292;
-        border-radius: 20px;
-        padding: 5px;
+        border-radius: 15px;
+        padding: 5px 10px;
+        margin-right: 10px;
     }
 
     .structure-section-title {
@@ -676,12 +667,17 @@
     }
 
     .different-activities-box {
-        width: 70%;
+        width: 90%;
         display: flex;
         justify-content: space-between;
         flex-direction: column;
         align-items: center;
 
+    }
+
+    .activities-circle-img {
+        width: 50px;
+        height: 50px;
     }
     .activities-section-title {
         align-items: flex-start;
@@ -695,9 +691,6 @@
     }
 
 
-
-
-
     .--different-activities{
         justify-content: center;
     }
@@ -708,14 +701,13 @@
         flex-direction: row;
         justify-content:center;
         align-items: center;
-        padding: 3%;
 
     }
 
 
     .activities-circle {
-        height: 100px;
-        width: 100px;
+        height: 80px;
+        width: 80px;
         background-color: white;
         border-radius: 50%;
         box-shadow: 0px 11px 16px #00000029;
@@ -736,8 +728,10 @@
 
 
     .activities-circle-text {
-        width: 50%;
+        width: 60%;
         margin: 10px;
+        color: #303143;
+        font-size: 12px;
     }
 
     .achievements-section {
@@ -748,6 +742,21 @@
         align-items: center;
         justify-content: center;
     }
+    .airplane-enter-svg {
+        justify-content: flex-start;
+        width: 400px;
+        margin-right: -105%;
+        margin-top: -300px;
+        position: absolute;
+        z-index: 2;
+    }
+    .airplane-exit-svg {
+        justify-content: flex-start;
+        width: 400px;
+        position: absolute;
+        z-index: 2;
+    }
+
 
     .achievements-section-box {
         width: 20%;
@@ -767,5 +776,19 @@
         margin-top: 200px;
     }
 
+    @media only screen and (max-width: 767.8px) {
+
+    }
+
+    @media only screen and (max-width: 567.8px) {
+
+
+
+
+
+
+
+
+    }
 
 </style>

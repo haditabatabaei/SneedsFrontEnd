@@ -1,5 +1,5 @@
 <template>
-    <a href="http://sneeds.ir" target="_blank" class="logo isansFont--faNum">
+    <a href="/User/Home" target="_blank" class="logo isansFont--faNum">
         <img class="logoImage" src="/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
         <span class="logoName">اسنیدز</span>
     </a>

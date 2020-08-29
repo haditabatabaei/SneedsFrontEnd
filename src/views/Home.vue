@@ -75,11 +75,11 @@
 
 
                 </p>
-                <img class="scroll" src="/sneedsAssets/img/harvard.png">
-                <img src="/sneedsAssets/img/harvard.png">
-                <img src="/sneedsAssets/img/harvard.png">
-                <img src="/sneedsAssets/img/harvard.png">
-                <img src="/sneedsAssets/img/harvard.png">
+                <img  class="scroll universities-logoes" src="/sneedsAssets/img/harvard.png">
+                <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
+                <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
+                <img  class="universities-logoes"src="/sneedsAssets/img/harvard.png">
+                <img  class="universities-logoes"src="/sneedsAssets/img/harvard.png">
 
             </div>
 
@@ -233,14 +233,13 @@
             </div>
 
             <div class="achievements-section">
-                <img class="airplane-enter-svg" src="/sneedsAssets/img/airplane-enter.svg" alt="">
                 <div class="achievements-section-box --first">
                     <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
                     <h3 class="achievements-section-header">56+ پذیرش</h3>
                     <p class="achievements-section-text">اخذ شده به دست مشاوران اسنیدز در تمامی مقاطع</p>
                 </div>
                 <div class="achievements-section-box --center">
-                    <img class="achievements-svg" src="/sneedsAssets/img/people.svg" alt="">
+                    <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
                     <h3 class="achievements-section-header">+۲۷,۰۰۰ دقیقه</h3>
                     <p class="achievements-section-text">مشاوره آنلاین تصویری انجام شده با مشاوران اسنیدز</p>
                 </div>
@@ -253,9 +252,10 @@
           </section>
 
 
-        <section class="landing-section video-section">
-            <img class="airplane-exit-svg" src="/sneedsAssets/img/airplane-exit.svg" alt="">
+        <section class="landing-section --video-section">
+            <div class="video-container">
 
+            </div>
         </section>
     </main>
 
@@ -264,40 +264,7 @@
 </template>
 
 <script>
-    export default {
-        name: "Home",
-        data: function () {
-            return {
-                slides: [
-                    {
-                        title: 'به اسنیدز خوش آمدید',
-                        description: 'اسنیدز، پلتفرم بهینه رفع نیاز دانشجویی در سطح بالای فناوری امروز است.',
-                        imageStyle: 'webimages/bg3.jpg',
-                        hasButton: true,
-                        button: {value: 'ازاینجا شروع کنید', target: '/auth/login', colorTheme: 'primary'},
-                    },
-                    {
-                        title: 'جزوات برتر',
-                        description: 'اسنیدز، دیتابیس بزرگی از جزوات دانشگاه در رشته های تخصصی به صورت رایگان',
-                        imageStyle: 'webimages/note.jpg',
-                        hasButton: true,
-                        button: {value: 'جزوات رو ببینید!', target: '/booklets', colorTheme: 'info'},
-                    },
-                    {
-                        title: 'مصاحبه ها',
-                        description: 'اسنیدز، آِینده خود را با فکر انتحاب کنید',
-                        imageStyle: 'webimages/userbg.jpg',
-                        hasButton: true,
-                        button: {value: 'بلاگ!', target: '/blog', colorTheme: 'rose'},
-                    },
-                ]
-            }
-        },
-        mounted() {
-            //scroll to up
-            // this.$store.dispatch('saveCu rrentLocation', this.$route.path);
-        }
-    }
+
 </script>
 
 <style scoped>
@@ -341,7 +308,7 @@
     .sneeds-intro {
         display: flex;
         flex-direction: row;
-        max-width: 100%;
+        width: 100%;
         justify-content: center;
         align-items: flex-start;
     }
@@ -349,8 +316,9 @@
 
     .globe {
         width: 70%;
-        margin-right: -350px;
-        margin-top: -280px;
+        max-width: 80%;
+        margin-right: -25%;
+        margin-top: -20%;
         z-index: -19;
     }
 
@@ -365,7 +333,7 @@
         background-color: white;
         padding-right: 5%;
         padding-left: 5%;
-        padding-top: 100px;
+        padding-top: 10%;
         font-size: 14px;
     }
 
@@ -514,7 +482,7 @@
 
     .consultants-section-items{
         width: 30%;
-        min-width: 200px;
+        min-width: 100px;
         margin: 15px;
         height: 150px;
         box-shadow: 0px 11px 16px #00000029;
@@ -559,12 +527,6 @@
     }
 
 
-    .text-container {
-        display: flex;
-        justify-content:center;
-        align-items: baseline;
-        flex-direction: row;
-    }
     .pointer-svg {
         width: 40px;
         height: 40px;
@@ -596,8 +558,6 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        min-width: 500px;
-
         width: 90%;
         border-radius: 20px;
         background: transparent linear-gradient(89deg, #1F6197 0%, #154A74 100%) 0% 0%
@@ -742,15 +702,7 @@
         align-items: center;
         justify-content: center;
     }
-    .airplane-enter-svg {
-        justify-content: flex-start;
-        width: 400px;
-        margin-right: -105%;
-        margin-top: -300px;
-        position: absolute;
-        z-index: 2;
-    }
- 
+
     .achievements-section-box {
         width: 20%;
         display: flex;
@@ -768,20 +720,98 @@
     .--last {
         margin-top: 200px;
     }
+    .--video-section {
+        height: 60vh;
+    }
 
-    @media only screen and (max-width: 767.8px) {
+    .video-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+        overflow-x: hidden;
 
     }
 
+
     @media only screen and (max-width: 567.8px) {
+        .--sneeds-section {
+            width: 100%;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .sneeds-intro {;
+            display: flex;
+            flex-direction: column;
+        }
+        .sneeds-intro-info {
+            width: 90%;
+        }
+        .sneeds-intro-info-links {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .globe {
+            display: none;
+        }
+        .universities-logoes {
+            display: none;
+        }
+        .structure-section-stages {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .consultants-section-rows {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .blue-options-box
+        {
+            width: 90%;
 
+        }
+        .blue-options-box {
+            flex-direction: column;
 
-
-
-
-
-
-
+        }
+        .column-container {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .blue-box-column {
+            padding:20px ;
+            justify-content: center;
+            align-items: center;
+        }
+        .consultants-section-header {
+            width: 80%;
+        }
+        .horizontal-items-box {
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top:0px;
+            margin-bottom: 30px;
+            width: 60%;
+        }
+        .different-activities-items {
+            margin-top: 30px;
+            width: 100%;
+        }
+        .--advantages {
+            display: none;
+        }
+        .achievements-section {
+            flex-direction: column;
+        }
+        .achievements-section-box {
+            width: 80%;
+            margin: 15px;
+        }
     }
 
 </style>

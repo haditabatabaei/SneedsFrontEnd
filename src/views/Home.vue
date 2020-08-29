@@ -776,12 +776,17 @@
         }
         .blue-options-box {
             flex-direction: column;
+            align-items: center;
 
         }
         .column-container {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
+        }
+        .blue-box-text {
+            text-align: center;
         }
         .blue-box-column {
             padding:20px ;
@@ -802,9 +807,7 @@
             margin-top: 30px;
             width: 100%;
         }
-        .--advantages {
-            display: none;
-        }
+
         .achievements-section {
             flex-direction: column;
         }

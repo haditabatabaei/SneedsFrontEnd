@@ -17,7 +17,7 @@
                             تعیین سطح اپلای
                             <span class="link--level--free">رایگان!</span>
                         </a>
-                        <a href="#" class="sneeds-intro-info-link link--interview">مشاوره اپلای</a>
+                        <a href="http://google.com" class="sneeds-intro-info-link link--interview">مشاوره اپلای</a>
                         <a href="#" class="sneeds-intro-info-link link--live">لایو های اپلای</a>
                         <a href="#" class="sneeds-intro-info-link link--webinar"> وبینار ها</a>
                         <a href="#" class="sneeds-intro-info-link link--film">فیلم های خود آموز اپلای</a>
@@ -273,31 +273,6 @@
         align-items: center;
     }
 
-    body {
-
-        margin: 0px;
-        padding: 0px;
-        font-size: 12px;
-        background-color: white;
-        display: flex;
-        align-items: center;
-        justify-content:start;
-        flex-direction: column;
-        position: relative;
-        min-height: 100vh;
-        direction: rtl;
-        color: #707070;
-        max-width: 100%;
-        z-index: -20;
-
-
-    }
-
-
-    a{
-        text-decoration: none;
-        text-align: center;
-    }
 
     .landing-section {
         display: flex;
@@ -319,7 +294,6 @@
         max-width: 80%;
         margin-right: -25%;
         margin-top: -20%;
-        z-index: -19;
     }
 
 

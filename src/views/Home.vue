@@ -257,6 +257,31 @@
 
             </div>
         </section>
+
+
+        <section class="landing-section --analysis-section">
+            <div class="analysis-container">
+                <img class="globe" src="/sneedsAssets/img/globe.png">
+                <div class="analysis-container-info">
+                    <h6 class="analysis-container-info-small-title">آنالیزور پیشرفته اپلای</h6>
+                    <h5 class="analysis-container-info-title">!بهترین تصمیم‌ رو بگیر</h5>
+                    <div class="analysis-container-info-title-line"></div>
+                    <p class="analysis-container-info-text">
+                        با پرکردن فرم رایگان اطلاعات تحصیلیت‌ بلافاصله رتبه‌ات رو بین بقیه افرادی که قصد
+                        اپلای دارن با کمک هوش مصنوعی اسنیدز ببین نقاط ضعف و قوت خودت رو بشناس علاوه بر
+                        اون پیشنهادات هوشمند برای بهبود رزومه خودت دریافت کن و تو مسیر اپلای از بقیه رقیبات جلو بیفت
+                    </p>
+                    <div class="analysis-container-info-links">
+                        <a href="#" class=" analysis-container--level">
+                            تعیین سطح اپلای
+                            <span class="analysis-container--free">رایگان!</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
     </main>
 
 
@@ -711,6 +736,104 @@
         overflow-x: hidden;
 
     }
+    .analysis-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+
+    .analysis-container-info {
+        width: 70%;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        background-color: white;
+        padding-right: 5%;
+        padding-left: 5%;
+        padding-top: 10%;
+        font-size: 14px;
+    }
+
+
+
+    .analysis-container-info-small-title {
+        margin-bottom: 0px;
+        margin-top: 10px;
+        color: #374957;
+    }
+
+    .analysis-container-info-title {
+
+        color: #303143;
+        font-weight: bold;
+
+    }
+
+    .analysis-container-info-title-line{
+
+        width: 120px;
+        height: 3px;
+        background-color: #00D4ED;
+        right: -125px;
+        border-radius: 2px;
+
+    }
+
+    .analysis-container-info-text {
+        padding: 5% 0px;
+        font-size: 12px;
+    }
+
+    .analysis-container-info-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+
+
+    .analysis-container-info-link {
+        font-size: 10px;
+        border: 1px solid #00D4ED;
+        border-radius: 10px;
+        color: #00D4ED;
+        padding: 7px;
+        margin-right: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+
+    }
+
+    .analysis-container--level {
+        color: white;
+        min-width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent linear-gradient(91deg, #00BFD6 0%, #04AEC2 100%) 0% 0%
+        no-repeat padding-box;
+        border-radius: 10px;
+        font-size: 10px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+    }
+
+    .analysis-container--free {
+        background-color: #008292;
+        border-radius: 15px;
+        padding: 5px 10px;
+        margin-right: 10px;
+    }
+
     @media only screen and (max-width: 767.8px) {
      .circle-svg {
          width: 160px;

@@ -261,7 +261,9 @@
 
         <section class="landing-section --analysis-section">
             <div class="analysis-container">
-                <img class="globe" src="/sneedsAssets/img/globe.png">
+                <div class="analysis-img-div">
+                    <img class="analysis-svg" src="/sneedsAssets/img/analysis.svg">
+                </div>
                 <div class="analysis-container-info">
                     <h6 class="analysis-container-info-small-title">آنالیزور پیشرفته اپلای</h6>
                     <h5 class="analysis-container-info-title">!بهترین تصمیم‌ رو بگیر</h5>
@@ -731,8 +733,8 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
-        align-items: flex-end;
+        justify-content: flex-start;
+        align-items: flex-start;
         overflow-x: hidden;
 
     }
@@ -743,7 +745,20 @@
         justify-content: center;
         align-items: flex-start;
     }
+    .analysis-img-div {
+        width: 50%;
+        background-color: #F5F7FA;
+        height: 80vh;
+        border-radius: 40px;
 
+
+    }
+    .analysis-svg {
+        width: 80%;
+        height: auto;
+        padding: 5%;
+
+    }
 
     .analysis-container-info {
         width: 70%;
@@ -778,7 +793,7 @@
 
         width: 120px;
         height: 3px;
-        background-color: #00D4ED;
+        background-color:#A347FF;
         right: -125px;
         border-radius: 2px;
 
@@ -800,26 +815,13 @@
 
 
 
-    .analysis-container-info-link {
-        font-size: 10px;
-        border: 1px solid #00D4ED;
-        border-radius: 10px;
-        color: #00D4ED;
-        padding: 7px;
-        margin-right: 5px;
-        margin-bottom: 10px;
-        cursor: pointer;
-
-    }
-
     .analysis-container--level {
         color: white;
         min-width: 25%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: transparent linear-gradient(91deg, #00BFD6 0%, #04AEC2 100%) 0% 0%
-        no-repeat padding-box;
+        background: #A347FF 0% 0% no-repeat padding-box;
         border-radius: 10px;
         font-size: 10px;
         margin-left: 10px;
@@ -828,7 +830,7 @@
     }
 
     .analysis-container--free {
-        background-color: #008292;
+        background-color: #592480;
         border-radius: 15px;
         padding: 5px 10px;
         margin-right: 10px;

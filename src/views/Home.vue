@@ -366,6 +366,10 @@
 
     .link--level {
         color: white;
+        min-width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: transparent linear-gradient(91deg, #00BFD6 0%, #04AEC2 100%) 0% 0%
         no-repeat padding-box;
         border-radius: 10px;
@@ -415,7 +419,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 50px;
+        padding: 20px 5%;
     }
 
     .structure-section-small-title {
@@ -450,7 +454,7 @@
         flex-direction:row;
         justify-content: space-around;
         align-items: center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         margin: 40px 0px;
     }
 
@@ -544,7 +548,6 @@
         flex-direction: row;
         width: 80%;
         margin-bottom: 50px;
-        flex-wrap: wrap;
     }
 
 
@@ -679,14 +682,15 @@
 
     .achievements-section-box {
         width: 20%;
+        min-height: 60vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
         box-shadow: 0px 7px 46px #0000001F;
-        padding:50px;
-        margin: 30px;
+        padding:4%;
+        margin: 3%;
     }
     .--center {
         margin-top: 100px;
@@ -707,7 +711,19 @@
         overflow-x: hidden;
 
     }
-
+    @media only screen and (max-width: 767.8px) {
+     .circle-svg {
+         width: 160px;
+         height: 160px;
+     }
+        .achievements-section {
+            width: 100%;
+        }
+        .circle-icon {
+            width: 50px;
+            height: 50px;
+        }
+    }
 
     @media only screen and (max-width: 567.8px) {
         .--sneeds-section {

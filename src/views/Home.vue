@@ -284,6 +284,8 @@
             </div>
 
         </section>
+        <app-question></app-question>
+
     </main>
 
 
@@ -291,6 +293,13 @@
 </template>
 
 <script>
+   import FAQ from "../components/HomePage/FAQ";
+    export default {
+        components: {
+            appQuestion: FAQ
+        }
+
+    }
 
 </script>
 
@@ -748,7 +757,6 @@
     .analysis-img-div {
         width: 50%;
         background-color: #F5F7FA;
-        height: 80vh;
         border-radius: 40px;
 
 
@@ -756,7 +764,7 @@
     .analysis-svg {
         width: 80%;
         height: auto;
-        padding: 5%;
+        padding: 3%;
 
     }
 

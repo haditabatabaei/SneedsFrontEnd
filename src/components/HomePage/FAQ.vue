@@ -194,6 +194,11 @@
             }
 
 
+        },
+        methods: {
+            toggleQuestion(question) {
+                question.isOpen = !question.isOpen;
+            },
         }
     }
 

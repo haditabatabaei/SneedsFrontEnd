@@ -14,7 +14,7 @@
                 <sneeds-logo/>
             </div>
             <div class="menuWrapper">
-                <ul class="menuList isansFont">
+                <ul class="menuList gadugiFont">
                     <li class="menuList-item"
                         v-for="(item, index) in this.topMenuListItems"
                         :key="index"
@@ -46,35 +46,35 @@
                 </ul>
             </div>
             <div class="profileWrapper">
-                <router-link to="/auth/login" class="menu-login-button isansFont navbar-left" v-if="!isLoggedIn">
+                <router-link to="/auth/login" class="menu-login-button gadugiFont navbar-left" v-if="!isLoggedIn">
                     <i class="material-icons">person</i>
-                    ورود | ثبت نام
+                    Login
                 </router-link>
 
                 <div class="dropdown authButton" v-else>
-                    <button @click="toggleProfileDropdown" class="profile-menu-button isansFont"
+                    <button @click="toggleProfileDropdown" class="profile-menu-button gadugiFont"
                             :class="[{'profile-menu-button--active' : profileDropdownMenuOpen}]">
                         <i class="material-icons">person_outline</i>
-                        <span style="margin-right:5px;">پروفایل</span>
+                        <span style="margin-right:5px;">Profile</span>
                         <i class="material-icons" v-if="!profileDropdownMenuOpen">keyboard_arrow_down</i>
                         <i class="material-icons" style="margin-right:5px;" v-else>keyboard_arrow_up</i>
                     </button>
-                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen && !isConsultant"
+                    <ul class="profile-menu-list gadugiFont" v-if="profileDropdownMenuOpen && !isConsultant"
                         @click.prevent="toggleProfileDropdown">
                         <li class="profile-menu-list-item" v-for="item in userProfileDropDownItems">
                             <router-link class="profile-menu-list-link" :to="item.target">{{item.name}}</router-link>
                         </li>
                         <li class="profile-menu-list-item">
-                            <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
+                            <button class="profile-menu-list-link" @click.prevent="logout">Logout</button>
                         </li>
                     </ul>
-                    <ul class="profile-menu-list isansFont" v-if="profileDropdownMenuOpen && isConsultant"
+                    <ul class="profile-menu-list gadugiFont" v-if="profileDropdownMenuOpen && isConsultant"
                         @click.prevent="toggleProfileDropdown">
                         <li class="profile-menu-list-item" v-for="item in consultantProfileDropDownItems">
                             <router-link class="profile-menu-list-link" :to="item.target">{{item.name}}</router-link>
                         </li>
                         <li class="profile-menu-list-item">
-                            <button class="profile-menu-list-link" @click.prevent="logout">خروج</button>
+                            <button class="profile-menu-list-link" @click.prevent="logout">Logout</button>
                         </li>
                     </ul>
                 </div>
@@ -83,7 +83,7 @@
             <transition name="slide-fade">
                 <div class="mobileMenu" :class="[{'mobileMenu--larger': isNavFixedOnZero}]" v-if="mobileMenuShow">
                     <div class="mobileMenuListWrapper">
-                        <ul class="mobileMenuList isansFont--faNum">
+                        <ul class="mobileMenuList gadugiFont">
                             <li class="mobileMenuList--item" v-for="item in this.topMenuListItems"
                                 :class="[{'dropdown':item.hasDropdown}]">
                                 <a v-if="item.hasDropdown" class="dropdown-toggle dropdown mobileMenuList--linkItem"
@@ -120,37 +120,37 @@
                             <li class="mobileMenuList--item" v-if="!isLoggedIn">
                                 <router-link class="mobileMenuList--linkItem special" to="/auth/login">
                                     <i class="material-icons">person</i>
-                                    ورود | ثبت نام
+                                    Login
                                 </router-link>
                             </li>
                         </ul>
                     </div>
                     <div class="mobileMenuActionWrapper" v-if="isLoggedIn">
-                        <ul class="mobileMenuList isansFont--faNum" v-if="isConsultant">
+                        <ul class="mobileMenuList gadugiFont" v-if="isConsultant">
                             <li class="mobileMenuList--item" v-for="item in consultantProfileDropDownItems">
                                 <router-link :to="item.target" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
                                     {{item.name}}
+                                    <i class="material-icons">keyboard_arrow_right</i>
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
                                 <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    خروج
+                                    Logout
+                                    <i class="material-icons">keyboard_arrow_right</i>
                                 </a>
                             </li>
                         </ul>
-                        <ul class="mobileMenuList isansFont--faNum" v-else>
+                        <ul class="mobileMenuList gadugiFont" v-else>
                             <li class="mobileMenuList--item" v-for="item in userProfileDropDownItems">
                                 <router-link :to="item.target" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
                                     {{item.name}}
+                                    <i class="material-icons">keyboard_arrow_right</i>
                                 </router-link>
                             </li>
                             <li class="mobileMenuList--item">
                                 <a @click.prevent="logout()" role="button" class="mobileMenuList--linkItem">
-                                    <i class="material-icons">keyboard_arrow_left</i>
-                                    خروج
+                                    Logout
+                                    <i class="material-icons">keyboard_arrow_right</i>
                                 </a>
                             </li>
                         </ul>
@@ -175,7 +175,7 @@
                 isNavFixedOnZero: false,
                 userProfileDropDownItems: [
                     {
-                        name: 'اطلاعات کاربری',
+                        name: 'User Settings',
                         target: '/user/profile',
                         icon: 'circle',
                         tag: 0,
@@ -183,7 +183,7 @@
                         submenu: []
                     },
                     {
-                        name: "جلسات مشاوره",
+                        name: "Consulting Sessions",
                         target: '/user/sessions',
                         icon: 'circle',
                         tag: 0,
@@ -191,7 +191,7 @@
                         submenu: []
                     },
                     {
-                        name: "پرداخت های قبلی",
+                        name: "Orders",
                         target: '/user/orders',
                         icon: 'circle',
                         tag: 0,
@@ -199,19 +199,19 @@
                         submenu: []
                     },
                     {
-                        name: "پکیج ها",
+                        name: "Packages",
                         target: '/user/userpackages',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
                 consultantProfileDropDownItems: [
                     {
-                        name: 'اطلاعات کاربری',
+                        name: 'User Settings',
                         target: '/user/profile',
                         icon: 'circle',
                         tag: 0,
@@ -219,7 +219,7 @@
                         submenu: []
                     },
                     {
-                        name: "جلسات مشاوره",
+                        name: "Consulting Sessions",
                         target: '/user/sessions',
                         icon: 'circle',
                         tag: 0,
@@ -227,7 +227,7 @@
                         submenu: []
                     },
                     {
-                        name: "مدیریت تقویم",
+                        name: "Calendar Management",
                         target: '/user/calendar',
                         icon: 'circle',
                         tag: 0,
@@ -235,7 +235,7 @@
                         submenu: []
                     },
                     {
-                        name: "ایجاد کد تخفیف",
+                        name: "Discounts",
                         target: '/user/discounts',
                         icon: 'circle',
                         tag: 0,
@@ -243,19 +243,19 @@
                         submenu: []
                     },
                     {
-                        name: "پکیج ها",
+                        name: "Packages",
                         target: '/user/conspackages',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
                 topMenuListItems: [
                     {
-                        itemName: 'مشاوران',
+                        itemName: 'Consultants',
                         target: '/consultants',
                         type: 'router',
                         hasDropdown: false,
@@ -264,7 +264,7 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'پکیج اقتصادی',
+                        itemName: 'Economic Package',
                         target: '/packages/economic',
                         type: 'router',
                         hasDropdown: false,
@@ -273,21 +273,21 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'منابع رایگان',
+                        itemName: 'Free Materials',
                         target: '/',
                         type: 'router',
                         hasDropdown: true,
                         showDropdown: false,
                         dropdownItems: [
                             {
-                                itemName: 'بلاگ',
+                                itemName: 'Blog',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'همه مطالب',
+                                        itemName: 'All Posts',
                                         target: 'http://blog.sneeds.ir/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -295,7 +295,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'پروسه اپلای',
+                                        itemName: 'Apply process',
                                         target: 'http://blog.sneeds.ir/category/%D9%BE%D8%B1%D9%88%D8%B3%D9%87-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -303,7 +303,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'ددلاین دانشگاه‌ها',
+                                        itemName: 'Universities Deadlines',
                                         target: 'http://blog.sneeds.ir/2020/06/%D8%AF%D8%AF%D9%84%D8%A7%DB%8C%D9%86-%D8%AF%D8%A7%D9%86%D8%B4%DA%AF%D8%A7%D9%87/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -311,7 +311,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'ایمیل به اساتید',
+                                        itemName: 'Prof Communication',
                                         target: 'http://blog.sneeds.ir/2020/06/%D8%A7%DB%8C%D9%85%DB%8C%D9%84-%D8%A8%D9%87-%D8%A7%D8%B3%D8%A7%D8%AA%DB%8C%D8%AF/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -319,7 +319,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'فاند چیست؟',
+                                        itemName: 'What is fund?',
                                         target: 'http://blog.sneeds.ir/2020/06/%D8%A7%D9%86%D9%88%D8%A7%D8%B9-%D9%81%D8%A7%D9%86%D8%AF-%D8%AA%D8%AD%D8%B5%DB%8C%D9%84%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -329,14 +329,14 @@
                                 ]
                             },
                             {
-                                itemName: 'فیلم‌های آموزشی رایگان',
+                                itemName: 'Free Courses',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'مصاحبه‌های اپلای',
+                                        itemName: 'Apply Interviews',
                                         target: 'http://blog.sneeds.ir/category/%D9%85%D8%B5%D8%A7%D8%AD%D8%A8%D9%87/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -344,7 +344,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'لایو‌های اینستاگرامی',
+                                        itemName: 'Instagram Lives',
                                         target: 'http://blog.sneeds.ir/category/%D9%85%D8%B5%D8%A7%D8%AD%D8%A8%D9%87/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -352,7 +352,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'وبینارهای آموزش اپلای',
+                                        itemName: 'How to apply webinars',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -360,7 +360,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'اپلای به کانادا',
+                                        itemName: 'Apply to Canada',
                                         target: 'http://blog.sneeds.ir/category/%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%DA%A9%D8%A7%D9%86%D8%A7%D8%AF%D8%A7/ ',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -368,7 +368,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'اپلای به اروپا',
+                                        itemName: 'Apply to Europe',
                                         target: 'http://blog.sneeds.ir/category/%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%D8%A7%D8%B1%D9%88%D9%BE%D8%A7/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -381,21 +381,21 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'وبینار‌ها و کلاس‌ها',
+                        itemName: 'Webinars and courses',
                         target: '/',
                         type: 'router',
                         hasDropdown: true,
                         showDropdown: false,
                         dropdownItems: [
                             {
-                                itemName: 'وبینار‌ها',
+                                itemName: 'Webinars',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'همه وبینارها',
+                                        itemName: 'All webinars',
                                         target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -403,7 +403,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'آموزش نگارش CV SOP',
+                                        itemName: 'CS & SOP writing',
                                         target: 'http://new.sneeds.ir/videos/product/cv-sop-webinar-2020/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -411,7 +411,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'چطوری اپلای کنم؟',
+                                        itemName: 'How to apply?',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1how-to-apply-%D8%AE%D8%B1%D8%AF%D8%A7%D8%AF-99/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -419,7 +419,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'هزینه‌های اپلای',
+                                        itemName: 'Apply costs',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D9%87%D8%B2%DB%8C%D9%86%D9%87-%D9%87%D8%A7%DB%8C-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D8%A8%D9%87-%D8%AA%D9%81%DA%A9%DB%8C%DA%A9-%D9%82%D8%A8%D9%84-%D9%88-%D8%A8/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -427,7 +427,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'خرید فیلم وبینار‌ها',
+                                        itemName: 'Buy recorded webinars',
                                         target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -437,14 +437,14 @@
                                 ]
                             },
                             {
-                                itemName: 'کلاس‌های اپلای',
+                                itemName: 'Apply courses',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'همه کلاس‌ها',
+                                        itemName: 'All courses',
                                         target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3%E2%80%8C%D9%87%D8%A7%DB%8C-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -452,7 +452,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'صفر تا صد ویزا',
+                                        itemName: 'Getting visa, Zero to Hero',
                                         target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D9%88%DB%8C%D8%B2%D8%A7-%D8%A8%D8%A7-%D9%85%D8%AD%D9%85%D8%AF-%D8%AA%D9%88%D9%84%D8%A7%DB%8C%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -460,7 +460,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'مقاله نویسی',
+                                        itemName: 'Essay writing',
                                         target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D9%85%D9%82%D8%A7%D9%84%D9%87-%D9%86%D9%88%DB%8C%D8%B3%DB%8C-%DA%A9%D8%A7%D9%88%D9%87-%D8%B1%D9%88%D8%B4%D9%86-%D8%A8%DB%8C%D9%86-%D9%81%D8%B1/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -470,14 +470,14 @@
                                 ]
                             },
                             {
-                                itemName: 'وبینار‌های رایگان',
+                                itemName: 'Free webinars',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'همه وبینار‌های رایگان',
+                                        itemName: 'All free webinars',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7%DB%8C-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -485,7 +485,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'آموزش انتخاب استاد و دانشگاه',
+                                        itemName: 'How to choose university and prof',
                                         target: 'https://sneeds.ir/%D8%AB%D8%A8%D8%AA%E2%80%8C%D9%86%D8%A7%D9%85-%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8-%D8%A7%D8%B3%D8%AA%D8%A7%D8%AF-%D9%88/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -493,7 +493,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'تجربه تحصیل در قاره‌های مختلف',
+                                        itemName: 'Education experience abroad',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D9%85%D9%82%D8%A7%DB%8C%D8%B3%D9%87-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%D9%88-%D8%B2%D9%86%D8%AF%DA%AF%DB%8C-%D8%AF%D8%B1-%D8%A7%D8%B1%D9%88%D9%BE%D8%A7%D8%8C%DA%A9/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -501,7 +501,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'اپلای به کالج',
+                                        itemName: 'Apply for college',
                                         target: 'https://sneeds.ir/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7/%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C-%DA%A9%D8%A7%D9%84%D8%AC-%D8%B3%D9%84%D9%81-%D9%81%D8%A7%D9%86%D8%AF/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -511,14 +511,14 @@
                                 ]
                             },
                             {
-                                itemName: 'فیلم‌های خود آموز اپلای',
+                                itemName: 'Self learning apply videos',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'همه فیلم‌ها',
+                                        itemName: 'All videos',
                                         target: 'https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%87%D8%A7%DB%8C-%D8%AE%D9%88%D8%AF-%D8%A2%D9%85%D9%88%D8%B2-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -526,7 +526,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'پکیج‌‌های فیلم',
+                                        itemName: 'Video packages',
                                         target: 'https://sneeds.ir/%D9%BE%DA%A9%E2%80%8C%D9%87%D8%A7%DB%8C-%D9%81%DB%8C%D9%84%D9%85-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -534,7 +534,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'مکاتبه با اساتید',
+                                        itemName: 'Prof communication',
                                         target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D8%A7%DB%8C%D9%85%DB%8C%D9%84-%D8%A8%D9%87-%D8%A7%D8%B3%D8%A7%D8%AA%DB%8C%D8%AF-%DA%A9%D8%A7%D9%88%D9%87-%D8%B1%D9%88%D8%B4%D9%86-%D8%A8%DB%8C%D9%86/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -542,7 +542,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'آیلتس برای اپلای',
+                                        itemName: 'IELTS for apply',
                                         target: 'https://sneeds.ir/%DA%A9%D9%84%D8%A7%D8%B3-%D8%B2%D8%A8%D8%A7%D9%86-ielts/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -555,21 +555,21 @@
                         icon: 'supervisor_account'
                     },
                     {
-                        itemName: 'خدمات',
+                        itemName: 'Services',
                         target: '/',
                         type: 'router',
                         hasDropdown: true,
                         showDropdown: false,
                         dropdownItems: [
                             {
-                                itemName: 'پکیج‌های پذیرش تحصیلی',
+                                itemName: 'Apply with education packages',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'اقتصادی',
+                                        itemName: 'Economic',
                                         target: '/packages/economic',
                                         type: 'router',
                                         hasDropdown: false,
@@ -577,7 +577,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'صفر تا صد',
+                                        itemName: 'Zero to hero',
                                         target: 'https://sneeds.ir/%D9%BE%DA%A9%DB%8C%D8%AC-%D8%B5%D9%81%D8%B1-%D8%AA%D8%A7-%D8%B5%D8%AF/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -585,7 +585,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'کالج',
+                                        itemName: 'College',
                                         target: '/packages/college',
                                         type: 'router',
                                         hasDropdown: false,
@@ -593,7 +593,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'ویزا',
+                                        itemName: 'Visa',
                                         target: 'https://sneeds.ir/%D9%BE%DA%A9%DB%8C%D8%AC-%D9%88%DB%8C%D8%B2%D8%A7/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -603,14 +603,14 @@
                                 ]
                             },
                             {
-                                itemName: 'ویرایش و نگارش مدارک',
+                                itemName: 'Documents review',
                                 target: '/',
                                 type: 'router',
                                 hasDropdown: true,
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'رزومه (CV)',
+                                        itemName: 'CV / Resume',
                                         target: 'https://sneeds.ir/%D9%86%DA%AF%D8%A7%D8%B1%D8%B4-cv-%D8%B1%D8%B2%D9%88%D9%85%D9%87/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -618,7 +618,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'انگیزه‌نامه (SOP)',
+                                        itemName: 'SOP',
                                         target: 'https://sneeds.ir/%D9%86%DA%AF%D8%A7%D8%B1%D8%B4-sop-%D8%A7%D9%86%DA%AF%DB%8C%D8%B2%D9%87%E2%80%8C%D9%86%D8%A7%D9%85%D9%87/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -626,7 +626,7 @@
                                         dropdownItems: []
                                     },
                                     {
-                                        itemName: 'کاورلتر',
+                                        itemName: 'Cover letter',
                                         target: 'https://sneeds.ir/%D8%AA%D8%B5%D8%AD%DB%8C%D8%AD-%DA%A9%D8%A7%D9%88%D8%B1%D9%84%D8%AA%D8%B1/',
                                         type: 'hyper',
                                         hasDropdown: false,
@@ -731,7 +731,7 @@
     }
 
     .menuWrapper {
-        margin: auto 0 auto auto;
+        margin: auto auto auto 0;
     }
 
     .menuList {
@@ -739,19 +739,19 @@
         align-items: center;
         justify-content: space-between;
         margin: 0 30px 0 0;
-        padding-right: 0;
+        padding-left: 0;
         list-style: none;
     }
 
     .menuList-item {
-        margin: 0 0 0 30px;
+        margin: 0 30px 0 0;
         display: flex;
         align-items: center;
         transition: all 100ms ease-in-out;
     }
 
     .menuList-item:last-child {
-        margin-left: 0;
+        margin-right: 0;
     }
 
     .menuList-item:hover {
@@ -773,7 +773,7 @@
         border-radius: 8px;
         display: none;
         top: 30px;
-        right: 0;
+        left: 0;
         padding: 30px;
         transition: all 100ms ease-in-out;
         cursor: default;
@@ -790,13 +790,13 @@
         display: flex;
         flex-direction: column;
         list-style: none;
-        margin-left: 50px;
+        margin-right: 50px;
         min-width: max-content;
         transition: all 100ms ease-in-out;
     }
 
     .megamenu-list:last-child {
-        margin-left: 0;
+        margin-right: 0;
     }
 
 
@@ -922,7 +922,7 @@
         display: flex;
         width: 100%;
         font-size: 13px;
-        padding: 10px 10px 10px 0;
+        padding: 10px 0 10px 10px;
         color: #666;
         background: none;
         border: none;
@@ -965,6 +965,7 @@
         .mobileNavbarToggleWrapper {
             display: block;
             margin-right: 20px;
+            order: 1;
         }
 
         .mobileNavbarToggleWrapper i.material-icons {
@@ -980,7 +981,6 @@
         }
 
         .LogoWrapper {
-            order: 1;
             margin-right: auto;
             margin-left: 20px;
         }
@@ -1020,7 +1020,7 @@
             align-items: center;
             justify-content: flex-start;
             width: 100%;
-            padding-right: 0;
+            padding-left: 0;
             list-style: none;
         }
 
@@ -1050,13 +1050,13 @@
 
         .mobileMenuList--linkItem i.material-icons {
             font-size: 14px;
-            margin-left: 5px;
+            margin-right: 5px;
         }
 
         .mobileMenuList--linkItem.special {
             background-color: #e91e63;
             color: white;
-            border-radius: 5px 0 0 5px;
+            border-radius: 0 5px 5px 0;
         }
 
         .mobileMenuList--linkItem.router-link-exact-active {
@@ -1076,7 +1076,7 @@
         }
 
         .megamenu-mobile {
-            padding-right: 30px;
+            padding-left: 30px;
             font-size: 13px;
         }
 

@@ -1,5 +1,10 @@
 <template>
-    $END$
+    <div>
+        <img src="">
+        <spam></spam>
+        <p></p>
+    </div>
+    
 </template>
 
 <script>

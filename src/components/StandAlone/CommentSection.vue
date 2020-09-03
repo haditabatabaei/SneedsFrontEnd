@@ -145,8 +145,8 @@
 
     .comment-login-needed {
         width: 100%;
-        text-align: right;
-        padding-right: 0;
+        text-align: left;
+        padding-left: 0;
     }
 
     .commentSectionWrapper-title-meta {

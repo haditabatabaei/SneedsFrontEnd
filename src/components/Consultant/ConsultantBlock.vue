@@ -13,14 +13,14 @@
                         Anonymous
                     </router-link>
                 </div>
-                <div class="consultantBlockInfoItem">
-                    <p class="isansFont consultantBio">
+                <div class="consultantBlockInfoItem gadugiFont">
+                    <p class="consultantBio">
                         {{studyText}}
                     </p>
-                    <p class="isansFont consultantBio--mobile">
+                    <p class="consultantBio--mobile">
                         {{studyTextMobile}}
                     </p>
-                    <p class="isansFont--faNum consultantBio--mobile">
+                    <p class="consultantBio--mobile">
                         Price per session: {{consultant.time_slot_price}} Tomans
                     </p>
                 </div>

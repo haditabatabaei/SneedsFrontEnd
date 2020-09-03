@@ -142,7 +142,7 @@
                                 <span class="gadugiFont" v-else>W/O Rate</span>
                             </div>
                         </div>
-                        <div class="consultantSidebarBlock--selectedItems gadugiFont" style="max-height:400px;overflow: auto">
+                        <div class="consultantSidebarBlock--selectedItems" :class="[{'isansFont--faNum': isiran, 'gadugiFont': !isiran}]" style="max-height:400px;overflow: auto">
                             <ul class="consultantSidebarBlock--selectedItems_list">
                                 <li v-if="stash.length === 0">
                                     There is no selected slot.
@@ -151,7 +151,7 @@
                                 <li v-for="item in stash">
                                    <i class="material-icons" role="button"
                                    @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
-                                <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <span v-if="isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
                                 <span v-else class="gadugiFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
                                 <br>
                                     <span class="stash-item-consultant-name">{{item.consultant.first_name + " " + item.consultant.last_name}}</span>
@@ -180,8 +180,7 @@
                         </i>
                     </button>
                     <h2 class="mobile-calendar-header-title gadugiFont">
-                        Calendar
-                        {{consultant.first_name + " " + consultant.last_name}}
+                        {{consultant.first_name + " " + consultant.last_name}}'s Calendar
                     </h2>
 
                     <div style="height: 100px;overflow:auto;border-top:1px solid #aaa;border-bottom:1px solid #aaa;width: 100%;">
@@ -257,6 +256,9 @@
             },
             user() {
                 return this.$store.getters.getUser;
+            },
+            isiran() {
+                return this.$store.getters.isiran;
             },
             showNameModalAfterLogin() {
                 if (this.user.first_name == null || this.user.last_name == null) {

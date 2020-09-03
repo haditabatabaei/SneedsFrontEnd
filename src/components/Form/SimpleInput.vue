@@ -1,11 +1,13 @@
 <template>
     <div class="input-wrapper">
+        <label class="input-external-label" :class="[{'gadugiFont': isLtr, 'isansFont--faNum': !isLtr}]" :for="id" v-if="externalLabel">{{label}}</label>
         <input class="simple-input"
-               :class="[{'simple-input--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]"
-               type="text" :placeholder="label" :value="value" @change="$emit('change', $event.target.value)"
+               :id="id"
+               :class="[{'simple-input--ltr': isLtr, 'gadugiFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]"
+               type="text" :placeholder="placeholder" :value="value" @change="$emit('change', $event.target.value)"
                @input="$emit('input', $event.target.value)">
         <transition name="fade">
-            <p class="number-input-error isansFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
+            <p class="number-input-error gadugiFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
                 <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>
@@ -16,10 +18,23 @@
 <script>
     export default {
         name: "SimpleInput",
+        data() {
+            return {
+                id: 0
+            }
+        },
         props: {
             label: {
                 type: String,
                 default: () => 'ورودی ساده'
+            },
+            placeholder: {
+                type: String,
+                default: () => ''
+            },
+            externalLabel: {
+                type: Boolean,
+                default: () => false
             },
             defaultValue: {
                 type: String,
@@ -43,6 +58,7 @@
         },
         methods: {},
         created() {
+            this.id = Math.floor(Math.round(1000));
             if(this.defaultValue) {
                 this.value = this.defaultValue;
             }

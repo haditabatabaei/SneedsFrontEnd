@@ -14,7 +14,7 @@
                         <p>
                             <strong>You need an account for reservation!</strong>
                             <br>
-                            You will be redirect after login/register.
+                            You will be redirected after login/register.
                         </p>
                     </div>
                     <div class="intro-content ">
@@ -672,7 +672,7 @@
     .intro-head i {
         color: #B3B3B3;
         font-size: 18px;
-        margin-right: 10px;
+        margin-left: 10px;
         cursor: pointer;
     }
 
@@ -702,7 +702,7 @@
 
     .modal-warn-icon {
         color: #CAA53D;
-        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .modal-warn p {
@@ -747,7 +747,7 @@
     .intro-content-item i {
         color: #00BFD6;
         font-size: 16px;
-        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .intro-action {

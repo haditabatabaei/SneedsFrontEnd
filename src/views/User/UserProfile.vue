@@ -1,64 +1,81 @@
 <template>
     <section class="">
         <section class="profile-wrapper">
-            <form @submit.prevent="updateUser" class="profile-form isansFont--faNum">
-                <label for="email" class="profile-label">
-                    <span class="profile-label-name">ایمیل (غیر قابل تغییر)</span>
-                    <input id="email" :placeholder="user.email" type="text" class="profile-input" disabled>
-                </label>
-                <label for="phoneNumber" class="profile-label">
-                    <span class="profile-label-name">شماره تماس (غیر قابل تغییر)</span>
-                    <input id="phoneNumber" :placeholder="user.phone_number" type="text" class="profile-input" disabled>
-                </label>
-                <label for="firstName" class="profile-label">
-                    <span class="profile-label-name">نام:</span>
-                    <input id="firstName" :placeholder="user.first_name" type="text" class="profile-input"
-                           v-model="inputUser.first_name">
-                    <span class="profile-label-error" v-if="firstNameIsInvalid">
-                        لطفا یک نام معتبر وارد کنید.
-                    </span>
-                </label>
-                <label for="lastName" class="profile-label">
-                    <span class="profile-label-name">نام خانوادگی:</span>
-                    <input id="lastName" :placeholder="user.last_name" type="text" class="profile-input"
-                           v-model="inputUser.last_name">
-                    <span class="profile-label-error" v-if="lastNameIsInvalid">
-                        لطفا یک نام خانوادگی معتبر وارد کنید.
-                    </span>
-                </label>
-                <button class="profile-submit">ثبت تغییرات</button>
+            <form @submit.prevent="updateUser" class="profile-form gadugiFont">
+                <c-simple-input
+                    label="Email (not-editable):"
+                    :external-label="true"
+                    v-model="user.email"
+                    :is-disabled="true"
+                    :is-ltr="true"
+                    class="profile-input"
+                />
+
+                <c-simple-input
+                        label="Phone (not-editable):"
+                        :external-label="true"
+                        v-model="user.phone_number"
+                        :is-disabled="true"
+                        :is-ltr="true"
+                        class="profile-input"
+                />
+
+                <c-simple-input
+                        label="First name:"
+                        :external-label="true"
+                        v-model="inputUser.first_name"
+                        :is-ltr="true"
+                        :placeholder="user.first_name"
+                        :error="firstNameIsInvalid"
+                        error-text="Please enter a valid first name."
+                        class="profile-input"
+                />
+
+                <c-simple-input
+                        label="Last name:"
+                        :external-label="true"
+                        v-model="inputUser.last_name"
+                        :placeholder="user.last_name"
+                        :is-ltr="true"
+                        :error="lastNameIsInvalid"
+                        error-text="Please enter a valid last name."
+                        class="profile-input"
+                />
+                <button class="profile-submit">Submit changes</button>
             </form>
-            <div class="profile-password isansFont">
+            <div class="profile-password gadugiFont">
                 <button class="profile-password-toggler" @click="isShowingPasswordChange = !isShowingPasswordChange">
-                    <span v-if="!isShowingPasswordChange">میخواهم رمز عبور خود را تغییر دهم</span>
-                    <span v-else>مخفی کردن تغییر رمز عبور</span>
+                    <span v-if="!isShowingPasswordChange">I want to change my password</span>
+                    <span v-else>Hide changing password</span>
                     <i class="material-icons" v-if="!isShowingPasswordChange">keyboard_arrow_down</i>
                     <i class="material-icons" v-else>keyboard_arrow_up</i>
                 </button>
                 <transition name="fade">
                     <form v-if="isShowingPasswordChange" class="profile-form" @submit.prevent="changePassword">
-                        <label for="password" class="profile-label">
-                            <span class="profile-label-name">رمز عبور:</span>
-                            <input id="password" placeholder="رمز عبور" type="password" class="profile-input"
-                                   v-model="auth.password">
-                            <span class="profile-label-error" v-if="passwordIsInvalid">
-                        لطفا رمز عبور معتبر وارد کنید.
-                    </span>
-                        </label>
-                        <label for="confirmPassword" class="profile-label">
-                            <span class="profile-label-name">تکرار رمز عبور:</span>
-                            <input id="confirmPassword" placeholder="تکرار رمز عبور" type="password" class="profile-input"
-                                   v-model="auth.password2">
-                            <span class="profile-label-error" v-if="confirmPasswordIsInvalid">
-                        لطفا تکرار رمز عبور را معتبر وارد کنید.
-                    </span>
-                        </label>
-                        <button class="profile-submit">ویرایش رمز عبور</button>
+                        <c-password-input
+                                label="Password:"
+                                :external-label="true"
+                                v-model="auth.password"
+                                :is-ltr="true"
+                                :error="passwordIsInvalid"
+                                error-text="Please enter a valid password."
+                                class="profile-input"
+                        />
+
+                        <c-password-input
+                                label="Confirm password:"
+                                :external-label="true"
+                                v-model="auth.password2"
+                                :is-ltr="true"
+                                :error="confirmPasswordIsInvalid"
+                                error-text="Please enter a valid password confirmation."
+                                class="profile-input"
+                        />
+                        <button class="profile-submit">Submit new password</button>
                     </form>
                 </transition>
             </div>
         </section>
-        <package-form class="profile-wrapper" style="margin-top: 30px;" v-if="!isConsultant"/>
 
     </section>
 
@@ -67,11 +84,14 @@
 <script>
     import PackageForm from "@/components/Packages/PackageForm";
     import {required, minLength, maxLength, sameAs} from 'vuelidate/lib/validators'
-
+    import SimpleInput from "@/components/Form/SimpleInput";
+    import PasswordInput from "@/components/Form/SimpleInput";
     export default {
         name: "UserProfile",
         components: {
-            'package-form': PackageForm
+            'package-form': PackageForm,
+            "c-password-input": PasswordInput,
+            "c-simple-input": SimpleInput
         },
         validations: {
             inputUser: {
@@ -258,6 +278,11 @@
         justify-content: space-evenly;
     }
 
+    .profile-input {
+        margin: 5px;
+        width: calc(50% - 20px);
+    }
+
     .profile-label {
         display: flex;
         flex-direction: column;
@@ -267,12 +292,12 @@
     }
 
     .profile-input {
-        margin-top: 5px;
-        padding: 0 5px;
-        height: 40px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        color: #222;
+        /*margin-top: 5px;*/
+        /*padding: 0 5px;*/
+        /*height: 40px;*/
+        /*border-radius: 10px;*/
+        /*border: 1px solid #ccc;*/
+        /*color: #222;*/
     }
 
     .profile-submit {

@@ -3,6 +3,7 @@
         <label class="input-external-label" :class="[{'gadugiFont': isLtr, 'isansFont--faNum': !isLtr}]" :for="id" v-if="externalLabel">{{label}}</label>
         <input class="simple-input"
                :id="id"
+               :disabled="isDisabled"
                :class="[{'simple-input--ltr': isLtr, 'gadugiFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]"
                type="text" :placeholder="placeholder" :value="value" @change="$emit('change', $event.target.value)"
                @input="$emit('input', $event.target.value)">
@@ -54,11 +55,15 @@
             },
             value: {
                 type: String
+            },
+            isDisabled: {
+                type: Boolean,
+                default: () => false
             }
         },
         methods: {},
         created() {
-            this.id = Math.floor(Math.round(1000));
+            this.id = Math.floor(Math.random() * 1000);
             if(this.defaultValue) {
                 this.value = this.defaultValue;
             }

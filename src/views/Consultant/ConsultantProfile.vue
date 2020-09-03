@@ -481,7 +481,7 @@
 
     .consultantSidebarBlock--info_detail h1 {
         font-size: 1.5rem;
-        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .consultantSidebarBlock--info_detail span {

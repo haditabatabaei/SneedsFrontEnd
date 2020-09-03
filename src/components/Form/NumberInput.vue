@@ -3,6 +3,12 @@
         <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
             <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
             <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
+        <label :for="`number-input-${inputId}`" v-if="hasLabel && externalLabel" class="gadugiFont">
+            {{label}}
+        </label>
+        <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
+            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
+            <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel && !externalLabel">{{label}}</label>
             <div class="number-input-controls gadugiFont" v-if="hasKeys">
                 <button class="number-input-action" @click="incrementValueByStep">+</button>
                 <button class="number-input-action" @click="decrementValueByStep">-</button>
@@ -33,6 +39,10 @@
             label: {
                 type: String,
                 default: () => "وارد کنید"
+            },
+            externalLabel: {
+                type: Boolean,
+                default: () => false
             },
             hasKeys: {
                 type: Boolean,

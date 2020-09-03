@@ -2,7 +2,6 @@
 @import 'responsive.css';
 
 * {
-    direction: rtl !important;
     scroll: smooth !important;
 }
 

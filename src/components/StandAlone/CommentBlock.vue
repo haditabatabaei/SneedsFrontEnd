@@ -2,23 +2,24 @@
     <div class="commentBlock" v-if="!config.deleted">
         <div class="commentWrapper">
             <div class="commentSender">
-                <h5 class="senderName isansFont"> {{comment.user.first_name}} </h5>
+                <h5 class="senderName gadugiFont"> {{comment.user.first_name}} </h5>
             </div>
             <div class="commentMessage">
                 <p class="isansFont" v-if="!showEditPanel">{{comment.message}}</p>
                 <form @submit.prevent="editComment()" v-else>
                     <div class="form-group form-rose is-empty editForm">
-                        <label for="editComment" class="isansFont">نظر خود را ویرایش کنید :</label>
+                        <label for="editComment" class="isansFont">Edit your comment :</label>
                         <textarea
                             id="editComment"
                             class="form-control isansFont"
                             v-model="$v.editedCommentInput.$model"
                             rows="10" cols="100" />
                         <span class="material-input" />
-                        <span class="text-danger d-block editError isansFont" v-if="$v.editedCommentInput.$error">برای
-                            ویرایش باید یک چیزی وارد کنید.</span>
+                        <span class="text-danger d-block editError isansFont" v-if="$v.editedCommentInput.$error">
+                            Edited comment is required.
+                        </span>
                         <button class="btn btn-success btn-sm isansFont pull-left mb-10 " title="ثبت تغییرات">
-                            ثبت تغییرات
+                            Submit changes
                         </button>
                     </div>
                 </form>
@@ -26,11 +27,11 @@
         </div>
         <div class="commentWrapper adminWrapper" v-if="comment.admin_reply != null">
             <div class="commentSender">
-                <h5 class="senderName isansFont"> ادمین </h5>
+                <h5 class="senderName gadugiFont"> Admin </h5>
             </div>
 
             <div class="commentMessage">
-                <p class="isansFont">{{comment.admin_reply}}</p>
+                <p class="gadugiFont">{{comment.admin_reply}}</p>
             </div>
         </div>
     </div>
@@ -121,7 +122,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
     .commentMessage p {
@@ -148,19 +149,19 @@
     }
 
     .commentWrapper.adminWrapper {
-        padding-right:30px;
+        padding-left: 30px;
     }
     .adminWrapper .senderName {
-        border-right:5px solid #E04DDF;
-        padding-right:5px;
+        border-left: 5px solid #E04DDF;
+        padding-left: 5px;
     }
 
     .adminWrapper .dateCreated {
-        padding-right:10px;
+        padding-left: 10px;
     }
 
     .adminWrapper .commentMessage {
-        padding-right:10px;
+        padding-left: 10px;
     }
 
     .editError {

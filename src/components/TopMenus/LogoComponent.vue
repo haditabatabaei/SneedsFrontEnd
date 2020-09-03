@@ -1,7 +1,7 @@
 <template>
-    <a href="http://sneeds.ir" target="_blank" class="logo isansFont--faNum">
+    <a href="http://sneeds.ir" target="_blank" class="logo gadugiFont">
         <img class="logoImage" src="/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
-        <span class="logoName">اسنیدز</span>
+        <span class="logoName gadugiFont">Sneeds</span>
     </a>
 </template>
 
@@ -14,28 +14,21 @@
 <style scoped>
 
     .logo {
-        display:flex;
-        align-items:center;
-        justify-content : flex-start;
-
-        margin-left:10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-right: 20px;
     }
 
     .logoImage {
-        width:50px;
-        height:50px;
+        width: 40px;
+        height: 40px;
     }
 
     .logoName {
-        font-size:19px;
-        color:#333;
-        margin-right:5px;
-    }
-
-
-
-    .navbar-brand img {
-        margin: 0 0 0 5px;
+        font-size: 19px;
+        color: #333;
+        margin-left: 5px;
     }
 
 </style>

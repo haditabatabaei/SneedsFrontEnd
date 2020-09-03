@@ -10,7 +10,7 @@
                         {{consultant.first_name + ' ' + consultant.last_name}}
                     </router-link>
                     <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-else>
-                        بدون نام
+                        Anonymous
                     </router-link>
                 </div>
                 <div class="consultantBlockInfoItem">
@@ -21,24 +21,24 @@
                         {{studyTextMobile}}
                     </p>
                     <p class="isansFont--faNum consultantBio--mobile">
-                        قیمت هر جلسه: {{consultant.time_slot_price}} تومان
+                        Price per session: {{consultant.time_slot_price}} Tomans
                     </p>
                 </div>
                 <div class="consultantBlockInfoItem">
-                    <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
-                    <span class="rate isansFont--faNum" :style="`background-color:${getRateStyle(consultant.rate)}`">امتیاز: 5 / {{consultant.rate}}</span>
+                    <span class="rate noRate gadugiFont" v-if="consultant.rate == null">No rate</span>
+                    <span class="rate gadugiFont" :style="`background-color:${getRateStyle(consultant.rate)}`">Rate: {{consultant.rate}} / 5</span>
                 </div>
             </div>
         </div>
 
         <div class="consultantBlockAction col-md-4 text-center">
             <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton isansFont">
-                مشـاهده مشاور
+                View profile
             </router-link>
-            <p class="consultantPrice isansFont--faNum">
-                قیمت هر جلسه:
+            <p class="consultantPrice gadugiFont">
+                Price per session:
                 {{consultant.time_slot_price}}
-                تومان
+                Tomans
             </p>
         </div>
 
@@ -64,7 +64,7 @@
         computed: {
             studyText() {
                 if (this.consultant != null) {
-                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                    return `Studying ${this.studyInfo.grade} of ${this.studyInfo.field_of_study.name} at ${this.studyInfo.university.name} in ${this.studyInfo.country.name}`
                 } else {
                     return " ";
                 }
@@ -72,7 +72,7 @@
 
             studyTextMobile() {
                 if (this.consultant != null) {
-                    return ` دانشجوی  ${this.studyInfo.field_of_study.name} در ${this.studyInfo.country.name} `
+                    return `Studying ${this.studyInfo.field_of_study.name} in ${this.studyInfo.country.name}`;
                 } else {
                     return " ";
                 }
@@ -86,11 +86,11 @@
                 if (this.consultant != null) {
                     switch (this.studyInfo.grade) {
                         case 'phd':
-                            return 'دکترا';
+                            return 'Ph.D';
                         case 'master':
-                            return 'کارشناسی ارشد';
+                            return 'master';
                         case 'bachelor':
-                            return 'کارشناسی';
+                            return 'bachelor';
                         default :
                             return ' ';
                     }
@@ -139,8 +139,8 @@
     }
 
     .consultantBlockInfo {
-        margin-left: auto;
-        margin-right: 40px;
+        margin-right: auto;
+        margin-left: 40px;
 
         display: flex;
         align-self: stretch;

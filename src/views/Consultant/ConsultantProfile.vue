@@ -12,45 +12,45 @@
                             info
                         </i>
                         <p>
-                            <strong>برای رزرو مشاوره نیاز به حساب کاربری دارید!</strong>
+                            <strong>You need an account for reservation!</strong>
                             <br>
-                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                            You will be redirect after login/register.
                         </p>
                     </div>
                     <div class="intro-content ">
                         <h2 class="intro-content-head isansFont">
-                            چرا ثبت نام کنم ؟
+                            Why should i register ?
                         </h2>
                         <ul class="intro-content-list isansFont">
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی لیست جلسات رزرو شده رو ببینی
+                                You can see your reserved sessions
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                                You can join your session with one click
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                                You can talk to your adviser directly and easily
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                                You can manage your schedule by knowing remaining time to session
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی بعد از جلسه مشاوره، امتیاز بدی
+                                You can rate your adviser
                             </li>
                         </ul>
                     </div>
                     <div class="intro-action isansFont">
                         <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
-                            ورود/ثبت نام و رزرو وقت
+                            Login/Register and reserve
                         </button>
                         <button @click="hideAllModals" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بیخیال
+                            Not now
                         </button>
                     </div>
                 </div>
@@ -60,16 +60,16 @@
                     </div>
                     <div class="authFormWrapper-switcher isansFont">
                         <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
-                            ورود
+                            Login
                         </button>
                         <button @click="showRegisterForm" class="switcher"
-                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                                :class="[{'switcher--active' : registerForm}]">Register
                         </button>
                     </div>
-                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="Login and continue"
                                 v-if="loginForm"/>
                     <register-form :customAction="true" @custom-action-call="registerFormAction"
-                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                                   submit-label="Register and continue" v-else-if="registerForm"/>
                 </div>
 
                 <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
@@ -81,27 +81,27 @@
                             info
                         </i>
                         <p>
-                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <strong>Please enter your full name</strong>
                             <br>
-                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
-                            این اطلاعات  همیشه از طریق پروفایلتان قابل ویرایش است.
+                            In order to smooth reservation and consulting process, your adviser should know your full name.
+                            These information is accessible and editable at all times from your user settings.
                         </p>
                     </div>
                     <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
-                        نام :
+                        First name :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
                     </label>
                     <label class="loginForm-label isansFont" for="password">
-                        نام خانوادگی :
+                        Last name :
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
                     </label>
                     <div class="intro-action isansFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
-                            ثبت و رزرو وقت
+                            Register and reserve
                         </button>
                         <button @click="addSelectedTimesToCart(true)" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بعدا وارد میکنم
+                            Later
                         </button>
                     </div>
                 </div>
@@ -138,15 +138,15 @@
                                 <h1 class="isansFont--faNum">
                                     {{consultant.first_name + " " + consultant.last_name}}
                                 </h1>
-                                <span class="isansFont--faNum" v-if="consultant.rate != null"> امتیاز {{consultant.rate}}</span>
-                                <span class="isansFont--faNum" v-else>بدون امتیاز</span>
+                                <span class="isansFont--faNum" v-if="consultant.rate != null"> Rate: {{consultant.rate}}</span>
+                                <span class="isansFont--faNum" v-else>W/O Rate</span>
                             </div>
                         </div>
                         <div class="consultantSidebarBlock--selectedItems isansFont--faNum" style="max-height:400px;overflow: auto">
                             <ul class="consultantSidebarBlock--selectedItems_list">
                                 <li v-if="stash.length === 0">
-                                    زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
-                                    انتخاب شود.
+                                    There is no selected slot.
+                                    You need to select at least one slot to reserve.
                                 </li>
                                 <li v-for="item in stash">
                                    <i class="material-icons" role="button"
@@ -160,7 +160,7 @@
                         </div>
 
                         <button class="isansFont--faNum addToCartButton"
-                                @click="addSelectedTimesToCart()">رزرو جلسات انتخاب شده
+                                @click="addSelectedTimesToCart()">Reserve selected slots
                         </button>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
             <div class="consultant-mobile-calendar isansFont"
                  :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]" v-if="!showModalOverlay">
                 <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
-                    رزرو وقت مشاوره
+                    Reserve this adviser
                 </button>
                 <div class="mobile-calendar-header" v-if="showMobileCalendar">
                     <button @click="toggleMobileCalendar" class="mobile-calendar-close">
@@ -180,15 +180,15 @@
                         </i>
                     </button>
                     <h2 class="mobile-calendar-header-title isansFont">
-                        تقویم
+                        Calendar
                         {{consultant.first_name + " " + consultant.last_name}}
                     </h2>
 
                     <div style="height: 100px;overflow:auto;border-top:1px solid #aaa;border-bottom:1px solid #aaa;width: 100%;">
                         <ul class="consultantSidebarBlock--selectedItems_list">
                             <li v-if="stash.length === 0">
-                                زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
-                                انتخاب شود.
+                                There is no selected slot.
+                                You need to select at least one slot to reserve.
                             </li>
                             <li v-for="item in stash">
                                 <i class="material-icons" role="button"
@@ -474,12 +474,12 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
     .consultantSidebarBlock--info_detail h1 {
         font-size: 1.5rem;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
     .consultantSidebarBlock--info_detail span {
@@ -561,7 +561,7 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-        padding-right: 0;
+        padding-left: 0;
         font-size: 13px;
         margin-top: 5px;
     }

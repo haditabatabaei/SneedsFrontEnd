@@ -230,6 +230,7 @@
 
 
     .package-section-faq {
+        margin: 0px;
     }
 
     .section-sub-faq {
@@ -270,7 +271,7 @@
     }
 
     .divider--purple {
-        background-color: #8C3DDB;
+        background-color: #00D4ED;
     }
 
     .faq-question {
@@ -306,7 +307,7 @@
 
     .faq-question-title-text:before {
         content: " ";
-        background-color: #BD7AFF;
+        background-color: #00D4ED;
         width: 7px;
         height: 7px;
         border-radius: 50%;
@@ -324,14 +325,14 @@
         width: 25px;
         height: 25px;
         border-radius: 50%;
-        border: 2px solid #8E39CC;
+        border: 2px solid #00BFD6;
         background: none;
-        color: #8E39CC;
+        color:#00BFD6;
     }
 
     .faq-question-title-toggler.toggler--open {
-        border-color: #BD7AFF;
-        color: #BD7AFF;
+        border-color: #00D4ED;
+        color: #00D4ED;
     }
 
     .faq-question-answer {

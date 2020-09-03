@@ -7,7 +7,7 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn isansFont">
+                    <div class="modal-warn gadugiFont">
                         <i class="material-icons modal-warn-icon">
                             info
                         </i>
@@ -18,10 +18,10 @@
                         </p>
                     </div>
                     <div class="intro-content ">
-                        <h2 class="intro-content-head isansFont">
+                        <h2 class="intro-content-head gadugiFont">
                             Why should i register ?
                         </h2>
-                        <ul class="intro-content-list isansFont">
+                        <ul class="intro-content-list gadugiFont">
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
                                 You can see your reserved sessions
@@ -44,7 +44,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action gadugiFont">
                         <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
                             Login/Register and reserve
                         </button>
@@ -58,7 +58,7 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="authFormWrapper-switcher isansFont">
+                    <div class="authFormWrapper-switcher isgadugiFontansFont">
                         <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
                             Login
                         </button>
@@ -76,7 +76,7 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn modal--error isansFont">
+                    <div class="modal-warn modal--error gadugiFont">
                         <i class="material-icons modal-warn-icon modal-icon--error">
                             info
                         </i>
@@ -87,15 +87,15 @@
                             These information is accessible and editable at all times from your user settings.
                         </p>
                     </div>
-                    <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
+                    <label class="loginForm-label gadugiFont" for="phone" style="margin-top: 15px">
                         First name :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
                     </label>
-                    <label class="loginForm-label isansFont" for="password">
+                    <label class="loginForm-label gadugiFont" for="password">
                         Last name :
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
                     </label>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action gadugiFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
                             Register and reserve
                         </button>
@@ -135,14 +135,14 @@
 
                             </transition>
                             <div class="consultantSidebarBlock--info_detail">
-                                <h1 class="isansFont--faNum">
+                                <h1 class="gadugiFont">
                                     {{consultant.first_name + " " + consultant.last_name}}
                                 </h1>
-                                <span class="isansFont--faNum" v-if="consultant.rate != null"> Rate: {{consultant.rate}}</span>
-                                <span class="isansFont--faNum" v-else>W/O Rate</span>
+                                <span class="gadugiFont" v-if="consultant.rate != null"> Rate: {{consultant.rate}}</span>
+                                <span class="gadugiFont" v-else>W/O Rate</span>
                             </div>
                         </div>
-                        <div class="consultantSidebarBlock--selectedItems isansFont--faNum" style="max-height:400px;overflow: auto">
+                        <div class="consultantSidebarBlock--selectedItems gadugiFont" style="max-height:400px;overflow: auto">
                             <ul class="consultantSidebarBlock--selectedItems_list">
                                 <li v-if="stash.length === 0">
                                     There is no selected slot.
@@ -152,14 +152,14 @@
                                    <i class="material-icons" role="button"
                                    @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
                                 <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <span v-else class="gadugiFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
                                 <br>
                                     <span class="stash-item-consultant-name">{{item.consultant.first_name + " " + item.consultant.last_name}}</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <button class="isansFont--faNum addToCartButton"
+                        <button class="gadugiFont addToCartButton"
                                 @click="addSelectedTimesToCart()">Reserve selected slots
                         </button>
                     </div>
@@ -168,7 +168,7 @@
 
             <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
                  @click="toggleMobileCalendar"></div>
-            <div class="consultant-mobile-calendar isansFont"
+            <div class="consultant-mobile-calendar gadugiFont"
                  :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]" v-if="!showModalOverlay">
                 <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
                     Reserve this adviser
@@ -179,7 +179,7 @@
                             close
                         </i>
                     </button>
-                    <h2 class="mobile-calendar-header-title isansFont">
+                    <h2 class="mobile-calendar-header-title gadugiFont">
                         Calendar
                         {{consultant.first_name + " " + consultant.last_name}}
                     </h2>
@@ -194,7 +194,7 @@
                                 <i class="material-icons" role="button"
                                    @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
                                 <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                                <span v-else class="gadugiFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
                                 <br>
                                 <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.consultant.first_name + " " + item.consultant.last_name}}</strong>
                             </li>

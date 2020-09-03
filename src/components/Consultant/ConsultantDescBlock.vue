@@ -17,14 +17,14 @@
                     v-model="consultant.rate"/>
 
             <!-- consultant minutes -->
-            <p v-if="showMinutesOfConsultations" class="isansFont--faNum consultantDescBlock--head-minutes">
+            <p v-if="showMinutesOfConsultations" class="gadugiFont consultantDescBlock--head-minutes">
                 <strong>{{Math.floor(Math.random() * 100)}}</strong>
                 consulting !
             </p>
             <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
-               class="consultantDescBlock--head-resume isansFont">Download CV</a>
+               class="consultantDescBlock--head-resume gadugiFont">Download CV</a>
         </div>
-        <header class="consultantDescBlock--head isansFont--faNum">
+        <header class="consultantDescBlock--head gadugiFont">
             <img :src="consultant.profile_picture" class="consultantDescBlock--head-image"
                  :alt="consultant.first_name + ' ' + consultant.last_name">
 
@@ -53,7 +53,7 @@
             </div>
 
         </header>
-        <main class="consultantDescBlock--main isansFont--faNum">
+        <main class="consultantDescBlock--main gadugiFont">
             <div class="consultantDescBlock--main_video" v-if="consultant.aparat_link">
                 <iframe allowfullscreen="true" :src="getVideoFrameLink(consultant.aparat_link)"/>
             </div>

@@ -238,21 +238,31 @@
                             <div class="col-md-12 consultantList-pagination gadugiFont">
                                 <button v-if="currentPage != 1 && this.consultants.length != 0"
                                         class="consultantList-pagination-button"
-                                        @click="goPrevPage"><i class="material-icons">keyboard_arrow_left</i></button>
+                                        @click="goPrevPage">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                </button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
-                                        disabled><i class="material-icons">keyboard_arrow_left</i></button>
+                                        disabled>
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                </button>
+
                                 <button class="consultantList-pagination-button"
                                         :class="[{'consultantList-pagination-button--active' : currentPage == page}]"
                                         v-for="page in pagesNeeded" @click="togglePage(page)">
                                     {{page}}
                                 </button>
+
                                 <button v-if="currentPage != pagesNeeded && this.consultants.length != 0"
                                         class="consultantList-pagination-button"
-                                        @click="goNextPage"><i class="material-icons">keyboard_arrow_right</i></button>
+                                        @click="goNextPage">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                </button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
-                                        disabled><i class="material-icons">keyboard_arrow_left</i></button>
+                                        disabled>
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                </button>
                             </div>
                         </div>
                     </div>

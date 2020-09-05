@@ -198,7 +198,7 @@
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "فرم پکیج و تخمین", target: '/analysis/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    // {name: "فرم پکیج و تخمین", target: '/analysis/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {
                         name: "Packages",
                         target: '/user/userpackages',

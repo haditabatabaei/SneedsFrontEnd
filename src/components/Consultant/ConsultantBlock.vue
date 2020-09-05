@@ -32,7 +32,7 @@
         </div>
 
         <div class="consultantBlockAction col-md-4 text-center">
-            <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton isansFont">
+            <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton gadugiFont">
                 View profile
             </router-link>
             <p class="consultantPrice gadugiFont">

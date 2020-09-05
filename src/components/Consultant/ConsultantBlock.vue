@@ -26,7 +26,7 @@
                 </div>
                 <div class="consultantBlockInfoItem">
                     <span class="rate noRate gadugiFont" v-if="consultant.rate == null">No rate</span>
-                    <span class="rate gadugiFont" :style="`background-color:${getRateStyle(consultant.rate)}`">Rate: {{consultant.rate}} / 5</span>
+                    <span class="rate gadugiFont" :style="`background-color:${getRateStyle(consultant.rate)}`" v-else>Rate: {{consultant.rate}} / 5</span>
                 </div>
             </div>
         </div>

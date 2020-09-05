@@ -48,33 +48,32 @@
                     <div class="cartsWrapper-meta gadugiFont">
                         <p>
                             <span>Order No: </span>
-                            <span class="gadugiFont">{{order.order_id}}</span>
+                            <span>{{order.order_id}}</span>
                         </p>
 
                         <p>
                             <span>Price: </span>
-                            <span :classs="[{'isansFont' : !$store.getters.isiran}]">{{`${order.total} Tomans`}}</span>
+                            <span>{{`${order.total} Tomans`}}</span>
                         </p>
 
                         <p v-if="order.used_discount">
                             <span>Discount: </span>
-                            <span :classs="[{'isansFont' : !$store.getters.isiran}]">{{`${order.used_discount.amount} Tomans`}}</span>
+                            <span>{{`${order.used_discount.amount} Tomans`}}</span>
                         </p>
 
                         <p v-if="order.used_discount">
                             <span>With code: </span>
-                            <span class="gadugiFont">{{order.used_discount.code}}</span>
+                            <span>{{order.used_discount.code}}</span>
                         </p>
 
                         <p>
                             <span>Created date: </span>
-                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(order.created).locale($store.getters.locale).format('YYYY/MM/DD HH:mm')}}</span>
+                            <span>{{getJalali(order.created).format('DD/MM/YYYY HH:mm')}}</span>
                         </p>
                     </div>
 
                     <div class="cartsWrapper-item gadugiFont" v-for="phase in order.sold_store_paid_package_phases">
-                        <p class="cartsWrapper-item--day gadugiFont">{{phase.title}}</p>
-
+                        <p class="cartsWrapper-item--day">{{phase.title}}</p>
                         <p class="gadugiFont cartsWrapper-item-length">
                             {{phase.title}}'s current status:
                             <span>{{getPhaseStatusName(phase)}}</span>
@@ -89,14 +88,14 @@
                         </p>
                     </div>
 
-                    <div class="cartsWrapper-item" v-for="(product, index) in order.sold_time_slot_sales" :key="index">
-                        <p class="cartsWrapper-item--day"
-                           :class="[{'isansFont--faNum' : $store.getters.isiran, 'gadugiFont' : !$store.getters.isiran}]">
-                            {{getJalali(product.start_time).locale($store.getters.locale).format('dddd DD MMMM')}}</p>
-                        <p class="isansFont--faNum cartsWrapper-item-length">
+                    <div class="cartsWrapper-item gadugiFont" v-for="(product, index) in order.sold_time_slot_sales" :key="index">
+                        <p class="cartsWrapper-item--day">
+                            {{getJalali(product.start_time).format('dddd MMMM 24t\\h')}}
+                        </p>
+                        <p class="cartsWrapper-item-length">
                             <i class="material-icons">alarm_on</i>
-                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.start_time).locale($store.getters.locale).format('HH:mm')}}</span>
-                            <span :class="[{'isansFont' : !$store.getters.isiran}]">{{getJalali(product.end_time).locale($store.getters.locale).format('HH:mm')}}</span>
+                            <span>{{getJalali(product.start_time).format('HH:mm')}}</span>
+                            <span>{{getJalali(product.end_time).format('HH:mm')}}</span>
                         </p>
                     </div>
                 </div>

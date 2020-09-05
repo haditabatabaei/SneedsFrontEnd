@@ -9,7 +9,7 @@
                     Price (Tomans)
                 </p>
                 <p>
-                    Date
+                    Date (DD/MM/YYYY  HH:mm)
                 </p>
                 <p>
                     Status
@@ -45,7 +45,7 @@
                 </p>
 
                 <p class="order-item-date">
-                    {{getJalali(order.updated).locale($store.getters.locale).format('YYYY/MM/DD  HH:mm')}}
+                    {{getJalali(order.updated).format('DD/MM/YYYY  HH:mm')}}
                 </p>
 
                 <div class="order-item-status gadugiFont">

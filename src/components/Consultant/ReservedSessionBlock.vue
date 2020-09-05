@@ -14,16 +14,15 @@
             <h2 class="session-other-name gadugiFont" v-else>
                 {{session.consultant.first_name + " " + session.consultant.last_name}}
             </h2>
-            <p class="session-date" :class="[{'isansFont--faNum' : isiran, 'gadugiFont': !isiran}]">
+            <p class="session-date gadugiFont">
                 <time class="session-date-day">
                     <i class="material-icons">calendar_today</i>
-                    {{sessionStartDate.format('dddd YYYY/MM/DD')}}
+                    {{sessionStartDate.format('dddd | DD/MM/YYYY')}}
                 </time>
                 <time class="session-date-time">
                     <i class="material-icons">access_time</i>
                     {{sessionStartDate.format('HH:mm')}}
-                    <span v-if="isiran" class="session-date-time--separator">تا</span>
-                    <span v-else class="session-date-time--separator">till</span>
+                    <span class="session-date-time--separator">till</span>
                     {{sessionStartDate.clone().add('50', 'minutes').format('HH:mm')}}
                 </time>
             </p>
@@ -32,7 +31,7 @@
             </p>
             <p class="session-remain" v-else
                :class="[sessionRemainingClass]">
-                {{sessionStartDate.clone().locale('en').from(currentTime)}}
+                {{sessionStartDate.from(currentTime)}}
             </p>
         </div>
         <a :href="room.login_url" class="session-room-button active gadugiFont" v-if="activeRoom">
@@ -199,11 +198,11 @@
         },
         computed: {
             sessionEndDate() {
-                return this.getJalali(this.session.end_time).locale(this.$store.getters.locale).add(5, 'minutes');
+                return this.getJalali(this.session.end_time).add(5, 'minutes');
             },
 
             sessionStartDate() {
-                return this.getJalali(this.session.start_time).locale(this.$store.getters.locale).subtract(5, 'minutes');
+                return this.getJalali(this.session.start_time).subtract(5, 'minutes');
             },
 
             currentTimeAfterSessionEnd() {

@@ -1,8 +1,8 @@
 <template>
-    <div class="row chatroomBox">
+    <div class="row chatroomBox gadugiFont">
         <div class="col-md-4 chatroom-chats">
             <div class="chatroom-chats-search">
-                <input type="text" placeholder="جستجو" class="chatroom-chats-search-input isansFont">
+                <input type="text" placeholder="Search" class="chatroom-chats-search-input gadugiFont">
             </div>
 
             <div class="chatroom-chats-list" v-if="chats.length > 0">
@@ -14,32 +14,29 @@
                     <img v-if="chat.profile_img" :src="chat.profile_img" :alt="`${chat.other_person.first_name} ${chat.other_person.last_name}`" class="chatroom-chats-item-image">
                     <img v-else src="/sneedsAssets/img/profile.png" :alt="`${chat.other_person.first_name} ${chat.other_person.last_name}`" class="chatroom-chats-item-image">
                     <div class="chatroom-chats-item-info">
-                        <h4 class="isansFont--faNum">
+                        <h4 class="gadugiFont">
                             {{chat.other_person.first_name + " " + chat.other_person.last_name}}
                         </h4>
                     </div>
                 </div>
             </div>
             <div class="chatroom-chats-list" v-else>
-                <p class="isansFont--faNum">
-                    چتی برای نمایش وجود ندارد.
+                <p class="gadugiFont">
+                    There is no chat to show.
                 </p>
             </div>
 
         </div>
         <div class="col-md-8 chatroom-messages">
             <div class="chatroom-messages-title" v-if="windowWidth > 991.8">
-                <h4 class="isansFont--faNum" v-if="selectedChat">
+                <h4 class="gadugiFont" v-if="selectedChat">
                     {{this.selectedChat.other_person.first_name + " " + this.selectedChat.other_person.last_name}}
-                </h4>
-                <h4 class="isansFont--faNum" v-else>
-
                 </h4>
             </div>
 
             <div class="chatroom-messages-list" id="messagesBody" @scroll="messageBodyScroll" v-if="selectedChat">
                 <button class="new-messages-toggler" v-if="showScrollButton" @click="scrollDownMessages">
-                    <span class="isansFont--faNum">
+                    <span class="gadugiFont">
                         {{numberOfNewMessages}}
                     </span>
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -56,10 +53,10 @@
                     <div class="chatroom-messages-item-content"
                          :class="[{'content-other' : !message.is_sender_me, 'chatroom-messages-item-content--unseen': messageInUnseen(message)}]"
                          v-if="message.messageType == 'TextMessage'">
-                        <p class="chatroom-messages-item-content-text isansFont--faNum text-justify">
+                        <p class="chatroom-messages-item-content-text gadugiFont text-justify">
                             {{message.text_message}}
                         </p>
-                        <span class="chatroom-messages-item-time isansFont--faNum">
+                        <span class="chatroom-messages-item-time gadugiFont">
                             {{getJalali(message.created).locale('fa').format('HH:mm')}}
                         </span>
                     </div>
@@ -68,7 +65,7 @@
                          v-else-if="message.messageType == 'ImageMessage'">
                         <img class="chatroom-messages-item-content-image"
                              :src="message.image_field" alt="">
-                        <span class="chatroom-messages-item-time isansFont--faNum">
+                        <span class="chatroom-messages-item-time gadugiFont">
                             {{getJalali(message.created).locale('fa').format('HH:mm')}}
                         </span>
                     </div>
@@ -78,7 +75,7 @@
                         <a :href="message.file_field" target="_blank">
                             <i class="material-icons">save</i>
                         </a>
-                        <p class="isansFont--faNum">
+                        <p class="gadugiFont">
                             <span>
                                 {{message.name}}
                             </span>
@@ -86,7 +83,7 @@
                                 {{Math.floor((message.volume / 1024))}} KB
                             </span>
                         </p>
-                        <span class="chatroom-messages-item-time isansFont--faNum">
+                        <span class="chatroom-messages-item-time gadugiFont">
                             {{getJalali(message.created).locale('fa').format('HH:mm')}}
                         </span>
                     </div>
@@ -109,8 +106,8 @@
                     <!--                    </div>-->
                 </div>
             </div>
-            <p class="isansFont--faNum text-center mt-100" v-if="!selectedChat">
-                چتی برای نمایش انتخاب نشده است.
+            <p class="gadugiFont text-center mt-100" v-if="!selectedChat">
+                There is no chat selected.
             </p>
             <div class="chatroom-messages-new" v-if="selectedChat">
                 <label for="fileUpload" class="chatroom-messages-new-attach">
@@ -118,8 +115,8 @@
                     <i class="material-icons">attach_file</i>
                 </label>
                 <!--                <vue-record-audio @result="onResult" />-->
-                <input type="text" @keypress="sendMessageByKey" class="chatroom-messages-new-input isansFont--faNum"
-                       placeholder="متن پیام..." v-model="inputMessage">
+                <input type="text" @keypress="sendMessageByKey" class="chatroom-messages-new-input gadugiFont"
+                       placeholder="Message..." v-model="inputMessage">
                 <button class="chatroom-messages-new-send" @click="sendMessage(null)">
                     <i class="material-icons">
                         send
@@ -360,9 +357,9 @@
 
 <style scoped>
     .chatroom-chats {
-        border-radius: 0 15px 0 0;
+        border-radius: 15px 0 0 0;
         padding: 0;
-        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
     }
 
     .chatroom-chats-search {
@@ -419,13 +416,13 @@
     }
 
     .chatroom-chats-item.active {
-        border-right: 5px solid #9038CC;
+        border-left: 5px solid #9038CC;
     }
 
     .chatroom-chats-item img {
         width: 60px;
         height: 60px;
-        margin-right: 5px;
+        margin-left: 5px;
         border-radius: 50%;
     }
 

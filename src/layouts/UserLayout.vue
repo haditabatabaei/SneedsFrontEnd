@@ -144,7 +144,6 @@
                         submenu: []
                     },
                     {
-                        name: "پکیج ها",
                         name: "Packages",
                         target: '/user/userpackages',
                         icon: 'circle',

@@ -3,6 +3,7 @@
         <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
             <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
             <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
+        </div>
         <label :for="`number-input-${inputId}`" v-if="hasLabel && externalLabel" class="gadugiFont">
             {{label}}
         </label>

@@ -2,7 +2,7 @@
     <div class="itemBlock">
         <div class="authWrapper">
             <div class="authFormWrapper">
-                <div class="authFormWrapper-switcher isansFont">
+                <div class="authFormWrapper-switcher gadugiFont">
                     <button v-for="(filter, index) in availableFilters"
                             :key="index"
                             @click="filterBy(filter)"
@@ -14,8 +14,8 @@
             </div>
         </div>
         <div class="session-items">
-            <p v-if="(startedSessions.length === 0 && activeFilter.value === 'finished') || (notStartedSessions.length === 0 && activeFilter.value === 'notstarted')" class="session-items--text isansFont">
-                جلسه ای برای نمایش وجود ندارد.
+            <p v-if="(startedSessions.length === 0 && activeFilter.value === 'finished') || (notStartedSessions.length === 0 && activeFilter.value === 'notstarted')" class="session-items--text gadugiFont">
+                There is no available session to show.
             </p>
             <div v-if="activeFilter.value === 'notstarted'">
                 <reserved-session-block
@@ -49,10 +49,10 @@
                 notStartedSessions: [],
                 startedSessions: [],
                 currentTime: null,
-                activeFilter: {name: 'برگزار نشده', value: "notstarted"},
+                activeFilter: {name: 'Not started yet', value: "notstarted"},
                 availableFilters: [
-                    {name: 'برگزار نشده', value: "notstarted"},
-                    {name: 'برگزار شده', value: "finished"}
+                    {name: 'Not started yet', value: "notstarted"},
+                    {name: 'Finished', value: "finished"}
                 ]
             }
         },

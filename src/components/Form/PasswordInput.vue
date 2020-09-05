@@ -58,7 +58,7 @@
         },
         methods: {},
         created() {
-            this.id = Math.floor(Math.round(1000));
+            this.id = Math.floor(Math.random() * 1000);
             if(this.defaultValue) {
                 this.value = this.defaultValue;
             }

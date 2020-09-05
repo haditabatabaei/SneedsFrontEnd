@@ -27,7 +27,7 @@
                 v-model.trim="$v.userToRegister.phone_number.$model"
                 class="register-input"
         />
-        <label class="loginForm-label label--checkbox isansFont" for="acceptPolicy">
+        <label class="loginForm-label label--checkbox gadugiFont" for="acceptPolicy">
             <span class="label--checkbox--wrapper">
                 <input type="checkbox" class="loginForm-control control--checkbox" id="acceptPolicy"
                     v-model="$v.userToRegister.acceptPolicy.$model">
@@ -35,16 +35,14 @@
                     <i class="material-icons" v-if="userToRegister.acceptPolicy">done</i>
                 </span>
                 <span class="label--checkbox--text">
-                    با
-                    <router-link to="/policy"> شرایط و ضوابط استفاده از وبسایت اسنیدز </router-link>
-                    به طور کامل موافقم.
+                    I Agree with <router-link to="/policy">Sneeds privacy policy and terms of use</router-link>.
                 </span>
             </span>
-            <span class="loginForm-meta meta--checkbox error" v-if="acceptPolicyIsInvalid">
-                برای ثبت نام باید شرایط و ضوابط را بپذیرید.
+            <span class="loginForm-meta meta--checkbox error gadugiFont" v-if="acceptPolicyIsInvalid">
+                You must agree with Sneeds privacy policy and terms of use.
             </span>
         </label>
-        <button class="loginForm-button isansFont">
+        <button class="loginForm-button gadugiFont">
             {{submitLabel}}
             <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
 
@@ -93,7 +91,7 @@
         props: {
             submitLabel: {
                 type: String,
-                default: () => 'ثبت نام'
+                default: () => 'Register'
             },
             customAction: Boolean,
             default: () => false
@@ -231,7 +229,7 @@
     .label--checkbox--toggler {
         width: 20px;
         height: 20px;
-        margin-left: 5px;
+        margin-right: 5px;
         border-radius: 5px;
         display: flex;
         align-items: center;

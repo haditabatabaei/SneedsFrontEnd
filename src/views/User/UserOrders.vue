@@ -1,59 +1,57 @@
 <template>
-    <div class="container-fluid itemBlock">
+    <div class="container-fluid itemBlock gadugiFont">
         <div class="row">
-            <div class="order-table-head isansFont--faNum">
+            <div class="order-table-head gadugiFont">
                 <p>
-                    موضوع
+                    Title
                 </p>
                 <p>
-                    مبلغ(تومان)
+                    Price (Tomans)
                 </p>
                 <p>
-                    تاریخ
+                    Date
                 </p>
                 <p>
-                    وضعیت پرداخت
+                    Status
                 </p>
             </div>
             <div class="order-item" @click="$router.push(`/user/orders/${order.id}`)" v-for="order in orders" :class="[{'success' : order.status == 'paid'}, {'failed' : order.status != 'paid'}]">
-                <div class="order-item-title isansFont--faNum">
+                <div class="order-item-title">
                     <i class="material-icons text-rose">alarm_on</i>
                     <p>
                         <span v-if="hasTimeSlot(order)">
-                            جلسه مشاوره آنلاین
+                            Online consulting session
                         </span>
                         <span v-else-if="hasSoldStorePaidPackagePhase(order)">
                             {{soldPackagePhase(order).title}}
                         </span>
                         <span v-else>
-                            نا مشخص
+                            No Data
                         </span>
                         <span v-if="hasTimeSlot(order)">
                             {{firstTimeSlot(order).consultant.first_name + " " + firstTimeSlot(order).consultant.last_name}}
                         </span>
                         <span v-else-if="hasSoldStorePaidPackagePhase(order) && !!soldPackagePhase(order).description">
-                            دارای توضیحات
+                            With description
                         </span>
                         <span v-else>
-                             توضیحاتی ثبت نشده
+                            Without description
                         </span>
                     </p>
                 </div>
 
-                <p class="order-item-price" :class="[{'isansFont--faNum' : $store.getters.isiran, 'isansFont' : !$store.getters.isiran}]">
+                <p class="order-item-price">
                     {{order.total}}
                 </p>
 
-                <p class="order-item-date" :class="[{'isansFont--faNum' : $store.getters.isiran,'isansFont' : !$store.getters.isiran}]">
+                <p class="order-item-date">
                     {{getJalali(order.updated).locale($store.getters.locale).format('YYYY/MM/DD  HH:mm')}}
                 </p>
 
-                <div class="order-item-status isansFont--faNum">
-                    <span class="success" v-if="order.status == 'paid'">موفق</span>
-                    <span class="failed" v-else>نا موفق</span>
-                    <router-link :to="`/user/orders/${order.id}`">
-                        <i class="material-icons">keyboard_arrow_left</i>
-                    </router-link>
+                <div class="order-item-status gadugiFont">
+                    <span class="success" v-if="order.status == 'paid'">Successful</span>
+                    <span class="failed" v-else>Not Successful</span>
+                    <i class="material-icons">keyboard_arrow_right</i>
                 </div>
             </div>
         </div>
@@ -151,11 +149,11 @@
     }
 
     .order-item.success {
-        border-right:3px solid #4cc26c;
+        border-left: 3px solid #4cc26c;
     }
 
     .order-item.failed {
-        border-right:3px solid #CE8E8F;
+        border-left: 3px solid #CE8E8F;
     }
 
     .order-item:hover {
@@ -177,7 +175,7 @@
     .order-item-title p {
         display:flex;
         flex-direction: column;
-        margin-right: 20px;
+        margin-left: 20px;
         font-weight: bold;
     }
 

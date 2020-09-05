@@ -11,7 +11,8 @@
                                     {{`${user.first_name} ${user.last_name}`}}
                                 </h1>
                                 <h4 class="isansFont--faNum text-sm" v-else>
-                                    <router-link to="/user/profile">لطفا نام و نام خانوادگی خود را تکمیل کنید.
+                                    <router-link to="/user/profile">
+                                        Please fill and submit your first and last names.
                                     </router-link>
                                 </h4>
                             </div>
@@ -67,11 +68,11 @@
                     {{`${user.first_name} ${user.last_name}`}}
                 </h1>
                 <h4 class="isansFont--faNum" v-else>
-                    لطفا نام و نام خانوداگی خود را تکمیل کنید.
+                    Please fill and submit your first and last names.
                 </h4>
 
                 <h4 class="isansFont--faNum">
-                    <router-link to="/user/profile">تکمیل اطلاعات ></router-link>
+                    <router-link to="/user/profile">Fill other information ></router-link>
                 </h4>
             </div>
             <div class="mobile-menu">
@@ -119,7 +120,7 @@
                 showUserAvatar: false,
                 userSidebarItems: [
                     {
-                        name: 'اطلاعات کاربری',
+                        name: 'User settings',
                         target: '/user/profile',
                         icon: 'circle',
                         tag: 0,
@@ -127,7 +128,7 @@
                         submenu: []
                     },
                     {
-                        name: "جلسات مشاوره",
+                        name: "Consulting sessions",
                         target: '/user/sessions',
                         icon: 'circle',
                         tag: 0,
@@ -135,7 +136,7 @@
                         submenu: []
                     },
                     {
-                        name: "پرداخت های قبلی",
+                        name: "Orders",
                         target: '/user/orders',
                         icon: 'circle',
                         tag: 0,
@@ -143,27 +144,20 @@
                         submenu: []
                     },
                     {
-                        name: "فرم پکیج و تخمین",
-                        target: '/analysis/form',
-                        icon: 'circle',
-                        tag: 0,
-                        hasSubmenu: false,
-                        submenu: []
-                    },
-                    {
                         name: "پکیج ها",
+                        name: "Packages",
                         target: '/user/userpackages',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
                 consultantSidebarItems : [
                     {
-                        name: 'اطلاعات کاربری',
+                        name: 'User settings',
                         target: '/user/profile',
                         icon: 'circle',
                         tag: 0,
@@ -171,7 +165,7 @@
                         submenu: []
                     },
                     {
-                        name: "جلسات مشاوره",
+                        name: "Consulting sessions",
                         target: '/user/sessions',
                         icon: 'circle',
                         tag: 0,
@@ -179,7 +173,7 @@
                         submenu: []
                     },
                     {
-                        name: "مدیریت تقویم",
+                        name: "Calendar management",
                         target: '/user/calendar',
                         icon: 'circle',
                         tag: 0,
@@ -187,7 +181,7 @@
                         submenu: []
                     },
                     {
-                        name: "ایجاد کد تخفیف",
+                        name: "Discounts",
                         target: '/user/discounts',
                         icon: 'circle',
                         tag: 0,
@@ -195,14 +189,14 @@
                         submenu: []
                     },
                     {
-                        name: "پکیج ها",
+                        name: "Packages",
                         target: '/user/conspackages',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "چتروم", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ]
             }
         },
@@ -327,7 +321,7 @@
     .userSidebarBlock--links-menu {
         display: flex;
         list-style: none;
-        padding-right: 0;
+        padding-left: 0;
         flex-direction: column;
         align-items: stretch;
         justify-content: center;
@@ -341,7 +335,7 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-radius: 20px;
-        padding-right: 20px;
+        padding-left: 20px;
     }
 
     .circle {

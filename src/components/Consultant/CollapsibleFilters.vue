@@ -7,21 +7,21 @@
                 <button class="bottomFilter-head-title-close" v-if="showFilterPanel">
                     <i class="material-icons">close</i>
                 </button>
-                <p class="isansFont bottomFilter-head-title">
-                    <i class="material-icons">line_weight</i>
+                <p class="bottomFilter-head-title">
+                    <i class="material-icons" v-if="!showFilterPanel">line_weight</i>
                     Results Filtering
                 </p>
                 <button @click="clearActiveFilters" v-if="showFilterPanel"
-                        class="filterBlock-head-title--action isansFont--faNum">
+                        class="filterBlock-head-title--action">
                     Clear all filters
-                    <span v-if="activeFilters.length > 0">( {{activeFilters.length}} )</span>
+                    <span v-if="activeFilters.length > 0"> ({{activeFilters.length}})</span>
                 </button>
             </div>
             <div class="bottomFilter-content" v-if="showFilterPanel">
-                <div class="bottomFilter-content-tabs isansFont">
+                <div class="bottomFilter-content-tabs">
                     <button @click="openTab(tab)"
                             class="bottomFilter-content-tabs-button"
-                            v-for="(tab, index) in tabs" :key="index"
+                            v-for="tab in tabs"
                             :class="[{'active': currentTab === tab}]">
                         {{tab.name}}
                     </button>
@@ -29,21 +29,22 @@
                 <filter-block
                         :no-title="true"
                         :items="universities"
-                        v-if="currentTab.value === 'universities'"
+                        v-if="currentTab != null && currentTab.value === 'universities'"
                         @select-item="selectItemProxy"
                         :no-shadow="true"
                 />
                 <filter-block
                         :no-title="true"
                         :items="countries"
-                        v-if="currentTab.value === 'countries'"
+                        v-else-if="currentTab != null && currentTab.value === 'countries'"
                         @select-item="selectItemProxy"
+                        search-type="start"
                         :no-shadow="true"
                 />
                 <filter-block
                         :no-title="true"
                         :items="majors"
-                        v-if="currentTab.value === 'majors'"
+                        v-else-if="currentTab != null && currentTab.value === 'majors'"
                         @select-item="selectItemProxy"
                         :no-shadow="true"
                 />
@@ -77,15 +78,12 @@
             },
             universities: {
                 type: Array,
-                default: () => []
             },
             majors: {
                 type: Array,
-                default: () => []
             },
             activeFilters: {
                 type: Array,
-                default: () => []
             }
         },
         methods: {
@@ -105,12 +103,16 @@
             }
         },
         created() {
-            this.currentTab = this.tabs[1]
+            // this.openTab(this.tabs[0]);
         }
     }
 </script>
 
 <style scoped>
+    .bottom-filter {
+        display: none;
+    }
+
     .bottom-filter {
         position: fixed;
         bottom: 0;
@@ -145,8 +147,24 @@
         margin: 0;
     }
 
+    .filterBlock-head-title--action {
+        margin: auto 10px auto auto;
+        background: none;
+        color: #c9737c;
+        border: none;
+        cursor: pointer;
+    }
+
+    .bottomFilter-head-title-close {
+        background: none;
+        border: none;
+        margin: auto 10px;
+        color: #666;
+        cursor: pointer;
+    }
+
     .bottomFilter-head-title i {
-        margin-left: 5px;
+        margin-right: 5px;
         font-size: 16px;
     }
 
@@ -214,6 +232,10 @@
             width: 100%;
             height: 100vh;
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        .bottom-filter {
+            display: block;
         }
     }
 

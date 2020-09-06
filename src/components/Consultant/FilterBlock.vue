@@ -1,5 +1,5 @@
 <template>
-    <div class="filter-block" :class="[{'filter-block--noShadow': noShadow, 'filter-block--noRaduis': noRadius}]">
+    <div v-if="items.length > 0" class="filter-block" :class="[{'filter-block--noShadow': noShadow, 'filter-block--noRaduis': noRadius}]">
         <div class="filter-block-head" v-if="!noTitle">
             <div class="filter-block-head-title">
                 <p class="filter-block-head-title-text">
@@ -73,6 +73,9 @@
                     this.shownItems = newItems;
                 }
             }
+        },
+        created() {
+            this.searchInItems();
         },
         methods: {
             searchInItems() {

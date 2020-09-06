@@ -221,16 +221,16 @@
     }
 
     .package-section {
-        width: 100%;
+        width: 70%;
         min-height: calc(100vh - 70px);
         display: flex;
         align-items: center;
         justify-content: center;
+        margin: auto;
     }
 
 
     .package-section-faq {
-        margin: 0px;
     }
 
     .section-sub-faq {
@@ -404,7 +404,9 @@
 
 
     @media only screen and (max-width: 567.8px) {
-
+        .package-section {
+            width: 100%;
+        }
 
         .faq-box {
             padding: 0;

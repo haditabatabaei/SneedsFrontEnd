@@ -3,9 +3,8 @@
         <label class="input-external-label" :class="[{'gadugiFont': isLtr, 'isansFont--faNum': !isLtr}]" :for="id" v-if="externalLabel">{{label}}</label>
         <input class="simple-input"
                :id="id"
-               :disabled="isDisabled"
                :class="[{'simple-input--ltr': isLtr, 'gadugiFont': isLtr, 'isansFont--faNum': !isLtr, 'input--error': error}]"
-               type="text" :placeholder="placeholder" :value="value" @change="$emit('change', $event.target.value)"
+               type="password" :placeholder="placeholder" :value="value" @change="$emit('change', $event.target.value)"
                @input="$emit('input', $event.target.value)">
         <transition name="fade">
             <p class="number-input-error gadugiFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
@@ -18,7 +17,7 @@
 
 <script>
     export default {
-        name: "SimpleInput",
+        name: "PasswordInput",
         data() {
             return {
                 id: 0
@@ -27,7 +26,7 @@
         props: {
             label: {
                 type: String,
-                default: () => 'ورودی ساده'
+                default: () => 'رمز عبور'
             },
             placeholder: {
                 type: String,
@@ -51,14 +50,10 @@
             },
             errorText: {
                 type: String,
-                default: () => "لطفاً ورودی را دوباره کنترل کنید."
+                default: () => "لطفاً رمز عبور خود را کنترل کنید."
             },
             value: {
                 type: String
-            },
-            isDisabled: {
-                type: Boolean,
-                default: () => false
             }
         },
         methods: {},

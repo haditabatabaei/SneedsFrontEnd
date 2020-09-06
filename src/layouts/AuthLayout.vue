@@ -1,9 +1,9 @@
 <template>
     <div class="authWrapper">
         <div class="authFormWrapper">
-            <div class="authFormWrapper-switcher isansFont">
-                <router-link to="/auth/login" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-login'}]">ورود</router-link>
-                <router-link to="/auth/register" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-register'}]">ثبت نام</router-link>
+            <div class="authFormWrapper-switcher gadugiFont">
+                <router-link to="/auth/login" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-login'}]">Login</router-link>
+                <router-link to="/auth/register" class="switcher" :class="[{'switcher--active' : $route.name === 'auth-register'}]">Register</router-link>
             </div>
             <router-view :key="$route.fullPath" />
         </div>

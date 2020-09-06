@@ -4,13 +4,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 topFilter">
-                        <ul class="topFilter-list isansFont">
+                        <ul class="topFilter-list gadugiFont">
                             <li class="topFilter-item topFilter-item--active">
-                                مشاوره عمومی اپلای
+                                Normal apply consulting
                             </li>
                         </ul>
-                        <button class="topFilter-sort-button isansFont" @click="toggleRateSort">
-                            بیشترین امتیاز
+                        <button class="topFilter-sort-button gadugiFont" @click="toggleRateSort">
+                            Rate
                             <i class="material-icons" v-if="!orderRateDescending">keyboard_arrow_down</i>
                             <i class="material-icons" v-else>keyboard_arrow_up</i>
                         </button>
@@ -22,23 +22,24 @@
                         <div class="filterBlock">
                             <div class="filterBlock-head">
                                 <div class="filterBlock-head-title">
-                                    <p class="filterBlock-head-title--text isansFont">
+                                    <p class="filterBlock-head-title--text gadugiFont">
                                         <i class="material-icons">line_weight</i>
-                                        فیلتر های اعمال شده
+                                        Active filters
                                     </p>
                                     <button @click="clearActiveFilters"
-                                            class="filterBlock-head-title--action isansFont">
-                                        پاکسازی
+                                            class="filterBlock-head-title--action gadugiFont">
+                                        clear
                                     </button>
                                 </div>
                             </div>
                             <div class="filterBlock-content">
-                                <ul class="filterBlock-active-list isansFont">
+                                <ul class="filterBlock-active-list gadugiFont">
                                     <li class="filterBlock-active-item" v-for="(item, index) in activeFilters"
                                         :key="index">
                                         <button @click="toggleSelectItem(item)" class="filter-active-item-button">
-                                            <i class="material-icons">close</i></button>
-                                        {{item.name}}
+                                            {{item.name}}
+                                            <i class="material-icons">close</i>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -46,9 +47,9 @@
                         <div class="filterBlock">
                             <div class="filterBlock-head">
                                 <div class="filterBlock-head-title">
-                                    <p class="filterBlock-head-title--text isansFont">
+                                    <p class="filterBlock-head-title--text gadugiFont">
                                         <i class="material-icons">insert_photo</i>
-                                        کشور در حال تحصیل
+                                        Studying country
                                     </p>
                                 </div>
                             </div>
@@ -57,13 +58,13 @@
                                     <input v-model.trim="countryQuery"
                                            @input="searchByIn('countryQuery', 'countries', 'start')"
                                            type="text"
-                                           class="isansFont"
-                                           placeholder="جستجو">
+                                           class="gadugiFont"
+                                           placeholder="Search">
                                     <i class="material-icons">search</i>
                                 </div>
                             </div>
                             <div class="filterBlock-content">
-                                <ul class="filterBlock-list isansFont">
+                                <ul class="filterBlock-list gadugiFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
                                         {{country.name}}
@@ -76,9 +77,9 @@
                         <div class="filterBlock">
                             <div class="filterBlock-head">
                                 <div class="filterBlock-head-title">
-                                    <p class="filterBlock-head-title--text isansFont">
+                                    <p class="filterBlock-head-title--text gadugiFont">
                                         <i class="material-icons">insert_photo</i>
-                                        رشته در حال تحصیل
+                                        Studying major
                                     </p>
                                 </div>
                             </div>
@@ -86,12 +87,12 @@
                                 <div class="filterBlock-search-form">
                                     <input v-model.trim="fieldQuery"
                                            @input="searchByIn('fieldQuery', 'fields', 'middle')"
-                                           type="text" class="isansFont" placeholder="جستجو">
+                                           type="text" class="gadugiFont" placeholder="Search">
                                     <i class="material-icons">search</i>
                                 </div>
                             </div>
                             <div class="filterBlock-content">
-                                <ul class="filterBlock-list isansFont">
+                                <ul class="filterBlock-list gadugiFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(field)"
                                         v-for="(field, index) in shownFields" :key="index">
                                         {{field.name}}
@@ -104,9 +105,9 @@
                         <div class="filterBlock">
                             <div class="filterBlock-head">
                                 <div class="filterBlock-head-title">
-                                    <p class="filterBlock-head-title--text isansFont">
+                                    <p class="filterBlock-head-title--text gadugiFont">
                                         <i class="material-icons">insert_photo</i>
-                                        دانشگاه در حال تحصیل
+                                        Studying university
                                     </p>
                                 </div>
                             </div>
@@ -114,7 +115,7 @@
                                 <div class="filterBlock-search-form">
                                     <input v-model="universityQuery"
                                            @input="searchByIn('universityQuery', 'universities', 'middle')" type="text"
-                                           class="isansFont" placeholder="جستجو">
+                                           class="isansFont" placeholder="Search">
                                     <i class="material-icons">search</i>
                                 </div>
                             </div>
@@ -138,32 +139,32 @@
                             <button class="bottomFilter-head-title-close" v-if="showFilterPanel">
                                 <i class="material-icons">close</i>
                             </button>
-                            <p class="isansFont bottomFilter-head-title">
+                            <p class="gadugiFont bottomFilter-head-title">
+                                Filter result
                                 <i class="material-icons">line_weight</i>
-                                فیلتر نتایج
                             </p>
                             <button @click="clearActiveFilters" v-if="showFilterPanel"
-                                    class="filterBlock-head-title--action isansFont--faNum">
-                                پاکسازی فیلتر های اعمالی
+                                    class="filterBlock-head-title--action gadugiFont">
+                                Clear active filters
                                 <span v-if="activeFilters.length > 0">( {{activeFilters.length}} )</span>
                             </button>
                         </div>
-                        <div class="bottomFilter-content" v-if="showFilterPanel">
-                            <div class="bottomFilter-content-tabs isansFont">
+                        <div class="bottomFilter-content gadugiFont" v-if="showFilterPanel">
+                            <div class="bottomFilter-content-tabs">
                                 <button @click="toggleMobileFilterTab('countries')"
                                         class="bottomFilter-content-tabs-button"
                                         :class="[{'active': activeMobileFilterTab === 'countries'}]">
-                                    کشور ها
+                                    Countries
                                 </button>
                                 <button @click="toggleMobileFilterTab('fields')"
                                         class="bottomFilter-content-tabs-button"
                                         :class="[{'active': activeMobileFilterTab === 'fields'}]">
-                                    رشته ها
+                                    Majors
                                 </button>
                                 <button @click="toggleMobileFilterTab('universities')"
                                         class="bottomFilter-content-tabs-button"
                                         :class="[{'active': activeMobileFilterTab === 'universities'}]">
-                                    دانشگاه ها
+                                    Universities
                                 </button>
                             </div>
                             <div class="filterBlock-content" v-if="activeMobileFilterTab === 'countries'">
@@ -172,12 +173,12 @@
                                         <input v-model.trim="countryQuery"
                                                @input="searchByIn('countryQuery', 'countries', 'start')"
                                                type="text"
-                                               class="isansFont"
-                                               placeholder="جستجو">
+                                               class="gadugiFont"
+                                               placeholder="Search">
                                         <i class="material-icons">search</i>
                                     </div>
                                 </div>
-                                <ul class="filterBlock-list isansFont">
+                                <ul class="filterBlock-list gadugiFont">
                                     <li class="filterBlock-item" @click="toggleSelectItem(country)"
                                         v-for="(country, index) in shownCountries" :key="index">
                                         {{country.name}}
@@ -234,24 +235,34 @@
                                  :key="index">
                                 <consultant-block :consultant="consultant"/>
                             </div>
-                            <div class="col-md-12 consultantList-pagination isansFont--faNum">
+                            <div class="col-md-12 consultantList-pagination gadugiFont">
                                 <button v-if="currentPage != 1 && this.consultants.length != 0"
                                         class="consultantList-pagination-button"
-                                        @click="goPrevPage"><i class="material-icons">keyboard_arrow_right</i></button>
+                                        @click="goPrevPage">
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                </button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
-                                        disabled><i class="material-icons">keyboard_arrow_right</i></button>
+                                        disabled>
+                                    <i class="material-icons">keyboard_arrow_left</i>
+                                </button>
+
                                 <button class="consultantList-pagination-button"
                                         :class="[{'consultantList-pagination-button--active' : currentPage == page}]"
                                         v-for="page in pagesNeeded" @click="togglePage(page)">
                                     {{page}}
                                 </button>
+
                                 <button v-if="currentPage != pagesNeeded && this.consultants.length != 0"
                                         class="consultantList-pagination-button"
-                                        @click="goNextPage"><i class="material-icons">keyboard_arrow_left</i></button>
+                                        @click="goNextPage">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                </button>
                                 <button v-else
                                         class="consultantList-pagination-button consultantList-pagination-button--disabled"
-                                        disabled><i class="material-icons">keyboard_arrow_left</i></button>
+                                        disabled>
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -308,6 +319,10 @@
             activeFilters() {
                 return this.countries.filter(country => country.select).concat(this.universities.filter(uni => uni.select)).concat(this.fields.filter(field => field.select));
             },
+
+            api() {
+                return this.$store.getters.getApi;
+            }
         },
         created() {
             this.getListOfCountries();
@@ -413,7 +428,7 @@
                 this.isLoading = true;
                 try {
                     window.scrollTo(0, 0);
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
+                    let result = await this.$api.get(`${this.api}/consultant/consultant-profiles/?${this.generateQueryParameters(resetCurrentPage)}`);
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;
@@ -446,7 +461,7 @@
             async getListOfConsultants(toggleIndicator) {
                 //this.$loading(true);
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/consultant/consultant-profiles/`);
+                    let result = await this.$api.get(`${this.api}/consultant/consultant-profiles/`);
                     this.consultants = result.data;
                     if (toggleIndicator) {
                         this.toggleFilterPanel();
@@ -460,7 +475,7 @@
 
             async getListOfCountries() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/countries/`);
+                    let result = await this.$api.get(`${this.api}/account/countries/?with-time-slot-consultants=true`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.countries = result.data;
@@ -472,7 +487,7 @@
 
             async getListOfUniversities() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/universities/`);
+                    let result = await this.$api.get(`${this.api}/account/universities/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.universities = result.data;
@@ -484,7 +499,7 @@
 
             async getListOfFields() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}/account/field-of-studies/`);
+                    let result = await this.$api.get(`${this.api}/account/field-of-studies/`);
                     this.addSelectPropertyToList(result.data);
                     console.log(result);
                     this.fields = result.data;
@@ -691,7 +706,6 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        /*height: 300px;*/
         border-radius: 15px;
         background-color: white;
         box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
@@ -703,7 +717,6 @@
 
     .filterBlock-head {
         background-color: #fcfcfc;
-        /*height: 40px;*/
         border-radius: 15px 15px 0 0;
     }
 
@@ -719,17 +732,17 @@
         margin: 0;
         display: flex;
         align-items: center;
-        padding-right: 10px;
+        padding-left: 10px;
         color: #9B9999;
     }
 
     .filterBlock-head-title--text i {
         font-size: 16px;
-        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .filterBlock-head-title--action {
-        margin: 0 0 0 10px;
+        margin: 0 10px 0 0;
         background: none;
         cursor: pointer;
         border: none;
@@ -771,7 +784,7 @@
     }
 
     .filterBlock-search-form i {
-        margin-right: 10px;
+        margin-left: 10px;
         font-size: 18px;
         color: #B3B3B3;
     }
@@ -827,7 +840,7 @@
     }
 
     .filterBlock-item-selected {
-        margin: 0 auto 0 10px;
+        margin: 0 10px 0 auto;
         font-size: 13px;
         background-color: #B3B3B3;
         color: white;
@@ -841,6 +854,7 @@
         display: flex;
         flex-wrap: wrap;
         margin-top: 15px;
+        padding-left: 0;
     }
 
     .filterBlock-active-item {
@@ -857,7 +871,6 @@
     .filter-active-item-button {
         margin: 0;
         padding: 0;
-        width: 20px;
         height: 20px;
         display: flex;
         align-items: center;
@@ -869,6 +882,7 @@
 
     .filter-active-item-button i {
         font-size: 14px;
+        margin-left: 5px;
     }
 
     .topFilter {
@@ -1002,7 +1016,7 @@
             width: 25px;
             height: 25px;
             padding: 0;
-            margin-right: 15px;
+            margin-left: 15px;
             background: none;
             border: none;
             color: #666;

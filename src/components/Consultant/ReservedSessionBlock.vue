@@ -7,45 +7,43 @@
         <div class="session-image section-image--user" v-else>
             <i class="material-icons">person</i>
         </div>
-        <div class="session-info isansFont">
-            <h2 class="session-other-name isansFont" v-if="isConsultant">
+        <div class="session-info gadugiFont">
+            <h2 class="session-other-name gadugiFont" v-if="isConsultant">
                 {{session.sold_to.first_name + " " + session.sold_to.last_name}}
             </h2>
-            <h2 class="session-other-name isansFont" v-else>
+            <h2 class="session-other-name gadugiFont" v-else>
                 {{session.consultant.first_name + " " + session.consultant.last_name}}
             </h2>
-            <p class="session-date" :class="[{'isansFont--faNum' : $store.getters.isiran}]">
+            <p class="session-date gadugiFont">
                 <time class="session-date-day">
                     <i class="material-icons">calendar_today</i>
-                    {{sessionStartDate.format('dddd YYYY/MM/DD')}}
+                    {{sessionStartDate.format('dddd | DD/MM/YYYY')}}
                 </time>
                 <time class="session-date-time">
                     <i class="material-icons">access_time</i>
                     {{sessionStartDate.format('HH:mm')}}
-                    <span v-if="$store.getters.isiran" class="session-date-time--separator">تا</span>
-                    <span v-else class="session-date-time--separator">till</span>
+                    <span class="session-date-time--separator">till</span>
                     {{sessionStartDate.clone().add('50', 'minutes').format('HH:mm')}}
                 </time>
             </p>
             <p class="session-remain session-ongoing" v-if="sessionIsOngoing">
-                در حال برگزاری
+                Is ongoing
             </p>
             <p class="session-remain" v-else
-               :class="[{'isansFont--faNum': $store.getters.isiran}, sessionRemainingClass]">
+               :class="[sessionRemainingClass]">
                 {{sessionStartDate.from(currentTime)}}
             </p>
         </div>
-        <a :href="room.login_url" class="session-room-button active isansFont" v-if="activeRoom">
-            ورود به جلسه
+        <a :href="room.login_url" class="session-room-button active gadugiFont" v-if="activeRoom">
+            Enter room
         </a>
-        <a class="session-room-button isansFont" v-if="deactiveRoom">
-            ورود به جلسه
+        <a class="session-room-button gadugiFont" v-if="deactiveRoom">
+            Enter room | Not started
         </a>
 
-        <div class="session-rate" :class="[{'isansFont--faNum': $store.getters.isiran}]" v-if="hideRoom">
+        <div class="session-rate" v-if="hideRoom">
             <star-rating
                     v-if="rate != null && !isConsultant"
-                    :rtl="$store.getters.isiran"
                     :star-size="20"
                     :padding="5"
                     :read-only="true"
@@ -57,7 +55,6 @@
 
             <star-rating
                     v-else-if="rate == null && !isConsultant"
-                    :rtl="$store.getters.isiran"
                     :star-size="16"
                     :padding="5"
                     :showRating="false"
@@ -162,7 +159,7 @@
                     //fix rate 0 bug buy fixing it to 1
                     rate = 1;
                 }
-                if(window.confirm(`شما می خواهید امتیاز ${rate} را ثبت کنید. مطمئنید ؟`)) {
+                if(window.confirm(`You are going to submit rate ${rate}. Are you sure?`)) {
                     try {
                         let result = await this.$api.post(
                             `${this.$store.getters.getApi}/comment/sold-time-slot-rates/`,
@@ -201,11 +198,11 @@
         },
         computed: {
             sessionEndDate() {
-                return this.getJalali(this.session.end_time).locale(this.$store.getters.locale).add(5, 'minutes');
+                return this.getJalali(this.session.end_time).add(5, 'minutes');
             },
 
             sessionStartDate() {
-                return this.getJalali(this.session.start_time).locale(this.$store.getters.locale).subtract(5, 'minutes');
+                return this.getJalali(this.session.start_time).subtract(5, 'minutes');
             },
 
             currentTimeAfterSessionEnd() {
@@ -254,6 +251,10 @@
 
             hideRoom() {
                 return this.currentTimeAfterSessionEnd;
+            },
+
+            isiran() {
+                return this.$store.getters.isiran;
             },
 
             sessionRemainingClass() {
@@ -360,12 +361,12 @@
         display: flex;
         align-items: center;
         font-size: 12px;
-        margin-left: 15px;
+        margin-right: 15px;
     }
 
     .session-date-day i {
         font-size: 14px;
-        margin-left: 5px;
+        margin-right: 5px;
         color: #B3B3B3;
     }
 
@@ -377,7 +378,7 @@
 
     .session-date-time i {
         font-size: 14px;
-        margin-left: 5px;
+        margin-right: 5px;
         color: #B3B3B3;
     }
 
@@ -387,10 +388,9 @@
     }
 
     .session-room-button {
-        margin-right: auto;
+        margin: auto 15px auto auto;
         border: none;
         padding: 7px 25px;
-        margin-left: 15px;
         border-radius: 10px;
         background-color: #F2F2F2;
         color: #B3B3B3;
@@ -406,8 +406,8 @@
     }
 
     .session-rate {
-        margin-right: auto;
-        margin-left: 30px;
+        margin-right: 30px;
+        margin-left: auto;
     }
 
     @media only screen and (max-width: 576px) {

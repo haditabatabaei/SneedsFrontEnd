@@ -1,29 +1,33 @@
 <template>
     <form class="loginForm" @submit.prevent="register()">
-        <label class="loginForm-label isansFont" for="email">
-            ایمیل :
-            <input class="loginForm-control control--ltr" id="email" type="text" v-model.trim="$v.userToRegister.email.$model">
-            <span class="loginForm-meta error" v-if="emailIsInvalid">
-                لطفا یک ایمیل معتبر وارد کنید.
-            </span>
-        </label>
-        <label class="loginForm-label isansFont" for="phone">
-            شماره تلفن :
-            <input class="loginForm-control control--ltr" id="phone" type="text"
-                   v-model.trim="$v.userToRegister.phone_number.$model">
-            <span class="loginForm-meta error" v-if="phoneNumberIsInvalid">
-                لطفا یک شماره تلفن معتبر وارد کنید.
-            </span>
-        </label>
-        <label class="loginForm-label isansFont" for="password">
-            رمز عبور :
-            <input class="loginForm-control control--ltr" id="password" :type="passType"
-                   v-model.trim="$v.userToRegister.password.$model">
-            <span class="loginForm-meta error" v-if="passwordIsInvalid">
-                لطفا یک رمز عبور معتبر وارد کنید.
-            </span>
-        </label>
-        <label class="loginForm-label label--checkbox isansFont" for="acceptPolicy">
+        <c-simple-input
+                label="Email:"
+                :is-ltr="true"
+                :external-label="true"
+                :error="emailIsInvalid"
+                error-text="Please enter a valid email address."
+                v-model.trim="$v.userToRegister.email.$model"
+                class="register-input"
+        />
+        <c-password-input
+                label="Password:"
+                :is-ltr="true"
+                :external-label="true"
+                :error="passwordIsInvalid"
+                error-text="Please enter a valid password."
+                v-model.trim="$v.userToRegister.password.$model"
+                class="register-input"
+        />
+        <c-simple-input
+                label="Phone:"
+                :is-ltr="true"
+                :external-label="true"
+                :error="phoneNumberIsInvalid"
+                error-text="Please enter a valid phone number."
+                v-model.trim="$v.userToRegister.phone_number.$model"
+                class="register-input"
+        />
+        <label class="loginForm-label label--checkbox gadugiFont" for="acceptPolicy">
             <span class="label--checkbox--wrapper">
                 <input type="checkbox" class="loginForm-control control--checkbox" id="acceptPolicy"
                     v-model="$v.userToRegister.acceptPolicy.$model">
@@ -31,16 +35,14 @@
                     <i class="material-icons" v-if="userToRegister.acceptPolicy">done</i>
                 </span>
                 <span class="label--checkbox--text">
-                    با
-                    <router-link to="/policy"> شرایط و ضوابط استفاده از وبسایت اسنیدز </router-link>
-                    به طور کامل موافقم.
+                    I Agree with <router-link to="/policy">Sneeds privacy policy and terms of use</router-link>.
                 </span>
             </span>
-            <span class="loginForm-meta meta--checkbox error" v-if="acceptPolicyIsInvalid">
-                برای ثبت نام باید شرایط و ضوابط را بپذیرید.
+            <span class="loginForm-meta meta--checkbox error gadugiFont" v-if="acceptPolicyIsInvalid">
+                You must agree with Sneeds privacy policy and terms of use.
             </span>
         </label>
-        <button class="loginForm-button isansFont">
+        <button class="loginForm-button gadugiFont">
             {{submitLabel}}
             <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
 
@@ -51,13 +53,19 @@
 <script>
     import {required, email, minLength, helpers} from 'vuelidate/lib/validators'
     import {MoonLoader} from '@saeris/vue-spinners'
+    import SimpleInput from "@/components/Form/SimpleInput";
+    import NumberInput from "@/components/Form/NumberInput";
+    import PasswordInput from "@/components/Form/PasswordInput";
 
     const iranianPhone = helpers.regex('phone_number', /(\+98|0|98|0098)?([ ]|-|[()]){0,2}9[0-9]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}/ig);
     const acceptPolicyValidator = (value, vm) => value === true;
     export default {
         name: "RegisterForm.vue",
         components: {
-            "moon-loader": MoonLoader
+            "moon-loader": MoonLoader,
+            "c-simple-input": SimpleInput,
+            "c-number-input": NumberInput,
+            "c-password-input": PasswordInput
         },
         validations: {
             userToRegister: {
@@ -83,7 +91,7 @@
         props: {
             submitLabel: {
                 type: String,
-                default: () => 'ثبت نام'
+                default: () => 'Register'
             },
             customAction: Boolean,
             default: () => false
@@ -187,6 +195,14 @@
         flex-direction: column;
     }
 
+    .register-input {
+        margin: 20px;
+    }
+
+    .register-input:not(:first-child) {
+        margin-top: 0;
+    }
+
     .loginForm-label:not(:first-child) {
         margin-top: 0;
     }
@@ -213,7 +229,7 @@
     .label--checkbox--toggler {
         width: 20px;
         height: 20px;
-        margin-left: 5px;
+        margin-right: 5px;
         border-radius: 5px;
         display: flex;
         align-items: center;

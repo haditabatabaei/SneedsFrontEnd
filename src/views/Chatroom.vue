@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import DesktopChatroom from '@/components/Chatroom/ِDesktopChatroom'
+    import DesktopChatroom from "@/components/Chatroom/DesktopChatroom";
     import MobileChatroom from '@/components/Chatroom/MobileChatroom'
     export default {
         name: "Chatroom",

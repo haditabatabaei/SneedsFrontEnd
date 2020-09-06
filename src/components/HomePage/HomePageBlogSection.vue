@@ -7,9 +7,9 @@
 <script>
     import HomePageBlog from "./HomePageBlog";
     export default {
-        name: "BlogSection",
+        name: "HomePageBlogSection",
         components:{
-          HomePageBlog : HomePageBlog
+            HomePageBlog : HomePageBlog
         },
         data () {
             return{}

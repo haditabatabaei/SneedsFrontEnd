@@ -65,9 +65,10 @@
 
 <style>
     * {
-        scroll: smooth !important;
+        scroll: smooth;
         margin: 0;
         padding: 0;
+        font-family: inherit
     }
 
     a {

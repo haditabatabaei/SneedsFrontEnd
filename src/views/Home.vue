@@ -84,7 +84,7 @@
 
 
 
-              <home-page-consultant-section :items-input="consultants"> </home-page-consultant-section>
+              <home-page-consultants :items-input="consultants"> </home-page-consultants>
 
 
 
@@ -290,7 +290,7 @@
             </div>
         </section>
 
-        <blog-section :items-input="persons"></blog-section>
+        <home-page-blog :items-input="persons"></home-page-blog>
 
 
         <app-question></app-question>
@@ -301,24 +301,21 @@
 
 <script>
    import FAQ from "../components/HomePage/FAQ";
-   import BlogSection from "../components/HomePage/BlogSection";
-   import consultantHomeBlock from "../components/HomePage/consultantHomeBlock";
    import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
+   import HomePageBlogSection from "../components/HomePage/HomePageBlogSection";
     export default {
         components: {
-            HomePageConsultantSection,
-            ConsultantHomeBlock : consultantHomeBlock,
-            blogSection : BlogSection,
-
+            HomePageConsultants : HomePageConsultantSection,
+            HomePageBlog :HomePageBlogSection,
             appQuestion: FAQ,
         },
         data (){
             return {
                 persons: [
-                    {blogSubTitle: "cvfv",blogTitle:"sahar"  },
-                    {blogSubTitle: 'cvfv',blogTitle: "aref" },
-                    {blogSubTitle: 'cvfv',blogTitle: 'aFz' },
-                    {blogSubTitle: 'cvfv',blogTitle: 'tehran' }
+                    {SubTitle: "cvfv",Title:"sahar"  },
+                    {SubTitle: 'cvfv',Title: "aref" },
+                    {SubTitle: 'cvfv',Title: 'aFz' },
+                    {SubTitle: 'cvfv',Title: 'tehran' }
 
                 ],
                 consultants: [

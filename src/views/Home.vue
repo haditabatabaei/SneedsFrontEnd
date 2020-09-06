@@ -1,5 +1,4 @@
 <template>
-    <body>
     <main class="landing isansFont iranSansFarsiNumber">
         <section class="landing-section --sneeds-section">
             <div class="sneeds-intro">
@@ -85,18 +84,7 @@
 
 
 
-            <div class="consultants-box">
-                <div class="consultants-section-rows --consultants-images">
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-
-
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-                    <img class="consultants-section-items" src="/sneedsAssets/img/img.svg">
-                </div >
-            </div>
+              <home-page-consultant-section :items-input="consultants"> </home-page-consultant-section>
 
 
 
@@ -231,32 +219,29 @@
                 </div>
             </div>
             </div>
+                <div class="design-details">
+                </div>
+                <div class="achievements-section">
 
-            <div class="achievements-section">
-                <div class="achievements-section-box --first">
-                    <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
-                    <h3 class="achievements-section-header">56+ پذیرش</h3>
-                    <p class="achievements-section-text">اخذ شده به دست مشاوران اسنیدز در تمامی مقاطع</p>
-                </div>
-                <div class="achievements-section-box --center">
-                    <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
-                    <h3 class="achievements-section-header">+۲۷,۰۰۰ دقیقه</h3>
-                    <p class="achievements-section-text">مشاوره آنلاین تصویری انجام شده با مشاوران اسنیدز</p>
-                </div>
-                <div class="achievements-section-box --last">
-                    <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
-                    <h3 class="achievements-section-header">+۵۴۰ مدرک</h3>
-                    <p class="achievements-section-text">ترجمه، تصحیح یا نگارش شده به دست مشاوران اسنیدز</p>
+                    <img  class="plane-enter" src="/sneedsAssets/img/airplane-enter.svg" alt="">
+
+                    <div class="achievements-section-box --first">
+                        <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
+                        <h3 class="achievements-section-header">56+ پذیرش</h3>
+                        <p class="achievements-section-text">اخذ شده به دست مشاوران اسنیدز در تمامی مقاطع</p>
+                    </div>
+                    <div class="achievements-section-box --center">
+                        <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
+                        <h3 class="achievements-section-header">+۲۷,۰۰۰ دقیقه</h3>
+                        <p class="achievements-section-text">مشاوره آنلاین تصویری انجام شده با مشاوران اسنیدز</p>
+                    </div>
+                    <div class="achievements-section-box --last">
+                        <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
+                        <h3 class="achievements-section-header">+۵۴۰ مدرک</h3>
+                        <p class="achievements-section-text">ترجمه، تصحیح یا نگارش شده به دست مشاوران اسنیدز</p>
                 </div>
             </div>
           </section>
-
-
-        <section class="landing-section --video-section">
-            <div class="video-container">
-
-            </div>
-        </section>
 
 
         <section class="landing-section --analysis-section">
@@ -284,23 +269,71 @@
             </div>
 
         </section>
+        <section>
+            <div class="activities-section-rows --activities">
+                <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
+
+                <p  class="activities-section-title">
+
+                    مجله اینترنتی اسنیدز
+                    <span class="blog-section-title-sub">
+                       <br>همه مطالب
+                     </span>
+
+
+                </p>
+
+            </div>
+            <div class="landing-section blog-section">
+                <div class="blog-blocks-container">
+                </div>
+            </div>
+        </section>
+
+        <blog-section :items-input="persons"></blog-section>
+
+
         <app-question></app-question>
 
     </main>
 
-
-    </body>
 </template>
 
 <script>
    import FAQ from "../components/HomePage/FAQ";
+   import BlogSection from "../components/HomePage/BlogSection";
+   import consultantHomeBlock from "../components/HomePage/consultantHomeBlock";
+   import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
     export default {
         components: {
-            appQuestion: FAQ
+            HomePageConsultantSection,
+            ConsultantHomeBlock : consultantHomeBlock,
+            blogSection : BlogSection,
+
+            appQuestion: FAQ,
+        },
+        data (){
+            return {
+                persons: [
+                    {blogSubTitle: "cvfv",blogTitle:"sahar"  },
+                    {blogSubTitle: 'cvfv',blogTitle: "aref" },
+                    {blogSubTitle: 'cvfv',blogTitle: 'aFz' },
+                    {blogSubTitle: 'cvfv',blogTitle: 'tehran' }
+
+                ],
+                consultants: [
+                    {name: "njjj",major:"jjhjh"},
+                    {name: "hbjhkjk",major:"pppp"},
+                    {name: "hbjhkj",major:"nnnn"},
+                    {name: "hbjhkj",major:"llll"},
+                    {name: "hbjhkj",major:"mkljik"},
+                    {name: "hbjhkj",major:"hbjhkj"}
+
+                ]
+            }
         }
 
     }
-
 </script>
 
 <style scoped>
@@ -494,15 +527,6 @@
         margin: 40px 0px;
     }
 
-    .consultants-section-items{
-        width: 30%;
-        min-width: 100px;
-        margin: 15px;
-        height: 150px;
-        box-shadow: 0px 11px 16px #00000029;
-
-
-    }
     .--consultants-images {
         width: 100%;
         flex-wrap: wrap;
@@ -630,7 +654,7 @@
         flex-direction:row;
         justify-content: space-around;
         align-items: center;
-        flex-wrap:wrap;
+        flex-wrap:nowrap;
         margin: 40px 0px;
 
     }
@@ -718,7 +742,7 @@
 
     .achievements-section-box {
         width: 20%;
-        min-height: 60vh;
+        height: 220px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -728,23 +752,21 @@
         padding:4%;
         margin: 3%;
     }
+    .plane-enter {
+        position: absolute;
+        margin-right: -60%;
+        width: 600px;
+    }
+
     .--center {
         margin-top: 100px;
     }
     .--last {
         margin-top: 200px;
     }
-    .--video-section {
-        height: 60vh;
-    }
-
-    .video-container {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-        overflow-x: hidden;
+    .design-details {
+        position: absolute;
+        z-index: -1;
 
     }
     .analysis-container {
@@ -844,6 +866,14 @@
         margin-right: 10px;
     }
 
+    .blog-section {
+        margin-top: 70px;
+        margin-bottom: 70px;
+    }
+
+    .blog-section-title-sub{
+        color: #00b8d4;
+    }
     @media only screen and (max-width: 767.8px) {
      .circle-svg {
          width: 160px;
@@ -894,7 +924,8 @@
         }
         .blue-options-box
         {
-            width: 90%;
+            width: 100%;
+            border-radius: 0px;
 
         }
         .blue-options-box {
@@ -930,13 +961,18 @@
             margin-top: 30px;
             width: 100%;
         }
-
+        .plane-enter {
+            display: none;
+        }
         .achievements-section {
             flex-direction: column;
         }
         .achievements-section-box {
             width: 80%;
             margin: 15px;
+        }
+        .analysis-img-div {
+            display: none;
         }
     }
 

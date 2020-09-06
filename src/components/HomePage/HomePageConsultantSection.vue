@@ -1,13 +1,62 @@
 <template>
-    $END$
+    <div class="consultants-box">
+        <div class="consultants-section-rows --consultants-images">
+            <home-page-consultant  v-for="(item,index) in itemsInput" :key="index" :item="item"></home-page-consultant>
+        </div>
+     </div>
 </template>
 
 <script>
+    import HomePageConsultant from "./HomePageConsultant";
+
     export default {
-        name: "HomePageConsultantSection"
+        name: "HomePageConsultantSection",
+
+        components:{
+           HomePageConsultant :HomePageConsultant,
+        },
+        data () {
+            return{}
+        },
+        props : {
+            itemsInput :{
+                type: Array,
+                default: ()=> []
+            }
+        },
     }
+
 </script>
 
 <style scoped>
+
+    .consultants-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+    }
+    .consultants-section-rows {
+        width: 80%;
+        display: flex;
+        flex-direction:row;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin: 40px 0px;
+    }
+
+    .--consultants-images {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    @media only screen and (max-width: 567.8px) {
+        .consultants-section-rows {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 
 </style>

@@ -47,7 +47,7 @@
                 />
             </div>
             <bottom-filter
-                v-if="consultants.length > 0"
+                v-if="bottomFilterReady"
                 :countries="countries"
                 :universities="universities"
                 :majors="fields"
@@ -84,14 +84,10 @@
                 countries: [],
                 universities: [],
                 fields: [],
-
                 orderRateDescending: false,
-                activeMobileFilterTab: 'countries',
-
                 itemsPerPage: 10,
                 allItems: 1,
                 currentPage: 1,
-
                 isLoading: false,
             }
         },
@@ -106,6 +102,10 @@
 
             api() {
                 return this.$store.getters.getApi;
+            },
+
+            bottomFilterReady() {
+                return this.universities.length > 0 && this.countries.length > 0 && this.fields.length > 0;
             }
         },
         created() {

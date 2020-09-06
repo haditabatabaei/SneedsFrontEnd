@@ -76,7 +76,7 @@
             },
             selectItem(item) {
                 item.select = !item.select;
-                this.$emit('item-select', item)
+                this.$emit('select-item', item)
             }
         },
     }

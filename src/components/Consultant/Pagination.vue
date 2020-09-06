@@ -109,6 +109,7 @@
         width: 30px;
         border-radius: 5px;
         margin: 0 5px;
+        cursor: pointer;
     }
 
     .pagination-button i {

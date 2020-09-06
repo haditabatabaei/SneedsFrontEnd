@@ -46,6 +46,14 @@
                     @page-switched="pageSwitched"
                 />
             </div>
+            <bottom-filter
+                v-if="consultants.length > 0"
+                :countries="countries"
+                :universities="universities"
+                :majors="fields"
+                :activeFilters="activeFilters"
+                @select-item="doFilter(true, true)"
+            />
         </div>
     </section>
 </template>
@@ -56,6 +64,7 @@
     import ActiveFilterBlock from "@/components/Consultant/ActiveFilterBlock"
     import Pagination from "@/components/Consultant/Pagination";
     import SimpleInput from "@/components/Form/SimpleInput";
+    import CollapsibleFilters from "@/components/Consultant/CollapsibleFilters";
     import {MoonLoader} from "@saeris/vue-spinners";
 
     export default {
@@ -66,12 +75,11 @@
             'c-simple-input': SimpleInput,
             "filter-block": FilterBlock,
             "active-filter-block": ActiveFilterBlock,
-            "consultants-pagination": Pagination
+            "consultants-pagination": Pagination,
+            "bottom-filter": CollapsibleFilters
         },
         data() {
             return {
-                showFilterPanel: false,
-
                 consultants: [],
                 countries: [],
                 universities: [],
@@ -104,7 +112,7 @@
             this.getListOfCountries();
             this.getListOfFields();
             this.getListOfUniversities();
-            this.doFilter(false, true);
+            this.doFilter(true);
         },
         methods: {
             toggleRateSort() {
@@ -112,17 +120,9 @@
                 this.doFilter(false, true);
             },
 
-            toggleMobileFilterTab(tabName) {
-                if (this.activeMobileFilterTab === tabName) {
-                    this.activeMobileFilterTab = 'none'
-                } else {
-                    this.activeMobileFilterTab = tabName;
-                }
-            },
-
             pageSwitched(newPage) {
                 this.currentPage = newPage;
-                this.doFilter(true, false);
+                this.doFilter( false);
             },
 
             generateQueryParameters(resetCurrentPage) {
@@ -158,7 +158,7 @@
                 return query;
             },
 
-            async doFilter(toggleIndicator, resetCurrentPage) {
+            async doFilter(resetCurrentPage) {
                 console.log('do filter called');
                 this.isLoading = true;
                 try {
@@ -174,9 +174,6 @@
                     this.printMessage("خطایی هنگام ارتباط با سرور رخ داد.", "لیست مشاوران : خطا", "error", 3000, "notif");
                 } finally {
                     this.isLoading = false;
-                    if (toggleIndicator) {
-                        this.toggleFilterPanel();
-                    }
                 }
             },
 
@@ -228,15 +225,11 @@
                     duration: duration
                 })
             },
-            toggleFilterPanel() {
-                this.showFilterPanel = !this.showFilterPanel;
-            }
         }
     }
 </script>
 
 <style scoped>
-    /** Overall layout design **/
     .consultants {
         min-height: 100vh;
         display: flex;
@@ -256,6 +249,10 @@
             "filters list list"
             "paging paging paging";
         margin-top: 15px;
+    }
+
+    .consultants-pagination {
+        grid-area: paging;
     }
 
     .consultants-top-filter {
@@ -280,11 +277,6 @@
         grid-area: filters;
     }
 
-    .consultants-pagination {
-        grid-area: paging;
-    }
-
-    /** Top filter styles **/
     .top-filter-list {
         list-style: none;
         padding: 0;
@@ -320,224 +312,24 @@
         color: #8C3DDB;
     }
 
-    /** consultants list styles **/
     .consultants-list-item:not(:first-child) {
         margin-top: 15px;
     }
-
-    /** Sidebar filter styles **/
-    .bottomFilter-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1013;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.2);
-    }
-
-    .bottomFilter {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        background-color: white;
-        width: 100%;
-        z-index: 1014;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .bottomFilter-head {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: nowrap;
-        height: 50px;
-        background-color: #8C3DDB;
-        color: white;
-    }
-
-    .bottomFilter-head--open {
-        background-color: white;
-        color: #666;
-    }
-
-    .bottomFilter-head-title {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        font-size: 14px;
-        margin: 0;
-    }
-
-    .bottomFilter-head-title i {
-        margin-left: 5px;
-        font-size: 16px;
-    }
-
-    .bottomFilter-content-tabs {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 15px;
-    }
-
-    .bottomFilter-content-tabs-button {
-        background: none;
-        font-size: 12px;
-        border: none;
-        color: #777;
-        margin: 0 10px;
-        padding: 5px 10px;
-        border-radius: 10px;
-        outline: none;
-    }
-
-    .bottomFilter-content-tabs-button.active {
-        color: white;
-        background-color: #8C3DDB;
-    }
-
-    .bottomFilterColumn p:first-child i {
-        margin-left: 5px;
-    }
-
-    .bottomFilterColumn .panel {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        flex-wrap: nowrap;
-    }
-
-    .bottomFilterColumn .panel div[role="tab"] {
-        padding: 5px;
-        margin: 20px 20px 0 20px;
-    }
-
-    .bottomFilterColumn .panel-heading i.float-left {
-        font-size: 15px;
-    }
-
-    .bottomFilterColumn .bottomActionPanel {
-        margin-top: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
-
-    .bottomFilterColumn .bottomActionPanel button {
-        margin-left: 20px;
-    }
-
-
-    .fieldList {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding-bottom: 5px;
-    }
-
-
-    .fieldList li {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
-    .row.consultantListRow {
-        margin-right: 0;
-    }
-
-    .ratesort {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .ratesort span {
-        width: 25px;
-        height: 25px;
-        border-radius: 5px;
-        margin-left: 5px;
-    }
-
-    .ratesort span.checked {
-        background-color: #9038CC;
-        color: white;
-        display: flex;
-        align-items: center;
-    }
-
-    .ratesort span.unchecked {
-        background-color: white;
-        border: 2px solid #999;
-    }
-
-    @media only screen and (max-width: 991.8px) and (min-width: 0) {
-        .row.consultantListRow {
-            margin-right: -10px;
-            padding-bottom: 50px;
+    @media only screen and (max-width: 991.8px) {
+        .consultants-container {
+            grid-gap: 15px 15px;
+            grid-template-columns: 25% 1fr 1fr;
+            grid-template-rows: 75px auto auto 60px;
+            grid-template-areas:
+                    "topFilter topFilter topFilter"
+                    "list list list"
+                    "filters filters filters"
+                    "paging paging paging";
+            margin-top: 15px;
         }
 
-        .topFilter-item {
-            font-size: 12px;
-        }
-
-        .topFilter-sort-button {
-            font-size: 12px;
-        }
-
-        .topFilter-sort-button i {
-            font-size: 14px;
-        }
-
-        .filterBlock-search {
-            border-bottom: none;
-        }
-
-        .bottomFilter-head--open {
-            justify-content: space-between;
-        }
-
-        .filterBlock-head-title--action {
-            font-size: 12px;
-            margin-left: 15px;
-        }
-
-        .bottomFilter-head-title-close {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 25px;
-            height: 25px;
-            padding: 0;
-            margin-left: 15px;
-            background: none;
-            border: none;
-            color: #666;
-        }
-
-        .bottomFilter-head-title-close i {
-            margin: 0;
-        }
-    }
-
-    @media only screen and (max-width: 576.8px) {
-        .topFilter-item {
+        .consultants-filters {
             display: none;
-        }
-
-        .topFilter-item--active {
-            display: flex;
-        }
-
-        .section-bg {
-            display: none;
-        }
-
-        .section {
-            padding-top: 0;
         }
     }
 </style>

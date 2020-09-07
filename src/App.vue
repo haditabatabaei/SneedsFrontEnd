@@ -68,7 +68,8 @@
         scroll: smooth;
         margin: 0;
         padding: 0;
-        font-family: inherit
+        font-family: inherit;
+        outline: none;
     }
 
     a {
@@ -79,6 +80,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .loading-icon {

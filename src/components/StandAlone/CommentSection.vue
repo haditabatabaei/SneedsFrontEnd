@@ -17,13 +17,13 @@
             </button>
         </div>
 
-        <div class="col-md-12 text-center comment-login-needed" v-else>
+        <div class="comment-login-needed" v-else>
             <router-link to="/auth/login" class="gadugiFont">
                 You need an account for submitting comment.
             </router-link>
         </div>
 
-        <div class="col-md-12 commentsWrapper">
+        <div class="commentsWrapper">
             <comment-block
                 v-for="(comment, index) in comments"
                 :key="index"
@@ -127,11 +127,10 @@
         background-color: white;
         border-radius: 0 0 15px 15px;
         display: flex;
-        align-items: center;
         justify-content: center;
         flex-direction: column;
-        width: 100%;
-        padding: 60px 15px;
+        align-self: stretch;
+        margin: 30px 15px;
     }
 
     .commentSectionWrapper-title {
@@ -155,12 +154,13 @@
     }
 
     .commentInputSection {
-        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .commentInputSection textarea {
-        width: 100%;
         padding: 10px;
+        margin-top: 15px;
         resize: none;
         border: 1px solid #ccc;
         border-radius: 15px;
@@ -170,17 +170,14 @@
         color: white;
         font-weight: bold;
         border-radius: 5px;
+        margin-top: 15px;
         padding: 10px 30px;
         border: none;
         background-color: #E81E63;
-        float: left;
+        align-self: flex-start;
     }
 
-    .commentsMiniTitle {
-        color: #bbb;
-    }
-
-    button:disabled {
+    .commentInputSection button:disabled {
         background-color: rgba(232,30,99,0.5);
         cursor: not-allowed;
     }

@@ -265,6 +265,15 @@
                         icon: 'supervisor_account'
                     },
                     {
+                        itemName:'Admit chance',
+                        target: '/AdmitChance',
+                        type: 'router',
+                        hasDropdown: false,
+                        showDropdown: false,
+                        dropdownItems: [],
+                        icon: 'supervisor_account'
+                    },
+                    {
                         itemName: 'Economic Package',
                         target: '/packages/economic',
                         type: 'router',

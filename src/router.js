@@ -245,6 +245,14 @@ const router = new Router({
             }
         },
         {
+          path: '/AdmitChance',
+          name: 'AdmitChance',
+          component: () => import("@/components/AdmitChance/AdmitChanceLanding"),
+            meta: {
+              auth : 'optional'
+            }
+        },
+        {
             path: '/user',
             redirect: '/user/profile',
             component: () => import("@/layouts/UserLayout"),

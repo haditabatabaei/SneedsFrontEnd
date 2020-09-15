@@ -4,22 +4,24 @@
             <div class="sneeds-intro">
                 <img class="globe" src="/sneedsAssets/img/globe.png">
                 <div class="sneeds-intro-info">
-                    <h6 class="sneeds-intro-info-small-title">با پلتفرم اسنیدز</h6>
-                    <h3 class="sneeds-intro-info-title">هوشمندانه اپلای کن!</h3>
+                    <h6 class="sneeds-intro-info-small-title">with Abroad Path</h6>
+                    <h3 class="sneeds-intro-info-title">Apply smart</h3>
                     <div class="sneeds-intro-info-title-line"></div>
-                    <p class="sneeds-intro-info-text">هدف ما وصل کردن شما به دانشجویان ایرانی خارج از
-                        کشور برای استفاده از تجربیاتشون تو این مسیره و نمی‌دونی از کجا شروع کنی؟
-                        با پر کردن فرم رایگان تعیین سطح اپلای از وضعیتت با خبر شو و پیشنهادات هوشمند دریافت کن
+                    <p class="sneeds-intro-info-text">
+                        Our goal is to connect you with  students abroad to use
+                        their experiences in this field and you do not know where to
+                        start? Be informed of your status and receive smart offers by
+                        filling out the free application level determination form.
+
                     </p>
                     <div class="sneeds-intro-info-links">
                         <a href="#" class=" link--level">
-                            تعیین سطح اپلای
-                            <span class="link--level--free">رایگان!</span>
+                            Determine the level
+                            <span class="link--level--free">Free</span>
                         </a>
-                        <a href="http://google.com" class="sneeds-intro-info-link link--interview">مشاوره اپلای</a>
-                        <a href="#" class="sneeds-intro-info-link link--live">لایو های اپلای</a>
-                        <a href="#" class="sneeds-intro-info-link link--webinar"> وبینار ها</a>
-                        <a href="#" class="sneeds-intro-info-link link--film">فیلم های خود آموز اپلای</a>
+                        <a href="# "class="sneeds-intro-info-link link--interview">Consultation</a>
+                        <a href="#" class="sneeds-intro-info-link link--live">Videoes</a>
+                        <a href="#" class="sneeds-intro-info-link link--webinar"> Webinars</a>
                     </div>
 
                 </div>
@@ -30,13 +32,13 @@
 
         <section class="landing-section --structure-section">
             <div class="structure-section-stages-column">
-                <h3 class="structure-section-title">اسنیدز چطوری کار می کنه؟</h3>
+                <h3 class="structure-section-title">How does it work?</h3>
                 <div class="structure-section-title-line">
 
                 </div>
 
 
-                <p class="structure-section-title-sub" >ما پل ارتباطی شما با دانشجویان ایرانی خارج از کشور هستیم.</p>
+                <p class="structure-section-title-sub" >We connect you with international students</p>
 
             </div>
 
@@ -44,18 +46,24 @@
             <div class="structure-section-stages">
                 <div class="structure-section-stages-column">
                     <img class="circle-svg" src="/sneedsAssets/img/step1.png">
-                    <p class="structure-section-small-title">اتصال مشاور</p>
-                    <p>بعد از سفارش پروژه مشاور مورد نظرتون رو با توجه به رزومه و امتیازش انتخاب می‌کنید</p>
+                    <p class="structure-section-small-title">Select a consultant</p>
+                    <p>After ordering the project, you select the consultant you want according to his resume and score</p>
                 </div>
                 <div class="structure-section-stages-column">
                   <img  class="circle-svg" src="/sneedsAssets/img/step2.png">
-                    <p class="structure-section-small-title">اتصال مشاور</p>
-                    <p>بعد از انتخاب بهترین مشاور فقط با یک کلیک به مشاور !وصل خواهید شد</p>
+                    <p class="structure-section-small-title">Conectto the consultant</p>
+                    <p>
+                        Once you have selected the best consultant, you will connect
+                        to the consultant with just one click!
+                    </p>
                 </div >
                 <div class="structure-section-stages-column">
                     <img class="circle-svg" src="/sneedsAssets/img/step3.png">
-                    <p class="structure-section-small-title">شروع فرآیند اپلای</p>
-                    <p>فرآيند اپلای و پروژه‌تون بلافاصله بعد از تایید شما شروع خواهد شد و مشاور تا پایانش کنارتون هست</p>
+                    <p class="structure-section-small-title">Start the apply process</p>
+                    <p>
+                            Your application and project process will start immediately after
+                           your approval and the consultant will be by your side until the end.
+                    </p>
                 </div>
             </div>
         </section>
@@ -66,14 +74,15 @@
             <div class="consultants-section-header --universities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
-                <p class="consultants-section-title">
-                    مشاوران اپـلای
+                <div class="consultants-section-title">
+                    Consultants
+                    <div class="consultants-section-header-line"></div>
                     <span class="consultants-section-title-sub">
-                       <br> مشاوران اپلای با تجربه تحصیل در بهترین دانشگاه‌های سراسر جهان
+                       <br>Application consultants with experience studying at the best universities around the world.
                      </span>
 
 
-                </p>
+                </div>
                 <img  class="scroll universities-logoes" src="/sneedsAssets/img/harvard.png">
                 <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
                 <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
@@ -82,18 +91,14 @@
 
             </div>
 
-
-
-              <home-page-consultants :items-input="consultants"> </home-page-consultants>
-
-
+              <home-page-consultants :consultants-input="consultants"></home-page-consultants>
 
 
             <div class="consultants-section-rows --see-all">
                 <div class="see-all-link-line"></div>
                 <a class="see-all-link" href="#">
-                    همه مشاوران
-                    <i data-v-f966f08a="" class="material-icons">keyboard_arrow_left</i>
+                    All consultants
+                    <i data-v-f966f08a="" class="material-icons">keyboard_arrow_right</i>
                 </a>
                 <div class="see-all-link-line"></div>
             </div>
@@ -104,6 +109,9 @@
         <section class="landing-section --advantages">
 
             <div class="blue-options-box">
+                <div class="design-details blue-box-details">
+                    <img  class="white-plane-svg" src="/sneedsAssets/img/white-plane.svg" alt="">
+                </div>
                 <div class="column-container">
                     <div class="blue-box-column">
                         <div class="circle-icon">
@@ -111,8 +119,10 @@
                                 thumb_up_alt
                             </i>
                         </div>
-                        <h5 class="blue-box-title">تضمین رضایت</h5>
-                        <p class="blue-box-text">میانگین رضایت ۹۷ درصدی نشون دهنده کیفیت کار ماست</p>
+                        <h5 class="blue-box-title">Satisfaction Guarantee</h5>
+                        <p class="blue-box-text">An average of 97% satisfaction indicates the quality of our work
+
+                        </p>
                     </div>
 
                     <div  class="blue-box-column">
@@ -121,8 +131,8 @@
                                 lock
                             </i>
                         </div>
-                        <h5 class="blue-box-title">پرداخت‌های امن</h5>
-                        <p class="blue-box-text">با کمک اسنیدز به خارج از کشور پرداخت امن داشته باشید</p>
+                        <h5 class="blue-box-title">Secure payments</h5>
+                        <p class="blue-box-text">Make secure payments abroad with the help of Snides</p>
                     </div>
 
                     <div  class="blue-box-column">
@@ -131,8 +141,8 @@
                                 flight_takeoff
                             </i>
                         </div>
-                        <h5 class="blue-box-title">نظارت بر روند</h5>
-                        <p class="blue-box-text">با پلتفرم اسنیدز کاملا شفاف از مراحل اپلایت  با خبر باش
+                        <h5 class="blue-box-title">Monitor the process</h5>
+                        <p class="blue-box-text">Be aware of the application process with the fully transparent Snides platform
                         </p>
                     </div>
 
@@ -145,8 +155,8 @@
                                 perm_identity
                             </i>
                         </div>
-                        <h5 class="blue-box-title">مشاوران تایید شده</h5>
-                        <p class="blue-box-text" >تجربه کسب پذیرش از دانشگاه‌های برتر دنیا و آشنایی کامل با روند اپلای</p>
+                        <h5 class="blue-box-title">Approved consultants</h5>
+                        <p class="blue-box-text" >Experience gaining admission from the top universities in the world and full familiarity with the apply process</p>
                     </div>
                 </div>
             </div>
@@ -157,15 +167,16 @@
             <div class="activities-section-rows --activities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
-                <p  class="activities-section-title">
+                <div  class="activities-section-title">
 
-                    چی کارا انجام میدین؟
+                    What do you do?
+                    <div class="consultants-section-header-line"></div>
                     <span class="activities-section-title-sub">
-                       <br>تقریبا همه چی! از نگارش و ترجمه مدارک تا انجام پرداخت‌ها و اخذ پذیرش
+                       <br>
+                        Almost everything! From writing and translating documents to making payments and getting accepted
                      </span>
 
-
-                </p>
+                </div>
 
             </div>
 
@@ -177,21 +188,21 @@
                         <div class="activities-circle">
                             <img   class="activities-circle-img"src="/sneedsAssets/img/scholarship.svg" alt="">
                         </div>
-                        <a  href="#" class="activities-circle-text">پکیج‌های اخذ پذیرش</a>
+                        <a  href="#" class="activities-circle-text">Admission packages</a>
 
                     </div>
                     <div class="different-activities-items">
                         <div class="activities-circle">
                             <img  class="activities-circle-img" src="/sneedsAssets/img/news.svg" alt="">
                         </div>
-                        <a href="#" class="activities-circle-text">نگارش و ویرایش کاورلتر</a>
+                        <a href="#" class="activities-circle-text">Writing and editing a cover letter</a>
 
                     </div>
                     <div class="different-activities-items">
                         <div class="activities-circle">
                             <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
                         </div>
-                        <a  href="#" class="activities-circle-text">ترجمه مدارک اپلای</a>
+                        <a  href="#" class="activities-circle-text">Translation of application documents</a>
                     </div>
                 </div>
 
@@ -200,21 +211,21 @@
                     <div class="activities-circle">
                         <img class="activities-circle-img" src="/sneedsAssets/img/list.svg" alt="">
                     </div>
-                    <a href="#" class="activities-circle-text">(SOP) ویرایش و نگارش انگیزه‌نامه</a>
+                    <a href="#" class="activities-circle-text">Writing and editing SOP </a>
 
                 </div>
                 <div class="different-activities-items">
                     <div class="activities-circle">
                         <img  class="activities-circle-img" src="/sneedsAssets/img/book%20(1).svg" alt="">
                     </div>
-                    <a  href="#" class="activities-circle-text">(CV) ویرایش و نگارش رزومه</a>
+                    <a  href="#" class="activities-circle-text">Writing and editing CV</a>
 
                 </div>
                 <div class="different-activities-items">
                     <div class="activities-circle">
                         <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
                     </div>
-                    <a href="#" class="activities-circle-text">پکیج‌های اخذ پذیرش</a>
+                    <a href="#" class="activities-circle-text">Admission packages</a>
 
                 </div>
             </div>
@@ -222,8 +233,10 @@
                 <div class="design-details">
                 </div>
                 <div class="achievements-section">
-
-                    <img  class="plane-enter" src="/sneedsAssets/img/airplane-enter.svg" alt="">
+                    <div class="design-details">
+                        <img  class="plane-enter" src="/sneedsAssets/img/airplane-exit.svg" alt="">
+                        <img  class="plane-exit" src="/sneedsAssets/img/airplane-enter.svg" alt="">
+                    </div>
 
                     <div class="achievements-section-box --first">
                         <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
@@ -248,20 +261,21 @@
             <div class="analysis-container">
                 <div class="analysis-img-div">
                     <img class="analysis-svg" src="/sneedsAssets/img/analysis.svg">
+
                 </div>
                 <div class="analysis-container-info">
-                    <h6 class="analysis-container-info-small-title">آنالیزور پیشرفته اپلای</h6>
-                    <h5 class="analysis-container-info-title">!بهترین تصمیم‌ رو بگیر</h5>
+                    <h6 class="analysis-container-info-small-title">Advanced Apply Analyzer</h6>
+                    <h5 class="analysis-container-info-title">Make the best decision</h5>
                     <div class="analysis-container-info-title-line"></div>
                     <p class="analysis-container-info-text">
-                        با پرکردن فرم رایگان اطلاعات تحصیلیت‌ بلافاصله رتبه‌ات رو بین بقیه افرادی که قصد
-                        اپلای دارن با کمک هوش مصنوعی اسنیدز ببین نقاط ضعف و قوت خودت رو بشناس علاوه بر
-                        اون پیشنهادات هوشمند برای بهبود رزومه خودت دریافت کن و تو مسیر اپلای از بقیه رقیبات جلو بیفت
+                        y filling out the free education information form, you will immediately rank among the other people who intend to
+                        Apply with the help of Snides artificial intelligence, see your weaknesses and strengths in addition to
+                        Get those smart offers to improve your resume and get ahead of the rest of the competition.
                     </p>
                     <div class="analysis-container-info-links">
                         <a href="#" class=" analysis-container--level">
-                            تعیین سطح اپلای
-                            <span class="analysis-container--free">رایگان!</span>
+                            Determine the level
+                            <span class="analysis-container--free">Free!</span>
                         </a>
                     </div>
 
@@ -275,24 +289,23 @@
 
                 <p  class="activities-section-title">
 
-                    مجله اینترنتی اسنیدز
+                    LATEST FROM OUR BLOG
                     <span class="blog-section-title-sub">
-                       <br>همه مطالب
+                       <br>
+                        <a  class="brows-more-link" href="#">
+                            BROWSE MORE
+                        </a>
                      </span>
-
 
                 </p>
 
             </div>
-            <div class="landing-section blog-section">
-                <div class="blog-blocks-container">
-                </div>
-            </div>
+
         </section>
 
         <home-page-blog :items-input="persons"></home-page-blog>
 
-
+        <home-page-consultants></home-page-consultants>
         <app-question></app-question>
 
     </main>
@@ -300,36 +313,58 @@
 </template>
 
 <script>
-   import FAQ from "../components/HomePage/FAQ";
-   import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
+   import FAQ from "@/components/HomePage/FAQ";
    import HomePageBlogSection from "../components/HomePage/HomePageBlogSection";
+   import BlogSection from "../components/HomePage/BlogSection";
+   import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
     export default {
         components: {
-            HomePageConsultants : HomePageConsultantSection,
-            HomePageBlog :HomePageBlogSection,
+            HomePageConsultantSection,
+            BlogSection,
+            HomePageConsultants: HomePageConsultantSection,
+            HomePageBlog: HomePageBlogSection,
             appQuestion: FAQ,
         },
-        data (){
+        data() {
             return {
                 persons: [
-                    {SubTitle: "cvfv",Title:"sahar"  },
-                    {SubTitle: 'cvfv',Title: "aref" },
-                    {SubTitle: 'cvfv',Title: 'aFz' },
-                    {SubTitle: 'cvfv',Title: 'tehran' }
+                    {SubTitle: "cvfv", Title: "sahar"},
+                    {SubTitle: 'cvfv', Title: "aref"},
+                    {SubTitle: 'cvfv', Title: 'aFz'},
+                    {SubTitle: 'cvfv', Title: 'tehran'}
 
                 ],
-                consultants: [
-                    {name: "njjj",major:"jjhjh"},
-                    {name: "hbjhkjk",major:"pppp"},
-                    {name: "hbjhkj",major:"nnnn"},
-                    {name: "hbjhkj",major:"llll"},
-                    {name: "hbjhkj",major:"mkljik"},
-                    {name: "hbjhkj",major:"hbjhkj"}
-
-                ]
+                consultants: []
             }
-        }
 
+        },
+        computed: {
+            api() {
+                return this.$store.getters.getApi;
+            },
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            }
+
+        },
+        created() {
+            this.getConsultants()
+        },
+        methods: {
+            async getConsultants() {
+                try {
+                    let result = await this.$api.get(`${this.$store.getters.getApi}`);
+                    this.consultants = result.data;
+
+                } catch (e) {
+                } finally {
+
+                }
+
+            }
+
+
+        }
     }
 </script>
 
@@ -440,7 +475,7 @@
         no-repeat padding-box;
         border-radius: 10px;
         font-size: 10px;
-        margin-left: 10px;
+        margin-right: 10px;
         margin-bottom: 10px;
         padding: 10px 15px;
     }
@@ -449,7 +484,7 @@
         background-color: #008292;
         border-radius: 15px;
         padding: 5px 10px;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
     .structure-section-title {
@@ -510,7 +545,7 @@
 
     }
     .scroll {
-        margin-right: auto;
+        margin-left :auto;
 
 
     }
@@ -524,10 +559,7 @@
         margin: 40px 0px;
     }
 
-    .--consultants-images {
-        width: 100%;
-        flex-wrap: wrap;
-    }
+
 
     .see-all-link-line {
         height: 2px;
@@ -542,9 +574,7 @@
         align-items: baseline;
         margin: 50px 0px;
     }
-    .--advisors{
-        width: 100%;
-    }
+
     .see-all-link {
         display: flex;
         justify-content: center;
@@ -581,17 +611,11 @@
         font-size: 14px;
     }
 
-    .consultants-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 80%;
-    }
 
     .blue-options-box {
         display: flex;
         flex-direction: row;
+        overflow: hidden;
         justify-content: space-around;
         width: 90%;
         border-radius: 20px;
@@ -606,13 +630,12 @@
         width: 80%;
         margin-bottom: 50px;
     }
-
-
-
-
-
+    .--advantages {
+        width: 100%;
+        overflow: hidden;
+    }
     .blue-box-column {
-        max-width: 180px;
+        max-width: 185px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -623,10 +646,22 @@
     .blue-box-title {
         color: #FFFFFF;
     }
+
     .blue-box-text {
         color: #1DFFF6;
         font-size: 10px;
+    }
+    .blue-box-details {
+        align-items: center;
 
+    }
+
+    .white-plane-svg {
+        margin-top: -2%;
+        margin-right: 0px;
+        width: 20%;
+        margin-left: 86%;
+        vertical-align: center;
     }
     .circle-icon {
         background-color: white;
@@ -652,8 +687,7 @@
         justify-content: space-around;
         align-items: center;
         flex-wrap:nowrap;
-        margin: 40px 0px;
-
+        margin: 40px auto;
     }
 
     .--activities {
@@ -666,13 +700,13 @@
         justify-content: space-between;
         flex-direction: column;
         align-items: center;
-
     }
 
     .activities-circle-img {
         width: 50px;
         height: 50px;
     }
+
     .activities-section-title {
         align-items: flex-start;
         font-size: 16px;
@@ -695,7 +729,6 @@
         flex-direction: row;
         justify-content:center;
         align-items: center;
-
     }
 
 
@@ -708,7 +741,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
     }
     .horizontal-items-box {
         width: 80%;
@@ -735,11 +767,11 @@
         font-size: 12px;
         align-items: center;
         justify-content: center;
+        margin:50px 0px;
     }
 
     .achievements-section-box {
         width: 20%;
-        height: 220px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -750,9 +782,23 @@
         margin: 3%;
     }
     .plane-enter {
+        margin-left: -15%;
+        margin-bottom: 15%;
+        width: 23%;
+    }
+    .plane-exit {
+        margin-left: auto;
+        margin-right: -18%;
+        width: 28%;
+
+    }
+    .design-details {
+        width: 100%;
         position: absolute;
-        margin-right: -60%;
-        width: 600px;
+        display: flex;
+        justify-content:flex-start;
+        overflow: hidden;
+
     }
 
     .--center {
@@ -763,7 +809,6 @@
     }
     .design-details {
         position: absolute;
-        z-index: -1;
 
     }
     .analysis-container {
@@ -813,6 +858,7 @@
 
         color: #303143;
         font-weight: bold;
+        font-size: xx-large;
 
     }
 
@@ -851,7 +897,7 @@
         background: #A347FF 0% 0% no-repeat padding-box;
         border-radius: 10px;
         font-size: 10px;
-        margin-left: 10px;
+        margin-right: 10px;
         margin-bottom: 10px;
         padding: 10px 15px;
     }
@@ -860,22 +906,33 @@
         background-color: #592480;
         border-radius: 15px;
         padding: 5px 10px;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 
-    .blog-section {
-        margin-top: 70px;
-        margin-bottom: 70px;
-    }
-
-    .blog-section-title-sub{
+    .brows-more-link {
         color: #00b8d4;
+        font-weight: lighter;
+    }
+    .consultants-section-header-line {
+        width: 120px;
+        height: 3px;
+        background-color:#A347FF;
+        right: -125px;
+        border-radius: 2px;
+
+    }
+    .consultants-section-header-line {
+        display: none;
     }
     @media only screen and (max-width: 767.8px) {
-     .circle-svg {
-         width: 160px;
-         height: 160px;
-     }
+         .circle-svg {
+             width: 160px;
+             height: 160px;
+         }
+        .see-all-link {
+            margin: 0px 10px;
+            width: 25%;
+        }
         .achievements-section {
             width: 100%;
         }
@@ -883,6 +940,16 @@
             width: 50px;
             height: 50px;
         }
+        .consultants-section-header-line {
+            display: block;
+        }
+        .pointer-svg {
+            display: none;
+        }
+        .white-plane-svg {
+            display: none;
+        }
+
     }
 
     @media only screen and (max-width: 567.8px) {
@@ -906,6 +973,9 @@
         .globe {
             display: none;
         }
+        .consultants-section-header-line {
+            display: block;
+        }
         .universities-logoes {
             display: none;
         }
@@ -915,10 +985,13 @@
             align-items: center;
         }
         .consultants-section-rows {
-            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
+       .see-all-link {
+           margin: 0px 10px;
+           width: 50%;
+       }
         .blue-options-box
         {
             width: 100%;
@@ -929,6 +1002,9 @@
             flex-direction: column;
             align-items: center;
 
+        }
+        .white-plane-svg {
+            display: none;
         }
         .column-container {
             flex-direction: column;
@@ -950,8 +1026,8 @@
         .horizontal-items-box {
             flex-direction: column;
             justify-content: space-between;
-            margin-top:0px;
-            margin-bottom: 30px;
+            margin-top:0;
+            margin-bottom: 0;
             width: 60%;
         }
         .different-activities-items {
@@ -968,7 +1044,20 @@
             width: 80%;
             margin: 15px;
         }
+        .pointer-svg {
+            display: none;
+        }
         .analysis-img-div {
+            display: none;
+        }
+        .analysis-container-info {
+            width: 90%;
+            justify-content: flex-start;
+        }
+        .plane-enter {
+            display: none;
+        }
+        .plane-exit {
             display: none;
         }
     }

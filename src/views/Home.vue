@@ -2,7 +2,7 @@
     <main class="landing isansFont iranSansFarsiNumber">
         <section class="landing-section --sneeds-section">
             <div class="sneeds-intro">
-                <img class="globe" src="/sneedsAssets/img/globe.png">
+
                 <div class="sneeds-intro-info">
                     <h6 class="sneeds-intro-info-small-title">with Abroad Path</h6>
                     <h3 class="sneeds-intro-info-title">Apply smart</h3>
@@ -25,6 +25,8 @@
                     </div>
 
                 </div>
+                <img class="globe" src="/sneedsAssets/img/globe.png">
+
             </div>
 
         </section>
@@ -340,10 +342,10 @@
         },
         computed: {
             api() {
-                return this.$store.getters.getApi;
+                return this.api;
             },
             httpConfig() {
-                return this.$store.getters.httpConfig;
+                return this.httpConfig;
             }
 
         },
@@ -353,7 +355,7 @@
         methods: {
             async getConsultants() {
                 try {
-                    let result = await this.$api.get(`${this.$store.getters.getApi}`);
+                    let result = await this.$api.get(`${this.api}`);
                     this.consultants = result.data;
 
                 } catch (e) {

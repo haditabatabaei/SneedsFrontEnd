@@ -389,6 +389,7 @@
         width: 100%;
         justify-content: center;
         align-items: flex-start;
+        overflow-x: hidden;
     }
 
 

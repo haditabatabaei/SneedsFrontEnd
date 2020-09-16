@@ -93,7 +93,7 @@
 
             </div>
 
-              <home-page-consultants :consultants-input="consultants"></home-page-consultants>
+              <home-page-consultants :consultants-input="Consultants"></home-page-consultants>
 
 
             <div class="consultants-section-rows --see-all">
@@ -307,7 +307,6 @@
 
         <home-page-blog :items-input="persons"></home-page-blog>
 
-        <home-page-consultants></home-page-consultants>
         <app-question></app-question>
 
     </main>
@@ -336,7 +335,7 @@
                     {SubTitle: 'cvfv', Title: 'tehran'}
 
                 ],
-                consultants: []
+                Consultants: []
             }
 
         },
@@ -350,18 +349,15 @@
 
         },
         created() {
-            this.getConsultants()
+            this.getConsultants('success')
         },
         methods: {
             async getConsultants() {
-                try {
-                    let result = await this.$api.get(`${this.api}`);
-                    this.consultants = result.data;
+              this.$api.get(this.api,this.httpConfig)
+                .then (response =>{ this.Consultants.data.result.filter((cons,index)=> index <=5);
+                })
 
-                } catch (e) {
-                } finally {
 
-                }
 
             }
 

@@ -1,32 +1,48 @@
 <template>
     <div class="consultant-info-container ">
-        <img class="consultant-avatar" src="/sneedsAssets/img/niloofar-tavakoli.png" alt="consultant_avatar">
+        <img class="consultant-avatar" src="consultant.profile_picture" :alt="`${consultant.first_name} ${consultant.last_name}`">
         <div class="consultant-info">
+            <star-rating
+                    :star-size="8"
+                    :padding="3"
+                    :showRating="false"
+                    :read-only="true"
+                    style="background-color: #ffffff;padding:10px 0px 5px 0px; border-radius:20px"
+                    inactive-color="#FCFCFC"
+                    active-color="#F4CA64"
+                    :border-width="2"
+                    v-model="rate"
+            />
             <p class="consultant-name">
-                {{item.name}}
+                {{consultant.first_name + ' ' + consultant.last_name}}
                 <span><img  src="/sneedsAssets/img/canada.png" alt=""></span>
             </p>
-            <p class="cosultant-major">{{item.major}}</p>
+            <p class="cosultant-major">{{consultant.major}}</p>
+
+
         </div>
     </div>
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating'
     export default {
         name: "HomePageConsultant",
-        data(){
-            return{}
+        components: {
+            "star-rating": StarRating
+        },
+        data() {
+            return {
+                rate: 2.5
+            }
         },
         props: {
-            item: {
+            consultant: {
                 type: Object,
-                default: () =>{
-                    return{name :"نرگس حقیقتی" , major:"دانشجوی مهندسی کامپیوتر " }
-                }
+                default: () => null
             }
+
         }
-
-
     }
 </script>
 

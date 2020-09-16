@@ -1,31 +1,33 @@
 <template>
     <div class="consultants-box">
         <div class="consultants-section-rows --consultants-images">
-            <home-page-consultant  v-for="(item,index) in itemsInput" :key="index" :item="item"></home-page-consultant>
+            <home-page-consultant  v-for="(consultant, index) in consultantsInput"
+                                   :key="index" :consultant="consultant" />
         </div>
      </div>
 </template>
 
 <script>
-    import HomePageConsultant from "./HomePageConsultant";
+    import HomePageConsultant from "@/components/HomePage/HomePageConsultant";
 
     export default {
         name: "HomePageConsultantSection",
 
-        components:{
+        components: {
            HomePageConsultant :HomePageConsultant,
         },
-        data () {
-            return{}
+        data  () {
+            return {}
         },
         props : {
-            itemsInput :{
+            consultantsInput :{
                 type: Array,
-                default: ()=> []
+                default: () => []
             }
-        },
-    }
 
+        },
+
+    }
 </script>
 
 <style scoped>

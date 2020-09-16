@@ -44,8 +44,14 @@
 
             </div>
         </section>
-        <section class="admit-chance-sample">
-             <img class="admit-chance-image" src="/sneedsAssets/img/image 72.png" alt="">
+        <section class="admit-chance-demo">
+            <div class="admit-chance-sample">
+                <img class="admit-chance-image" src="/sneedsAssets/img/image 72.png" alt="">
+                <button class="preview-button">
+                    <i  class="material-icons fullscreen-icon">fullscreen</i>
+                    Preview Results Demo
+                </button>
+            </div>
         </section>
 
 
@@ -261,6 +267,25 @@
         align-items: center;
         display: flex;
         justify-content: center;
+    }
+    .fullscreen-icon {
+        font-size: 28px;
+        padding: 0 10px;
+    }
+    .preview-button {
+        color: #008DB8;
+        background-color: white;
+        box-shadow: 0px 13px 26px #00000029;
+        padding: 15px 20px;
+        border-radius: 40px;
+        font-size: 14px;
+        border: white;
+        position: absolute;
+        margin-top: 10%;
+        margin-left: -20%;
+    }
+    button:hover {
+        background-color: #ecf4ff;
     }
     .admit-chance-image {
         width: 65%;

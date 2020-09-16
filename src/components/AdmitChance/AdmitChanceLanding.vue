@@ -97,12 +97,25 @@
             </div>
 
         </div>
+
+        <all-in-one></all-in-one>
+        <reminder></reminder>
+        <FAQ></FAQ>
     </main>
 </template>
 
 <script>
+    import AdmitChanceAllinOne from "./AdmitChanceAllinOne";
+    import LandingReminder from "./LandingReminder";
+    import FAQ from "../HomePage/FAQ";
+
     export default {
-        name: "AdmitChanceLanding"
+        name: "AdmitChanceLanding",
+        components: {
+            FAQ,
+            allInOne : AdmitChanceAllinOne,
+            reminder : LandingReminder
+        }
     }
 </script>
 

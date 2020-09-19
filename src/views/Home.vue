@@ -34,7 +34,7 @@
 
         <section class="landing-section --structure-section">
             <div class="structure-section-stages-column">
-                <h3 class="structure-section-title">How does it work?</h3>
+                <h2 class="structure-section-title">How does it work?</h2>
                 <div class="structure-section-title-line">
 
                 </div>
@@ -49,12 +49,14 @@
                 <div class="structure-section-stages-column">
                     <img class="circle-svg" src="/sneedsAssets/img/step1.png">
                     <p class="structure-section-small-title">Select a consultant</p>
-                    <p>After ordering the project, you select the consultant you want according to his resume and score</p>
+                    <p class="structure-section-text">
+                      After ordering the project, you select the consultant you want according
+                      to his resume and score</p>
                 </div>
                 <div class="structure-section-stages-column">
                   <img  class="circle-svg" src="/sneedsAssets/img/step2.png">
                     <p class="structure-section-small-title">Conectto the consultant</p>
-                    <p>
+                    <p class="structure-section-text">
                         Once you have selected the best consultant, you will connect
                         to the consultant with just one click!
                     </p>
@@ -62,7 +64,7 @@
                 <div class="structure-section-stages-column">
                     <img class="circle-svg" src="/sneedsAssets/img/step3.png">
                     <p class="structure-section-small-title">Start the apply process</p>
-                    <p>
+                    <p class="structure-section-text">
                             Your application and project process will start immediately after
                            your approval and the consultant will be by your side until the end.
                     </p>
@@ -85,11 +87,6 @@
 
 
                 </div>
-                <img  class="scroll universities-logoes" src="/sneedsAssets/img/harvard.png">
-                <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
-                <img  class="universities-logoes" src="/sneedsAssets/img/harvard.png">
-                <img  class="universities-logoes"src="/sneedsAssets/img/harvard.png">
-                <img  class="universities-logoes"src="/sneedsAssets/img/harvard.png">
 
             </div>
 
@@ -225,7 +222,7 @@
                 </div>
                 <div class="different-activities-items">
                     <div class="activities-circle">
-                        <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
+                        <img  class="activities-circle-img" src="/sneedsAssets/img/lesson.svg" alt="">
                     </div>
                     <a href="#" class="activities-circle-text">Admission packages</a>
 
@@ -242,18 +239,18 @@
 
                     <div class="achievements-section-box --first">
                         <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
-                        <h3 class="achievements-section-header">56+ پذیرش</h3>
-                        <p class="achievements-section-text">اخذ شده به دست مشاوران اسنیدز در تمامی مقاطع</p>
+                        <h3 class="achievements-section-header">+56 Admissions</h3>
+                        <p class="achievements-section-text">Taken by our consultants.</p>
                     </div>
                     <div class="achievements-section-box --center">
                         <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
-                        <h3 class="achievements-section-header">+۲۷,۰۰۰ دقیقه</h3>
-                        <p class="achievements-section-text">مشاوره آنلاین تصویری انجام شده با مشاوران اسنیدز</p>
+                        <h3 class="achievements-section-header">+27,000 Minutes</h3>
+                        <p class="achievements-section-text">Online video consulting with Sneeds consultants.</p>
                     </div>
                     <div class="achievements-section-box --last">
                         <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
-                        <h3 class="achievements-section-header">+۵۴۰ مدرک</h3>
-                        <p class="achievements-section-text">ترجمه، تصحیح یا نگارش شده به دست مشاوران اسنیدز</p>
+                        <h3 class="achievements-section-header">+540 Documents</h3>
+                        <p class="achievements-section-text">Translated, edited or written by  our Consultants.</p>
                 </div>
             </div>
           </section>
@@ -341,23 +338,28 @@
         },
         computed: {
             api() {
-                return this.api;
+                return this.$store.getters.getApi;
             },
             httpConfig() {
-                return this.httpConfig;
+                return this.$store.getters.httpConfig;
             }
 
         },
         created() {
-            this.getConsultants('success')
+            this.getConsultants()
         },
         methods: {
             async getConsultants() {
-              this.$api.get(this.api,this.httpConfig)
-                .then (response =>{ this.Consultants.data.result.filter((cons,index)=> index <=5);
+              this.$api
+              .get(`${this.api}/consultant/consultant-profiles/?page=1&page_size=6&ordering=-rate`,this.httpConfig)
+                .then (response =>{ this.Consultants = response.data.results;
                 })
+                .catch(error =>{
+                  console.log(error)
+                })
+               .finally( () => {}
 
-
+               )
 
             }
 
@@ -524,8 +526,11 @@
 
     .structure-section-small-title {
         color: #303143;
-        font-size: 14px;
+        font-size: 18px;
         font-weight: bold;
+    }
+    .structure-section-text {
+      color: #707070;
     }
 
     .circle-svg {
@@ -537,17 +542,12 @@
         width: 80%;
         display: flex;
         flex-direction:row;
-        justify-content: center;
         align-items: center;
         flex-wrap: nowrap;
         margin: 40px 0px;
 
     }
-    .scroll {
-        margin-left :auto;
 
-
-    }
     .consultants-section-rows {
         width: 80%;
         display: flex;
@@ -571,7 +571,7 @@
     .--see-all {
         justify-content: center;
         align-items: baseline;
-        margin: 50px 0px;
+        margin: 0 auto 50px auto;
     }
 
     .see-all-link {
@@ -584,8 +584,6 @@
         background-color:#DDF3FC;
         color: #009FB3;
         margin: 0px 30px;
-
-
         font-size: 10px;
 
     }
@@ -599,7 +597,7 @@
     }
     .consultants-section-title{
         align-items: flex-start;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: bold;
 
 
@@ -608,6 +606,7 @@
     .consultants-section-title-sub {
         font-weight: lighter;
         font-size: 14px;
+      color: #707070;
     }
 
 
@@ -715,6 +714,7 @@
     .activities-section-title-sub {
         font-weight: lighter;
         font-size: 14px;
+      color: #707070;
     }
 
 
@@ -770,7 +770,8 @@
     }
 
     .achievements-section-box {
-        width: 20%;
+        width: 30%;
+      min-height: 230px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -788,6 +789,7 @@
     .plane-exit {
         margin-left: auto;
         margin-right: -18%;
+        margin-top: 30%;
         width: 28%;
 
     }
@@ -816,6 +818,7 @@
         width: 100%;
         justify-content: center;
         align-items: flex-start;
+      margin-top: 10%;
     }
     .analysis-img-div {
         width: 50%;
@@ -924,141 +927,115 @@
         display: none;
     }
     @media only screen and (max-width: 767.8px) {
-         .circle-svg {
-             width: 160px;
-             height: 160px;
-         }
-        .see-all-link {
-            margin: 0px 10px;
-            width: 25%;
-        }
-        .achievements-section {
-            width: 100%;
-        }
-        .circle-icon {
-            width: 50px;
-            height: 50px;
-        }
-        .consultants-section-header-line {
-            display: block;
-        }
-        .pointer-svg {
-            display: none;
-        }
-        .white-plane-svg {
-            display: none;
-        }
+      .--sneeds-section {
+        width: 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .sneeds-intro {;
+        display: flex;
+        flex-direction: column;
+      }
+      .sneeds-intro-info {
+        width: 90%;
+      }
+      .sneeds-intro-info-links {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+      .globe {
+        display: none;
+      }
+      .consultants-section-header-line {
+        display: block;
+      }
+      .universities-logoes {
+        display: none;
+      }
+      .structure-section-stages {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .consultants-section-rows {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      .see-all-link {
+        margin: 0px 10px;
+        width: 50%;
+      }
+      .blue-options-box
+      {
+        width: 100%;
+        border-radius: 0px;
 
-    }
+      }
+      .blue-options-box {
+        flex-direction: column;
+        align-items: center;
 
-    @media only screen and (max-width: 567.8px) {
-        .--sneeds-section {
-            width: 100%;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-        .sneeds-intro {;
-            display: flex;
-            flex-direction: column;
-        }
-        .sneeds-intro-info {
-            width: 90%;
-        }
-        .sneeds-intro-info-links {
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-        .globe {
-            display: none;
-        }
-        .consultants-section-header-line {
-            display: block;
-        }
-        .universities-logoes {
-            display: none;
-        }
-        .structure-section-stages {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .consultants-section-rows {
-            justify-content: center;
-            align-items: center;
-        }
-       .see-all-link {
-           margin: 0px 10px;
-           width: 50%;
-       }
-        .blue-options-box
-        {
-            width: 100%;
-            border-radius: 0px;
+      }
+      .white-plane-svg {
+        display: none;
+      }
+      .column-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-        }
-        .blue-options-box {
-            flex-direction: column;
-            align-items: center;
-
-        }
-        .white-plane-svg {
-            display: none;
-        }
-        .column-container {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-        }
-        .blue-box-text {
-            text-align: center;
-        }
-        .blue-box-column {
-            padding:20px ;
-            justify-content: center;
-            align-items: center;
-        }
-        .consultants-section-header {
-            width: 80%;
-        }
-        .horizontal-items-box {
-            flex-direction: column;
-            justify-content: space-between;
-            margin-top:0;
-            margin-bottom: 0;
-            width: 60%;
-        }
-        .different-activities-items {
-            margin-top: 30px;
-            width: 100%;
-        }
-        .plane-enter {
-            display: none;
-        }
-        .achievements-section {
-            flex-direction: column;
-        }
-        .achievements-section-box {
-            width: 80%;
-            margin: 15px;
-        }
-        .pointer-svg {
-            display: none;
-        }
-        .analysis-img-div {
-            display: none;
-        }
-        .analysis-container-info {
-            width: 90%;
-            justify-content: flex-start;
-        }
-        .plane-enter {
-            display: none;
-        }
-        .plane-exit {
-            display: none;
-        }
+      }
+      .blue-box-text {
+        text-align: center;
+      }
+      .blue-box-column {
+        padding:20px ;
+        max-width: 250px;
+        justify-content: center;
+        align-items: center;
+      }
+      .consultants-section-header {
+        width: 80%;
+      }
+      .horizontal-items-box {
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top:0;
+        margin-bottom: 0;
+        width: 60%;
+      }
+      .different-activities-items {
+        margin-top: 30px;
+        width: 100%;
+      }
+      .plane-enter {
+        display: none;
+      }
+      .achievements-section {
+        flex-direction: column;
+      }
+      .achievements-section-box {
+        width: 80%;
+        margin: 15px;
+      }
+      .pointer-svg {
+        display: none;
+      }
+      .analysis-img-div {
+        display: none;
+      }
+      .analysis-container-info {
+        width: 90%;
+        justify-content: flex-start;
+      }
+      .plane-enter {
+        display: none;
+      }
+      .plane-exit {
+        display: none;
+      }
     }
 
 </style>

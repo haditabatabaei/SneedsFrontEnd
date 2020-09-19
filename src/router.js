@@ -244,14 +244,7 @@ const router = new Router({
                 auth: 'optional'
             }
         },
-        {
-          path: '/AdmitChance',
-          name: 'AdmitChance',
-          component: () => import("@/components/AdmitChance/AdmitChanceLanding"),
-            meta: {
-              auth : 'optional'
-            }
-        },
+
         {
             path: '/user',
             redirect: '/user/profile',

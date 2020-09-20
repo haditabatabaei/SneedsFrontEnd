@@ -2,16 +2,16 @@
     <main class="landing isansFont iranSansFarsiNumber">
         <section class="landing-section --sneeds-section">
             <div class="sneeds-intro">
+              <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">
 
                 <div class="sneeds-intro-info">
                     <h6 class="sneeds-intro-info-small-title">with Abroad Path</h6>
-                    <h3 class="sneeds-intro-info-title">Apply smart</h3>
+                    <h3 class="sneeds-intro-info-title">You Shouldn't Study Abroad Alone</h3>
                     <div class="sneeds-intro-info-title-line"></div>
                     <p class="sneeds-intro-info-text">
-                        Our goal is to connect you with  students abroad to use
-                        their experiences in this field and you do not know where to
-                        start? Be informed of your status and receive smart offers by
-                        filling out the free application level determination form.
+
+                      Receive personalized guidance from mentors who are currently
+                      studying in same field and country you desire.
 
                     </p>
                     <div class="sneeds-intro-info-links">
@@ -25,8 +25,7 @@
                     </div>
 
                 </div>
-                <img class="globe" src="/sneedsAssets/img/globe.png">
-
+              <img class="globe-mobile" src="/sneedsAssets/img/Globe-mobile.png">
             </div>
 
         </section>
@@ -258,10 +257,6 @@
 
         <section class="landing-section --analysis-section">
             <div class="analysis-container">
-                <div class="analysis-img-div">
-                    <img class="analysis-svg" src="/sneedsAssets/img/analysis.svg">
-
-                </div>
                 <div class="analysis-container-info">
                     <h6 class="analysis-container-info-small-title">Advanced Apply Analyzer</h6>
                     <h5 class="analysis-container-info-title">Make the best decision</h5>
@@ -279,6 +274,11 @@
                     </div>
 
                 </div>
+                <img class="analysis-img-desk" src="/sneedsAssets/img/admit-home-desk.png">
+                <img class="analysis-img-mobile" src="/sneedsAssets/img/admit-home-mobile.png">
+
+
+
             </div>
 
         </section>
@@ -391,11 +391,14 @@
     }
 
 
-    .globe {
+    .globe-desktop {
         width: 70%;
         max-width: 80%;
-        margin-right: -25%;
+        margin-left: -15%;
         margin-top: -20%;
+    }
+    .globe-mobile {
+      display: none;
     }
 
 
@@ -440,7 +443,8 @@
 
     .sneeds-intro-info-text {
         padding: 5% 0px;
-        font-size: 12px;
+        font-size: 14px;
+      color:#707070 ;
     }
 
     .sneeds-intro-info-links {
@@ -818,20 +822,17 @@
         width: 100%;
         justify-content: center;
         align-items: flex-start;
-      margin-top: 10%;
+        margin-top: 10%;
+      overflow-x: hidden;
     }
-    .analysis-img-div {
+    .analysis-img-desk {
         width: 50%;
-        background-color: #F5F7FA;
-        border-radius: 40px;
-
+        height: auto;
+      margin-right: -10%;
 
     }
-    .analysis-svg {
-        width: 80%;
-        height: auto;
-        padding: 3%;
-
+    .analysis-img-mobile {
+      display: none;
     }
 
     .analysis-container-info {
@@ -944,14 +945,19 @@
         justify-content: flex-start;
         align-items: flex-start;
       }
-      .globe {
+      .sneeds-intro-info-text {
+        line-height: 30px;
+      }
+      .globe-desktop {
         display: none;
+      }
+      .globe-mobile {
+        display: inline-block;
+        width: 150%;
+        margin-left: -33%;
       }
       .consultants-section-header-line {
         display: block;
-      }
-      .universities-logoes {
-        display: none;
       }
       .structure-section-stages {
         flex-direction: column;
@@ -1008,7 +1014,7 @@
       }
       .different-activities-items {
         margin-top: 30px;
-        width: 100%;
+        width: 120%;
       }
       .plane-enter {
         display: none;
@@ -1023,8 +1029,15 @@
       .pointer-svg {
         display: none;
       }
-      .analysis-img-div {
+      .analysis-container {
+        flex-direction: column-reverse;
+      }
+      .analysis-img-desk {
         display: none;
+      }
+      .analysis-img-mobile{
+        display: inline-block;
+        width: 100%;
       }
       .analysis-container-info {
         width: 90%;

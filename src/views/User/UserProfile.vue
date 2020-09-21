@@ -7,7 +7,7 @@
                     :external-label="true"
                     v-model="user.email"
                     :is-disabled="true"
-                    :is-ltr="true"
+
                     class="profile-input"
                 />
 
@@ -16,7 +16,7 @@
                         :external-label="true"
                         v-model="user.phone_number"
                         :is-disabled="true"
-                        :is-ltr="true"
+
                         class="profile-input"
                 />
 
@@ -24,7 +24,7 @@
                         label="First name:"
                         :external-label="true"
                         v-model="inputUser.first_name"
-                        :is-ltr="true"
+
                         :placeholder="user.first_name"
                         :error="firstNameIsInvalid"
                         error-text="Please enter a valid first name."
@@ -36,7 +36,7 @@
                         :external-label="true"
                         v-model="inputUser.last_name"
                         :placeholder="user.last_name"
-                        :is-ltr="true"
+
                         :error="lastNameIsInvalid"
                         error-text="Please enter a valid last name."
                         class="profile-input"
@@ -56,7 +56,7 @@
                                 label="Password:"
                                 :external-label="true"
                                 v-model="auth.password"
-                                :is-ltr="true"
+
                                 :error="passwordIsInvalid"
                                 error-text="Please enter a valid password."
                                 class="profile-input"
@@ -66,7 +66,7 @@
                                 label="Confirm password:"
                                 :external-label="true"
                                 v-model="auth.password2"
-                                :is-ltr="true"
+
                                 :error="confirmPasswordIsInvalid"
                                 error-text="Please enter a valid password confirmation."
                                 class="profile-input"

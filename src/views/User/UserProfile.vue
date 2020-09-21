@@ -322,7 +322,7 @@
     .profile-password-toggler {
         background: none;
         border: none;
-        margin-right: 20px;
+        margin-left: 30px;
         display: flex;
         align-items: center;
         justify-content: flex-start;

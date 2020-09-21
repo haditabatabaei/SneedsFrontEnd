@@ -1,7 +1,7 @@
 <template>
     <nav class="topNavWrapper" :class="[{'top-0': isNavFixedOnZero}]" id="topnav">
         <div v-if="profileDropdownMenuOpen" class="before-profileDropdown-overlay" @click="toggleProfileDropdown"></div>
-        <div class="container navbarContainer">
+        <div class="navbarContainer">
             <div class="mobileNavbarToggleWrapper">
                 <transition name="fade" mode="out-in">
                     <i class="material-icons closeMenuButton" v-if="mobileMenuShow"
@@ -707,7 +707,7 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         z-index: 1015;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: center;
         transition: all 100ms ease-in-out;
     }
@@ -721,9 +721,12 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        padding-right: 0;
-        padding-left: 0;
-        height: 100%;
+        width: 100%;
+        max-width: 1170px;
+    }
+
+    .profileWrapper {
+        position: relative;
     }
 
 
@@ -896,8 +899,6 @@
         background-color: white;
         border-radius: 15px;
         width: 100%;
-        top: 40px;
-        padding: 0;
         z-index: 10;
         list-style: none;
         display: flex;
@@ -1002,7 +1003,7 @@
             background-color: rgba(255, 255, 255, 1);
             width: 100%;
             z-index: 998;
-            overflow:  scroll;
+            overflow: auto;
         }
 
         .mobileMenu.mobileMenu--larger {

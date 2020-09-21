@@ -2,9 +2,10 @@
     <section class="package-section package-section-faq">
         <div class="section-sub section-sub-faq">
             <section class="faq-box" v-for="faqBox in faqBoxes">
-                <sup class="isansFont faq-box-title-sup">{{faqBox.sup}}</sup>
+              <div class="fag-header">
                 <h1 class="isansFont faq-box-title">{{faqBox.title}}</h1>
-                <div class="faq-divider divider--purple"></div>
+                <div class="faq-divider divider--blue"></div>
+              </div>
                 <div class="faq-question" v-for="question in faqBox.questions">
                     <div class="faq-question-title" @click="toggleQuestion(question)">
                         <h2 class="faq-question-title-text isansFont--faNum">
@@ -78,8 +79,7 @@
                 ],
                 faqBoxes: [
                     {
-                        sup: 'اسنیدز',
-                        title: 'سوالات متداول',
+                        title: 'FAQs',
                         questions: [
                             {
                                 title: 'اسنیدز چی کار می‌کنه؟',
@@ -176,10 +176,10 @@
         margin: 0;
     }
 
-    .faq-box-title-sup {
-        color: #303143;
-        font-size: 14px;
-        margin-bottom: 15px;
+    .fag-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .faq-divider {
@@ -190,7 +190,7 @@
         margin-top: 25px;
     }
 
-    .divider--purple {
+    .divider--blue {
         background-color: #00D4ED;
     }
 

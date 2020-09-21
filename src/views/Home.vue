@@ -1,5 +1,5 @@
 <template>
-    <main class="landing isansFont iranSansFarsiNumber">
+    <main class="landing">
         <section class="landing-section  homepage-section">
             <div class="homepage-intro">
               <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">

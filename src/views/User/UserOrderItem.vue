@@ -1,104 +1,101 @@
 <template>
-    <div class="container-fluid activeCart">
+    <div class="activeCart">
         <package-staging current-stage-value="pay" style="margin-bottom: 20px" v-if="isShowingPackageStaging"/>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="cartsWrapper" v-if="showOrder">
-                    <div class="cartsWrapper-title gadugiFont">
-                        <div class="cartsWrapper-title-consultant">
-                            <img
-                                    v-if="hasTimeSlot"
-                                    :src="firstTimeSlot.consultant.profile_picture" draggable="false"
-                                    alt="">
-                            <div class="cartsWrapper-title-consultant--info">
-                                <h5 class="gadugiFont" v-if="hasTimeSlot">
-                                    Online consulting session
-                                </h5>
-                                <h5 class="gadugiFont" v-if="hasSoldStorePaidPackagePhase">
-                                    {{soldPackagePhase.title}}
-                                </h5>
-                                <h6 class="gadugiFont" v-if="hasTimeSlot">
-                                    {{`${firstTimeSlot.consultant.first_name}
-                                    ${firstTimeSlot.consultant.last_name}`}}</h6>
-                                <h6 class="gadugiFont" v-if="hasSoldStorePaidPackagePhase">
-                                    {{soldPackagePhase.detailed_title}}</h6>
-                            </div>
-                            <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum"
-                               v-if="order.status != 'paid'">
-                                Successful
-                            </p>
-                        </div>
-
-                        <div class="cartsWrapper-title-actions" v-if="hasTimeSlot">
-                            <router-link
-                                    :to="`/consultants/${getConsultantSlugFromUrl(firstTimeSlot.consultant.url)}`">
-                                Submit comment
-                            </router-link>
-                        </div>
-                        <div class="cartsWrapper-title-actions" v-if="hasSoldStorePaidPackagePhase">
-                            <router-link :to="`/user/userpackages/`">
-                                View packages
-                            </router-link>
-                            <router-link :to="`/user/userpackages/staging/form`" v-if="isShowingPackageStaging">
-                                Complete package form
-                            </router-link>
-                        </div>
+        <div class="cartsWrapper" v-if="showOrder">
+            <div class="cartsWrapper-title gadugiFont">
+                <div class="cartsWrapper-title-consultant">
+                    <img
+                            v-if="hasTimeSlot"
+                            :src="firstTimeSlot.consultant.profile_picture" draggable="false"
+                            alt="">
+                    <div class="cartsWrapper-title-consultant--info">
+                        <h5 class="gadugiFont" v-if="hasTimeSlot">
+                            Online consulting session
+                        </h5>
+                        <h5 class="gadugiFont" v-if="hasSoldStorePaidPackagePhase">
+                            {{soldPackagePhase.title}}
+                        </h5>
+                        <h6 class="gadugiFont" v-if="hasTimeSlot">
+                            {{`${firstTimeSlot.consultant.first_name}
+                            ${firstTimeSlot.consultant.last_name}`}}</h6>
+                        <h6 class="gadugiFont" v-if="hasSoldStorePaidPackagePhase">
+                            {{soldPackagePhase.detailed_title}}</h6>
                     </div>
-
-                    <div class="cartsWrapper-meta gadugiFont">
-                        <p>
-                            <span>Order No: </span>
-                            <span>{{order.order_id}}</span>
-                        </p>
-
-                        <p>
-                            <span>Price: </span>
-                            <span>{{`${order.total} Tomans`}}</span>
-                        </p>
-
-                        <p v-if="order.used_discount">
-                            <span>Discount: </span>
-                            <span>{{`${order.used_discount.amount} Tomans`}}</span>
-                        </p>
-
-                        <p v-if="order.used_discount">
-                            <span>With code: </span>
-                            <span>{{order.used_discount.code}}</span>
-                        </p>
-
-                        <p>
-                            <span>Created date: </span>
-                            <span>{{getJalali(order.created).format('DD/MM/YYYY HH:mm')}}</span>
-                        </p>
-                    </div>
-
-                    <div class="cartsWrapper-item gadugiFont" v-for="phase in order.sold_store_paid_package_phases">
-                        <p class="cartsWrapper-item--day">{{phase.title}}</p>
-                        <p class="gadugiFont cartsWrapper-item-length">
-                            {{phase.title}}'s current status:
-                            <span>{{getPhaseStatusName(phase)}}</span>
-                        </p>
-                        <p v-if="!!phase.description">
-                            Description:
-                            <br>
-                            {{phase.description}}
-                        </p>
-                        <p v-else>
-                            There is no available description for {{phase.title}}.
-                        </p>
-                    </div>
-
-                    <div class="cartsWrapper-item gadugiFont" v-for="(product, index) in order.sold_time_slot_sales" :key="index">
-                        <p class="cartsWrapper-item--day">
-                            {{getJalali(product.start_time).format('dddd MMMM 24t\\h')}}
-                        </p>
-                        <p class="cartsWrapper-item-length">
-                            <i class="material-icons">alarm_on</i>
-                            <span>{{getJalali(product.start_time).format('HH:mm')}}</span>
-                            <span>{{getJalali(product.end_time).format('HH:mm')}}</span>
-                        </p>
-                    </div>
+                    <p class="cartsWrapper-discounts-title-consultant--status success isansFont--faNum"
+                       v-if="order.status != 'paid'">
+                        Successful
+                    </p>
                 </div>
+
+                <div class="cartsWrapper-title-actions" v-if="hasTimeSlot">
+                    <router-link
+                            :to="`/consultants/${getConsultantSlugFromUrl(firstTimeSlot.consultant.url)}`">
+                        Submit comment
+                    </router-link>
+                </div>
+                <div class="cartsWrapper-title-actions" v-if="hasSoldStorePaidPackagePhase">
+                    <router-link :to="`/user/userpackages/`">
+                        View packages
+                    </router-link>
+                    <router-link :to="`/user/userpackages/staging/form`" v-if="isShowingPackageStaging">
+                        Complete package form
+                    </router-link>
+                </div>
+            </div>
+
+            <div class="cartsWrapper-meta gadugiFont">
+                <p>
+                    <span>Order No: </span>
+                    <span>{{order.order_id}}</span>
+                </p>
+
+                <p>
+                    <span>Price: </span>
+                    <span>{{`${order.total} Tomans`}}</span>
+                </p>
+
+                <p v-if="order.used_discount">
+                    <span>Discount: </span>
+                    <span>{{`${order.used_discount.amount} Tomans`}}</span>
+                </p>
+
+                <p v-if="order.used_discount">
+                    <span>With code: </span>
+                    <span>{{order.used_discount.code}}</span>
+                </p>
+
+                <p>
+                    <span>Created date: </span>
+                    <span>{{getJalali(order.created).format('DD/MM/YYYY HH:mm')}}</span>
+                </p>
+            </div>
+
+            <div class="cartsWrapper-item gadugiFont" v-for="phase in order.sold_store_paid_package_phases">
+                <p class="cartsWrapper-item--day">{{phase.title}}</p>
+                <p class="gadugiFont cartsWrapper-item-length">
+                    {{phase.title}}'s current status:
+                    <span>{{getPhaseStatusName(phase)}}</span>
+                </p>
+                <p v-if="!!phase.description">
+                    Description:
+                    <br>
+                    {{phase.description}}
+                </p>
+                <p v-else>
+                    There is no available description for {{phase.title}}.
+                </p>
+            </div>
+
+            <div class="cartsWrapper-item gadugiFont" v-for="(product, index) in order.sold_time_slot_sales"
+                 :key="index">
+                <p class="cartsWrapper-item--day">
+                    {{getJalali(product.start_time).format('dddd MMMM 24t\\h')}}
+                </p>
+                <p class="cartsWrapper-item-length">
+                    <i class="material-icons">alarm_on</i>
+                    <span>{{getJalali(product.start_time).format('HH:mm')}}</span>
+                    <span>{{getJalali(product.end_time).format('HH:mm')}}</span>
+                </p>
             </div>
         </div>
     </div>
@@ -167,7 +164,7 @@
             },
 
             getPhaseStatusName(phase) {
-                if(this.hasSoldStorePaidPackagePhase) {
+                if (this.hasSoldStorePaidPackagePhase) {
                     return (this.availablePhaseStatuses.find(status => status.value === phase.status)).name;
                 } else {
                     return '';
@@ -205,16 +202,13 @@
 </script>
 
 <style scoped>
-
-    .activeCart {
-        margin-top: 30px;
-    }
-
     .cartsWrapper {
         border-radius: 10px;
         background-color: white;
         box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
         padding: 10px;
+        display: flex;
+        flex-direction: column;
     }
 
     .cartsWrapper:not(:first-child) {
@@ -269,8 +263,6 @@
     }
 
     .cartsWrapper-item {
-        padding-right: 50px;
-        padding-left: 50px;
         margin-bottom: 15px;
     }
 
@@ -281,7 +273,6 @@
 
     .cartsWrapper-item-length {
         display: flex;
-        width: 100%;
         align-items: center;
         justify-content: space-between;
         background-color: #F2F2F2;
@@ -390,8 +381,6 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        padding-right: 20px;
-        padding-left: 20px;
         flex-wrap: wrap;
     }
 

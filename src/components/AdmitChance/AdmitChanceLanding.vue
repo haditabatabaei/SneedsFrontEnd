@@ -1,9 +1,9 @@
 <template>
   <main>
-    <section class="admit-chance-section --analysis-section">
-      <div class="analysis-container">
-        <div class="analysis-img-div">
-          <div class="sneeds-intro-info">
+    <section class="admit-chance-section intro-section">
+      <div class="intro-container">
+        <div class="intro-img-div">
+          <div class="admit-intro-info">
                             <span class="intro-info-small-title">
                                 <div class="intro-info-title-line"></div>
                                 AI powered</span>
@@ -14,13 +14,13 @@
               Dream Universities.
             </p>
             <div class="intro-info-links">
-              <a href="#" class=" link-start">
+              <a href="#" class="link-start">
                 Start here
                 <span class="link-start-free">Free</span>
               </a>
             </div>
           </div>
-          <img class="analysis-svg" src="/sneedsAssets/img/Hero.png">
+          <img class="intro-img" src="/sneedsAssets/img/Hero.png">
 
         </div>
 
@@ -37,7 +37,7 @@
         <p class="participants-sub">
           participants
         </p>
-        <a href="#" class=" participants-link-start">
+        <a href="#" class="participants-link-start">
           Start now
           <span class="participants-link-start-free">Free</span>
         </a>
@@ -45,9 +45,9 @@
       </div>
     </section>
     <section class="admit-chance-section admit-chance-demo">
-      <div class="admit-chance-sample">
+      <div class="admit-chance-demo-div">
         <img class="admit-chance-image" src="/sneedsAssets/img/image 72.png" alt="">
-        <button class="preview-button">
+        <button class="demo-button">
           <i  class="material-icons fullscreen-icon">fullscreen</i>
           Preview Results Demo
         </button>
@@ -56,7 +56,7 @@
 
     <landing-features></landing-features>
 
-
+<section class="admit-chance-section smart-analysis">
     <div class="smart-analysis-img-div" >
       <div class="smart-analysis-container">
         <img  class="smart-analysis-img" src="/sneedsAssets/img/mob.png">
@@ -78,15 +78,13 @@
           </div>
         </div>
       </div>
-
     </div>
-
+</section>
     <all-in-one></all-in-one>
     <reminder></reminder>
     <FAQ></FAQ>
   </main>
 </template>
-
 
 <script>
 import AdmitChanceAllinOne from "./AdmitChanceAllinOne";
@@ -103,7 +101,6 @@ export default {
     reminder : LandingReminder,
   }
 }
-
 </script>
 
 <style scoped>
@@ -111,7 +108,7 @@ export default {
   margin-bottom: 100px;
 }
 
-.sneeds-intro-info {
+.admit-intro-info {
   width: 50%;
   min-height: 100px;
   display: flex;
@@ -177,34 +174,26 @@ export default {
 }
 
 
-.analysis-container {
+.intro-container {
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: center;
   align-items: flex-start;
 }
-.analysis-img-div {
+.intro-img-div {
   width: 100%;
   background-color: #F5F7FA;
   clip-path: polygon(0 0, 100% 0, 100% 88%, 0% 100%);
   display: flex;
   flex-direction: row;
 }
-.analysis-svg {
+.intro-img {
   width: 50%;
   height: auto;
   padding: 3%;;
 
 }
-
-
-
-
-
-
-
-
 .participants-container {
   display: flex;
   flex-direction: column;
@@ -247,26 +236,27 @@ export default {
   right: -125px;
   border-radius: 2px;
 }
-.admit-chance-sample {
+.admit-chance-demo-div {
   align-items: center;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   justify-content: center;
 }
 .fullscreen-icon {
   font-size: 28px;
   padding: 0 10px;
 }
-.preview-button {
+.demo-button {
   color: #008DB8;
   background-color: white;
   box-shadow: 0px 13px 26px #00000029;
-  padding: 15px 20px;
   border-radius: 40px;
   font-size: 14px;
   border: white;
-  position: absolute;
-  margin-top: 10%;
-  margin-left: -20%;
+  align-self: flex-start;
+  margin-left: 20%;
+  margin-top: -5%;
 }
 button:hover {
   background-color: #ecf4ff;
@@ -363,24 +353,22 @@ button:hover {
     width: 85%;
     margin-bottom: -10%;
   }
-
-
-  .analysis-img-div {
-    flex-direction: column-reverse;
+  .intro-img-div {
+    flex-direction: column;
   }
-  .analysis-svg {
+  .intro-img {
     width: 100%;
+    margin-bottom: 50px;
   }
-  .sneeds-intro-info {
+  .admit-intro-info {
     width: 100%;
-    padding-bottom: 100px;
   }
   .admit-chance-image {
     width: 95%;
   }
-  .preview-button {
-    padding: 2%;
-    margin-top: 15%;
+  .demo-button {
+    margin-left: 10%;
+    margin-top: -10%;
   }
 }
 </style>

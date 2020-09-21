@@ -973,7 +973,7 @@ export default {
         flex-direction: column;
         justify-content: stretch;
         background-color: white;
-        padding-right: 35px;
+        padding-left: 35px;
         max-width: 800px;
     }
 
@@ -1093,7 +1093,7 @@ export default {
         height: 45px;
         max-width: 800px;
         align-self: flex-end;
-        margin-left: 20px;
+        margin-right: 20px;
     }
 
     .form-confirm-next {

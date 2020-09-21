@@ -93,14 +93,6 @@
                         submenu: []
                     },
                     {
-                        name: "Packages",
-                        target: '/user/userpackages',
-                        icon: 'circle',
-                        tag: 0,
-                        hasSubmenu: false,
-                        submenu: []
-                    },
-                    {
                         name: "Chatroom",
                         target: '/user/chatroom',
                         icon: 'circle',
@@ -138,14 +130,6 @@
                     {
                         name: "Discounts",
                         target: '/user/discounts',
-                        icon: 'circle',
-                        tag: 0,
-                        hasSubmenu: false,
-                        submenu: []
-                    },
-                    {
-                        name: "Packages",
-                        target: '/user/conspackages',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,

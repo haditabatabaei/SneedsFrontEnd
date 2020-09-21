@@ -1,4 +1,5 @@
 <template>
+
     <main class="landing">
         <section class="landing-section  homepage-section">
             <div class="homepage-intro">
@@ -14,14 +15,22 @@
                       studying in same field and country you desire.
 
                     </p>
-                    <div class="homepage-intro-info-links">
+                    <div class="homepage-links homepage-intro-info-links">
                         <a href="#" class=" link-level">
                             Admit chance
                             <span class="link-level-free">Free</span>
                         </a>
-                        <a href="# "class="homepage-intro-info-link link -interview">Consultation</a>
-                        <a href="#" class="homepage-intro-info-link link -live">Videoes</a>
-                        <a href="#" class="homepage-intro-info-link link -webinar"> Webinars</a>
+                      <router-link to="/consultants" class="homepage-intro-info-link link -interview">
+                        Consultation
+                      </router-link>
+                        <a href="https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%87%D8%A7%DB%8C-%D8%AE%D9%88%D8%AF
+                        -%D8%A2%D9%85%D9%88%D8%B2-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/"
+                           class="homepage-intro-info-link link -live">
+                          Videoes</a>
+                        <a href="https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/"
+                           class="homepage-intro-info-link link -webinar">
+                          Webinars
+                        </a>
                     </div>
 
                 </div>
@@ -92,12 +101,12 @@
               <home-page-consultants :consultants-input="Consultants"></home-page-consultants>
 
 
-            <div class="consultants-section-rows  see-all">
+            <div class="consultants-section-rows  see-all homepage-links">
                 <div class="see-all-link-line"></div>
-                <a class="see-all-link" href="#">
+                <router-link class="see-all-link" to="/consultants">
                     All consultants
                     <i data-v-f966f08a="" class="material-icons">keyboard_arrow_right</i>
-                </a>
+                </router-link>
                 <div class="see-all-link-line"></div>
             </div>
         </section>
@@ -266,7 +275,7 @@
                         Apply with the help of Snides artificial intelligence, see your weaknesses and strengths in addition to
                         Get those smart offers to improve your resume and get ahead of the rest of the competition.
                     </p>
-                    <div class="analysis-container-info-links">
+                    <div class="analysis-container-info-links homepage-links">
                         <a href="#" class=" analysis-link-level">
                             Admit Chance
                             <span class="analysis-link-free">Free!</span>
@@ -283,8 +292,7 @@
 
         </section>
 
-
-        <app-question></app-question>
+      <app-question></app-question>
 
     </main>
 
@@ -295,10 +303,10 @@
    import HomePageBlogSection from "../components/HomePage/HomePageBlogSection";
    import BlogSection from "../components/HomePage/BlogSection";
    import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
+   import 'vueperslides/dist/vueperslides.css'
     export default {
         components: {
             HomePageConsultantSection,
-            BlogSection,
             HomePageConsultants: HomePageConsultantSection,
             HomePageBlog: HomePageBlogSection,
             appQuestion: FAQ,
@@ -426,7 +434,9 @@
         font-size: 14px;
       color:#707070 ;
     }
-
+    .homepage-links:hover{
+      filter: brightness(95%);
+    }
     .homepage-intro-info-links {
         display: flex;
         flex-direction: row;
@@ -552,7 +562,7 @@
 
     }
 
-    .  see-all {
+    .see-all {
         justify-content: center;
         align-items: baseline;
         margin: 0 auto 50px auto;
@@ -612,7 +622,7 @@
         width: 80%;
         margin-bottom: 50px;
     }
-    .  advantages {
+    .advantages {
         width: 100%;
         overflow: hidden;
     }
@@ -701,7 +711,7 @@
     }
 
 
-    .  different-activities{
+    .different-activities{
         justify-content: center;
     }
 
@@ -802,12 +812,12 @@
         justify-content: center;
         align-items: flex-start;
         margin-top: 15%;
-      overflow-x: hidden;
+         overflow-x: hidden;
     }
     .analysis-img-desk {
         width: 50%;
         height: auto;
-      margin-right: -10%;
+         margin-right: -10%;
 
     }
     .analysis-img-mobile {
@@ -891,10 +901,6 @@
         margin-left: 10px;
     }
 
-    .brows-more-link {
-        color: #00b8d4;
-        font-weight: lighter;
-    }
     .consultants-section-header-line {
         width: 120px;
         height: 3px;
@@ -987,7 +993,7 @@
       .horizontal-items-box {
         flex-direction: column;
         justify-content: space-between;
-        margin-top:0;
+        margin-top: 0;
         margin-bottom: 0;
         width: 60%;
       }

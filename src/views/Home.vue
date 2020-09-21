@@ -81,7 +81,7 @@
                     Consultants
                     <div class="consultants-section-header-line"></div>
                     <span class="consultants-section-title-sub">
-                       <br>Application consultants with experience studying at the best universities around the world.
+                       <br>Apply consultants with experience studying at the best universities around the world.
                      </span>
 
 
@@ -140,7 +140,7 @@
                             </i>
                         </div>
                         <h5 class="blue-box-title">Monitor the process</h5>
-                        <p class="blue-box-text">Be aware of the application process with the fully transparent Snides platform
+                        <p class="blue-box-text">Be aware of the apply process with the fully transparent Sneeds platform.
                         </p>
                     </div>
 
@@ -262,13 +262,13 @@
                     <h5 class="analysis-container-info-title">Make the best decision</h5>
                     <div class="analysis-container-info-title-line"></div>
                     <p class="analysis-container-info-text">
-                        y filling out the free education information form, you will immediately rank among the other people who intend to
+                        You filling out the free education information form, you will immediately rank among the other people who intend to
                         Apply with the help of Snides artificial intelligence, see your weaknesses and strengths in addition to
                         Get those smart offers to improve your resume and get ahead of the rest of the competition.
                     </p>
                     <div class="analysis-container-info-links">
                         <a href="#" class=" analysis-container--level">
-                            Determine the level
+                            Admit Chance
                             <span class="analysis-container--free">Free!</span>
                         </a>
                     </div>

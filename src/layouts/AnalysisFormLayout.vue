@@ -130,7 +130,7 @@
                 <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">Leave form</router-link>
                 <router-link v-else to="/" class="form-exit-button">Leave form</router-link>
             </aside>
-            <main class="form-layout-view-wrapper" @click.self="showMobileFormMenu = false">
+            <main class="form-layout-view-wrapper gadugiFont" @click.self="showMobileFormMenu = false">
                 <div class="mobile-form-menu">
                     <h2 class="mobile-form-current" @click="showMobileFormMenu = !showMobileFormMenu">
                         {{$route.meta.title}}
@@ -174,8 +174,8 @@
                                 Next
                             </span>
                             <moon-loader class="loading-icon" style="align-self:center;margin-right: auto" color="white" :loading="loading" :size="20" sizeUnit="px"/>
-                            <i clss="material-icons">keyboard_arrow_right</i>
-                        </button>s
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
                         <button @click="goBack()" class="form-confirm-back">
                             <i class="material-icons">keyboard_arrow_left</i>
                         </button>

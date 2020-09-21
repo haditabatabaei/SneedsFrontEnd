@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="searchable-wrapper isansFont--faNum" :class="[{'searchable--open': isSearchableOpen, 'input--error': error}]">
+    <div class="gadugiFont">
+        <div class="searchable-wrapper" :class="[{'searchable--open': isSearchableOpen, 'input--error': error}]">
             <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter">
             <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
             <i class="material-icons" v-if="!loading">
@@ -9,13 +9,13 @@
             <moon-loader class="loading-icon searchable-loading-icon" color="purple" :loading="loading" :size="15" sizeUnit="px" v-else />
 
             <ul class="searchable-items" v-if="isSearchableOpen">
-                <li class="searchable-item item-blocked" v-if="dataset.length == 0">متاسفانه موردی پیدا نشد.</li>
+                <li class="searchable-item item-blocked" v-if="dataset.length == 0">Sorry, no entries found.</li>
                 <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
             </ul>
             <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
         </div>
         <transition name="fade">
-            <p class="number-input-error isansFont" v-if="error">
+            <p class="number-input-error" v-if="error">
                 <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>
@@ -130,7 +130,7 @@
     .searchable-wrapper i, .searchable-loading-icon {
         display: flex;
         align-items: center;
-        margin-left: 10px;
+        margin-right: 10px;
         color: #00D4ED;
         font-size: 18px;
     }
@@ -138,10 +138,10 @@
     .searchable-input-label {
         display: flex;
         align-items: center;
-        margin-right: 10px;
+        margin-left: 10px;
         cursor:pointer;
         position: absolute;
-        right: 0;
+        left: 0;
         top: 7.5px;
         color: #9B9999;
         font-weight: normal;
@@ -151,7 +151,7 @@
         flex-grow: 4;
         border: none;
         background: none;
-        padding-right: 10px;
+        padding-left: 10px;
     }
 
     .searchable-input:focus {

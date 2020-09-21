@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="form-dropdown isansFont--faNum" :class="[{'dropdown-opened': isDropdownOpen, 'dropdown--error': error}]" @click.self="toggleDropdown">
+    <div class="gadugiFont">
+        <div class="form-dropdown" :class="[{'dropdown-opened': isDropdownOpen, 'dropdown--error': error}]" @click.self="toggleDropdown">
             <div class="overlay-dropdown-closable" v-if="isDropdownOpen" @click="isDropdownOpen = false"></div>
             <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-if="selectedOption">{{selectedOption.name}}</p>
             <p class="dropdown-selectdoption" @click.self="toggleDropdown" v-else>{{label}}</p>
@@ -24,7 +24,7 @@
             </transition>
         </div>
         <transition name="fade">
-            <p class="number-input-error isansFont--faNum" v-if="error">
+            <p class="number-input-error" v-if="error">
                 <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>

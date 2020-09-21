@@ -1,22 +1,15 @@
 <template>
-    <div>
-        <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
-            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
-            <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel">{{label}}</label>
-        </div>
-        <label :for="`number-input-${inputId}`" v-if="hasLabel && externalLabel" class="gadugiFont">
-            {{label}}
-        </label>
-        <div class="number-input-wrapper" :class="[{'input--error': error, 'wrapper--ltr': isLtr, 'isansFont': isLtr, 'isansFont--faNum' : !isLtr}]">
+    <div class="gadugiFont">
+        <div class="number-input-wrapper" :class="[{'input--error': error}]">
             <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
             <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel && !externalLabel">{{label}}</label>
-            <div class="number-input-controls gadugiFont" v-if="hasKeys">
-                <button class="number-input-action" @click="incrementValueByStep">+</button>
-                <button class="number-input-action" @click="decrementValueByStep">-</button>
+            <div class="number-input-controls" v-if="hasKeys">
+<!--                <button class="number-input-action" @click="incrementValueByStep">+</button>-->
+<!--                <button class="number-input-action" @click="decrementValueByStep">-</button>-->
             </div>
         </div>
         <transition name="fade">
-            <p class="number-input-error isansFont" :class="[{'isansFont--faNum': !isLtr}]" v-if="error">
+            <p class="number-input-error" v-if="error">
                 <i class="material-icons-outlined">info</i>
                 {{errorText}}
             </p>
@@ -65,10 +58,6 @@
                 type: Boolean,
                 default: () => true
             },
-            isLtr: {
-                type: Boolean,
-                default: () => false
-            },
             error: {
                 type: Boolean,
                 default: () => false
@@ -110,7 +99,6 @@
         background-color: #F8F8F8;
         border: 1px solid #F2F2F2;
         border-radius: 10px;
-        padding: 5px;
         height: 40px;
     }
 
@@ -153,13 +141,13 @@
     }
 
     .number-input-value {
-        padding: 0 10px 0 0;
-        margin: 0 5px 0 0;
+        padding: 0 0 0 10px;
+        margin: 5px 0 5px 5px;
         color: #9B9999;
         font-weight: bold;
         background: none;
         border: none;
-        border-left: 2px solid #9B9999;
+        border-right: 2px solid #9B9999;
     }
 
     /** LTR Config **/

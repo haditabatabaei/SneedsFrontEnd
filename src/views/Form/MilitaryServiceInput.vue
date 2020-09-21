@@ -1,21 +1,21 @@
 <template>
     <section class="form-militaryservice">
-        <h1 class="militaryservice-title isansFont">
-            دغدغه سربازی داری؟
+        <h1 class="militaryservice-title">
             <i class="material-icons">help_outline</i>
+            How is your military service status?
         </h1>
-        <div class="militaryservice-wrapper isansFont">
+        <div class="militaryservice-wrapper">
             <input v-model="selectedMilitaryserviceStatus" id="militaryservice-have" type="radio" name="militaryservice" value="have">
             <input v-model="selectedMilitaryserviceStatus" id="militaryservice-donthave" type="radio" name="militaryservice" value="donthave">
             <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': selectedMilitaryserviceStatus == 'have'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMilitaryserviceStatus == 'have'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/militaryservice.svg" class="militaryservice-holder-image" alt="عدم دغدغه سربازی">
-                <p class="militaryservice-holder-text">دارم</p>
+                <img draggable="false" src="/sneedsAssets/img/militaryservice.svg" class="militaryservice-holder-image" alt="Without military service concerns">
+                <p class="militaryservice-holder-text">I passed</p>
             </label>
             <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': selectedMilitaryserviceStatus == 'donthave'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMilitaryserviceStatus == 'donthave'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/nomilitaryservice.svg" class="militaryservice-holder-image" alt="دارای دغدغه سربازی">
-                <p class="militaryservice-holder-text">ندارم!</p>
+                <img draggable="false" src="/sneedsAssets/img/nomilitaryservice.svg" class="militaryservice-holder-image" alt="With military service concerns">
+                <p class="militaryservice-holder-text">I didn't pass</p>
             </label>
         </div>
     </section>

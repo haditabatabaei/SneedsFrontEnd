@@ -1,12 +1,12 @@
 <template>
-    <section class="paper-items isansFont">
-        <div class="paper-items-wrapper isansFont--faNum">
+    <section class="paper-items gadugiFont">
+        <div class="paper-items-wrapper">
             <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
                     <p class="paper-item-summary">{{getSummary(item)}}</p>
                     <p class="paper-item-title">{{getDesc(item)}}</p>
-                    <p class="paper-item-title">عنوان پایان نامه: {{item.thesis_title}}</p>
+                    <p class="paper-item-title">Thesis title: {{item.thesis_title}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteUniversityItem(item)">
                     <i class="material-icons">close</i>
@@ -14,15 +14,15 @@
             </div>
 
             <p class="paper-items-empty" v-if="items.length == 0">
-                مقطعی وارد نشده است.
+                There is no academic degree available.
             </p>
             <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
 
             <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-if="items.length > 0">
-                افزودن مقطع دیگر
+                Add another academic degree
             </router-link>
             <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-else>
-                اضافه کردن مقطع جدید
+                Add an academic degree
             </router-link>
         </div>
     </section>
@@ -66,13 +66,13 @@
             getGrade(grade) {
                 switch (grade.toLowerCase()) {
                     case 'bachelor':
-                        return 'کارشناسی'
+                        return 'bachelor'
                     case 'master':
-                        return 'کارشناسی ارشد';
+                        return 'master';
                     case 'phd':
-                        return 'دکتری';
+                        return 'doctorate';
                     case 'post_doc':
-                        return 'پسا دکتری';
+                        return 'Ph.D';
 
                 }
             },
@@ -82,7 +82,7 @@
             },
 
             getDesc(item) {
-                return ` ${item.major.name} تا سال ${item.graduate_in} معدل ${item.gpa}`
+                return `${item.major.name} till ${item.graduate_in} with ${item.gpa} GPA`
             },
 
             async deleteUniversityItem(item) {

@@ -2,57 +2,57 @@
     <section class="form-edulevel">
         <transition name="fade">
             <div class="modal-confirm-overlay" v-if="showConfirm" @click.self="showConfirm = false">
-                <div class="modal-confirm isansFont">
+                <div class="modal-confirm">
                     <button class="modal-confirm-close" @click="showConfirm = false"><i class="material-icons">close</i></button>
-                    <h2 class="modal-confirm-title isansFont">
+                    <h2 class="modal-confirm-title">
                         <i class="material-icons-outlined">info</i>
-                        توجه، فرم شما خالی است!
+                        Notice, Your form is empty.
                     </h2>
                     <p class="modal-confirm-text">
-                        شما میخواهید بدون پر کردن اطلاعات مقطع تحصیلی خود به مرحله بعد بروید، امکان اضافه کردن و ویرایش چند مقطع تحصیلی قبلی به تعداد دلخواه در آینده وجود دارد.
+                        You are about to leave this page without adding an academic degree, you can add and edit multiple academic degrees later.
                     </p>
                     <div class="modal-confirm-action">
-                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">نه، میخواهم پر کنم</button>
-                        <button class="modal-confirm-button confirm--next" @click="bypassEducation">متوجهم، به مرحله بعد برو</button>
+                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">No!, Stay, I want to add</button>
+                        <button class="modal-confirm-button confirm--next" @click="bypassEducation">I consent, continue</button>
                     </div>
                 </div>
             </div>
         </transition>
 
-        <h1 class="edulevel-title isansFont">
-            مقطع تحصیلی
+        <h1 class="edulevel-title">
             <i class="material-icons">help_outline</i>
+            Add an academic degree
         </h1>
         <div class="edulevel-wrapper">
-            <c-dropdown-input class="edulevel-input" label="مقطع تحصیلی"
+            <c-dropdown-input class="edulevel-input" label="Academic degree level"
                               :error="$v.selectedGrade.$error"
-                              error-text="لطفاً یک مقطع تحصیلی معتبر وارد کنید."
+                              error-text="Please provide a valid option."
                               :options="gradeOptions"
                               @select-option="gradeSelected" />
 
             <c-searchable-input class="edulevel-input" :loading="majorLoading"
                                 :error="$v.selectedMajor.$error"
-                                error-text="لطفاً یک رشته معتبر وارد کنید."
+                                error-text="Please provide a valid option."
                                 @input="searchMajorByVal"
-                                label="رشته"
+                                label="Major"
                                 :dataset="availableMajors"
                                 @select-option="setSelectedMajor" />
 
             <c-searchable-input class="edulevel-input" :loading="uniLoading"
                                 :error="$v.selectedUniversity.$error"
-                                error-text="لطفاً یک دانشگاه معتبر وارد کنید."
+                                error-text="Please provide a valid university"
                                 @input="searchUniversityByVal"
-                                label="دانشگاه"
+                                label="University"
                                 :dataset="availableUniversities"
                                 @select-option="setSelectedUniversity" />
 
             <c-number-input class="edulevel-input"
                             @set-parent-value="val => gpa = val"
                             :error="$v.gpa.$error"
-                            error-text="معدل کل باید عدد بین 0 تا 20 باشد."
+                            error-text="GPA must be a number between 0 and 20"
                             :defaultValue="gpa"
                             :step="0.25"
-                            label="معدل از 20"
+                            label="GPA (out of 20)"
                             :has-keys="false"
                             v-model="gpa"
                             />
@@ -60,16 +60,16 @@
             <c-number-input class="edulevel-input" :defaultValue="2020"
                             @set-parent-value="val => graduateIn = val"
                             :error="$v.graduateIn.$error"
-                            error-text="سال فارغ التحصیلی باید به میلادی و عدد صحیح بین 1980 و 2100 باشد."
-                            label="سال فراغت از تحصیل"
+                            error-text="Your graduate year must be an integer between 1980 and 2100"
+                            label="Graduate year"
                             :max-value="2100"
                             :default-value="graduateIn"
                             v-model="graduateIn"
                             />
 
-            <c-simple-input class="edulevel-input" label="عنوان پایان نامه"
+            <c-simple-input class="edulevel-input" label="Thesis title"
                             :error="$v.thesisTitle.$error"
-                            error-text="عنوان پایان نامه باید حداکثر 512 کاراکتر باشد."
+                            error-text="Thesis title can have 512 characters at max."
                             v-model="thesisTitle"
                             />
         </div>
@@ -115,10 +115,10 @@
                 majorLoading: false,
                 uniLoading: false,
                 gradeOptions: [
-                    {name: 'کارشناسی', nameEnglish: 'BACHELOR'},
-                    {name: 'کارشناسی ارشد', nameEnglish: 'MASTER'},
-                    {name: 'دکتری', nameEnglish: 'PHD'},
-                    {name: 'پسا دکتری', nameEnglish: 'POST_DOC'}
+                    {name: 'Bachelor', nameEnglish: 'BACHELOR'},
+                    {name: 'Master', nameEnglish: 'MASTER'},
+                    {name: 'Doctorate', nameEnglish: 'PHD'},
+                    {name: 'Ph.D', nameEnglish: 'POST_DOC'}
                 ],
 
                 showConfirm: false,

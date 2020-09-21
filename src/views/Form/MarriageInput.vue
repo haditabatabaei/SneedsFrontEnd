@@ -1,21 +1,21 @@
 <template>
     <section class="form-marriage">
-        <h1 class="marriage-title isansFont">
-            مجردی یا متاهل؟
+        <h1 class="marriage-title">
             <i class="material-icons">help_outline</i>
+            Are you married or single?
         </h1>
-        <div class="marriage-wrapper isansFont">
+        <div class="marriage-wrapper">
             <input v-model="selectedMarriageStatus" id="marriage-single" type="radio" name="marriage" value="single">
             <input v-model="selectedMarriageStatus" id="marriage-married" type="radio" name="marriage" value="married">
             <label for="marriage-single" class="marriage-holder" :class="[{'holder--selected': selectedMarriageStatus == 'single'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMarriageStatus == 'single'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/single.svg" class="marriage-holder-image" alt="وضععیت تاهل مجرد">
-                <p class="marriage-holder-text">مجردم</p>
+                <img draggable="false" src="/sneedsAssets/img/single.svg" class="marriage-holder-image" alt="i am single">
+                <p class="marriage-holder-text">I'm Single</p>
             </label>
             <label for="marriage-married" class="marriage-holder" :class="[{'holder--selected': selectedMarriageStatus == 'married'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMarriageStatus == 'married'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/married.svg" class="marriage-holder-image" alt="وضعیت تاهل متاهل">
-                <p class="marriage-holder-text">متاهلم</p>
+                <img draggable="false" src="/sneedsAssets/img/married.svg" class="marriage-holder-image" alt="i am married">
+                <p class="marriage-holder-text">I'm Married</p>
             </label>
         </div>
     </section>

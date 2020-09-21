@@ -58,116 +58,6 @@
                 <router-view :key="$route.fullPath" class="mobile-view"/>
             </div>
         </div>
-
-        <!--        <div class="container" v-if="windowWidth > 991.8">-->
-        <!--            <div class="row">-->
-        <!--                <div class="col-md-3 sidebarWrapperDesktop" v-if="!hideProfileSidebar">-->
-        <!--                    <div class="userSidebarBlock">-->
-        <!--                        <div class="userSidebarBlock&#45;&#45;info">-->
-        <!--                            <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture">-->
-        <!--                            <div class="userSidebarBlock&#45;&#45;info_detail">-->
-        <!--                                <h1 class="isansFont&#45;&#45;faNum" v-if="showFirstName">-->
-        <!--                                    {{`${user.first_name} ${user.last_name}`}}-->
-        <!--                                </h1>-->
-        <!--                                <h4 class="isansFont&#45;&#45;faNum text-sm" v-else>-->
-        <!--                                    <router-link to="/user/profile">-->
-        <!--                                        Please fill and submit your first and last names.-->
-        <!--                                    </router-link>-->
-        <!--                                </h4>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                        <div class="userSidebarBlock&#45;&#45;links isansFont&#45;&#45;faNum">-->
-        <!--                            <ul class="userSidebarBlock&#45;&#45;links-menu"-->
-        <!--                                v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">-->
-        <!--                                <li class="userSidebarBlock&#45;&#45;links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"-->
-        <!--                                    v-for="(item, index) in userSidebarItems" :key="index">-->
-        <!--                                    <span :class="item.icon"/>-->
-        <!--                                    <router-link :to="item.target">{{item.name}}</router-link>-->
-        <!--                                    <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>-->
-        <!--                                    <ul class="userSidebarBlock&#45;&#45;links-submenu" v-if="item.hasSubmenu">-->
-        <!--                                        <li class="userSidebarBlock&#45;&#45;links-submenuitem"-->
-        <!--                                            v-for="(subItem, subIndex) in item.submenu" :key="subIndex">-->
-        <!--                                            <span :class="subItem.icon"/>-->
-        <!--                                            <router-link :to="subItem.target">{{subItem.name}}</router-link>-->
-        <!--                                        </li>-->
-        <!--                                    </ul>-->
-        <!--                                </li>-->
-        <!--                            </ul>-->
-
-        <!--                            <ul class="userSidebarBlock&#45;&#45;links-menu" v-else-if="userInfo.user_type === 'consultant'">-->
-        <!--                                <li class="userSidebarBlock&#45;&#45;links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"-->
-        <!--                                    v-for="(item, index) in consultantSidebarItems" :key="index">-->
-        <!--                                    <span :class="item.icon"/>-->
-        <!--                                    <router-link :to="item.target">{{item.name}}</router-link>-->
-        <!--                                    <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>-->
-        <!--                                    <ul class="userSidebarBlock&#45;&#45;links-submenu" v-if="item.hasSubmenu">-->
-        <!--                                        <li class="userSidebarBlock&#45;&#45;links-submenuitem"-->
-        <!--                                            v-for="(subItem, subIndex) in item.submenu" :key="subIndex">-->
-        <!--                                            <span :class="subItem.icon"/>-->
-        <!--                                            <router-link :to="subItem.target">{{subItem.name}}</router-link>-->
-        <!--                                        </li>-->
-        <!--                                    </ul>-->
-        <!--                                </li>-->
-        <!--                            </ul>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <div :class="[{'col-md-12' : hideProfileSidebar}, {'col-md-9' : !hideProfileSidebar}]">-->
-        <!--                    <div class="row">-->
-        <!--                        <router-view :key="$route.fullPath" class="mobile-view"/>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--        <div class="mobile" v-else>-->
-        <!--            <div class="mobile-info">-->
-        <!--                <img v-if="showUserAvatar" src="https://picsum.photos/id/0/75/75"-->
-        <!--                     :alt="`${user.first_name} ${user.last_name}`">-->
-        <!--                <h1 class="isansFont&#45;&#45;faNum" v-if="showFirstName">-->
-        <!--                    {{`${user.first_name} ${user.last_name}`}}-->
-        <!--                </h1>-->
-        <!--                <h4 class="isansFont&#45;&#45;faNum" v-else>-->
-        <!--                    Please fill and submit your first and last names.-->
-        <!--                </h4>-->
-
-        <!--                <h4 class="isansFont&#45;&#45;faNum">-->
-        <!--                    <router-link to="/user/profile">Fill other information ></router-link>-->
-        <!--                </h4>-->
-        <!--            </div>-->
-        <!--            <div class="mobile-menu">-->
-        <!--                <ul class="userSidebarBlock&#45;&#45;links-menu"-->
-        <!--                    v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">-->
-        <!--                    <li class="userSidebarBlock&#45;&#45;links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"-->
-        <!--                        v-for="(item, index) in userSidebarItems" :key="index">-->
-        <!--                        <router-link :to="item.target">{{item.name}}</router-link>-->
-        <!--                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>-->
-        <!--                        <ul class="userSidebarBlock&#45;&#45;links-submenu" v-if="item.hasSubmenu">-->
-        <!--                            <li class="userSidebarBlock&#45;&#45;links-submenuitem" v-for="(subItem, subIndex) in item.submenu"-->
-        <!--                                :key="subIndex">-->
-        <!--                                <router-link class="isansFont&#45;&#45;faNum" :to="subItem.target">{{subItem.name}}-->
-        <!--                                </router-link>-->
-        <!--                            </li>-->
-        <!--                        </ul>-->
-        <!--                    </li>-->
-        <!--                </ul>-->
-
-        <!--                <ul class="userSidebarBlock&#45;&#45;links-menu" v-else-if="userInfo.user_type === 'consultant'">-->
-        <!--                    <li class="userSidebarBlock&#45;&#45;links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"-->
-        <!--                        v-for="(item, index) in consultantSidebarItems" :key="index">-->
-        <!--                        <router-link :to="item.target">{{item.name}}</router-link>-->
-        <!--                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>-->
-        <!--                        <ul class="userSidebarBlock&#45;&#45;links-submenu" v-if="item.hasSubmenu">-->
-        <!--                            <li class="userSidebarBlock&#45;&#45;links-submenuitem" v-for="(subItem, subIndex) in item.submenu"-->
-        <!--                                :key="subIndex">-->
-        <!--                                <router-link class="isansFont&#45;&#45;faNum" :to="subItem.target">{{subItem.name}}-->
-        <!--                                </router-link>-->
-        <!--                            </li>-->
-        <!--                        </ul>-->
-        <!--                    </li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
-        <!--            <router-view class="mobile-view" :key="$route.fullPath"/>-->
-        <!--        </div>-->
     </section>
 </template>
 
@@ -421,7 +311,7 @@
         height: 15px;
         border-radius: 50%;
         border: 3px solid #ccc;
-        margin: auto 5px;
+        margin: auto 5px auto 10px;
     }
 
     .square {

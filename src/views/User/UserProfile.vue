@@ -268,7 +268,6 @@
         align-items: stretch;
         justify-content: flex-start;
         flex-direction: column;
-        margin-top: 30px;
         padding-bottom: 15px;
     }
 

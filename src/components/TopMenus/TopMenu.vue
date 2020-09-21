@@ -659,7 +659,7 @@
         mounted() {
             document.addEventListener('scroll', event => {
                 // console.log(event);
-                console.log(scrollY);
+                // console.log(scrollY);
                 if (scrollY > 0) {
                     if (!this.isNavFixedOnZero) {
                         this.isNavFixedOnZero = true;

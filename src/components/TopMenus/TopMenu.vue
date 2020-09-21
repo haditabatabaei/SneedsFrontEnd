@@ -199,14 +199,6 @@
                         submenu: []
                     },
                     // {name: "فرم پکیج و تخمین", target: '/analysis/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
-                    {
-                        name: "Packages",
-                        target: '/user/userpackages',
-                        icon: 'circle',
-                        tag: 0,
-                        hasSubmenu: false,
-                        submenu: []
-                    },
                     {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
@@ -243,14 +235,6 @@
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {
-                        name: "Packages",
-                        target: '/user/conspackages',
-                        icon: 'circle',
-                        tag: 0,
-                        hasSubmenu: false,
-                        submenu: []
-                    },
                     {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
@@ -258,15 +242,6 @@
                     {
                         itemName: 'Consultants',
                         target: '/consultants',
-                        type: 'router',
-                        hasDropdown: false,
-                        showDropdown: false,
-                        dropdownItems: [],
-                        icon: 'supervisor_account'
-                    },
-                    {
-                        itemName: 'Economic Package',
-                        target: '/packages/economic',
                         type: 'router',
                         hasDropdown: false,
                         showDropdown: false,
@@ -570,25 +545,9 @@
                                 showDropdown: false,
                                 dropdownItems: [
                                     {
-                                        itemName: 'Economic',
-                                        target: '/packages/economic',
-                                        type: 'router',
-                                        hasDropdown: false,
-                                        showDropdown: false,
-                                        dropdownItems: []
-                                    },
-                                    {
                                         itemName: 'Zero to hero',
                                         target: 'https://sneeds.ir/%D9%BE%DA%A9%DB%8C%D8%AC-%D8%B5%D9%81%D8%B1-%D8%AA%D8%A7-%D8%B5%D8%AF/',
                                         type: 'hyper',
-                                        hasDropdown: false,
-                                        showDropdown: false,
-                                        dropdownItems: []
-                                    },
-                                    {
-                                        itemName: 'College',
-                                        target: '/packages/college',
-                                        type: 'router',
                                         hasDropdown: false,
                                         showDropdown: false,
                                         dropdownItems: []

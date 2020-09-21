@@ -67,7 +67,9 @@
                             v-model="graduateIn"
                             />
 
-            <c-simple-input class="edulevel-input" label="Thesis title"
+            <c-simple-input class="edulevel-input"
+                            label="Thesis title"
+                            :externalLabel="false"
                             :error="$v.thesisTitle.$error"
                             error-text="Thesis title can have 512 characters at max."
                             v-model="thesisTitle"

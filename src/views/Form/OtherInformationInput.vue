@@ -10,14 +10,14 @@
 
         <div class="form-other-items" v-if="detailedForm">
             <c-collapsable-input class="form-other-collapsable" title="Linked-in profile" :isOpenByDefault="true">
-                <c-simple-input label="Linked-in profile URL" v-model="linkedin" :is-ltr="true" style="width: 100%" />
+                <c-simple-input label="Linked-in profile URL" v-model="linkedin"  style="width: 100%" />
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="Olympiad experience">
                 <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`"
                           cols="30" rows="10" placeholder="Olympiad experience" v-model="olympiad"/>
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="Personal website">
-                <c-simple-input label="Personal website/portfolio URL" v-model="homepage" :is-ltr="true" style="width: 100%"/>
+                <c-simple-input label="Personal website/portfolio URL" v-model="homepage"  style="width: 100%"/>
             </c-collapsable-input>
             <c-collapsable-input class="form-other-collapsable" title="Resume/CV file">
                 <input type="file" @change="handleFile">

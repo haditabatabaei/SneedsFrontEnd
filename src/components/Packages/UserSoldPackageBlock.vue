@@ -1,6 +1,6 @@
 <template>
-    <router-link class="consultantBlock row" :to="clickTarget">
-        <div class="consultantBlockData col-md-8">
+    <router-link class="consultantBlock" :to="clickTarget">
+        <div class="consultantBlockData">
             <img :src="package.image" :alt="package.title" class="consultantBlockImage" v-if="package.image"/>
             <img src="/sneedsAssets/img/plane.jpg" :alt="package.title" class="consultantBlockImage" v-else/>
             <div class="consultantBlockInfo" style="margin-top:10px;">
@@ -9,18 +9,18 @@
                         {{package.title}}
                     </router-link>
                 </div>
-                <div class="consultantBlockInfoItem">
-                    <p class="isansFont--faNum consultantBio" v-if="hasConsultant">
-                        وضعیت:
-                        مشاور تایید شده. در حال انجام.
+                <div class="consultantBlockInfoItem gadugiFont">
+                    <p class="consultantBio" v-if="hasConsultant">
+                        Status:
+                        Consultant has been approved. in progress.
                     </p>
-                    <p class="isansFont--faNum consultantBio" v-else>
-                        وضعیت:
-                        منتظر تایید یکی از مشاوران توسط شما.
+                    <p class="consultantBio" v-else>
+                        Status:
+                        Pending your approval.
                     </p>
-                    <p class="isansFont--faNum consultantBio">
-                        تاریخ ایجاد:
-                        {{getJalali(package.created).locale($store.getters.locale).format('dddd DD MMMM YYYY HH:mm')}}
+                    <p class="consultantBio">
+                        Created:
+                        {{getJalali(package.created).format('dddd DD MMMM YYYY HH:mm')}}
                     </p>
                 </div>
             </div>
@@ -28,10 +28,10 @@
 
         <div class="consultantBlockAction col-md-4 text-center">
             <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-if="!hasConsultant">
-                مشاهده درخواست های مشاورین
+                View consultants requests
             </router-link>
             <router-link :to="clickTarget" class="btn consultantShowButton isansFont" v-else>
-                مشاهده وضعیت پکیج
+                View service status
             </router-link>
         </div>
     </router-link>
@@ -106,8 +106,8 @@
     }
 
     .consultantBlockInfo {
-        margin-left: auto;
-        margin-right: 40px;
+        margin-left: 40px;
+        margin-right: auto;
         display: flex;
         align-self: stretch;
         flex-direction: column;

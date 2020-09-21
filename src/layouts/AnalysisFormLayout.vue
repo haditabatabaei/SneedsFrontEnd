@@ -3,54 +3,54 @@
         <transition name="fade">
             <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
                  @click="hideAllModals">
-                <div class="consultant-modal consultant-modal--registerIntro" v-if="showRegisterIntro">
+                <div class="consultant-modal consultant-modal--registerIntro gadugiFont" v-if="showRegisterIntro">
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn isansFont">
+                    <div class="modal-warn">
                         <i class="material-icons modal-warn-icon">
                             info
                         </i>
                         <p>
-                            <strong>برای ثبت نهایی فرم نیاز به حساب کاربری دارید!</strong>
+                            <strong>You need an account before finishing your form.</strong>
                             <br>
-                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                            You will be redirected automatically after authorization
                         </p>
                     </div>
                     <div class="intro-content ">
-                        <h2 class="intro-content-head isansFont">
-                            چرا ثبت نام کنم ؟
+                        <h2 class="intro-content-head">
+                            Why would i register?
                         </h2>
-                        <ul class="intro-content-list isansFont">
+                        <ul class="intro-content-list">
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی لیست جلسات رزرو شده رو ببینی
+                                You monitor your reserved consulting sessions.
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                                You can enter consulting session with one click.
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                                You can constantly be in touch with your adviser.
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                                You can monitor remaining time to your session.
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی بعد از جلسه مشاوره، امتیاز بدی و کلی قابلیت دیگه
+                                You can rate your adviser and many more!
                             </li>
                         </ul>
                     </div>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action">
                         <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
-                            ورود/ثبت نام و رزرو وقت
+                            Login/Register and finishing form
                         </button>
                         <button @click="hideAllModals" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بیخیال
+                            Not now
                         </button>
                     </div>
                 </div>
@@ -58,63 +58,63 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="authFormWrapper-switcher isansFont">
+                    <div class="authFormWrapper-switcher">
                         <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
-                            ورود
+                            Login
                         </button>
                         <button @click="showRegisterForm" class="switcher"
-                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                                :class="[{'switcher--active' : registerForm}]">
+                            Register
                         </button>
                     </div>
                     <login-form :customAction="true"
                                 @custom-action-call="loginFormAction"
-                                submit-label="ورود و ادامه"
+                                submit-label="Login and continue"
                                 v-if="loginForm"/>
                     <register-form :customAction="true"
                                    @custom-action-call="registerFormAction"
-                                   submit-label="ثبت نام و ادامه"
+                                   submit-label="Register and continue"
                                    v-else-if="registerForm"/>
                 </div>
 
-                <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
+                <div class="consultant-modal consultant-modal--register gadugiFont" v-if="showNameModal">
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn modal--error isansFont">
+                    <div class="modal-warn modal--error">
                         <i class="material-icons modal-warn-icon modal-icon--error">
                             info
                         </i>
                         <p>
-                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <strong>Please fill out your full name.</strong>
                             <br>
-                            برای ثبت نهایی، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه و فرمتون تکمیل باشه.
-                            این اطلاعات همیشه از طریق پروفایلتان قابل ویرایش است.
+                            For better service delivery, adviser needs to know your name. This information is always editable from your profile settings.
                         </p>
                     </div>
-                    <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
-                        نام :
+                    <label class="loginForm-label" for="phone" style="margin-top: 15px">
+                        First Name:
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
                     </label>
-                    <label class="loginForm-label isansFont" for="password">
-                        نام خانوادگی :
+                    <label class="loginForm-label" for="password">
+                        Last Name:
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
                     </label>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndContinue">
-                            ثبت اطلاعات
+                            Submit information
                         </button>
                         <button @click="setFormUser" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بعدا وارد میکنم
+                            Later
                         </button>
                     </div>
                 </div>
             </div>
         </transition>
-        <section class="form-container">
-            <aside class="form-title isansFont">
+        <section class="form-container gadugiFont">
+            <aside class="form-title">
                 <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
-                    <h2 class="form-nav-group-title isansFont--faNum" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                    <h2 class="form-nav-group-title" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
                         <span>{{index + 1}}</span>
                         {{group.label}}
                     </h2>
@@ -127,11 +127,11 @@
                     </transition>
                 </div>
 
-                <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">خروج از فرم</router-link>
-                <router-link v-else to="/" class="form-exit-button">خروج از فرم</router-link>
+                <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">Leave form</router-link>
+                <router-link v-else to="/" class="form-exit-button">Leave form</router-link>
             </aside>
             <main class="form-layout-view-wrapper" @click.self="showMobileFormMenu = false">
-                <div class="mobile-form-menu isansFont">
+                <div class="mobile-form-menu">
                     <h2 class="mobile-form-current" @click="showMobileFormMenu = !showMobileFormMenu">
                         {{$route.meta.title}}
                         <i class="material-icons" v-if="showMobileFormMenu == false">keyboard_arrow_down</i>
@@ -143,7 +143,7 @@
                                 <i class="material-icons">close</i>
                             </button>
                             <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
-                                <h2 class="form-nav-group-title isansFont--faNum" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                                <h2 class="form-nav-group-title" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
                                     <span>{{index + 1}}</span>
                                     {{group.label}}
                                 </h2>
@@ -155,8 +155,8 @@
                                     </ul>
                                 </transition>
                             </div>
-                            <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">خروج از فرم</router-link>
-                            <router-link v-else to="/" class="form-exit-button">خروج از فرم</router-link>
+                            <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">Leave form</router-link>
+                            <router-link v-else to="/" class="form-exit-button">Leave form</router-link>
                         </div>
                     </transition>
                 </div>
@@ -165,22 +165,23 @@
                              @education-add="submitlasteducationallevelHandler"
                              @destination-add="submitdestinationhandler"
                              @sync-current-page="syncCurrentPage"
-                             :key="$route.fullPath" class="form-layout-view"></router-view>
-                <div class="progress-wrapper">
-                    <div class="form-confirm isansFont">
+                             :key="$route.fullPath" class="form-layout-view"
+                />
+                <div class="progress-wrapper gadugiFont">
+                    <div class="form-confirm">
                         <button @click="submitAndMoveNext()" class="form-confirm-next">
                             <span v-if="!loading">
-                                ادامه
+                                Next
                             </span>
                             <moon-loader class="loading-icon" style="align-self:center;margin-right: auto" color="white" :loading="loading" :size="20" sizeUnit="px"/>
-                            <i class="material-icons">keyboard_arrow_left</i>
-                        </button>
+                            <i clss="material-icons">keyboard_arrow_right</i>
+                        </button>s
                         <button @click="goBack()" class="form-confirm-back">
-                            <i class="material-icons">keyboard_arrow_right</i>
+                            <i class="material-icons">keyboard_arrow_left</i>
                         </button>
                     </div>
                     <div class="form-progress">
-                        <span class="form-progress-value" :style="currentPageWidthStyle"></span>
+                        <span class="form-progress-value" :style="currentPageWidthStyle" />
                     </div>
                 </div>
             </main>
@@ -214,48 +215,48 @@ export default {
             showMobileFormMenu: false,
             formMenuGroups: [
                 {
-                    label: 'مشخصات اولیه',
+                    label: 'Basic information',
                     isOpen: true,
                     items: [
-                        {name: 'وضعیت تاهل', target: '/analysis/form/marriage'},
-                        {name: 'سن و جنسیت', target: '/analysis/form/gender'},
-                        {name: 'وضعیت سربازی', target: '/analysis/form/militaryservice'},
-                        {name: 'سابقه کار مرتبط', target: '/analysis/form/workexperience'}
+                        {name: 'Marriage', target: '/analysis/form/marriage'},
+                        {name: 'Age and gender', target: '/analysis/form/gender'},
+                        {name: 'Military service', target: '/analysis/form/militaryservice'},
+                        {name: 'Related work experience', target: '/analysis/form/workexperience'}
                     ]
                 },
                 {
-                    label: 'اطلاعات تحصیلی',
+                    label: 'Academic resume',
                     isOpen: false,
                     items: [
-                        {name: 'گپ تحصیلی', target: '/analysis/form/educationalgap'},
-                        {name: 'افزودن مقطع تحصیلی', target: '/analysis/form/lasteducationallevel'},
-                        {name: 'بازبینی مقاطع تحصیلی', target: '/analysis/form/educationallevelsitems'},
-                        {name: 'افزودن مقاله', target: '/analysis/form/paper'},
-                        {name: 'بازبینی مقالات', target: '/analysis/form/paperitems'},
-                        {name: 'توصیه نامه قوی', target: '/analysis/form/powerfulrecom'},
+                        {name: 'Academic gap', target: '/analysis/form/educationalgap'},
+                        {name: 'Add an academic degree', target: '/analysis/form/lasteducationallevel'},
+                        {name: 'Review academic degrees', target: '/analysis/form/educationallevelsitems'},
+                        {name: 'Add a paper', target: '/analysis/form/paper'},
+                        {name: 'Review papers', target: '/analysis/form/paperitems'},
+                        {name: 'Important recommendation', target: '/analysis/form/powerfulrecom'},
                     ]
                 },
                 {
-                    label: 'مدارک زبان',
+                    label: 'Language Certificates',
                     isOpen: false,
                     items: [
-                        {name: 'افزودن مدرک زبان', target: '/analysis/form/languagecerts'},
-                        {name: 'بازبینی مدارک زبان', target: '/analysis/form/languagecertsitems'},
+                        {name: 'Add a certificate', target: '/analysis/form/languagecerts'},
+                        {name: 'Review certificates', target: '/analysis/form/languagecertsitems'},
                     ]
                 },
                 {
-                    label: 'مقاصد اپلای',
+                    label: 'Aboard destination',
                     isOpen: false,
                     items: [
-                        {name: 'افزودن و بازبینی مقصد اپلای', target: '/analysis/form/destination'},
-                        {name: 'توانایی مالی و فاند', target: '/analysis/form/funds'},
+                        {name: 'Add and review destinations', target: '/analysis/form/destination'},
+                        {name: 'Funding status', target: '/analysis/form/funds'},
                     ]
                 },
                 {
-                    label: 'سایر اطلاعات',
+                    label: 'Other information',
                     isOpen: false,
                     items: [
-                        {name: 'سایر اطلاعات', target: '/analysis/form/otherinformation'},
+                        {name: 'Other information', target: '/analysis/form/otherinformation'},
                     ]
                 }
             ]
@@ -1014,7 +1015,7 @@ export default {
         justify-content: center;
         font-weight: normal;
         font-size: 18px;
-        margin-left: 10px;
+        margin-right: 10px;
     }
 
 
@@ -1034,7 +1035,7 @@ export default {
         display: flex;
         flex-direction: column;
         list-style: none;
-        padding-right: 40px;
+        padding-left: 40px;
         margin: 0;
     }
 
@@ -1077,7 +1078,7 @@ export default {
     .form-progress-value {
         position: absolute;
         top: 0;
-        right: 0;
+        left: 0;
         height: 17px;
         background-color: #00A3B6;
         z-index: 15;
@@ -1103,18 +1104,18 @@ export default {
         justify-content: center;
         border: none;
         padding: 5px 15px;
-        border-radius: 16px 0 0 16px;
+        border-radius: 0 16px 16px 0;
         font-size: 18px;
         transition: all 100ms ease-in-out;
         width: 200px;
     }
 
     .form-confirm-next i.material-icons {
-        margin-right: auto;
+        margin-left: auto;
     }
 
     .form-confirm-next span {
-        margin-right: auto;
+        margin-left: auto;
     }
 
     .form-confirm-next:hover {
@@ -1122,7 +1123,7 @@ export default {
     }
 
     .form-confirm-back {
-        border-radius: 0 16px 16px 0;
+        border-radius: 16px 0 0 16px;
         border: none;
         background-color: #F2F2F2;
         color: #707070;
@@ -1352,7 +1353,7 @@ export default {
     .mobile-form-collapse-close {
         position: absolute;
         top: 10px;
-        left: 10px;
+        right: 10px;
         background: none;
         color: #707070;
         border: none;
@@ -1407,7 +1408,7 @@ export default {
         .form-confirm-back {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             color: #959D9D;
             padding: 10px;
             border-radius: 10px;

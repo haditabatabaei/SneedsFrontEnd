@@ -41,7 +41,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'marriage',
-                        title: 'وضعیت تاهل'
+                        title: 'Marriage'
                     }
                 },
                 {
@@ -51,7 +51,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'militaryservice',
-                        title: 'وضعیت سربازی'
+                        title: 'Military service'
                     }
                 },
                 {
@@ -61,7 +61,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'educationalgap',
-                        title: 'وقفه تحصیلی'
+                        title: 'Academic gap'
                     }
                 },
                 {
@@ -71,7 +71,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'gender',
-                        title: 'سن جنسیت'
+                        title: 'Age and gender'
                     }
                 },
                 {
@@ -81,7 +81,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'workexperience',
-                        title: 'سابقه کار مرتبط'
+                        title: 'Related work experience'
                     }
                 },
                 {
@@ -91,7 +91,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'lasteducationallevel',
-                        title: 'افزودن مقطع تحصیلی'
+                        title: 'Add an academic degree'
                     }
                 },
                 {
@@ -101,7 +101,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'educationallevelsitems',
-                        title: 'بازبینی مقاطع تحصیلی'
+                        title: 'Review academic degrees'
                     }
                 },
                 {
@@ -111,7 +111,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'paper',
-                        title: 'افزودن مقاله'
+                        title: 'Add a paper'
                     }
                 },
                 {
@@ -121,7 +121,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'paperitems',
-                        title: 'بازبینی مقالات'
+                        title: 'Review papers'
                     }
                 },
                 {
@@ -131,7 +131,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'powerfulrecom',
-                        title: 'توصیه نامه قوی'
+                        title: 'Important recommendation'
                     }
                 },
                 {
@@ -141,7 +141,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'languagecerts',
-                        title: 'افزودن مدرک زبان'
+                        title: 'Add a certificate'
                     }
                 },
                 {
@@ -151,7 +151,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'languagecertsitems',
-                        title: 'بازبینی مدارک زبان'
+                        title: 'Review certificates'
                     }
                 },
                 {
@@ -161,7 +161,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'destination',
-                        title: 'افزودن و بازبینی مقاصد اپلای'
+                        title: 'Add and review destinations'
                     }
                 },
                 {
@@ -171,7 +171,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'funds',
-                        title: 'توانایی مالی و فاند'
+                        title: 'Funding status'
                     }
                 },
                 {
@@ -181,7 +181,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'otherinformation',
-                        title: 'سایر اطلاعات'
+                        title: 'Other information'
                     }
                 },
             ]

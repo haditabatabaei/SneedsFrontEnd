@@ -1,27 +1,27 @@
 <template>
     <main class="landing isansFont iranSansFarsiNumber">
-        <section class="landing-section --sneeds-section">
-            <div class="sneeds-intro">
+        <section class="landing-section  homepage-section">
+            <div class="homepage-intro">
               <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">
 
-                <div class="sneeds-intro-info">
-                    <h6 class="sneeds-intro-info-small-title">with Abroad Path</h6>
-                    <h3 class="sneeds-intro-info-title">You Shouldn't Study Abroad Alone</h3>
-                    <div class="sneeds-intro-info-title-line"></div>
-                    <p class="sneeds-intro-info-text">
+                <div class="homepage-intro-info">
+                    <h6 class="homepage-intro-info-small-title">with Abroad Path</h6>
+                    <h1 class="homepage-intro-info-title">You Shouldn't Study Abroad Alone</h1>
+                    <div class="homepage-intro-info-title-line"></div>
+                    <p class="homepage-intro-info-text">
 
                       Receive personalized guidance from mentors who are currently
                       studying in same field and country you desire.
 
                     </p>
-                    <div class="sneeds-intro-info-links">
-                        <a href="#" class=" link--level">
-                            Determine the level
-                            <span class="link--level--free">Free</span>
+                    <div class="homepage-intro-info-links">
+                        <a href="#" class=" link-level">
+                            Admit chance
+                            <span class="link-level-free">Free</span>
                         </a>
-                        <a href="# "class="sneeds-intro-info-link link--interview">Consultation</a>
-                        <a href="#" class="sneeds-intro-info-link link--live">Videoes</a>
-                        <a href="#" class="sneeds-intro-info-link link--webinar"> Webinars</a>
+                        <a href="# "class="homepage-intro-info-link link -interview">Consultation</a>
+                        <a href="#" class="homepage-intro-info-link link -live">Videoes</a>
+                        <a href="#" class="homepage-intro-info-link link -webinar"> Webinars</a>
                     </div>
 
                 </div>
@@ -31,7 +31,7 @@
         </section>
 
 
-        <section class="landing-section --structure-section">
+        <section class="landing-section  structure-section">
             <div class="structure-section-stages-column">
                 <h2 class="structure-section-title">How does it work?</h2>
                 <div class="structure-section-title-line">
@@ -74,7 +74,7 @@
 
 
         <section class=" landing-section consultants-section">
-            <div class="consultants-section-header --universities">
+            <div class="consultants-section-header  universities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
                 <div class="consultants-section-title">
@@ -92,7 +92,7 @@
               <home-page-consultants :consultants-input="Consultants"></home-page-consultants>
 
 
-            <div class="consultants-section-rows --see-all">
+            <div class="consultants-section-rows  see-all">
                 <div class="see-all-link-line"></div>
                 <a class="see-all-link" href="#">
                     All consultants
@@ -104,7 +104,7 @@
 
 
 
-        <section class="landing-section --advantages">
+        <section class="landing-section  advantages">
 
             <div class="blue-options-box">
                 <div class="design-details blue-box-details">
@@ -140,7 +140,7 @@
                             </i>
                         </div>
                         <h5 class="blue-box-title">Monitor the process</h5>
-                        <p class="blue-box-text">Be aware of the apply process with the fully transparent Sneeds platform.
+                        <p class="blue-box-text">Be aware of the apply process with the fully transparent homepage platform.
                         </p>
                     </div>
 
@@ -162,7 +162,7 @@
 
         <section class="landing-section ">
 
-            <div class="activities-section-rows --activities">
+            <div class="activities-section-rows  activities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
                 <div  class="activities-section-title">
@@ -181,7 +181,7 @@
 
 
             <div class="different-activities-box ">
-                <div class="horizontal-items-box --different-activities">
+                <div class="horizontal-items-box  different-activities">
                     <div class="different-activities-items">
                         <div class="activities-circle">
                             <img   class="activities-circle-img"src="/sneedsAssets/img/scholarship.svg" alt="">
@@ -204,7 +204,7 @@
                     </div>
                 </div>
 
-            <div class="horizontal-items-box --different-activities">
+            <div class="horizontal-items-box  different-activities">
                 <div class="different-activities-items">
                     <div class="activities-circle">
                         <img class="activities-circle-img" src="/sneedsAssets/img/list.svg" alt="">
@@ -236,17 +236,17 @@
                         <img  class="plane-exit" src="/sneedsAssets/img/airplane-enter.svg" alt="">
                     </div>
 
-                    <div class="achievements-section-box --first">
+                    <div class="achievements-section-box  first">
                         <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
                         <h3 class="achievements-section-header">+56 Admissions</h3>
                         <p class="achievements-section-text">Taken by our consultants.</p>
                     </div>
-                    <div class="achievements-section-box --center">
+                    <div class="achievements-section-box  center">
                         <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
                         <h3 class="achievements-section-header">+27,000 Minutes</h3>
-                        <p class="achievements-section-text">Online video consulting with Sneeds consultants.</p>
+                        <p class="achievements-section-text">Online video consulting with homepage consultants.</p>
                     </div>
-                    <div class="achievements-section-box --last">
+                    <div class="achievements-section-box  last">
                         <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
                         <h3 class="achievements-section-header">+540 Documents</h3>
                         <p class="achievements-section-text">Translated, edited or written by  our Consultants.</p>
@@ -255,7 +255,7 @@
           </section>
 
 
-        <section class="landing-section --analysis-section">
+        <section class="landing-section  analysis-section">
             <div class="analysis-container">
                 <div class="analysis-container-info">
                     <h6 class="analysis-container-info-small-title">Advanced Apply Analyzer</h6>
@@ -267,9 +267,9 @@
                         Get those smart offers to improve your resume and get ahead of the rest of the competition.
                     </p>
                     <div class="analysis-container-info-links">
-                        <a href="#" class=" analysis-container--level">
+                        <a href="#" class=" analysis-link-level">
                             Admit Chance
-                            <span class="analysis-container--free">Free!</span>
+                            <span class="analysis-link-free">Free!</span>
                         </a>
                     </div>
 
@@ -282,27 +282,7 @@
             </div>
 
         </section>
-        <section>
-            <div class="activities-section-rows --activities">
-                <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
-                <p  class="activities-section-title">
-
-                    LATEST FROM OUR BLOG
-                    <span class="blog-section-title-sub">
-                       <br>
-                        <a  class="brows-more-link" href="#">
-                            BROWSE MORE
-                        </a>
-                     </span>
-
-                </p>
-
-            </div>
-
-        </section>
-
-        <home-page-blog :items-input="persons"></home-page-blog>
 
         <app-question></app-question>
 
@@ -381,7 +361,7 @@
         justify-content: center;
     }
 
-    .sneeds-intro {
+    .homepage-intro {
         display: flex;
         flex-direction: row;
         width: 100%;
@@ -402,7 +382,7 @@
     }
 
 
-    .sneeds-intro-info {
+    .homepage-intro-info {
         width: 70%;
         min-height: 100px;
         display: flex;
@@ -418,20 +398,20 @@
 
 
 
-    .sneeds-intro-info-small-title {
+    .homepage-intro-info-small-title {
         margin-bottom: 0px;
         margin-top: 10px;
         color: #374957;
     }
 
-    .sneeds-intro-info-title {
+    .homepage-intro-info-title {
 
         color: #303143;
         font-weight: bold;
 
     }
 
-    .sneeds-intro-info-title-line{
+    .homepage-intro-info-title-line{
 
         width: 120px;
         height: 3px;
@@ -441,13 +421,13 @@
 
     }
 
-    .sneeds-intro-info-text {
+    .homepage-intro-info-text {
         padding: 5% 0px;
         font-size: 14px;
       color:#707070 ;
     }
 
-    .sneeds-intro-info-links {
+    .homepage-intro-info-links {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -458,7 +438,7 @@
 
 
 
-    .sneeds-intro-info-link {
+    .homepage-intro-info-link {
         font-size: 10px;
         border: 1px solid #00D4ED;
         border-radius: 10px;
@@ -470,7 +450,7 @@
 
     }
 
-    .link--level {
+    .link-level {
         color: white;
         min-width: 25%;
         display: flex;
@@ -485,7 +465,7 @@
         padding: 10px 15px;
     }
 
-    .link--level--free {
+    .link-level-free {
         background-color: #008292;
         border-radius: 15px;
         padding: 5px 10px;
@@ -572,7 +552,7 @@
 
     }
 
-    .--see-all {
+    .  see-all {
         justify-content: center;
         align-items: baseline;
         margin: 0 auto 50px auto;
@@ -632,7 +612,7 @@
         width: 80%;
         margin-bottom: 50px;
     }
-    .--advantages {
+    .  advantages {
         width: 100%;
         overflow: hidden;
     }
@@ -686,13 +666,12 @@
         width: 80%;
         display: flex;
         flex-direction:row;
-        justify-content: space-around;
         align-items: center;
         flex-wrap:nowrap;
         margin: 40px auto;
     }
 
-    .--activities {
+    .  activities {
         justify-content: flex-start;
     }
 
@@ -722,7 +701,7 @@
     }
 
 
-    .--different-activities{
+    .  different-activities{
         justify-content: center;
     }
 
@@ -806,10 +785,10 @@
 
     }
 
-    .--center {
+    .center {
         margin-top: 100px;
     }
-    .--last {
+    .last {
         margin-top: 200px;
     }
     .design-details {
@@ -822,7 +801,7 @@
         width: 100%;
         justify-content: center;
         align-items: flex-start;
-        margin-top: 10%;
+        margin-top: 15%;
       overflow-x: hidden;
     }
     .analysis-img-desk {
@@ -891,7 +870,7 @@
 
 
 
-    .analysis-container--level {
+    .analysis-link-level {
         color: white;
         min-width: 25%;
         display: flex;
@@ -905,7 +884,7 @@
         padding: 10px 15px;
     }
 
-    .analysis-container--free {
+    .analysis-link-free {
         background-color: #592480;
         border-radius: 15px;
         padding: 5px 10px;
@@ -928,24 +907,24 @@
         display: none;
     }
     @media only screen and (max-width: 767.8px) {
-      .--sneeds-section {
+      .homepage-section {
         width: 100%;
         flex-direction: column;
         justify-content: flex-start;
       }
-      .sneeds-intro {;
+      .homepage-intro {;
         display: flex;
         flex-direction: column;
       }
-      .sneeds-intro-info {
+      .homepage-intro-info {
         width: 90%;
       }
-      .sneeds-intro-info-links {
+      .homepage-intro-info-links {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
       }
-      .sneeds-intro-info-text {
+      .homepage-intro-info-text {
         line-height: 30px;
       }
       .globe-desktop {

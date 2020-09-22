@@ -175,7 +175,9 @@
             },
 
             hideProfileSidebar() {
-                return this.$route.name === 'user-chatroom' || this.$route.name === 'user-conspackages-marketplace-detail'
+                return  this.$route.name === 'user-chatroom' ||
+                        this.$route.name === 'user-conspackages-marketplace-detail' ||
+                        this.$route.name === 'user-analysis-result';
             }
         },
         async created() {

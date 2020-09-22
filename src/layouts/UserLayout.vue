@@ -2,7 +2,7 @@
     <section class="profileWrapper" :class="[{'no-min-height': hideProfileSidebar }]">
         <div class="user-container">
             <div class="user-sidebar gadugiFont">
-                <div class="user-sidebar-title">
+                <div class="user-sidebar-title" :class="[{'sidebar-title--centered': userInfo.user_type != 'consultant'}]">
                     <img size="70px" class="user-sidebar-avatar" alt="" v-if="userInfo.user_type === 'consultant'"
                          :src="userInfo.consultant.profile_picture"/>
                     <div class="user-sidebar-name">
@@ -237,6 +237,10 @@
         min-height: 90px;
     }
 
+    .sidebar-title--centered {
+        justify-content: center;
+    }
+
     .user-sidebar-avatar {
         width: 70px;
         height: 70px;
@@ -251,8 +255,8 @@
     }
 
     .user-sidebar-name-text {
-        font-size: 1.5rem;
         margin: 0;
+        font-size: 16px;
     }
 
     .user-sidebar-name-notif {

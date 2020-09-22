@@ -309,6 +309,14 @@ const router = new Router({
             ]
         },
         {
+            path: '/analysis/result',
+            name: 'user-analysis-result',
+            component: () => import("@/views/Form/Result"),
+            meta: {
+                auth: 'req',
+            }
+        },
+        {
             path: '/carts/:id',
             name: 'cart-active',
             component: () => import("@/views/User/UserActiveCart"),

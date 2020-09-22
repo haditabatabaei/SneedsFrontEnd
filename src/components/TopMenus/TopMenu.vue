@@ -198,7 +198,8 @@
                         hasSubmenu: false,
                         submenu: []
                     },
-                    // {name: "فرم پکیج و تخمین", target: '/analysis/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Academic Analysis", target: '/analysis/form', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
+                    {name: "Analysis Result", target: '/analysis/result', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                     {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 

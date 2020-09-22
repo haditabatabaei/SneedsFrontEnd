@@ -1,5 +1,5 @@
 <template>
-    <section class="box-wrapper">
+    <section class="box-wrapper gadugiFont">
         <div class="box">
             <div class="box__ghost">
                 <div class="symbol"></div>
@@ -27,14 +27,14 @@
 
             <div class="box__description">
                 <div class="box__description-container">
-                    <p class="box__description-title isansFont--faNum">خطای 404</p>
-                    <p class="box__description-text isansFont--faNum">
-                        متاسفانه صفحه ای که دنبالش بودید در سیستم وجود ندارد.
+                    <p class="box__description-title">404 Error.</p>
+                    <p class="box__description-text">
+                        We are so sorry, unfortunately the page you are looking for is not available.
                     </p>
                 </div>
 
-                <router-link to="/" class="box__button isansFont--faNum">
-                    بازگشت به صفحه اول
+                <router-link to="/" class="box__button">
+                    Back to homepage
                 </router-link>
 
             </div>
@@ -64,6 +64,11 @@
         },
         beforeDestroy() {
             document.onmousemove = null;
+            document.removeEventListener('mousemove', () => {});
+        },
+        destroyed() {
+            document.onmousemove = null;
+            document.removeEventListener('mousemove', () => {});
         }
     }
 </script>

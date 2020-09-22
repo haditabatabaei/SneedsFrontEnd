@@ -1,7 +1,7 @@
 <template>
     <section class="profileWrapper" :class="[{'no-min-height': hideProfileSidebar }]">
-        <div class="user-container">
-            <div class="user-sidebar gadugiFont">
+        <div class="user-container" :class="[{'user-container--noSidebar': hideProfileSidebar},{'user-container--mobileChatroom': isChatroom}]">
+            <div class="user-sidebar gadugiFont" v-if="!hideProfileSidebar">
                 <div class="user-sidebar-title" :class="[{'sidebar-title--centered': userInfo.user_type != 'consultant'}]">
                     <img size="70px" class="user-sidebar-avatar" alt="" v-if="userInfo.user_type === 'consultant'"
                          :src="userInfo.consultant.profile_picture"/>
@@ -170,6 +170,10 @@
                 return this.$store.getters.getUserInfo;
             },
 
+            isChatroom() {
+                return this.$route.name === 'user-chatroom';
+            },
+
             hideProfileSidebar() {
                 return this.$route.name === 'user-chatroom' || this.$route.name === 'user-conspackages-marketplace-detail'
             }
@@ -209,6 +213,10 @@
         grid-template-rows: auto;
         grid-template-areas: "sidebar main main main";
         margin-top: 15px;
+    }
+
+    .user-container--noSidebar {
+        grid-template-areas: "main main main main";
     }
 
     .user-sidebar {
@@ -416,6 +424,11 @@
             ;
         }
 
+        .user-container--mobileChatroom {
+            grid-template-areas: "main";
+            grid-gap: 0;
+        }
+
         .user-sidebar {
             overflow: paged-x;
             border-radius: 0;
@@ -447,103 +460,4 @@
             margin-left: 0;
         }
     }
-
-
-
-
-
-
-    /*@media only screen and (max-width: 991.8px) {*/
-    /*    .mobile {*/
-    /*        display: flex;*/
-    /*        flex-direction: column;*/
-    /*        width: 100%;*/
-    /*        background-color: white;*/
-    /*    }*/
-
-    /*    .mobile-info {*/
-    /*        display: flex;*/
-    /*        width: 100%;*/
-    /*        height: 300px;*/
-    /*        background-color: #9038CC;*/
-    /*        flex-direction: column;*/
-    /*        align-items: center;*/
-    /*        justify-content: center;*/
-    /*    }*/
-
-    /*    .mobile-info h1 {*/
-    /*        font-size: 1.7rem;*/
-    /*        margin: 0;*/
-    /*        color: white;*/
-    /*        font-weight: bold;*/
-    /*    }*/
-
-    /*    .mobile-info h4 {*/
-    /*        margin-top: 10px;*/
-    /*        font-weight: bold;*/
-    /*    }*/
-
-    /*    .mobile-info h4 a {*/
-    /*        font-size: 1.2rem;*/
-    /*        color: white;*/
-    /*    }*/
-
-    /*    .mobile-info span {*/
-    /*        font-size: 12px;*/
-    /*        background-color: #f0f0f0;*/
-    /*        color: #bababa;*/
-    /*        border-radius: 30px;*/
-    /*        padding: 3px 20px;*/
-    /*    }*/
-
-    /*    .mobile-info img {*/
-    /*        width: 100px;*/
-    /*        height: auto;*/
-    /*        border-radius: 10px;*/
-    /*        margin-top: 10px;*/
-    /*        margin-bottom: 10px;*/
-    /*    }*/
-
-    /*    .mobile-menu {*/
-    /*        width: 100%;*/
-    /*        overflow: auto;*/
-    /*        white-space: nowrap;*/
-    /*    }*/
-
-    /*    .mobile-menu::-webkit-scrollbar {*/
-    /*        height: 3px;*/
-    /*    }*/
-
-    /*    !* Track *!*/
-    /*    .mobile-menu::-webkit-scrollbar-track {*/
-    /*        background: #f1f1f1;*/
-    /*    }*/
-
-    /*    !* Handle *!*/
-    /*    .mobile-menu::-webkit-scrollbar-thumb {*/
-    /*        background: #888;*/
-    /*    }*/
-
-    /*    !* Handle on hover *!*/
-    /*    .mobile-menu::-webkit-scrollbar-thumb:hover {*/
-    /*        background: #555;*/
-    /*    }*/
-
-    /*    .userSidebarBlock--links-menu {*/
-    /*        flex-direction: row;*/
-    /*        justify-content: flex-start;*/
-    /*        align-items: center;*/
-    /*        margin-top: 10px;*/
-    /*    }*/
-
-    /*    .userSidebarBlock--links-menuitem {*/
-    /*        padding-right: 20px;*/
-    /*        padding-left: 20px;*/
-    /*        font-family: "IRANSansWebFaNum Medium", serif;*/
-    /*    }*/
-
-    /*    .mobile-view {*/
-    /*        width: 100%;*/
-    /*    }*/
-    /*}*/
 </style>

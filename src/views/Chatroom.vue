@@ -1,20 +1,19 @@
 <template>
     <div class="chatroomWrapper">
-        <div class="container-fluid">
-            <desktop-chatroom v-if="!inMobile" />
-            <mobile-chatroom v-else />
-        </div>
+        <desktop-chatroom v-if="!inMobile"/>
+        <mobile-chatroom v-else/>
     </div>
 </template>
 
 <script>
     import DesktopChatroom from "@/components/Chatroom/DesktopChatroom";
     import MobileChatroom from '@/components/Chatroom/MobileChatroom'
+
     export default {
         name: "Chatroom",
-        components : {
-            'desktop-chatroom' : DesktopChatroom,
-            'mobile-chatroom' : MobileChatroom
+        components: {
+            'desktop-chatroom': DesktopChatroom,
+            'mobile-chatroom': MobileChatroom
         },
         computed: {
             inMobile() {
@@ -26,7 +25,6 @@
 
 <style scoped>
     .chatroomWrapper {
-        margin-top: 30px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         border-radius: 15px;
         background-color: white;

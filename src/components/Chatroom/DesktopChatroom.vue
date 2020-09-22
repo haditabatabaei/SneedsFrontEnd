@@ -1,8 +1,8 @@
 <template>
-    <div class="row chatroomBox gadugiFont">
-        <div class="col-md-4 chatroom-chats">
+    <div class="chatroom-box gadugiFont">
+        <div class="chatroom-chats">
             <div class="chatroom-chats-search">
-                <input type="text" placeholder="Search" class="chatroom-chats-search-input gadugiFont">
+                <input type="text" placeholder="Search" class="chatroom-chats-search-input">
             </div>
 
             <div class="chatroom-chats-list" v-if="chats.length > 0">
@@ -27,7 +27,7 @@
             </div>
 
         </div>
-        <div class="col-md-8 chatroom-messages">
+        <div class="chatroom-messages">
             <div class="chatroom-messages-title" v-if="windowWidth > 991.8">
                 <h4 class="gadugiFont" v-if="selectedChat">
                     {{this.selectedChat.other_person.first_name + " " + this.selectedChat.other_person.last_name}}
@@ -356,10 +356,17 @@
 </script>
 
 <style scoped>
+    .chatroom-box {
+        display: grid;
+        grid-template-areas: "chats messages messages";
+        grid-template-rows: auto;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
     .chatroom-chats {
         border-radius: 15px 0 0 0;
         padding: 0;
         border-right: 1px solid #ddd;
+        grid-area: chats;
     }
 
     .chatroom-chats-search {
@@ -446,6 +453,7 @@
     .chatroom-messages {
         padding: 0;
         border-radius: 15px 0 0 15px;
+        grid-area: messages;
     }
 
     .chatroom-messages-title {
@@ -518,14 +526,13 @@
         border-radius: 50%;
         position: absolute;
         bottom: -10px;
-        right: 10px;
+        left: 10px;
     }
 
     .chatroom-messages-item-content {
-        border-radius: 15px 15px 5px 15px;
+        border-radius: 15px 15px 15px 5px;
         width: 100%;
-        margin-right: 65px;
-        margin-left: 15px;
+        margin: 0 15px 0 65px;
         padding: 10px;
         border: none;
         background-color: #E7FFFF;
@@ -576,8 +583,9 @@
     }
 
     .chatroom-messages-item-time {
-        float: left;
+        float: right;
         margin-top: 10px;
+        font-size: 12px;
     }
 
     .chatroom-messages-item-content.content-file .chatroom-messages-item-time {

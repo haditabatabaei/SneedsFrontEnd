@@ -35,7 +35,7 @@
         grid-template-areas:
             "selectors slots";
         grid-template-rows: auto;
-        grid-template-columns: 100px auto;
+        grid-template-columns: 122px auto;
     }
 
     .tabs-selectors {
@@ -49,6 +49,7 @@
     .tabs-selector {
         background: none;
         padding: 10px 15px;
+        margin: 0 15px;
         border: none;
         font-weight: bold;
         color: #374957;

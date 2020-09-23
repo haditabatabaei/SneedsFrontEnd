@@ -10,7 +10,7 @@
                     </h4>
                 </div>
                 <button class="chatroom-chats-item-next">
-                    <i class="material-icons">keyboard_arrow_left</i>
+                    <i class="material-icons">keyboard_arrow_right</i>
                 </button>
             </div>
         </div>
@@ -227,7 +227,7 @@
     }
 
     .chatroom-chats-item-next {
-        margin: 0 auto 0 30px;
+        margin: 0 30px 0 auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -247,7 +247,7 @@
         border: none;
         display: flex;
         align-items: center;
-        margin: 0 auto 0 30px;
+        margin: 0 30px 0 auto;
         color: #9038CC;
     }
 

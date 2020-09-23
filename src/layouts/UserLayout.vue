@@ -1,113 +1,62 @@
 <template>
     <section class="profileWrapper" :class="[{'no-min-height': hideProfileSidebar }]">
-        <div class="container" v-if="windowWidth > 991.8">
-            <div class="row">
-                <div class="col-md-3 sidebarWrapperDesktop" v-if="!hideProfileSidebar">
-                    <div class="userSidebarBlock">
-                        <div class="userSidebarBlock--info">
-                            <img v-if="userInfo.user_type == 'consultant'" :src="userInfo.consultant.profile_picture">
-                            <div class="userSidebarBlock--info_detail">
-                                <h1 class="isansFont--faNum" v-if="showFirstName">
-                                    {{`${user.first_name} ${user.last_name}`}}
-                                </h1>
-                                <h4 class="isansFont--faNum text-sm" v-else>
-                                    <router-link to="/user/profile">
-                                        Please fill and submit your first and last names.
-                                    </router-link>
-                                </h4>
-                            </div>
-                        </div>
-                        <div class="userSidebarBlock--links isansFont--faNum">
-                            <ul class="userSidebarBlock--links-menu"
-                                v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">
-                                <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"
-                                    v-for="(item, index) in userSidebarItems" :key="index">
-                                    <span :class="item.icon"/>
-                                    <router-link :to="item.target">{{item.name}}</router-link>
-                                    <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
-                                    <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
-                                        <li class="userSidebarBlock--links-submenuitem"
-                                            v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
-                                            <span :class="subItem.icon"/>
-                                            <router-link :to="subItem.target">{{subItem.name}}</router-link>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-
-                            <ul class="userSidebarBlock--links-menu" v-else-if="userInfo.user_type === 'consultant'">
-                                <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"
-                                    v-for="(item, index) in consultantSidebarItems" :key="index">
-                                    <span :class="item.icon"/>
-                                    <router-link :to="item.target">{{item.name}}</router-link>
-                                    <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
-                                    <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
-                                        <li class="userSidebarBlock--links-submenuitem"
-                                            v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
-                                            <span :class="subItem.icon"/>
-                                            <router-link :to="subItem.target">{{subItem.name}}</router-link>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+        <div class="user-container" :class="[{'user-container--noSidebar': hideProfileSidebar},{'user-container--mobileChatroom': isChatroom}]">
+            <div class="user-sidebar gadugiFont" v-if="!hideProfileSidebar">
+                <div class="user-sidebar-title" :class="[{'sidebar-title--centered': userInfo.user_type != 'consultant'}]">
+                    <img size="70px" class="user-sidebar-avatar" alt="" v-if="userInfo.user_type === 'consultant'"
+                         :src="userInfo.consultant.profile_picture"/>
+                    <div class="user-sidebar-name">
+                        <h1 class="user-sidebar-name-text" v-if="showFirstName">
+                            {{user.first_name}} {{user.last_name}}
+                        </h1>
+                        <h4 class="user-sidebar-name-notif" v-else>
+                            <router-link class="user-sidebar-name-notifLink" to="/user/profile">
+                                Please fill and submit your first and last names.
+                            </router-link>
+                        </h4>
                     </div>
                 </div>
-                <div :class="[{'col-md-12' : hideProfileSidebar}, {'col-md-9' : !hideProfileSidebar}]">
-                    <div class="row">
-                        <router-view :key="$route.fullPath" class="mobile-view"/>
-                    </div>
+                <div class="user-sidebar-menu">
+                    <ul class="user-sidebar-menu-items"
+                        v-if="userInfo.user_type === 'consultant'">
+                        <li class="user-sidebar-menu-item" :class="[{'user-sidebar-menu-item--hasSubmenu' : item.hasSubmenu}]"
+                            v-for="(item, index) in consultantSidebarItems" :key="index">
+                            <span :class="item.icon"/>
+                            <router-link class="user-sidebar-menu-link" :to="item.target">{{item.name}}</router-link>
+                            <span class="badge" :style="'background-color:#9038CC'"
+                                  v-if="item.tag != 0">{{item.tag}}</span>
+                            <ul class="user-sidebar-submenu-items" v-if="item.hasSubmenu">
+                                <li class="user-sidebar-submenu-item"
+                                    v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
+                                    <span :class="subItem.icon"/>
+                                    <router-link class="user-sidebar-submenu-link" :to="subItem.target">{{subItem.name}}</router-link>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="user-sidebar-menu-items"
+                        v-else>
+                        <li class="user-sidebar-menu-item" :class="[{'user-sidebar-menu-item--hasSubmenu' : item.hasSubmenu}]"
+                            v-for="(item, index) in userSidebarItems" :key="index">
+                            <span :class="item.icon"/>
+                            <router-link class="user-sidebar-menu-link" :to="item.target">{{item.name}}</router-link>
+                            <span class="badge" :style="'background-color:#9038CC'"
+                                  v-if="item.tag != 0">{{item.tag}}</span>
+                            <ul class="user-sidebar-submenu-items" v-if="item.hasSubmenu">
+                                <li class="user-sidebar-submenu-item"
+                                    v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
+                                    <span :class="subItem.icon"/>
+                                    <router-link class="user-sidebar-submenu-link" :to="subItem.target">{{subItem.name}}</router-link>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="mobile" v-else>
-            <div class="mobile-info">
-                <img v-if="showUserAvatar" src="https://picsum.photos/id/0/75/75"
-                     :alt="`${user.first_name} ${user.last_name}`">
-                <h1 class="isansFont--faNum" v-if="showFirstName">
-                    {{`${user.first_name} ${user.last_name}`}}
-                </h1>
-                <h4 class="isansFont--faNum" v-else>
-                    Please fill and submit your first and last names.
-                </h4>
-
-                <h4 class="isansFont--faNum">
-                    <router-link to="/user/profile">Fill other information ></router-link>
-                </h4>
+            <div class="user-main">
+                <router-view :key="$route.fullPath" class="mobile-view"/>
             </div>
-            <div class="mobile-menu">
-                <ul class="userSidebarBlock--links-menu"
-                    v-if="userInfo.user_type === 'user' || userInfo.user_type === 'student'">
-                    <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"
-                        v-for="(item, index) in userSidebarItems" :key="index">
-                        <router-link :to="item.target">{{item.name}}</router-link>
-                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
-                        <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
-                            <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu"
-                                :key="subIndex">
-                                <router-link class="isansFont--faNum" :to="subItem.target">{{subItem.name}}
-                                </router-link>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <ul class="userSidebarBlock--links-menu" v-else-if="userInfo.user_type === 'consultant'">
-                    <li class="userSidebarBlock--links-menuitem" :class="[{'hasSubmenu' : item.hasSubmenu}]"
-                        v-for="(item, index) in consultantSidebarItems" :key="index">
-                        <router-link :to="item.target">{{item.name}}</router-link>
-                        <span class="badge" :style="'background-color:#9038CC'" v-if="item.tag != 0">{{item.tag}}</span>
-                        <ul class="userSidebarBlock--links-submenu" v-if="item.hasSubmenu">
-                            <li class="userSidebarBlock--links-submenuitem" v-for="(subItem, subIndex) in item.submenu"
-                                :key="subIndex">
-                                <router-link class="isansFont--faNum" :to="subItem.target">{{subItem.name}}
-                                </router-link>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <router-view class="mobile-view" :key="$route.fullPath"/>
         </div>
     </section>
 </template>
@@ -144,17 +93,16 @@
                         submenu: []
                     },
                     {
-                        name: "Packages",
-                        target: '/user/userpackages',
+                        name: "Chatroom",
+                        target: '/user/chatroom',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 
-                consultantSidebarItems : [
+                consultantSidebarItems: [
                     {
                         name: 'User settings',
                         target: '/user/profile',
@@ -188,14 +136,13 @@
                         submenu: []
                     },
                     {
-                        name: "Packages",
-                        target: '/user/conspackages',
+                        name: "Chatroom",
+                        target: '/user/chatroom',
                         icon: 'circle',
                         tag: 0,
                         hasSubmenu: false,
                         submenu: []
                     },
-                    {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ]
             }
         },
@@ -223,8 +170,14 @@
                 return this.$store.getters.getUserInfo;
             },
 
+            isChatroom() {
+                return this.$route.name === 'user-chatroom';
+            },
+
             hideProfileSidebar() {
-                return this.$route.name === 'user-chatroom' || this.$route.name === 'user-conspackages-marketplace-detail'
+                return  this.$route.name === 'user-chatroom' ||
+                        this.$route.name === 'user-conspackages-marketplace-detail' ||
+                        this.$route.name === 'user-analysis-result';
             }
         },
         async created() {
@@ -245,79 +198,92 @@
         width: 100%;
         margin-top: 120px;
         min-height: 100vh;
+        display: flex;
+        justify-content: center;
     }
 
     .profileWrapper.no-min-height {
         min-height: initial;
     }
 
-    .userSidebarBlock {
-        background-color: white;
+    .user-container {
         width: 100%;
+        max-width: 1170px;
+        display: grid;
+        grid-gap: 15px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: "sidebar main main main";
+        margin-top: 15px;
+    }
+
+    .user-container--noSidebar {
+        grid-template-areas: "main main main main";
+    }
+
+    .user-sidebar {
+        grid-area: sidebar;
+        height: fit-content;
         border-radius: 15px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
         flex-direction: column;
-        margin-top: 30px;
-        padding-bottom: 10px;
+        align-items: stretch;
+        background-color: white;
     }
 
-    .userSidebarBlock--info {
-        width: 100%;
+    .user-main {
+        grid-area: main;
+        height: fit-content;
+    }
+
+    .user-sidebar-title {
         border-radius: 15px 15px 0 0;
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         background-color: #9038CC;
         color: white;
         min-height: 90px;
     }
 
-    .userSidebarBlock--info_detail {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: column;
+    .sidebar-title--centered {
+        justify-content: center;
     }
 
-    .userSidebarBlock--info_detail h1 {
-        font-size: 1.5rem;
-        margin: 0;
-    }
-
-    .userSidebarBlock--info_detail h4 {
-        margin: 5px 0 0 auto;
-        text-align: right;
-    }
-
-    .userSidebarBlock--info_detail h4 a {
-        font-size: 1.2rem;
-        color: white;
-    }
-
-    .userSidebarBlock--info_detail span {
-        font-size: 12px;
-        background-color: #f0f0f0;
-        color: #bababa;
-        border-radius: 30px;
-        padding: 3px 20px;
-    }
-
-    .userSidebarBlock--info img {
+    .user-sidebar-avatar {
         width: 70px;
-        height: auto;
+        height: 70px;
         border-radius: 10px;
         margin: 10px;
     }
 
-    .userSidebarBlock--links {
-        width: 100%;
-        margin-top: 15px;
+    .user-sidebar-name {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 
-    .userSidebarBlock--links-menu {
+    .user-sidebar-name-text {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .user-sidebar-name-notif {
+        margin: 5px auto 0 0;
+        text-align: left;
+    }
+
+    .user-sidebar-name-notifLink {
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    .user-sidebar-menu {
+        margin: 15px 0;
+    }
+
+    .user-sidebar-menu-items {
         display: flex;
         list-style: none;
         padding-left: 0;
@@ -326,15 +292,16 @@
         justify-content: center;
     }
 
-    .userSidebarBlock--links-menuitem {
+    .user-sidebar-menu-item {
         display: flex;
         align-items: center;
-        margin-right: 15px;
-        margin-left: 15px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        margin: 0 15px;
+        padding: 10px 0;
         border-radius: 20px;
-        padding-left: 20px;
+    }
+
+    .user-sidebar-menu-item:hover {
+        background-color: #f1f1f1;
     }
 
     .circle {
@@ -342,8 +309,7 @@
         height: 15px;
         border-radius: 50%;
         border: 3px solid #ccc;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin: auto 5px auto 10px;
     }
 
     .square {
@@ -351,181 +317,149 @@
         height: 15px;
         border-radius: 0;
         border: 3px solid #ccc;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin: auto 5px;
     }
 
-    .userSidebarBlock--links-menuitem > a {
+    .user-sidebar-menu-link {
         color: #6a6a6a;
         transition: all 0.1s ease-in-out;
     }
 
-    .userSidebarBlock--links-menuitem.hasSubmenu {
+    .user-sidebar-menu-item:hover > .user-sidebar-menu-link {
+        color: #333;
+    }
+
+    .user-sidebar-menu-item:hover > .circle {
+        border-color: #333;
+    }
+
+    .user-sidebar-menu-item:hover > .square {
+        border-color: #333;
+    }
+
+    .user-sidebar-menu-item .badge {
+        margin-right: 5px;
+    }
+
+    .user-sidebar-menu-item--hasSubmenu {
         position: relative;
     }
 
-    .userSidebarBlock--links-menuitem.hasSubmenu:hover {
+    .user-sidebar-menu-item--hasSubmenu:hover {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .userSidebarBlock--links-menuitem.hasSubmenu:hover > .userSidebarBlock--links-submenu {
+    .user-sidebar-menu-item--hasSubmenu:hover > .user-sidebar-submenu-items {
         display: flex;
     }
 
-    .userSidebarBlock--links-menuitem.hasSubmenu:hover > .circle {
+    .user-sidebar-menu-item--hasSubmenu:hover > .circle {
         display: none;
     }
 
-    .userSidebarBlock--links-menuitem.hasSubmenu:hover > .square {
+    .user-sidebar-menu-item--hasSubmenu:hover > .square {
         display: none;
     }
 
-    .userSidebarBlock--links-menuitem:hover {
-        background-color: #f1f1f1;
-    }
-
-    .userSidebarBlock--links-menuitem:hover > a {
-        color: #333;
-    }
-
-    .userSidebarBlock--links-menuitem:hover > .circle {
-        border-color: #333;
-    }
-
-    .userSidebarBlock--links-menuitem:hover > .square {
-        border-color: #333;
-    }
-
-    .userSidebarBlock--links-menuitem .badge {
-        margin-right: 5px;
-    }
-
-    .userSidebarBlock--links-submenu {
+    .user-sidebar-submenu-items {
         display: none;
         list-style: none;
-        padding-right: 0;
+        padding-left: 0;
         width: calc(100% - 30px);
         margin-top: 5px;
-        right: 30px;
+        left: 30px;
         top: 0;
         flex-direction: column;
         align-items: stretch;
         justify-content: center;
     }
 
-    .userSidebarBlock--links-submenuitem {
+    .user-sidebar-submenu-item {
         display: flex;
         align-items: center;
         margin-top: 5px;
         margin-bottom: 5px;
     }
 
-    .userSidebarBlock--links-submenuitem > a {
+    .user-sidebar-submenu-link {
         color: #b5b5b5;
     }
 
-    .userSidebarBlock--links-submenuitem > .circle {
+    .user-sidebar-submenu-item > .circle {
         width: 5px;
         height: 5px;
     }
 
-    .userSidebarBlock--links-submenuitem > .square {
+    .user-sidebar-submenu-item > .square {
         width: 5px;
         height: 5px;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @media only screen and (max-width: 991.8px) {
-        .mobile {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            background-color: white;
+        .user-container {
+            grid-template-columns: 100%;
+            grid-template-rows: 300px auto;
+            grid-template-areas:
+                "sidebar"
+                "main"
+            ;
         }
 
-        .mobile-info {
-            display: flex;
-            width: 100%;
-            height: 300px;
-            background-color: #9038CC;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .user-container--mobileChatroom {
+            grid-template-areas: "main";
+            grid-gap: 0;
         }
 
-        .mobile-info h1 {
-            font-size: 1.7rem;
-            margin: 0;
-            color: white;
-            font-weight: bold;
+        .user-sidebar {
+            overflow: paged-x;
+            border-radius: 0;
         }
 
-        .mobile-info h4 {
-            margin-top: 10px;
-            font-weight: bold;
+        .user-sidebar-title {
+            border-radius: 0;
+            height: 240px;
         }
 
-        .mobile-info h4 a {
-            font-size: 1.2rem;
-            color: white;
-        }
-
-        .mobile-info span {
-            font-size: 12px;
-            background-color: #f0f0f0;
-            color: #bababa;
-            border-radius: 30px;
-            padding: 3px 20px;
-        }
-
-        .mobile-info img {
-            width: 100px;
-            height: auto;
-            border-radius: 10px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .mobile-menu {
-            width: 100%;
+        .user-sidebar-menu {
             overflow: auto;
             white-space: nowrap;
+            margin: 0;
         }
 
-        .mobile-menu::-webkit-scrollbar {
-            height: 3px;
-        }
-
-        /* Track */
-        .mobile-menu::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        /* Handle */
-        .mobile-menu::-webkit-scrollbar-thumb {
-            background: #888;
-        }
-
-        /* Handle on hover */
-        .mobile-menu::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        .userSidebarBlock--links-menu {
+        .user-sidebar-menu-items {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            margin-top: 10px;
+            margin: 15px;
         }
 
-        .userSidebarBlock--links-menuitem {
-            padding-right: 20px;
-            padding-left: 20px;
-            font-family: "IRANSansWebFaNum Medium", serif;
+        .user-sidebar-menu-item {
+            padding: 10px 5px;
         }
 
-        .mobile-view {
-            width: 100%;
+        .circle {
+            margin-left: 0;
         }
     }
 </style>

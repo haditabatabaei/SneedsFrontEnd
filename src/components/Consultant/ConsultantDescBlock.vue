@@ -10,18 +10,13 @@
                     :star-size="12"
                     :padding="5"
                     :read-only="true"
-                    style="background: none;margin-right: 15px;display:flex;align-items:center"
+                    style="background: none;margin-left: 10px;display:flex;align-items:center"
                     inactive-color="rgba(0,0,0,0)"
                     active-color="#fff"
                     :showRating="false"
                     v-model="consultant.rate"/>
 
-            <!-- consultant minutes -->
-            <p v-if="showMinutesOfConsultations" class="gadugiFont consultantDescBlock--head-minutes">
-                <strong>{{Math.floor(Math.random() * 100)}}</strong>
-                consulting !
-            </p>
-            <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
+            <a style="margin-left: 15px" v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
                class="consultantDescBlock--head-resume gadugiFont">Download CV</a>
         </div>
         <header class="consultantDescBlock--head gadugiFont">
@@ -64,6 +59,12 @@
                     info
                 </i>
                 Each session lasts for 40 minutes and costs {{consultant.time_slot_price}} tomans.
+            </div>
+            <div class="consultantBlock-calendar-warn">
+                <i class="material-icons consultantBlock-calendar-warn-icon">
+                    info
+                </i>
+                Calendar time zone is based on {{$store.getters.timezone}}.
             </div>
         </main>
     </section>
@@ -135,9 +136,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         position: relative;
-        margin-top: 15px;
+        margin: 15px 0;
     }
 
     .consultantDescBlock--head {
@@ -177,7 +177,7 @@
     .consultantDescBlock--head-name {
         font-weight: bold;
         font-size: 18px;
-        margin: 0 15px 0 0;
+        margin: 0 0 0 15px;
     }
 
     .consultantDescBlock--head-minutes {
@@ -245,14 +245,14 @@
 
     .consultantDescBlock--main {
         display: flex;
-        align-items: stretch;
+        justify-content: stretch;
+        align-self: stretch;
         flex-direction: column;
         flex-wrap: wrap;
         padding-top: 60px;
     }
 
     .consultantDescBlock--main_bio {
-        width: 100%;
         padding: 30px;
     }
 
@@ -278,7 +278,7 @@
         color: #8C6D1F;
         display: flex;
         align-items: center;
-        margin: 0 15px;
+        margin: 15px;
         padding: 15px;
         border-radius: 5px;
     }
@@ -295,18 +295,24 @@
 
         .consultantDescBlock--main {
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: stretch;
             padding-top: 0;
         }
 
         .consultantDescBlock--main_video {
+            width: initial;
+            margin: 10px;
         }
 
         .consultantDescBlock--main_bio {
-            width: 100%;
             margin-top: 10px;
             margin-right: 0;
+            padding: 15px;
+        }
+
+        .consultantBlock-calendar-warn {
+            align-self: stretch;
         }
 
         .consultantDescBlock--main_bio button, p {
@@ -324,14 +330,10 @@
             border-radius: 0;
         }
 
-
         .consultantDescBlock--head-info {
-            right: initial;
             top: -75px;
-        }
-
-        .consultantDescBlock--head-minutes {
-            display: none;
+            right: unset;
+            left: unset;
         }
 
         .consultantDescBlock--head-resume {

@@ -1,35 +1,35 @@
 <template>
     <section class="form-militaryservice">
-        <h1 class="militaryservice-title isansFont">
-            مشخصات فردی
+        <h1 class="militaryservice-title">
             <i class="material-icons">help_outline</i>
+            Please provide your age and gender
         </h1>
-        <div class="militaryservice-wrapper isansFont">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice"
-                   value="female">
-            <input v-model="selectedEducationalGapStatus" id="militaryservice-donthave" type="radio"
-                   name="militaryservice" value="male">
+        <div class="militaryservice-wrapper">
+            <input v-model="selectedEducationalGapStatus" id="militaryservice-have" type="radio" name="militaryservice" value="female">
+            <input v-model="selectedEducationalGapStatus" id="militaryservice-donthave" type="radio" name="militaryservice" value="male">
             <label for="militaryservice-have" class="militaryservice-holder"
                    :class="[{'holder--selected': selectedEducationalGapStatus == 'female'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'female'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/female.svg" class="militaryservice-holder-image"
-                     alt="دارای وقفه تحصیلی">
-                <p class="militaryservice-holder-text">خانم</p>
+                     alt="female">
+                <p class="militaryservice-holder-text">Female</p>
             </label>
             <label for="militaryservice-donthave" class="militaryservice-holder"
                    :class="[{'holder--selected': selectedEducationalGapStatus == 'male'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedEducationalGapStatus == 'male'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/male.svg" class="militaryservice-holder-image"
-                     alt="عدم وقفه تحصیلی">
-                <p class="militaryservice-holder-text">آقا</p>
+                     alt="male">
+                <p class="militaryservice-holder-text">Male</p>
             </label>
         </div>
         <div class="inputs">
-            <c-number-input class="edu-gap" :step="1"
+            <c-number-input class="edu-gap"
+                            step="1"
                             :error="$v.gapYears.$error"
-                            error-text="سن باید عدد صحیح بین 15 تا 100 باشد."
+                            error-text="Age must be an integer between 15 and 100."
                             v-model="gapYears"
-                            label="سال سن"/>
+                            label="Age (in years)"
+            />
         </div>
     </section>
 </template>

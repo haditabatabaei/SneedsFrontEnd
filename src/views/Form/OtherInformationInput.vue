@@ -1,31 +1,31 @@
 <template>
-    <section class="form-other">
-        <h1 class="other-title isansFont">
-            سایر موارد و رزومه
+    <section class="form-other gadugiFont">
+        <h1 class="other-title">
+            Other information and resume
             <i class="material-icons">help_outline</i>
         </h1>
-        <h3 class="other-desc isansFont">
-            این اطلاعات برای مقایسه خیلی به ما کمک می‌کنه.
+        <h3 class="other-desc">
+            These information are very helpful for us.
         </h3>
 
         <div class="form-other-items" v-if="detailedForm">
-            <c-collapsable-input class="form-other-collapsable" title="آدرس لینکدین" :isOpenByDefault="true">
-                <c-simple-input label="Linkedin profile" v-model="linkedin" :is-ltr="true" style="width: 100%" />
+            <c-collapsable-input class="form-other-collapsable" title="Linked-in profile" :isOpenByDefault="true">
+                <c-simple-input label="Linked-in profile URL" v-model="linkedin"  style="width: 100%" />
             </c-collapsable-input>
-            <c-collapsable-input class="form-other-collapsable" title="سابقه المپیاد">
+            <c-collapsable-input class="form-other-collapsable" title="Olympiad experience">
                 <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`"
-                          cols="30" rows="10" placeholder="المپیاد" v-model="olympiad"/>
+                          cols="30" rows="10" placeholder="Olympiad experience" v-model="olympiad"/>
             </c-collapsable-input>
-            <c-collapsable-input class="form-other-collapsable" title="آدرس وبسایت شخصی">
-                <c-simple-input label="Personal website/Portfolio" v-model="homepage" :is-ltr="true" style="width: 100%"/>
+            <c-collapsable-input class="form-other-collapsable" title="Personal website">
+                <c-simple-input label="Personal website/portfolio URL" v-model="homepage"  style="width: 100%"/>
             </c-collapsable-input>
-            <c-collapsable-input class="form-other-collapsable" title="آپلود رزومه">
+            <c-collapsable-input class="form-other-collapsable" title="Resume/CV file">
                 <input type="file" @change="handleFile">
-                <a v-if="currentFile" :href="currentFile" target="_blank">دانلود فایل رزومه فعلی</a>
+                <a v-if="currentFile" :href="currentFile" target="_blank">Download current resume/CV</a>
             </c-collapsable-input>
-            <c-collapsable-input class="form-other-collapsable" title="سایر توضیحات">
+            <c-collapsable-input class="form-other-collapsable" title="Comment">
                 <textarea name="collapsable-input" class="collapsable-input-textarea" :style="`resize:vertical;`"
-                          cols="30" rows="10" placeholder="توضیحات" v-model="comment"/>
+                          cols="30" rows="10" placeholder="Comments..." v-model="comment"/>
             </c-collapsable-input>
         </div>
     </section>

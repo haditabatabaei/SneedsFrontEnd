@@ -1,10 +1,10 @@
 <template>
-    <section class="form-militaryservice">
-        <h1 class="militaryservice-title isansFont">
-            مدرک زبان داری؟
+    <section class="form-militaryservice gadugiFont">
+        <h1 class="militaryservice-title">
             <i class="material-icons">help_outline</i>
+            Do you have a valid language certificate?
         </h1>
-        <div class="militaryservice-wrapper isansFont">
+        <div class="militaryservice-wrapper">
             <input v-model="selectedLanguageCertificateStatus" id="militaryservice-have" type="radio"
                    name="militaryservice" value="have">
             <input v-model="selectedLanguageCertificateStatus" id="militaryservice-donthave" type="radio"
@@ -15,351 +15,352 @@
                    v-if="selectedLanguageCertificateStatus == 'have'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/english.svg" class="militaryservice-holder-image"
                      alt="مدرک زبان دارم">
-                <p class="militaryservice-holder-text">دارم</p>
+                <p class="militaryservice-holder-text">YES i have.</p>
             </label>
             <label for="militaryservice-donthave" class="militaryservice-holder"
                    :class="[{'holder--selected': selectedLanguageCertificateStatus == 'donthave'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedLanguageCertificateStatus == 'donthave'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/no-english.svg" class="militaryservice-holder-image"
                      alt="مدرک زبان ندارم">
-                <p class="militaryservice-holder-text">ندارم</p>
+                <p class="militaryservice-holder-text">NO i dont have</p>
             </label>
         </div>
         <div class="inputs" v-if="selectedLanguageCertificateStatus == 'have'">
-            <c-dropdown-input class="edu-gap" label="مدرک زبان"
+            <c-dropdown-input class="edu-gap" label="Language certificate"
                               :error="selectedCert == null"
-                              error-text="لطفاً یک مدرک زبان انتخاب کنید."
+                              error-text="Please provide a certificate."
                               :options="certOptions"
                               @select-option="setSelectedCert"/>
             <div v-if="selectedLanguageCertificateStatus == 'have'">
                 <div class="inputs-certs" v-if="shownType == 'regular'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => regularCert.listening = val"
                                     :error="$v.regularCert.listening.$error"
-                                    error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
+                                    error-text="Listening must be between 0 and 9"
                                     :default-value="6.5"
                                     v-model.number="regularCert.listening"
                                     label="Listening"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"
+                                    :step="0.5"
                                     @set-parent-value="val => regularCert.writing = val"
                                     :error="$v.regularCert.writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
+                                    error-text="Writing must be between 0 and 9"
                                     :default-value="6.5"
                                     v-model.number="regularCert.writing"
                                     label="Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => regularCert.speaking = val"
                                     :error="$v.regularCert.speaking.$error"
-                                    error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
+                                    error-text="Speaking must be between 0 and 9"
                                     :default-value="6.5"
                                     v-model.number="regularCert.speaking"
                                     label="Speaking"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => regularCert.reading = val"
                                     :error="$v.regularCert.reading.$error"
-                                    error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
+                                    error-text="Reading must be between 0 and 9"
                                     :default-value="6.5"
                                     v-model.number="regularCert.reading"
                                     label="Reading"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => regularCert.overall = val"
                                     :error="$v.regularCert.overall.$error"
-                                    error-text="مقدار وارد شده باید بین 0 تا 9 باشد."
+                                    error-text="Overall score must be between 0 and 9"
                                     :default-value="6.5"
                                     v-model.number="regularCert.overall"
                                     label="Overall"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'gmat'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => gmat.analytical_writing_assessment = val"
                                     :error="$v.gmat.analytical_writing_assessment.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be between 0 and 6 in full or half points (0, 0.5, 1, 1.5 ...)."
                                     :default-value="0"
                                     v-model.number="gmat.analytical_writing_assessment"
                                     label="Analytic Writing Assessment"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => gmat.integrated_reasoning = val"
                                     :error="$v.gmat.integrated_reasoning.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 1 و 8 باشد."
+                                    error-text="Input must be an integer between 1 and 8."
                                     :default-value="1"
                                     v-model.number="gmat.integrated_reasoning"
                                     label="Integrated Reasoning"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => gmat.quantitative_and_verbal = val"
                                     :error="$v.gmat.quantitative_and_verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 6 و 51 باشد."
+                                    error-text="Input must be an integer between 6 and 51."
                                     :default-value="6"
                                     v-model.number="gmat.quantitative_and_verbal"
                                     label="Quantitative and Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="10"
+                    <c-number-input class="edu-gap"  :step="10"
                                     @set-parent-value="val => gmat.total = val"
                                     :error="$v.gmat.total.$error"
-                                    error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 800 باشد."
+                                    error-text="Input must be an integer dividable by 10 and between 200 and 800"
                                     :default-value="200"
                                     v-model.number="gmat.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePhys'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.quantitative = val"
                                     :error="$v.grePhysics.quantitative.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="grePhysics.quantitative"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.verbal = val"
                                     :error="$v.grePhysics.verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="grePhysics.verbal"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => grePhysics.analytical_writing = val"
                                     :error="$v.grePhysics.analytical_writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be between 0 and 6 in full or half points (0, 0.5, 1, 1.5 ...)."
                                     :default-value="0"
                                     v-model.number="grePhysics.analytical_writing"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.classical_mechanics = val"
                                     :error="$v.grePhysics.classical_mechanics.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePhysics.classical_mechanics"
                                     label="Classical Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.electromagnetism = val"
                                     :error="$v.grePhysics.electromagnetism.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePhysics.electromagnetism"
                                     label="Electromagnetism"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.quantum_mechanics = val"
                                     :error="$v.grePhysics.quantum_mechanics.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePhysics.quantum_mechanics"
                                     label="Quantum Mechanics"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePhysics.total = val"
                                     :error="$v.grePhysics.total.$error"
-                                    error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
+                                    error-text="Input must be an integer dividable by 10 and between 200 and 990"
                                     :default-value="200"
                                     v-model.number="grePhysics.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'grePsycho'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.quantitative = val"
                                     :error="$v.grePsychology.quantitative.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="grePsychology.quantitative"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.verbal = val"
                                     :error="$v.grePsychology.verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="grePsychology.verbal"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => grePsychology.analytical_writing = val"
                                     :error="$v.grePsychology.analytical_writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be between 0 and 6 in full or half points (0, 0.5, 1, 1.5 ...)."
                                     :default-value="0"
                                     v-model.number="grePsychology.analytical_writing"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.biological = val"
                                     :error="$v.grePsychology.biological.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.biological"
                                     @set-number="val => grePsychology.biological = Number(val)"
                                     label="Biological"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.cognitive = val"
                                     :error="$v.grePsychology.cognitive.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.cognitive"
                                     label="Cognitive"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.social = val"
                                     :error="$v.grePsychology.social.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.social"
                                     label="Social"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.developmental = val"
                                     :error="$v.grePsychology.developmental.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.developmental"
                                     label="Developmental"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.clinical = val"
                                     :error="$v.grePsychology.clinical.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.clinical"
                                     label="Clinical"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.measurement_or_methodology = val"
                                     :error="$v.grePsychology.measurement_or_methodology.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="grePsychology.measurement_or_methodology"
                                     label="Measurement or Methodology"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => grePsychology.total = val"
                                     :error="$v.grePsychology.total.$error"
-                                    error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
+                                    error-text="Input must be an integer dividable by 10 and between 200 and 990"
                                     :default-value="200"
                                     v-model.number="grePsychology.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greBio'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.quantitative = val"
                                     :error="$v.greBiology.quantitative.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greBiology.quantitative"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.verbal = val"
                                     :error="$v.greBiology.verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greBiology.verbal"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => greBiology.analytical_writing = val"
                                     :error="$v.greBiology.analytical_writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="0"
                                     v-model.number="greBiology.analytical_writing"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.cellular_and_molecular = val"
                                     :error="$v.greBiology.cellular_and_molecular.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="greBiology.cellular_and_molecular"
                                     label="Cellular and Molecular"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.organismal = val"
                                     :error="$v.greBiology.organismal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="greBiology.organismal"
                                     label="Organismal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.ecology_and_evolution = val"
                                     :error="$v.greBiology.ecology_and_evolution.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 20 و 99 باشد."
+                                    error-text="Input must be an integer between 20 and 99."
                                     :default-value="20"
                                     v-model.number="greBiology.ecology_and_evolution"
-                                    label="Ecologyand Evolution"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                                    label="Ecology and Evolution"/>
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greBiology.total = val"
                                     :error="$v.grePsychology.total.$error"
-                                    error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
+                                    error-text="Input must be an integer dividable by 10 and between 200 and 990"
                                     :default-value="200"
                                     v-model.number="greBiology.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greGen'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greGeneral.quantitative = val"
                                     :error="$v.greGeneral.quantitative.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greGeneral.quantitative"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greGeneral.verbal = val"
                                     :error="$v.greGeneral.verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greGeneral.verbal"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => greGeneral.analytical_writing = val"
                                     :error="$v.greGeneral.analytical_writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be between 0 and 6 in full or half points (0, 0.5, 1, 1.5 ...)."
                                     :default-value="0"
                                     v-model.number="greGeneral.analytical_writing"
                                     label="Analytical Writing"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'greSub'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greSubject.quantitative = val"
                                     :error="$v.greSubject.quantitative.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greSubject.quantitative"
                                     label="Quantitative"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greSubject.verbal = val"
                                     :error="$v.greSubject.verbal.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 130 و 170 باشد."
+                                    error-text="Input must be an integer between 130 and 170."
                                     :default-value="130"
                                     v-model.number="greSubject.verbal"
                                     label="Verbal"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="0.5"
+                    <c-number-input class="edu-gap"  :step="0.5"
                                     @set-parent-value="val => greSubject.analytical_writing = val"
                                     :error="$v.greSubject.analytical_writing.$error"
-                                    error-text="مقدار وارد شده باید بین 0 و 6 باشد. (0 - 0.5 - ... )"
+                                    error-text="Input must be between 0 and 6 in full or half points (0, 0.5, 1, 1.5 ...)."
                                     :default-value="0"
                                     v-model.number="greSubject.analytical_writing"
                                     label="Analytical Writing"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => greSubject.total = val"
                                     :error="$v.greSubject.total.$error"
-                                    error-text="مقدار وارد شده باید عدد مضرب 10 بین 200 و 990 باشد."
+                                    error-text="Input must be an integer dividable by 10 and between 200 and 990"
                                     :default-value="200"
                                     v-model.number="greSubject.total"
                                     label="Total"/>
                 </div>
                 <div class="inputs-certs" v-else-if="shownType == 'duolingo'">
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => duolingo.literacy = val"
                                     :error="$v.duolingo.literacy.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
+                                    error-text="Input must be an integer between 0 and 32767."
                                     :default-value="0"
                                     v-model.number="duolingo.literacy"
                                     label="Literacy"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => duolingo.comprehension = val"
                                     :error="$v.duolingo.comprehension.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
+                                    error-text="Input must be an integer between 0 and 32767."
                                     :default-value="0"
                                     v-model.number="duolingo.comprehension"
                                     label="Comprehension"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => duolingo.conversation = val"
                                     :error="$v.duolingo.conversation.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
+                                    error-text="Input must be an integer between 0 and 32767."
                                     :default-value="0"
                                     v-model.number="duolingo.conversation"
                                     label="Conversation"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => duolingo.production = val"
                                     :error="$v.duolingo.production.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 0 و 32767 باشد."
+                                    error-text="Input must be an integer between 0 and 32767."
                                     :default-value="0"
                                     v-model.number="duolingo.production"
                                     label="Production"/>
-                    <c-number-input class="edu-gap" :is-ltr="true" :step="1"
+                    <c-number-input class="edu-gap"  :step="1"
                                     @set-parent-value="val => duolingo.overall = val"
                                     :error="$v.duolingo.overall.$error"
-                                    error-text="مقدار وارد شده باید عدد صحیح بین 10 و 160 باشد."
+                                    error-text="Input must be an integer between 0 and 32767."
                                     :default-value="10"
                                     v-model.number="duolingo.overall"
                                     label="Overall"/>
@@ -553,9 +554,9 @@
                 },
 
                 certOptions: [
-                    {name: 'آیلتس جنرال', nameEnglish: 'IELTS_GENERAL'},
-                    {name: 'آیلتس آکادمیک', nameEnglish: 'IELTS_ACADEMIC'},
-                    {name: 'تافل', nameEnglish: 'TOEFL'},
+                    {name: 'IELTS GENERAL Training', nameEnglish: 'IELTS_GENERAL'},
+                    {name: 'IELTS ACADEMIC Training', nameEnglish: 'IELTS_ACADEMIC'},
+                    {name: 'TOEFL', nameEnglish: 'TOEFL'},
                     {name: 'GMAT', nameEnglish: 'GMAT'},
                     {name: 'GRE General', nameEnglish: 'GRE_GENERAL'},
                     {name: 'GRE Chemistry', nameEnglish: 'GRE_CHEMISTRY'},

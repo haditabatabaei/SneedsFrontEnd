@@ -1,21 +1,21 @@
 <template>
-    <section class="form-militaryservice">
-        <h1 class="militaryservice-title isansFont">
-            توصیه نامه قوی داری؟
+    <section class="form-militaryservice gadugiFont">
+        <h1 class="militaryservice-title">
             <i class="material-icons">help_outline</i>
+            Did you receive a valuable recommendation?
         </h1>
-        <div class="militaryservice-wrapper isansFont">
+        <div class="militaryservice-wrapper">
             <input v-model="selectedMilitaryserviceStatus" id="militaryservice-have" type="radio" name="militaryservice" value="have">
             <input v-model="selectedMilitaryserviceStatus" id="militaryservice-donthave" type="radio" name="militaryservice" value="donthave">
             <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': selectedMilitaryserviceStatus == 'have'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMilitaryserviceStatus == 'have'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/recom.svg" class="militaryservice-holder-image" alt="توصیه نامه قوی دارم">
-                <p class="militaryservice-holder-text">دارم</p>
+                <p class="militaryservice-holder-text">YES, I do.</p>
             </label>
             <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': selectedMilitaryserviceStatus == 'donthave'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMilitaryserviceStatus == 'donthave'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/no-recom.svg" class="militaryservice-holder-image" alt="توصیه نامه قوی ندارم">
-                <p class="militaryservice-holder-text">ندارم</p>
+                <p class="militaryservice-holder-text">NO, I dont.</p>
             </label>
         </div>
     </section>

@@ -38,9 +38,11 @@
         methods: {
             clearActiveFilters() {
                 this.activeFilters.forEach(filter => filter.select = false);
+                this.$emit('clear-filters')
             },
             removeFilter(filter) {
                 filter.select = false;
+                this.$emit('remove-filter', filter)
             }
         },
     }

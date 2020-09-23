@@ -2,7 +2,7 @@
     <form class="loginForm" @submit.prevent="register()">
         <c-simple-input
                 label="Email:"
-                :is-ltr="true"
+
                 :external-label="true"
                 :error="emailIsInvalid"
                 error-text="Please enter a valid email address."
@@ -11,7 +11,7 @@
         />
         <c-password-input
                 label="Password:"
-                :is-ltr="true"
+
                 :external-label="true"
                 :error="passwordIsInvalid"
                 error-text="Please enter a valid password."
@@ -20,7 +20,7 @@
         />
         <c-simple-input
                 label="Phone:"
-                :is-ltr="true"
+
                 :external-label="true"
                 :error="phoneNumberIsInvalid"
                 error-text="Please enter a valid phone number."

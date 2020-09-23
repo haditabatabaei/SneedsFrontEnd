@@ -1,6 +1,6 @@
 <template>
-    <div class="filter-block">
-        <div class="filter-block-head">
+    <div v-if="items.length > 0" class="filter-block" :class="[{'filter-block--noShadow': noShadow, 'filter-block--noRaduis': noRadius}]">
+        <div class="filter-block-head" v-if="!noTitle">
             <div class="filter-block-head-title">
                 <p class="filter-block-head-title-text">
                     <i class="material-icons">insert_photo</i>
@@ -49,6 +49,18 @@
                 type: String,
                 default: () => "Filter block title"
             },
+            noTitle: {
+                type: Boolean,
+                default: () => false
+            },
+            noShadow: {
+                type: Boolean,
+                default: () => false
+            },
+            noRadius: {
+                type: Boolean,
+                default: () => false
+            },
             searchType: {
                 type: String,
                 default: () => 'middle'
@@ -61,6 +73,9 @@
                     this.shownItems = newItems;
                 }
             }
+        },
+        created() {
+            this.searchInItems();
         },
         methods: {
             searchInItems() {
@@ -76,7 +91,7 @@
             },
             selectItem(item) {
                 item.select = !item.select;
-                this.$emit('item-select', item)
+                this.$emit('select-item', item)
             }
         },
     }
@@ -94,6 +109,14 @@
 
     .filter-block:not(:first-child) {
         margin-top: 15px;
+    }
+
+    .filter-block--noShadow {
+        box-shadow: none;
+    }
+
+    .filter-block--noRadius {
+        border-radius: 0;
     }
 
     .filter-block-head {

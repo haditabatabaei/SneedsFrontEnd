@@ -1,21 +1,21 @@
 <template>
     <section class="form-marriage">
-        <h1 class="marriage-title isansFont">
-            مجردی یا متاهل؟
+        <h1 class="marriage-title">
             <i class="material-icons">help_outline</i>
+            Are you married or single?
         </h1>
-        <div class="marriage-wrapper isansFont">
+        <div class="marriage-wrapper">
             <input v-model="selectedMarriageStatus" id="marriage-single" type="radio" name="marriage" value="single">
             <input v-model="selectedMarriageStatus" id="marriage-married" type="radio" name="marriage" value="married">
-            <label for="marriage-single" class="marriage-holder" :class="[{'holder--selected': selectedMarriageStatus == 'single'}]">
+            <label for="marriage-single" class="marriage-holder holder-item1" :class="[{'holder--selected': selectedMarriageStatus == 'single'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMarriageStatus == 'single'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/single.svg" class="marriage-holder-image" alt="وضععیت تاهل مجرد">
-                <p class="marriage-holder-text">مجردم</p>
+                <img draggable="false" src="/sneedsAssets/img/single.svg" class="marriage-holder-image" alt="i am single">
+                <p class="marriage-holder-text">I'm Single</p>
             </label>
-            <label for="marriage-married" class="marriage-holder" :class="[{'holder--selected': selectedMarriageStatus == 'married'}]">
+            <label for="marriage-married" class="marriage-holder holder-item2" :class="[{'holder--selected': selectedMarriageStatus == 'married'}]">
                 <i class="material-icons holder-selected-icon" v-if="selectedMarriageStatus == 'married'">done</i>
-                <img draggable="false" src="/sneedsAssets/img/married.svg" class="marriage-holder-image" alt="وضعیت تاهل متاهل">
-                <p class="marriage-holder-text">متاهلم</p>
+                <img draggable="false" src="/sneedsAssets/img/married.svg" class="marriage-holder-image" alt="i am married">
+                <p class="marriage-holder-text">I'm Married</p>
             </label>
         </div>
     </section>
@@ -88,22 +88,35 @@ export default {
     }
 
     .marriage-wrapper  {
-        display: flex;
+        display: grid;
+        grid-gap: 15px;
+        grid-template-areas: "item1 item2";
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
     }
 
     .marriage-holder {
-        width: calc(100% - 360px);
+        /*width: calc(100% - 360px);*/
         border-radius: 12px;
         background-color: white;
-        box-shadow:0 3px 26px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 26px rgba(0,0,0,0.1);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin: 20px;
+        /*margin: 20px;*/
         padding: 20px;
         cursor: pointer;
         transition: all 100ms ease-in-out;
+        /*grid-area: item1;*/
+    }
+
+    .holder-item1 {
+        grid-area: item1;
+    }
+
+    .holder-item2 {
+        grid-area: item2;
     }
 
     .holder-selected-icon {

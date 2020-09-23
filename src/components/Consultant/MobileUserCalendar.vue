@@ -1,9 +1,6 @@
 <template>
     <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode, 'cal--rtl': isiran}]"
          v-if="days.length !== 0 && !!activeDay">
-        <p class="timezone-desc gadugiFont">
-            Calendar is based on {{$store.getters.timezone}}
-        </p>
         <div class="cal-week-switcher" :class="[{'cal-week-switcher--desktop': desktopMode, 'week-switcher--rtl': isiran, 'isansFont': isiran, 'gadugiFont': !isiran}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek"  :class="[{'cal-week-switcher-button--hasfree': prevWeekHasSlots}]" v-if="activeWeekOffset > 0">
                 <i class="material-icons" v-if="isiran">keyboard_arrow_right</i>
@@ -509,6 +506,21 @@
         padding: 5px 10px;
         margin: 15px;
         align-self: flex-start;
+    }
+
+    .consultantBlock-calendar-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: center;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .consultantBlock-calendar-warn-icon {
+        color: #CAA53D;
+        margin-right: 10px;
     }
 
     @media only screen and (max-width: 767.8px) {

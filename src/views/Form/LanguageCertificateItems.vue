@@ -1,10 +1,10 @@
 <template>
-    <section class="paper-items isansFont">
+    <section class="paper-items gadugiFont">
         <div class="paper-items-wrapper">
             <div class="paper-items-item" v-for="cert of regular">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} - Overall : {{cert.overall}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam: {{cert.certificate_type}} - Overall : {{cert.overall}}</p>
                     <p class="paper-item-title">L:{{cert.listening}} S:{{cert.speaking}} R:{{cert.reading}} W:{{cert.writing}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteCert(cert)">
@@ -13,8 +13,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of gmat">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} - Total : {{cert.total}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">آExam: {{cert.certificate_type}} - Total : {{cert.total}}</p>
                     <p class="paper-item-title">Quantitative and Verbal:{{cert.quantitative_and_verbal}} Integrated Reasoning:{{cert.integrated_reasoning}} Analytical Writing Assessment:{{cert.analytical_writing_assessment}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteCert(cert)">
@@ -23,8 +23,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of greGen">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}}</p>
                     <p class="paper-item-title">Analytical Writing:{{cert.analytical_writing}} Quantitative:{{cert.quantitative}} Verbal:{{cert.verbal}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteCert(cert)">
@@ -33,8 +33,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of greSub">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} Total: {{cert.total}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}} Total: {{cert.total}}</p>
                     <p class="paper-item-title">Analytical Writing:{{cert.analytical_writing}} Quantitative:{{cert.quantitative}} Verbal:{{cert.verbal}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteCert(cert)">
@@ -43,8 +43,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of greBio">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} Total: {{cert.total}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}} Total: {{cert.total}}</p>
                     <p class="paper-item-title">Analytical Writing:{{cert.analytical_writing}} Quantitative:{{cert.quantitative}} Verbal:{{cert.verbal}}</p>
                     <p class="paper-item-title">Cellular and Molecular: {{cert.cellular_and_molecular}} Organismal: {{cert.organismal}} Ecology and Evolution: {{cert.ecology_and_evolution}}</p>
                 </div>
@@ -54,8 +54,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of grePhys">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} Total: {{cert.total}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}} Total: {{cert.total}}</p>
                     <p class="paper-item-title">Analytical Writing:{{cert.analytical_writing}} Quantitative:{{cert.quantitative}} Verbal:{{cert.verbal}}</p>
                     <p class="paper-item-title">Classical Mechanics: {{cert.classical_mechanics}} Electromagnetism: {{cert.electromagnetism}} Quantum Mechanics: {{cert.quantum_mechanics}}</p>
                 </div>
@@ -65,8 +65,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of grePsycho">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} Total: {{cert.total}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}} Total: {{cert.total}}</p>
                     <p class="paper-item-title">Analytical Writing:{{cert.analytical_writing}} Quantitative:{{cert.quantitative}} Verbal:{{cert.verbal}}</p>
                     <p class="paper-item-title">Biological: {{cert.biological}} Cognitive: {{cert.cognitive}} Social: {{cert.social}} Developmental: {{cert.developmental}} Clinical: {{cert.clinical}} Measurement or Methodology: {{cert.measurement_or_methodology}}</p>
                 </div>
@@ -76,8 +76,8 @@
             </div>
             <div class="paper-items-item" v-for="cert of duolingo">
                 <i class="material-icons paper-item-icon">content_paste</i>
-                <div class="paper-item-info isansFont">
-                    <p class="paper-item-summary">آزمون {{cert.certificate_type}} Overall: {{cert.overall}}</p>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">Exam {{cert.certificate_type}} Overall: {{cert.overall}}</p>
                     <p class="paper-item-title">Literacy:{{cert.literacy}} Comprehension:{{cert.comprehension}} Conversation:{{cert.conversation}} Production:{{cert.production}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deleteCert(cert)">
@@ -86,13 +86,13 @@
             </div>
             <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
             <p class="paper-items-empty" v-if="isEmpty">
-                مدرک زبانی وارد نشده است.
+                There is no language certificate available.
             </p>
             <router-link to="/analysis/form/languagecerts" class="paper-items-addnew" v-if="isEmpty">
-                افزودن مدرک زبان جدید
+                Add a language certificate
             </router-link>
             <router-link to="/analysis/form/languagecerts" class="paper-items-addnew" v-else>
-                افزودن مدرک زبان دیگر
+                Add another language certificate
             </router-link>
         </div>
     </section>

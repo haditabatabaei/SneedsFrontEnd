@@ -1,11 +1,11 @@
 <template>
-    <section class="paper-items isansFont">
-        <div class="paper-items-wrapper isansFont--faNum">
+    <section class="paper-items gadugiFont">
+        <div class="paper-items-wrapper">
             <div class="paper-items-item" v-for="item in items">
                 <i class="material-icons paper-item-icon">content_paste</i>
                 <div class="paper-item-info">
                     <p class="paper-item-summary">{{getSummary(item)}}</p>
-                    <p class="paper-item-title">عنوان مقاله: {{item.title}}</p>
+                    <p class="paper-item-title">Paper title: {{item.title}}</p>
                 </div>
                 <button class="paper-item-remove" @click="deletePaper(item)">
                     <i class="material-icons">close</i>
@@ -15,15 +15,15 @@
             <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
 
             <p class="paper-items-empty" v-if="items.length == 0">
-                مقاله ای وارد نشده است.
+                There is no paper available.
             </p>
 
             <router-link to="/analysis/form/paper" class="paper-items-addnew" v-if="items.length > 0">
-                افزودن مقاله دیگر
+                Add another paper
             </router-link>
 
             <router-link to="/analysis/form/paper" class="paper-items-addnew" v-else>
-                افزودن مقاله جدید
+                Add a paper
             </router-link>
         </div>
     </section>

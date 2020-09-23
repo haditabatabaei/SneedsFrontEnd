@@ -6,7 +6,7 @@
             v-model.trim="$v.email.$model"
             :error="emailIsInvalid"
             error-text="Please enter a valid email address."
-            :is-ltr="true"
+
             class="forget-input"
         />
         <button class="loginForm-button gadugiFont">
@@ -16,7 +16,7 @@
     <form class="loginForm" @submit.prevent="updatePassword()" v-else>
         <c-password-input
                 label="Password:"
-                :is-ltr="true"
+
                 :external-label="true"
                 :error="newPasswordIsInvalid"
                 error-text="Please enter a valid password."
@@ -25,7 +25,7 @@
         />
         <c-password-input
                 label="Confirm password:"
-                :is-ltr="true"
+
                 :external-label="true"
                 :error="confirmNewPasswordIsInvalid"
                 error-text="Please enter a valid password confirmation."

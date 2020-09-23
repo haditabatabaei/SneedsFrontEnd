@@ -1,36 +1,36 @@
 <template>
-    <section class="form-destination">
+    <section class="form-destination gadugiFont">
         <transition name="fade">
             <div class="modal-confirm-overlay" v-if="showConfirm" @click.self="showConfirm = false">
-                <div class="modal-confirm isansFont">
+                <div class="modal-confirm">
                     <button class="modal-confirm-close" @click="showConfirm = false"><i class="material-icons">close</i></button>
-                    <h2 class="modal-confirm-title isansFont">
+                    <h2 class="modal-confirm-title">
                         <i class="material-icons-outlined">info</i>
-                        توجه، فرم شما خالی است!
+                        Notice, your form is empty!
                     </h2>
                     <p class="modal-confirm-text">
-                        شما میخواهید بدون اضافه کردن مقصد، به مرحله بعد بروید، امکان اضافه کردن و مقصد شما به تعداد دلخواه در آینده وجود دارد.
+                        You are about to leave this page without submitting a destination, you can add and edit multiple destinations later.
                     </p>
                     <div class="modal-confirm-action">
-                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">نه، میخواهم پر کنم</button>
-                        <button class="modal-confirm-button confirm--next" @click="bypassDestination">متوجهم، به مرحله بعد برو</button>
+                        <button class="modal-confirm-button confirm--close" @click="startPayloadProcess">No!, Stay, I want to add</button>
+                        <button class="modal-confirm-button confirm--next" @click="bypassDestination">I consent, continue</button>
                     </div>
                 </div>
             </div>
         </transition>
-        <h1 class="destination-title isansFont">
-            کجا می خوای بری؟
+        <h1 class="destination-title">
             <i class="material-icons">help_outline</i>
+            Where is your destination?
         </h1>
         <div class="form-destination-wrapper">
             <div class="destination-input-wrapper">
                 <c-searchable-input class="dest-input"
                                     :error="$v.selectedCountries.$error"
-                                    error-text="انتخاب حداقل یک کشور اجباری است."
+                                    error-text="Please select at least one country."
                                     :clearselect="true"
                                     :loading="countryLoading"
                                     @input="searchCountryByVal"
-                                    label="کشور مقصد"
+                                    label="Destination country"
                                     :dataset="availableCountries"
                                     @select-option="addCountry"/>
                 <div class="selected-items isansFont" v-if="selectedCountries.length > 0">
@@ -47,10 +47,10 @@
             <div class="destination-input-wrapper">
                 <c-dropdown class="dest-input"
                             :clear-select="true"
-                            label="مقطع مورد نظر"
+                            label="Destination academic level"
                             :options="gradeOptions"
                             @select-option="addGrade"/>
-                <div class="selected-items isansFont" v-if="selectedGrades.length > 0">
+                <div class="selected-items" v-if="selectedGrades.length > 0">
                     <div class="selected-items-list">
                         <p class="selected-item item--valid" v-for="grade in selectedGrades">
                             {{grade.name}}
@@ -66,13 +66,13 @@
             <div class="destination-input-wrapper">
                 <c-dropdown class="dest-input"
                             :error="$v.selectedSemesters.$error"
-                            error-text="انتخاب حداقل یک ترم تحصیلی اجباری است."
+                            error-text="Please select at least one semester."
                             :clear-select="true"
-                            label="ترم مورد نظر"
+                            label="Apply semester"
                             :options="semesterOptions"
                             @select-option="addSemester"/>
 
-                <div class="selected-items isansFont" v-if="selectedSemesters.length > 0">
+                <div class="selected-items" v-if="selectedSemesters.length > 0">
                     <div class="selected-items-list">
                         <p class="selected-item item--valid" v-for="semester in selectedSemesters">
                             {{semester.year}} {{semester.semester}}
@@ -88,10 +88,10 @@
                                     :loading="majorLoading"
                                     :clearselect="true"
                                     @input="searchMajorByVal"
-                                    label="رشته"
+                                    label="Destination major"
                                     :dataset="availableMajors"
                                     @select-option="addMajor"/>
-                <div class="selected-items isansFont" v-if="selectedMajors.length > 0">
+                <div class="selected-items" v-if="selectedMajors.length > 0">
                     <div class="selected-items-list">
                         <p class="selected-item item--valid" v-for="major in selectedMajors">
                             {{major.name}}
@@ -107,10 +107,10 @@
                                     :loading="uniLoading"
                                     :clearselect="true"
                                     @input="searchUniversityByVal"
-                                    label="دانشگاه"
+                                    label="Destination university"
                                     :dataset="availableUniversities"
                                     @select-option="addSelectedUniversity"/>
-                <div class="selected-items isansFont" v-if="selectedUniversities.length > 0">
+                <div class="selected-items" v-if="selectedUniversities.length > 0">
                     <div class="selected-items-list">
                         <p class="selected-item item--valid" v-for="uni in selectedUniversities">
                             {{uni.name}}

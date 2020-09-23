@@ -1,23 +1,23 @@
 <template>
-    <section class="contactus isansFont">
+    <section class="contactus gadugiFont">
         <div class="curve"></div>
         <div class="dots"></div>
         <div class="card">
-            <div class="card-info isansFont--faNum">
-                <h2 class="card-title isansFont">
-                    تماس با ما
+            <div class="card-info">
+                <h2 class="card-title">
+                    Contact Us
                     <div class="card-title-line"></div>
                 </h2>
 
                 <div class="card-info-box">
                     <i class="material-icons info-box-icon">local_phone</i>
-                    <p class="info-box-text info-box-text--hasLtr info-box-text--bold">
-                        021 2842 8353
+                    <p class="info-box-text info-box-text--bold">
+                        +9821 2842 8353
                         <br>
                         <span class="box-text-sub">
-                            شنبه تا چهارشنبه ساعت 10 الی 19
+                            Saturdays to Wednesdays, from 10:00 to 19:00
                             <br>
-                            پنجشنبه ساعت 10 الی 14
+                            Thursdays from 10:00 to 14:00
                         </span>
                     </p>
                 </div>
@@ -34,19 +34,20 @@
                 <div class="card-info-box">
                     <i class="material-icons info-box-icon">location_on</i>
                     <p class="info-box-text">
-                        تهران، چهارراه ولیعصر، خیابان ولیعصر،
-                        ساختمان مرکز رشد دانشگاه امیرکبیر، شتابدهنده سامسونگ
+                        Samsung accelerator, AUT growth center, Valiasr st, Tehran, Iran.
                     </p>
                 </div>
 
 
-                <a href="http://bit.ly/2FPshaR" target="_blank" class="card-info-link link--telegram"> پشتیبانی
-                    تلگرام</a>
-                <a href="http://bit.ly/3581UUU" target="_blank" class="card-info-link link--insta">پشتیبانی
-                    اینستاگرام</a>
+                <a href="http://bit.ly/2FPshaR" target="_blank" class="card-info-link link--telegram">
+                    Telegram
+                </a>
+                <a href="http://bit.ly/3581UUU" target="_blank" class="card-info-link link--insta">
+                    Instagram
+                </a>
                 <a href="https://jobinja.ir/companies/sneeds/jobs" target="_blank" class="card-info-link link--sneeds">
-                    همکاری با اسنیدز
-                    <i class="material-icons">keyboard_arrow_left</i>
+                    Careers
+                    <i class="material-icons">keyboard_arrow_right</i>
                 </a>
 
             </div>
@@ -75,7 +76,6 @@
         flex-direction: column-reverse;
         position: relative;
         min-height: 100vh;
-        direction: rtl;
     }
 
     .curve {
@@ -95,17 +95,15 @@
         z-index: 15;
 
         display: flex;
-        justify-content: flex-end;
         padding-bottom: 10px;
-
+        justify-content: flex-end;
         margin-top: 70px;
-
         min-height: 550px;
         width: 80%;
         max-width: 1000px;
         min-width: 400px;
         color: #303143;
-        text-align: right;
+        text-align: left;
         background-color: white;
         border-radius: 5px;
         box-shadow: 0 8px 46px #6E6E6E29;
@@ -142,7 +140,7 @@
         width: 120px;
         height: 3px;
         background-color: #00D4ED;
-        right: -125px;
+        left: -125px;
     }
 
     .card-info-box {
@@ -157,17 +155,13 @@
 
     .info-box-text {
         margin: 0;
-        padding-left: 10px;
+        padding-right: 10px;
         font-size: 16px;
         width: calc(100% - 30px);
     }
 
     .info-box-text.info-box-text--bold {
         font-weight: bold;
-    }
-
-    .info-box-text.info-box-text--hasLtr {
-        direction: ltr !important;
     }
 
     .box-text-sub {
@@ -185,11 +179,11 @@
         justify-content: center;
         border: 2px solid #00D5EE;
         border-radius: 50%;
-        margin-left: 15px;
+        margin-right: 15px;
     }
 
     .card-info-link {
-        margin: 0 0 10px 10px;
+        margin: 0 10px 10px 0;
         padding: 10px 15px;
         text-align: center;
         border-radius: 5px;
@@ -233,7 +227,7 @@
         height: calc(100% + 100px);
         top: -50px;
         width: 70%;
-        right: -35px;
+        left: -35px;
         border-radius: 20px;
         border: 5px solid white;
         background-color: white;
@@ -272,7 +266,7 @@
         }
 
         .card-info-link {
-            margin-left: 0;
+            margin-right: 0;
         }
 
         .card-info-link.link--sneeds {

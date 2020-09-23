@@ -25,22 +25,6 @@ const router = new Router({
             }
         },
         {
-            path: '/packages/college',
-            name: 'landing-packages-college',
-            component: () => import("@/views/Package/Landing"),
-            meta: {
-                auth: 'optional'
-            }
-        },
-        {
-            path: '/packages/economic',
-            name: 'landing-packages-economic',
-            component: () => import("@/views/Package/LandingEconomic"),
-            meta: {
-                auth: 'optional'
-            }
-        },
-        {
             path: '/analysis/form',
             name: 'analysis-form',
             component: () => import("@/layouts/AnalysisFormLayout"),
@@ -56,7 +40,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'marriage',
-                        title: 'وضعیت تاهل'
+                        title: 'Marriage'
                     }
                 },
                 {
@@ -66,7 +50,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'militaryservice',
-                        title: 'وضعیت سربازی'
+                        title: 'Military service'
                     }
                 },
                 {
@@ -76,7 +60,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'educationalgap',
-                        title: 'وقفه تحصیلی'
+                        title: 'Academic gap'
                     }
                 },
                 {
@@ -86,7 +70,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'gender',
-                        title: 'سن جنسیت'
+                        title: 'Age and gender'
                     }
                 },
                 {
@@ -96,7 +80,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'workexperience',
-                        title: 'سابقه کار مرتبط'
+                        title: 'Related work experience'
                     }
                 },
                 {
@@ -106,7 +90,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'lasteducationallevel',
-                        title: 'افزودن مقطع تحصیلی'
+                        title: 'Add an academic degree'
                     }
                 },
                 {
@@ -116,7 +100,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'educationallevelsitems',
-                        title: 'بازبینی مقاطع تحصیلی'
+                        title: 'Review academic degrees'
                     }
                 },
                 {
@@ -126,7 +110,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'paper',
-                        title: 'افزودن مقاله'
+                        title: 'Add a paper'
                     }
                 },
                 {
@@ -136,7 +120,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'paperitems',
-                        title: 'بازبینی مقالات'
+                        title: 'Review papers'
                     }
                 },
                 {
@@ -146,7 +130,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'powerfulrecom',
-                        title: 'توصیه نامه قوی'
+                        title: 'Important recommendation'
                     }
                 },
                 {
@@ -156,7 +140,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'languagecerts',
-                        title: 'افزودن مدرک زبان'
+                        title: 'Add a certificate'
                     }
                 },
                 {
@@ -166,7 +150,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'languagecertsitems',
-                        title: 'بازبینی مدارک زبان'
+                        title: 'Review certificates'
                     }
                 },
                 {
@@ -176,7 +160,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'destination',
-                        title: 'افزودن و بازبینی مقاصد اپلای'
+                        title: 'Add and review destinations'
                     }
                 },
                 {
@@ -186,7 +170,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'funds',
-                        title: 'توانایی مالی و فاند'
+                        title: 'Funding status'
                     }
                 },
                 {
@@ -196,7 +180,7 @@ const router = new Router({
                     meta: {
                         auth: 'optional',
                         formPartName: 'otherinformation',
-                        title: 'سایر اطلاعات'
+                        title: 'Other information'
                     }
                 },
             ]
@@ -322,71 +306,15 @@ const router = new Router({
                         auth: 'req'
                     }
                 },
-                {
-                    path: 'userpackages/staging/form',
-                    name: 'user-userpackages-staging-form',
-                    component: () => import("@/views/Package/PackageStagingForm"),
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
-                    path: 'userpackages',
-                    name: 'user-userpackages',
-                    component: () => import("@/views/Package/UserPackages"),
-                    meta: {
-                        auth: 'req',
-                    }
-                },
-                {
-                    path: 'conspackages',
-                    name: 'user-conspackages',
-                    component: () => import("@/views/Package/ConsPackages"),
-                    meta: {
-                        auth: 'req',
-                    }
-                },
-                {
-                    path: 'userpackages/requestlist/:packageId',
-                    component: () => import("@/views/Package/PackageRequestList"),
-                    name: 'user-userpackages-requestlist',
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
-                    path: 'userpackages/requestlist/:packageId/:reqId',
-                    component: () => import("@/views/Package/PackageRequestListItem"),
-                    name: 'user-userpackages-requestlist-iteminfo',
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
-                    path: 'userpackages/manager/:packageId',
-                    component: () => import("@/views/Package/UserPackagesManager"),
-                    name: 'user-userpackages-manager',
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
-                    path: 'conspackages/marketplace/:id',
-                    name: 'user-conspackages-marketplace-detail',
-                    component: () => import("@/views/Package/ConsideringPackageDetail"),
-                    meta: {
-                        auth: 'req'
-                    }
-                },
-                {
-                    path: 'conspackages/manager/:packageId',
-                    component: () => import("@/views/Package/ConsPackagesManager"),
-                    name: 'user-conspackages-manager',
-                    meta: {
-                        auth: 'req'
-                    }
-                },
             ]
+        },
+        {
+            path: '/analysis/result',
+            name: 'user-analysis-result',
+            component: () => import("@/views/Form/Result"),
+            meta: {
+                auth: 'req',
+            }
         },
         {
             path: '/carts/:id',

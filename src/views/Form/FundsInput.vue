@@ -1,13 +1,13 @@
 <template>
-    <section class="form-funds">
-        <h1 class="funds-title isansFont">
-            بورسیه و توانایی مالی
+    <section class="form-funds gadugiFont">
+        <h1 class="funds-title">
             <i class="material-icons">help_outline</i>
+            Funding sufficiency status
         </h1>
-        <h3 class="funds-desc isansFont">
-            حداقل یک گزینه را انتخاب کنید.
+        <h3 class="funds-desc">
+            Choose at least one option.
         </h3>
-        <div class="marriage-wrapper isansFont">
+        <div class="marriage-wrapper">
             <input v-model="fullFund" id="fullfund" type="checkbox" value="fullfund">
             <input v-model="halfFund" id="halffund" type="checkbox" value="halffund">
             <input v-model="selfFund" id="selffund" type="checkbox" value="selffund">
@@ -29,7 +29,7 @@
             <label for="nomatter" class="marriage-holder" :class="[{'holder--selected': nomatter}]">
                 <i class="material-icons holder-selected-icon" v-if="nomatter">done</i>
                 <img draggable="false" src="/sneedsAssets/img/nomatter.svg" class="marriage-holder-image" alt="فرقی نمی کند">
-                <p class="marriage-holder-text">فرقی نمی کند</p>
+                <p class="marriage-holder-text">No Preference</p>
             </label>
         </div>
         <div class="fund-input-wrapper">

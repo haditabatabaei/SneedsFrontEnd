@@ -64,10 +64,23 @@
 </script>
 
 <style>
+    * {
+        scroll: smooth;
+        margin: 0;
+        padding: 0;
+        font-family: inherit;
+        outline: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
     button {
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .loading-icon {

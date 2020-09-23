@@ -1,49 +1,49 @@
 <template>
-    <section class="form-militaryservice">
-        <h1 class="militaryservice-title isansFont">
-            مقاله علمی داری؟
+    <section class="form-militaryservice gadugiFont">
+        <h1 class="militaryservice-title">
             <i class="material-icons">help_outline</i>
+            Do you have a paper?
         </h1>
-        <div class="militaryservice-wrapper isansFont">
+        <div class="militaryservice-wrapper">
             <input v-model="hasPaper" id="militaryservice-have" type="radio" name="militaryservice" value="have">
             <input v-model="hasPaper" id="militaryservice-donthave" type="radio" name="militaryservice" value="donthave">
             <label for="militaryservice-have" class="militaryservice-holder" :class="[{'holder--selected': hasPaper == 'have'}]">
                 <i class="material-icons holder-selected-icon" v-if="hasPaper == 'have'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/paper.svg" class="militaryservice-holder-image" alt="مقاله علمی دارم">
-                <p class="militaryservice-holder-text">مقاله دارم</p>
+                <p class="militaryservice-holder-text">YES</p>
             </label>
             <label for="militaryservice-donthave" class="militaryservice-holder" :class="[{'holder--selected': hasPaper == 'donthave'}]">
                 <i class="material-icons holder-selected-icon" v-if="hasPaper == 'donthave'">done</i>
                 <img draggable="false" src="/sneedsAssets/img/no-paper.svg" class="militaryservice-holder-image" alt="مقاله علمی ندارم">
-                <p class="militaryservice-holder-text">مقاله ندارم</p>
+                <p class="militaryservice-holder-text">No</p>
             </label>
         </div>
         <div class="inputs" v-if="hasPaper == 'have'">
-            <c-dropdown-input class="edu-gap" label="نوع مقاله"
+            <c-dropdown-input class="edu-gap" label="Paper type"
                               :error="$v.selectedType.$error"
-                              error-text="لطفاً نوع مقاله را به درستی انتخاب کنید."
+                              error-text="Please select a valid type."
                               :options="typeOptions"
                               @select-option="setType" />
 
-            <c-simple-input class="edu-gap" label="عنوان مقاله"
+            <c-simple-input class="edu-gap" label="Paper title"
                             :error="$v.title.$error"
-                            error-text="عنوان مقاله الزامی است."
+                            error-text="Paper title is required."
                             v-model="title" />
 
             <c-number-input class="edu-gap" :step="1"
                             @set-parent-value="val => publishYear = val"
                             :error="$v.publishYear.$error"
-                            error-text="مقدار وارد شده باید عدد صحیح بین 1900 و 2100 باشد."
-                            v-model="publishYear" label="سال پابلیش مقاله"  />
+                            error-text="Publish year must be an integer between 1900 and 2100"
+                            v-model="publishYear" label="Publish year"  />
 
             <c-radio-group direction="column" :items="authorOptions"
                             :error="$v.selectedAuthor.$error"
-                            error-text="لطفاً نوبت نویسنده را به درستی انتخاب کنید."
+                            error-text="Please select a valid option."
                             @select-option="setAuthor" />
 
-            <c-dropdown-input class="edu-gap" label="شاخص تاثیر"
+            <c-dropdown-input class="edu-gap" label="Impact factor"
                               :error="$v.selectedReputation.$error"
-                              error-text="لطفاً شاخص تاثیر مقاله را به درستی انتخاب کنید."
+                              error-text="Please select a valid impact factor."
                               :options="reputationOptions"
                               @select-option="setReputation" />
         </div>
@@ -93,21 +93,21 @@
                 selectedReputation: null,
                 title: null,
                 typeOptions: [
-                    {name: 'ژورنالی', nameEnglish: 'JOURNAL'},
-                    {name: 'کنفرانسی', nameEnglish: 'CONFERENCE'}
+                    {name: 'Journal', nameEnglish: 'JOURNAL'},
+                    {name: 'Conference', nameEnglish: 'CONFERENCE'}
                 ],
 
                 authorOptions: [
-                    {name: 'نویسنده اول', nameEnglish: 'FIRST'},
-                    {name: 'نویسنده دوم', nameEnglish: 'SECOND'},
-                    {name: 'نویسنده سوم', nameEnglish: 'THIRD'},
-                    {name: 'نویسنده چهارم به بعد', nameEnglish: 'FOURTH_OR_MORE'},
+                    {name: 'First author', nameEnglish: 'FIRST'},
+                    {name: 'Second author', nameEnglish: 'SECOND'},
+                    {name: 'Third author', nameEnglish: 'THIRD'},
+                    {name: 'Fourth or latter', nameEnglish: 'FOURTH_OR_MORE'},
                 ],
 
                 reputationOptions: [
-                    {name: 'یک تا سه', nameEnglish: 'ONE_TO_THREE'},
-                    {name: 'چهار تا ده', nameEnglish: 'FOUR_TO_TEN'},
-                    {name: 'بیش از 10', nameEnglish: 'ABOVE_TEN'},
+                    {name: '1 to 3', nameEnglish: 'ONE_TO_THREE'},
+                    {name: '4 to 10', nameEnglish: 'FOUR_TO_TEN'},
+                    {name: '10+', nameEnglish: 'ABOVE_TEN'},
                 ]
             }
         },

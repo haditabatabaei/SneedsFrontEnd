@@ -15,10 +15,10 @@
           get weekly reminder on your shortlisted university deadlines and always stay on track.
         </p>
         <div class="reminder-info-links">
-          <a href="#" class=" reminder-link-start">
+          <router-link to="/analysis/form" class=" reminder-link-start">
             Start your journey
             <i  class="material-icons">keyboard_arrow_right</i>
-          </a>
+          </router-link>
         </div>
       </div>
 

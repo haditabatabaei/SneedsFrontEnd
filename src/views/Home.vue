@@ -1,10 +1,8 @@
 <template>
-
-    <main class="landing">
+    <main class="landing gadugiFont">
         <section class="landing-section  homepage-section">
             <div class="homepage-intro">
               <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">
-
                 <div class="homepage-intro-info">
                     <h6 class="homepage-intro-info-small-title">with Abroad Path</h6>
                     <h1 class="homepage-intro-info-title">You Shouldn't Study Abroad Alone</h1>
@@ -16,10 +14,10 @@
 
                     </p>
                     <div class="homepage-links homepage-info-links">
-                        <a href="#" class="link-admit">
+                        <router-link to="/analysis/landing" class="link-admit">
                             Admit chance
                             <span class="link-admit-free">Free</span>
-                        </a>
+                        </router-link>
                       <router-link to="/consultants" class="homepage-intro-info-link link -interview">
                         Consultation
                       </router-link>
@@ -105,7 +103,7 @@
                 <div class="see-all-link-line"></div>
                 <router-link class="see-all-link" to="/consultants">
                     All consultants
-                    <i data-v-f966f08a="" class="material-icons">keyboard_arrow_right</i>
+                    <i class="material-icons">keyboard_arrow_right</i>
                 </router-link>
                 <div class="see-all-link-line"></div>
             </div>

@@ -250,8 +250,8 @@
                         icon: 'supervisor_account'
                     },
                   {
-                    itemName:'Admit chance',
-                    target: '/AdmitChance',
+                    itemName:'Admission',
+                    target: '/analysis/landing',
                     type: 'router',
                     hasDropdown: false,
                     showDropdown: false,

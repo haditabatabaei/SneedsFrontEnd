@@ -325,17 +325,9 @@ const router = new Router({
             }
         },
         {
-            path: '/consultants',
-            name: 'consultants',
-            component: () => import("@/views/Consultant/ConsultantList"),
-            meta: {
-                auth: 'optional'
-            },
-        },
-        {
-            path: '/AdmitChance',
+            path: '/analysis/landing',
             name: 'AdmitChance',
-            component: () => import("@/components/AdmitChance/AdmitChanceLanding"),
+            component: () => import("@/views/AdmitChanceLanding"),
             meta: {
                 auth : 'optional'
             }

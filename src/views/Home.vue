@@ -1,5 +1,6 @@
 <template>
-    <main class="landing isansFont iranSansFarsiNumber">
+
+    <main class="landing">
         <section class="landing-section  homepage-section">
             <div class="homepage-intro">
               <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">
@@ -14,14 +15,22 @@
                       studying in same field and country you desire.
 
                     </p>
-                    <div class="homepage-intro-info-links">
-                        <a href="#" class=" link-level">
+                    <div class="homepage-links homepage-info-links">
+                        <a href="#" class="link-admit">
                             Admit chance
-                            <span class="link-level-free">Free</span>
+                            <span class="link-admit-free">Free</span>
                         </a>
-                        <a href="# "class="homepage-intro-info-link link -interview">Consultation</a>
-                        <a href="#" class="homepage-intro-info-link link -live">Videoes</a>
-                        <a href="#" class="homepage-intro-info-link link -webinar"> Webinars</a>
+                      <router-link to="/consultants" class="homepage-intro-info-link link -interview">
+                        Consultation
+                      </router-link>
+                        <a href="https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%87%D8%A7%DB%8C-%D8%AE%D9%88%D8%AF
+                        -%D8%A2%D9%85%D9%88%D8%B2-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/"
+                           class="homepage-intro-info-link link -live">
+                          Videoes</a>
+                        <a href="https://sneeds.ir/%D9%81%DB%8C%D9%84%D9%85-%D9%88%D8%A8%DB%8C%D9%86%D8%A7%D8%B1%D9%87%D8%A7-%D8%A7%D9%BE%D9%84%D8%A7%DB%8C/"
+                           class="homepage-intro-info-link link -webinar">
+                          Webinars
+                        </a>
                     </div>
 
                 </div>
@@ -92,12 +101,12 @@
               <home-page-consultants :consultants-input="Consultants"></home-page-consultants>
 
 
-            <div class="consultants-section-rows  see-all">
+            <div class="consultants-section-rows  see-all homepage-links">
                 <div class="see-all-link-line"></div>
-                <a class="see-all-link" href="#">
+                <router-link class="see-all-link" to="/consultants">
                     All consultants
                     <i data-v-f966f08a="" class="material-icons">keyboard_arrow_right</i>
-                </a>
+                </router-link>
                 <div class="see-all-link-line"></div>
             </div>
         </section>
@@ -160,16 +169,16 @@
             </div>
         </section>
 
-        <section class="landing-section ">
+        <section class="landing-section activities">
 
-            <div class="activities-section-rows  activities">
+            <div class="activities-rows  activities">
                 <img  class="pointer-svg" src="/sneedsAssets/img/pointer.svg">
 
-                <div  class="activities-section-title">
+                <div  class="activities-header">
 
                     What do you do?
                     <div class="consultants-section-header-line"></div>
-                    <span class="activities-section-title-sub">
+                    <span class="activities-title-sub">
                        <br>
                         Almost everything! From writing and translating documents to making payments and getting accepted
                      </span>
@@ -182,21 +191,21 @@
 
             <div class="different-activities-box ">
                 <div class="horizontal-items-box  different-activities">
-                    <div class="different-activities-items">
+                    <div class="different-activities-item">
                         <div class="activities-circle">
                             <img   class="activities-circle-img"src="/sneedsAssets/img/scholarship.svg" alt="">
                         </div>
                         <a  href="#" class="activities-circle-text">Admission packages</a>
 
                     </div>
-                    <div class="different-activities-items">
+                    <div class="different-activities-item">
                         <div class="activities-circle">
                             <img  class="activities-circle-img" src="/sneedsAssets/img/news.svg" alt="">
                         </div>
                         <a href="#" class="activities-circle-text">Writing and editing a cover letter</a>
 
                     </div>
-                    <div class="different-activities-items">
+                    <div class="different-activities-item">
                         <div class="activities-circle">
                             <img  class="activities-circle-img" src="/sneedsAssets/img/subject.svg" alt="">
                         </div>
@@ -205,21 +214,21 @@
                 </div>
 
             <div class="horizontal-items-box  different-activities">
-                <div class="different-activities-items">
+                <div class="different-activities-item">
                     <div class="activities-circle">
                         <img class="activities-circle-img" src="/sneedsAssets/img/list.svg" alt="">
                     </div>
                     <a href="#" class="activities-circle-text">Writing and editing SOP </a>
 
                 </div>
-                <div class="different-activities-items">
+                <div class="different-activities-item">
                     <div class="activities-circle">
                         <img  class="activities-circle-img" src="/sneedsAssets/img/book%20(1).svg" alt="">
                     </div>
                     <a  href="#" class="activities-circle-text">Writing and editing CV</a>
 
                 </div>
-                <div class="different-activities-items">
+                <div class="different-activities-item">
                     <div class="activities-circle">
                         <img  class="activities-circle-img" src="/sneedsAssets/img/lesson.svg" alt="">
                     </div>
@@ -236,17 +245,17 @@
                         <img  class="plane-exit" src="/sneedsAssets/img/airplane-enter.svg" alt="">
                     </div>
 
-                    <div class="achievements-section-box  first">
+                    <div class="achievements-section-box  first-box">
                         <img class="achievements-svg" src="/sneedsAssets/img/login.svg" alt="">
                         <h3 class="achievements-section-header">+56 Admissions</h3>
                         <p class="achievements-section-text">Taken by our consultants.</p>
                     </div>
-                    <div class="achievements-section-box  center">
+                    <div class="achievements-section-box  center-box">
                         <img class="achievements-svg" src="/sneedsAssets/img/people1.svg" alt="">
                         <h3 class="achievements-section-header">+27,000 Minutes</h3>
                         <p class="achievements-section-text">Online video consulting with homepage consultants.</p>
                     </div>
-                    <div class="achievements-section-box  last">
+                    <div class="achievements-section-box  last-box">
                         <img class="achievements-svg" src="/sneedsAssets/img/document%20(1).svg" alt="">
                         <h3 class="achievements-section-header">+540 Documents</h3>
                         <p class="achievements-section-text">Translated, edited or written by  our Consultants.</p>
@@ -256,18 +265,18 @@
 
 
         <section class="landing-section  analysis-section">
-            <div class="analysis-container">
-                <div class="analysis-container-info">
-                    <h6 class="analysis-container-info-small-title">Advanced Apply Analyzer</h6>
-                    <h5 class="analysis-container-info-title">Make the best decision</h5>
-                    <div class="analysis-container-info-title-line"></div>
-                    <p class="analysis-container-info-text">
+            <div class="analysis">
+                <div class="analysis-info">
+                    <h6 class="analysis-info-small-title">Advanced Apply Analyzer</h6>
+                    <h5 class="analysis-info-title">Make the best decision</h5>
+                    <div class="analysis-info-title-line"></div>
+                    <p class="analysis-info-text">
                         You filling out the free education information form, you will immediately rank among the other people who intend to
                         Apply with the help of Snides artificial intelligence, see your weaknesses and strengths in addition to
                         Get those smart offers to improve your resume and get ahead of the rest of the competition.
                     </p>
-                    <div class="analysis-container-info-links">
-                        <a href="#" class=" analysis-link-level">
+                    <div class="analysis-info-links homepage-links">
+                        <a href="#" class=" analysis-link-admit">
                             Admit Chance
                             <span class="analysis-link-free">Free!</span>
                         </a>
@@ -276,15 +285,11 @@
                 </div>
                 <img class="analysis-img-desk" src="/sneedsAssets/img/admit-home-desk.png">
                 <img class="analysis-img-mobile" src="/sneedsAssets/img/admit-home-mobile.png">
-
-
-
             </div>
 
         </section>
 
-
-        <app-question></app-question>
+      <app-question></app-question>
 
     </main>
 
@@ -295,10 +300,10 @@
    import HomePageBlogSection from "../components/HomePage/HomePageBlogSection";
    import BlogSection from "../components/HomePage/BlogSection";
    import HomePageConsultantSection from "../components/HomePage/HomePageConsultantSection";
+   import 'vueperslides/dist/vueperslides.css'
     export default {
         components: {
             HomePageConsultantSection,
-            BlogSection,
             HomePageConsultants: HomePageConsultantSection,
             HomePageBlog: HomePageBlogSection,
             appQuestion: FAQ,
@@ -426,8 +431,10 @@
         font-size: 14px;
       color:#707070 ;
     }
-
-    .homepage-intro-info-links {
+    .homepage-links:hover{
+      filter: brightness(95%);
+    }
+    .homepage-info-links {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -450,7 +457,7 @@
 
     }
 
-    .link-level {
+    .link-admit {
         color: white;
         min-width: 25%;
         display: flex;
@@ -465,7 +472,7 @@
         padding: 10px 15px;
     }
 
-    .link-level-free {
+    .link-admit-free {
         background-color: #008292;
         border-radius: 15px;
         padding: 5px 10px;
@@ -552,7 +559,7 @@
 
     }
 
-    .  see-all {
+    .see-all {
         justify-content: center;
         align-items: baseline;
         margin: 0 auto 50px auto;
@@ -581,8 +588,9 @@
     }
     .consultants-section-title{
         align-items: flex-start;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
+        margin-bottom: 5px;
 
 
     }
@@ -612,7 +620,7 @@
         width: 80%;
         margin-bottom: 50px;
     }
-    .  advantages {
+    .advantages {
         width: 100%;
         overflow: hidden;
     }
@@ -662,7 +670,7 @@
     }
 
 
-    .activities-section-rows {
+    .activities-rows {
         width: 80%;
         display: flex;
         flex-direction:row;
@@ -688,24 +696,24 @@
         height: 50px;
     }
 
-    .activities-section-title {
+    .activities-header {
         align-items: flex-start;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
     }
 
-    .activities-section-title-sub {
+    .activities-title-sub {
         font-weight: lighter;
         font-size: 14px;
       color: #707070;
     }
 
 
-    .  different-activities{
+    .different-activities{
         justify-content: center;
     }
 
-    .different-activities-items {
+    .different-activities-item {
         width: 33%;
         display: flex;
         flex-direction: row;
@@ -785,36 +793,36 @@
 
     }
 
-    .center {
+    .center-box {
         margin-top: 100px;
     }
-    .last {
+    .last-box {
         margin-top: 200px;
     }
     .design-details {
         position: absolute;
 
     }
-    .analysis-container {
+    .analysis {
         display: flex;
         flex-direction: row;
         width: 100%;
         justify-content: center;
         align-items: flex-start;
         margin-top: 15%;
-      overflow-x: hidden;
+         overflow-x: hidden;
     }
     .analysis-img-desk {
         width: 50%;
         height: auto;
-      margin-right: -10%;
+         margin-right: -10%;
 
     }
     .analysis-img-mobile {
       display: none;
     }
 
-    .analysis-container-info {
+    .analysis-info {
         width: 70%;
         min-height: 100px;
         display: flex;
@@ -830,13 +838,13 @@
 
 
 
-    .analysis-container-info-small-title {
+    .analysis-info-small-title {
         margin-bottom: 0px;
         margin-top: 10px;
         color: #374957;
     }
 
-    .analysis-container-info-title {
+    .analysis-info-title {
 
         color: #303143;
         font-weight: bold;
@@ -844,7 +852,7 @@
 
     }
 
-    .analysis-container-info-title-line{
+    .analysis-info-title-line{
 
         width: 120px;
         height: 3px;
@@ -854,12 +862,12 @@
 
     }
 
-    .analysis-container-info-text {
+    .analysis-info-text {
         padding: 5% 0px;
         font-size: 12px;
     }
 
-    .analysis-container-info-links {
+    .analysis-info-links {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -870,7 +878,7 @@
 
 
 
-    .analysis-link-level {
+    .analysis-link-admit {
         color: white;
         min-width: 25%;
         display: flex;
@@ -891,10 +899,6 @@
         margin-left: 10px;
     }
 
-    .brows-more-link {
-        color: #00b8d4;
-        font-weight: lighter;
-    }
     .consultants-section-header-line {
         width: 120px;
         height: 3px;
@@ -919,7 +923,7 @@
       .homepage-intro-info {
         width: 90%;
       }
-      .homepage-intro-info-links {
+      .homepage-info-links {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -987,11 +991,11 @@
       .horizontal-items-box {
         flex-direction: column;
         justify-content: space-between;
-        margin-top:0;
+        margin-top: 0;
         margin-bottom: 0;
         width: 60%;
       }
-      .different-activities-items {
+      .different-activities-item {
         margin-top: 30px;
         width: 120%;
       }
@@ -1008,7 +1012,7 @@
       .pointer-svg {
         display: none;
       }
-      .analysis-container {
+      .analysis {
         flex-direction: column-reverse;
       }
       .analysis-img-desk {
@@ -1018,7 +1022,7 @@
         display: inline-block;
         width: 100%;
       }
-      .analysis-container-info {
+      .analysis-info {
         width: 90%;
         justify-content: flex-start;
       }

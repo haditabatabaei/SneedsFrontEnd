@@ -1,5 +1,5 @@
 <template>
-    <section class="box-wrapper">
+    <section class="box-wrapper gadugiFont">
         <div class="box">
             <div class="box__ghost">
                 <div class="symbol"></div>
@@ -27,14 +27,14 @@
 
             <div class="box__description">
                 <div class="box__description-container">
-                    <p class="box__description-title isansFont--faNum">خطای 404</p>
-                    <p class="box__description-text isansFont--faNum">
-                        متاسفانه صفحه ای که دنبالش بودید در سیستم وجود ندارد.
+                    <p class="box__description-title">404 Error.</p>
+                    <p class="box__description-text">
+                        We are so sorry, unfortunately the page you are looking for is not available.
                     </p>
                 </div>
 
-                <router-link to="/" class="box__button isansFont--faNum">
-                    بازگشت به صفحه اول
+                <router-link to="/" class="box__button">
+                    Back to homepage
                 </router-link>
 
             </div>
@@ -50,20 +50,25 @@
         mounted() {
             let pageX = document.body.offsetWidth;
             let pageY = document.body.offsetHeight;
-            let mouseY=0;
-            let mouseX=0;
+            let mouseY = 0;
+            let mouseX = 0;
 
-            document.addEventListener('mousemove', event => {
+            document.addEventListener('mousemove', (event) => {
                 mouseY = event.pageY;
                 let yAxis = (pageY / 2 - mouseY) / pageY * 300;
                 //horizontalAxis
                 mouseX = event.pageX / -pageX;
                 let xAxis = -mouseX * 100 - 100;
                 document.getElementsByClassName('box__ghost-eyes')[0].style.transform = `translate(${xAxis}%, -${yAxis}%)`;
-            })
+            });
         },
         beforeDestroy() {
-            document.removeEventListener('mousemove');
+            document.onmousemove = null;
+            document.removeEventListener('mousemove', () => {});
+        },
+        destroyed() {
+            document.onmousemove = null;
+            document.removeEventListener('mousemove', () => {});
         }
     }
 </script>
@@ -77,6 +82,7 @@
         min-height: 100vh;
         background-color: #303143;
     }
+
     .box {
         width: 100%;
         max-width: 500px;
@@ -87,6 +93,7 @@
         position: absolute;
         padding: 30px 50px;
     }
+
     .box .box__ghost {
         padding: 15px 25px 25px;
         position: absolute;
@@ -94,10 +101,12 @@
         top: 30%;
         transform: translate(-50%, -30%);
     }
+
     .box .box__ghost .symbol:nth-child(1) {
         opacity: .2;
         animation: shine 4s ease-in-out 3s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(1):before, .box .box__ghost .symbol:nth-child(1):after {
         content: '';
         width: 12px;
@@ -108,12 +117,15 @@
         bottom: 65px;
         left: 0;
     }
+
     .box .box__ghost .symbol:nth-child(1):before {
         transform: rotate(45deg);
     }
+
     .box .box__ghost .symbol:nth-child(1):after {
         transform: rotate(-45deg);
     }
+
     .box .box__ghost .symbol:nth-child(2) {
         position: absolute;
         left: -5px;
@@ -126,10 +138,12 @@
         opacity: .2;
         animation: shine 4s ease-in-out 1.3s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(3) {
         opacity: .2;
         animation: shine 3s ease-in-out .5s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(3):before, .box .box__ghost .symbol:nth-child(3):after {
         content: '';
         width: 12px;
@@ -140,16 +154,20 @@
         top: 5px;
         left: 40px;
     }
+
     .box .box__ghost .symbol:nth-child(3):before {
         transform: rotate(90deg);
     }
+
     .box .box__ghost .symbol:nth-child(3):after {
         transform: rotate(180deg);
     }
+
     .box .box__ghost .symbol:nth-child(4) {
         opacity: .2;
         animation: shine 6s ease-in-out 1.6s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(4):before, .box .box__ghost .symbol:nth-child(4):after {
         content: '';
         width: 15px;
@@ -160,12 +178,15 @@
         top: 10px;
         right: 30px;
     }
+
     .box .box__ghost .symbol:nth-child(4):before {
         transform: rotate(45deg);
     }
+
     .box .box__ghost .symbol:nth-child(4):after {
         transform: rotate(-45deg);
     }
+
     .box .box__ghost .symbol:nth-child(5) {
         position: absolute;
         right: 5px;
@@ -178,10 +199,12 @@
         opacity: .2;
         animation: shine 1.7s ease-in-out 7s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(6) {
         opacity: .2;
         animation: shine 2s ease-in-out 6s infinite;
     }
+
     .box .box__ghost .symbol:nth-child(6):before, .box .box__ghost .symbol:nth-child(6):after {
         content: '';
         width: 15px;
@@ -192,12 +215,15 @@
         bottom: 65px;
         right: -5px;
     }
+
     .box .box__ghost .symbol:nth-child(6):before {
         transform: rotate(90deg);
     }
+
     .box .box__ghost .symbol:nth-child(6):after {
         transform: rotate(180deg);
     }
+
     .box .box__ghost .box__ghost-container {
         background: #fff;
         width: 100px;
@@ -207,6 +233,7 @@
         margin: 0 auto;
         animation: upndown 3s ease-in-out infinite;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-eyes {
         position: absolute;
         left: 50%;
@@ -214,6 +241,7 @@
         height: 12px;
         width: 70px;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-eyes .box__eye-left {
         width: 12px;
         height: 12px;
@@ -223,6 +251,7 @@
         position: absolute;
         left: 0;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-eyes .box__eye-right {
         width: 12px;
         height: 12px;
@@ -232,6 +261,7 @@
         position: absolute;
         right: 0;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-bottom {
         display: flex;
         position: absolute;
@@ -239,6 +269,7 @@
         left: 0;
         right: 0;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-bottom div {
         flex-grow: 1;
         position: relative;
@@ -247,12 +278,14 @@
         border-radius: 100%;
         background-color: #fff;
     }
+
     .box .box__ghost .box__ghost-container .box__ghost-bottom div:nth-child(2n) {
         top: -12px;
         margin: 0 -0px;
         border-top: 15px solid #332F63;
         background: transparent;
     }
+
     .box .box__ghost .box__ghost-shadow {
         height: 20px;
         box-shadow: 0 50px 15px 5px #3B3769;
@@ -260,12 +293,14 @@
         margin: 0 auto;
         animation: smallnbig 3s ease-in-out infinite;
     }
+
     .box .box__description {
         position: absolute;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
     }
+
     .box .box__description .box__description-container {
         color: #fff;
         text-align: center;
@@ -273,15 +308,18 @@
         font-size: 16px;
         margin: 0 auto;
     }
+
     .box .box__description .box__description-container .box__description-title {
         font-size: 24px;
         letter-spacing: .5px;
     }
+
     .box .box__description .box__description-container .box__description-text {
         color: #8C8AA7;
         line-height: 20px;
         margin-top: 20px;
     }
+
     .box .box__description .box__button {
         display: block;
         position: relative;
@@ -301,6 +339,7 @@
         overflow: hidden;
         -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
+
     .box .box__description .box__button:before {
         content: '';
         position: absolute;
@@ -313,10 +352,12 @@
         transform: translateX(-50px) rotate(45deg);
         transition: transform .5s ease;
     }
+
     .box .box__description .box__button:hover {
         background: transparent;
         border-color: #fff;
     }
+
     .box .box__description .box__button:hover:before {
         transform: translateX(250px) rotate(45deg);
     }
@@ -332,6 +373,7 @@
             transform: translateY(5px);
         }
     }
+
     @keyframes smallnbig {
         0% {
             width: 90px;
@@ -343,6 +385,7 @@
             width: 90px;
         }
     }
+
     @keyframes shine {
         0% {
             opacity: .2;

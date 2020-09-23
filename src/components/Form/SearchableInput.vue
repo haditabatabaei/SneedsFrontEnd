@@ -1,0 +1,226 @@
+<template>
+    <div class="gadugiFont">
+        <div class="searchable-wrapper" :class="[{'searchable--open': isSearchableOpen, 'input--error': error}]">
+            <input type="text" autocomplete="off" :style="openInputStyle" v-model="inputValue" class="searchable-input" :id="`searchable-input-${id}`" @focus="focusOnInput" @input="inputEmitter">
+            <label :for="`searchable-input-${id}`" class="searchable-input-label" v-if="inputValue == null || inputValue.length == 0">{{label}}</label>
+            <i class="material-icons" v-if="!loading">
+                search
+            </i>
+            <moon-loader class="loading-icon searchable-loading-icon" color="purple" :loading="loading" :size="15" sizeUnit="px" v-else />
+
+            <ul class="searchable-items" v-if="isSearchableOpen">
+                <li class="searchable-item item-blocked" v-if="dataset.length == 0">Sorry, no entries found.</li>
+                <li class="searchable-item" v-for="item in dataset" @click="setInputValue(item)">{{item.name}}</li>
+            </ul>
+            <div class="overlay-dropdown-closable" v-if="isSearchableOpen" @click="isSearchableOpen = false"></div>
+        </div>
+        <transition name="fade">
+            <p class="number-input-error" v-if="error">
+                <i class="material-icons-outlined">info</i>
+                {{errorText}}
+            </p>
+        </transition>
+    </div>
+</template>
+
+<script>
+    import {MoonLoader} from "@saeris/vue-spinners";
+    export default {
+        name: "SearchableInput",
+        data() {
+            return {
+                inputValue: null,
+                isSearchableOpen: false,
+                id: Math.floor(Math.random() * 1000)
+            }
+        },
+        components: {
+            "moon-loader": MoonLoader
+        },
+        props: {
+            label: {
+                type: String,
+                default: () => "اینپوت با جستجو"
+            },
+            dataset: {
+                type: Array,
+            },
+            loading: {
+                type: Boolean,
+                default: () => false,
+            },
+            clearselect: {
+                type: Boolean,
+                default: () => false
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را دوباره کنترل کنید."
+            }
+        },
+        computed: {
+            openInputStyle() {
+                if(this.isSearchableOpen) {
+                    return 'position:relative;z-index:15'
+                } else {
+                    return ''
+                }
+            }
+        },
+        methods: {
+            focusOnInput(e) {
+                // console.log(e);
+            },
+
+            setInputValue(item) {
+                this.inputValue = item.name;
+                this.isSearchableOpen = false;
+                this.$emit('select-option', item);
+                if(this.clearselect) {
+                    console.log('clear select')
+                    this.inputValue = null;
+                }
+            },
+
+            inputEmitter(){
+                this.isSearchableOpen = true;
+                this.$emit('input', this.inputValue);
+            }
+        },
+        created() {
+
+        }
+    }
+</script>
+
+<style scoped>
+    .searchable-wrapper {
+        display: flex;
+        min-height: 40px;
+        align-items: stretch;
+        justify-content: space-between;
+        position: relative;
+        background-color: #F8F8F8;
+        border: 1px solid #F2F2F2;
+        border-radius: 10px;
+    }
+
+    .searchable-wrapper.input--error {
+        border-color: #DC3030;
+    }
+
+    .overlay-dropdown-closable {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        z-index: 14;
+        background: rgba(255, 255, 255, 0);
+    }
+
+    .searchable-wrapper.searchable--open {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .searchable-wrapper i, .searchable-loading-icon {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        color: #00D4ED;
+        font-size: 18px;
+    }
+
+    .searchable-input-label {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        cursor:pointer;
+        position: absolute;
+        left: 0;
+        top: 7.5px;
+        color: #9B9999;
+        font-weight: normal;
+    }
+
+    .searchable-input {
+        flex-grow: 4;
+        border: none;
+        background: none;
+        padding-left: 10px;
+    }
+
+    .searchable-input:focus {
+        display: flex;
+    }
+
+    .searchable-input:focus ~ .searchable-input-label {
+        display: none;
+    }
+
+    .searchable-items {
+        position: absolute;
+        top: 40px;
+        width: 100%;
+        max-height: 300px;
+        overflow: auto;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        background-color: #F8F8F8;
+        align-items: stretch;
+        margin: 0;
+        border-radius: 0 0 10px 10px;
+        z-index: 15;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .searchable-item {
+        min-height: 40px;
+        max-height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        cursor: pointer;
+        transition: all 100ms ease-in-out;
+        color: #9B9999;
+    }
+
+    .searchable-item:hover {
+        background-color: #d7d5d5;
+    }
+
+    .searchable-item.searchable-item-selected {
+        background-color: #eeecec;
+    }
+
+    .searchable-item.item-blocked {
+        cursor: default;
+    }
+
+    .searchable-item:last-child {
+        border-bottom: none;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        border-radius: 10px;
+        padding: 5px;
+        font-size: 12px;
+        color: #891B1B;
+        background-color: #FFECEC;
+        display: flex;
+        align-items: center;
+    }
+
+    .number-input-error i {
+        font-size: 18px;
+        margin: 0 5px;
+    }
+</style>

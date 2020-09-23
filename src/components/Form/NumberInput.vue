@@ -1,0 +1,184 @@
+<template>
+    <div class="gadugiFont">
+        <div class="number-input-wrapper" :class="[{'input--error': error}]">
+            <input :id="`number-input-${inputId}`" class="number-input-value" type="number" :min="minValue" :max="maxValue" :value="value" @input="$emit('input', $event.target.value)">
+            <label :for="`number-input-${inputId}`" class="number-input-label" v-if="hasLabel && !externalLabel">{{label}}</label>
+            <div class="number-input-controls" v-if="hasKeys">
+<!--                <button class="number-input-action" @click="incrementValueByStep">+</button>-->
+<!--                <button class="number-input-action" @click="decrementValueByStep">-</button>-->
+            </div>
+        </div>
+        <transition name="fade">
+            <p class="number-input-error" v-if="error">
+                <i class="material-icons-outlined">info</i>
+                {{errorText}}
+            </p>
+        </transition>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "NumberInput",
+        data() {
+            return {
+                inputId: Math.floor(Math.random() * 100)
+            }
+        },
+        props: {
+            step: {
+                type: Number,
+                default: () => 1
+            },
+            label: {
+                type: String,
+                default: () => "وارد کنید"
+            },
+            externalLabel: {
+                type: Boolean,
+                default: () => false
+            },
+            hasKeys: {
+                type: Boolean,
+                default: () => true
+            },
+            defaultValue: {
+                type: Number,
+                default: () => null
+            },
+            minValue: {
+                type: Number,
+                default: () => 0
+            },
+            maxValue: {
+                type: Number,
+                default: () => 1000
+            },
+            hasLabel: {
+                type: Boolean,
+                default: () => true
+            },
+            error: {
+                type: Boolean,
+                default: () => false
+            },
+            value: {
+            },
+            errorText: {
+                type: String,
+                default: () => "لطفاً ورودی را دوباره کنترل کنید."
+            }
+        },
+        methods: {
+            incrementValueByStep() {
+
+                let newValue = Number(this.value) + Number(this.step);
+                if (newValue > this.maxValue) {
+                    this.$emit('set-parent-value', this.maxValue)
+                } else {
+                    this.$emit('set-parent-value', newValue)
+                }
+            },
+            decrementValueByStep() {
+                let newValue = Number(this.value) - Number(this.step);
+                if (newValue < this.minValue) {
+                    this.$emit('set-parent-value', this.minValue)
+                } else {
+                    this.$emit('set-parent-value', newValue)
+                }
+            }
+        },
+    }
+</script>
+
+<style scoped>
+    .number-input-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        background-color: #F8F8F8;
+        border: 1px solid #F2F2F2;
+        border-radius: 10px;
+        height: 40px;
+    }
+
+    .number-input-wrapper.input--error {
+        border-color: #DC3030;
+    }
+
+    .number-input-controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .number-input-action {
+        margin: 0 5px;
+        width: 25px;
+        height: 25px;
+        font-size: 20px;
+        background-color: #FFFFFF;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        color: #009FB3;
+        border: none;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        transition: all 100ms ease-in-out;
+    }
+
+    .number-input-action:hover {
+        background-color: #009FB3;
+        color: white;
+    }
+
+    .number-input-label {
+        margin: 10px;
+        flex-grow: 4;
+        display: flex;
+        align-items: center;
+        color: #707070;
+        font-size: 12px;
+    }
+
+    .number-input-value {
+        padding: 0 0 0 10px;
+        margin: 5px 0 5px 5px;
+        color: #9B9999;
+        font-weight: bold;
+        background: none;
+        border: none;
+        border-right: 2px solid #9B9999;
+    }
+
+    /** LTR Config **/
+
+    .number-input-wrapper.wrapper--ltr {
+        flex-direction: row-reverse;
+    }
+
+    .number-input-wrapper.wrapper--ltr .number-input-value {
+        border-left: none;
+        border-right: 2px solid #9B9999;
+        text-align: center;
+    }
+
+    .number-input-wrapper.wrapper--ltr .number-input-label {
+        justify-content: flex-end;
+    }
+
+    .number-input-error {
+        margin: 5px 0;
+        border-radius: 10px;
+        padding: 5px;
+        font-size: 12px;
+        color: #891B1B;
+        background-color: #FFECEC;
+        display: flex;
+        align-items: center;
+    }
+
+    .number-input-error i {
+        font-size: 18px;
+        margin: 0 5px;
+    }
+</style>

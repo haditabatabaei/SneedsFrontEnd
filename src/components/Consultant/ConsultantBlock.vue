@@ -1,44 +1,49 @@
 <template>
-    <router-link class="consultantBlock row" :to="`/consultants/${consultant.slug}`">
-        <div class="consultantBlockData col-md-8">
-            <img :src="consultant.profile_picture" :alt="`${consultant.first_name} ${consultant.last_name}`"
-                 class="consultantBlockImage"/>
-            <div class="consultantBlockInfo" style="margin-top:10px;">
-                <div class="consultantBlockInfoItem">
-                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`"
-                                 v-if="consultant.first_name != null && consultant.last_name != null">
-                        {{consultant.first_name + ' ' + consultant.last_name}}
-                    </router-link>
-                    <router-link class="isansFont consultantName" :to="`/consultants/${consultant.slug}`" v-else>
-                        بدون نام
+    <router-link class="consultant-block" :to="`/consultants/${consultant.slug}`">
+        <div class="consultant-block-data">
+            <img :src="consultant.profile_picture"
+                 size="150"
+                 :alt="`${consultant.first_name} ${consultant.last_name}`"
+                 class="consultant-block-image"
+            />
+            <div class="consultant-block-info">
+                <div class="consultant-block-info-item">
+                    <router-link
+                            class="consultant-name"
+                            :to="`/consultants/${consultant.slug}`"
+                            v-if="consultant.first_name != null && consultant.last_name != null"
+                    >{{consultant.first_name + ' ' + consultant.last_name}}</router-link>
+
+                    <router-link class="consultant-name" :to="`/consultants/${consultant.slug}`" v-else>
+                        Anonymous
                     </router-link>
                 </div>
-                <div class="consultantBlockInfoItem">
-                    <p class="isansFont consultantBio">
+                <div class="consultant-block-info-item">
+                    <p class="consultant-bio">
                         {{studyText}}
                     </p>
-                    <p class="isansFont consultantBio--mobile">
+                    <p class="consultant-bio--mobile">
                         {{studyTextMobile}}
                     </p>
-                    <p class="isansFont--faNum consultantBio--mobile">
-                        قیمت هر جلسه: {{consultant.time_slot_price}} تومان
+                    <p class="consultant-bio--mobile">
+                        Price per session: {{consultant.time_slot_price}} Tomans
                     </p>
                 </div>
-                <div class="consultantBlockInfoItem">
-                    <span class="rate noRate isansFont--faNum" v-if="consultant.rate == null">بدون امتیاز</span>
-                    <span class="rate isansFont--faNum" :style="`background-color:${getRateStyle(consultant.rate)}`">امتیاز: 5 / {{consultant.rate}}</span>
+                <div class="consultant-block-info-item">
+                    <span class="consultant-rate consultant-rate--empty" v-if="consultant.rate == null">No rate</span>
+                    <span class="consultant-rate" :style="`background-color:${getRateStyle(consultant.rate)}`" v-else>Rate: {{consultant.rate}} / 5</span>
                 </div>
             </div>
         </div>
 
-        <div class="consultantBlockAction col-md-4 text-center">
-            <router-link :to="`/consultants/${consultant.slug}`" class="btn consultantShowButton isansFont">
-                مشـاهده مشاور
+        <div class="consultant-block-action">
+            <router-link :to="`/consultants/${consultant.slug}`" class="consultant-show-button">
+                View profile
             </router-link>
-            <p class="consultantPrice isansFont--faNum">
-                قیمت هر جلسه:
+            <p class="consultant-price">
+                Price per session:
                 {{consultant.time_slot_price}}
-                تومان
+                Tomans
             </p>
         </div>
 
@@ -64,7 +69,7 @@
         computed: {
             studyText() {
                 if (this.consultant != null) {
-                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                    return `Studying ${this.studyInfo.grade} of ${this.studyInfo.field_of_study.name} at ${this.studyInfo.university.name} in ${this.studyInfo.country.name}`
                 } else {
                     return " ";
                 }
@@ -72,7 +77,7 @@
 
             studyTextMobile() {
                 if (this.consultant != null) {
-                    return ` دانشجوی  ${this.studyInfo.field_of_study.name} در ${this.studyInfo.country.name} `
+                    return `Studying ${this.studyInfo.field_of_study.name} in ${this.studyInfo.country.name}`;
                 } else {
                     return " ";
                 }
@@ -86,11 +91,11 @@
                 if (this.consultant != null) {
                     switch (this.studyInfo.grade) {
                         case 'phd':
-                            return 'دکترا';
+                            return 'Ph.D';
                         case 'master':
-                            return 'کارشناسی ارشد';
+                            return 'master';
                         case 'bachelor':
-                            return 'کارشناسی';
+                            return 'bachelor';
                         default :
                             return ' ';
                     }
@@ -104,44 +109,35 @@
 </script>
 
 <style scoped>
-    .consultantBlock {
+    .consultant-block {
         background-color: white;
         border-radius: 10px;
         border: 1px solid #ccc;
         padding: 15px;
-        margin-bottom: 15px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
-        cursor: pointer;
     }
 
-    .consultantBlockData {
+    .consultant-block-data {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding-right: 0;
     }
 
-    .consultantBlock:hover {
+    .consultant-block:hover {
         border-color: #82eafb;
     }
 
-    .consultantBlockImage {
-        width: 150px !important;
-        height: 150px !important;
-        min-width: 150px;
-        max-width: 150px;
-        min-height: 150px;
-        max-height: 150px;
+    .consultant-block-image {
+        width: 150px;
+        height: 150px;
         border-radius: 10px;
     }
 
-    .consultantBlockInfo {
-        margin-left: auto;
-        margin-right: 40px;
-
+    .consultant-block-info {
+        margin: 10px auto 0 40px;
         display: flex;
         align-self: stretch;
         flex-direction: column;
@@ -149,34 +145,25 @@
         justify-content: space-evenly;
     }
 
-    .consultantBlockInfoItem {
+    .consultant-block-info-item {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
     }
 
-    .consultantName {
+    .consultant-name {
         color: #333;
         font-size: 17px;
         font-weight: bold;
     }
-
-    .consultantCalendarLink {
-        color: #BD79C9;
-        font-size: 10px;
-        font-weight: bold;
-        margin-right: 5px;
-        border-right: 1px solid #f2f2f2;
-        padding-right: 5px;
-    }
-
-    .consultantBio {
+    .consultant-bio {
         color: #666;
         font-size: 12px;
         line-height: 25px;
+        max-width: 300px;
     }
 
-    .rate {
+    .consultant-rate {
         padding: 5px 15px;
         border-radius: 50px;
         color: white;
@@ -186,39 +173,18 @@
         top: -2px;
     }
 
-    .comments {
-        font-size: 12px;
-        background-color: #f2f2f2;
-        color: #808080;
-        padding: 5px 20px;
-        border-radius: 50px 0 0 50px;
-        position: relative;
-        top: -2px;
-        margin-right: -12px;
-        z-index: 1;
-    }
-
-    .comments:hover {
-        background-color: #e9e9e9;
-    }
-
-    .goodRate {
-        background-color: #68BD6B;
-    }
-
-    .normalRate {
-        background-color: orange;
-    }
-
-    .badRate {
-        background-color: #9d0000;
-    }
-
-    .noRate {
+    .consultant-rate--empty {
         background-color: #ccc;
     }
 
-    .consultantShowButton {
+    .consultant-block-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .consultant-show-button {
         border: 1px solid #333333;
         color: #333;
         padding: 10px 35px;
@@ -227,79 +193,53 @@
         background-color: white;
     }
 
-    .consultantCalendarLink i {
-        color: #bd79c9bf;
-        font-size: 18px;
-    }
-
-    .consultantShowButton:hover {
+    .consultant-show-button:hover {
         background-color: #333;
         color: white;
     }
 
-    .consultantBlockAction {
-        display: block;
-    }
-
-    .consultantBio--mobile {
+    .consultant-bio--mobile {
         display: none;
     }
 
-    .consultantPrice {
+    .consultant-price {
         font-size: 12px;
         margin-top: 5px;
         color: #666;
     }
 
     @media only screen and (max-width: 576.8px) and (min-width: 0) {
-        .consultantBlockImage {
-            width: 100px !important;
-            height: 100px !important;
-            min-width: 100px;
-            min-height: 100px;
-            max-width: 100px;
-            max-height: 100px;
+        .consultant-block-image {
+            width: 100px;
+            height: 100px;
         }
 
-        .consultantCalendarLink {
+        .consultant-show-button {
             display: none;
         }
 
-        .consultantShowButton {
-            display: none;
-        }
-
-        .consultantBlockData {
+        .consultant-block-data {
             padding-right: 0;
             padding-left: 0;
             flex-wrap: nowrap;
-            margin-left: auto;
         }
 
-        .consultantName {
+        .consultant-name {
             font-size: 15px;
         }
 
-        .consultantBio {
+        .consultant-bio {
             font-size: 12px;
+            display: none;
         }
 
-        .comments {
-            font-size: 10px;
-        }
-
-        .rate {
+        .consultant-rate {
             font-size: 10px;
             padding: 5px 10px;
             margin-top: 10px;
         }
 
-
-        .consultantBio {
-            display: none;
-        }
-
-        .consultantBio--mobile {
+        .consultant-bio--mobile {
             display: initial;
             color: #666;
             margin: 10px 0 0 0;
@@ -307,7 +247,7 @@
         }
 
 
-        .consultantPrice {
+        .consultant-price {
             display: none;
         }
     }

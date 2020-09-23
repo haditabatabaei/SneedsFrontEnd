@@ -1,5 +1,5 @@
 <template>
-    <main class="main">
+    <section class="profile">
         <transition name="fade">
             <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
                  @click="hideAllModals">
@@ -7,50 +7,50 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn isansFont">
+                    <div class="modal-warn gadugiFont">
                         <i class="material-icons modal-warn-icon">
                             info
                         </i>
                         <p>
-                            <strong>برای رزرو مشاوره نیاز به حساب کاربری دارید!</strong>
+                            <strong>You need an account for reservation!</strong>
                             <br>
-                            بعد از ثبت نام / ورود، مستقیماً به صفحه پرداخت هدایت خواهید شد.
+                            You will be redirected after login/register.
                         </p>
                     </div>
                     <div class="intro-content ">
-                        <h2 class="intro-content-head isansFont">
-                            چرا ثبت نام کنم ؟
+                        <h2 class="intro-content-head gadugiFont">
+                            Why should i register ?
                         </h2>
-                        <ul class="intro-content-list isansFont">
+                        <ul class="intro-content-list gadugiFont">
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی لیست جلسات رزرو شده رو ببینی
+                                You can see your reserved sessions
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی با یک کلیک وارد جلسه مشاوره بشی
+                                You can join your session with one click
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی به طور مداوم با مشاورت در ارتباط باشی
+                                You can talk to your adviser directly and easily
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی ساعت و زمان باقی مانده به جلسه مشاوره رو دقیق ببینی
+                                You can manage your schedule by knowing remaining time to session
                             </li>
                             <li class="intro-content-item">
                                 <i class="material-icons">done</i>
-                                میتونی بعد از جلسه مشاوره، امتیاز بدی
+                                You can rate your adviser
                             </li>
                         </ul>
                     </div>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action gadugiFont">
                         <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
-                            ورود/ثبت نام و رزرو وقت
+                            Login/Register and reserve
                         </button>
                         <button @click="hideAllModals" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بیخیال
+                            Not now
                         </button>
                     </div>
                 </div>
@@ -58,154 +58,144 @@
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="authFormWrapper-switcher isansFont">
+                    <div class="authFormWrapper-switcher isgadugiFontansFont">
                         <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
-                            ورود
+                            Login
                         </button>
                         <button @click="showRegisterForm" class="switcher"
-                                :class="[{'switcher--active' : registerForm}]">ثبت نام
+                                :class="[{'switcher--active' : registerForm}]">Register
                         </button>
                     </div>
-                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="ورود و ادامه"
+                    <login-form :customAction="true" @custom-action-call="loginFormAction" submit-label="Login and continue"
                                 v-if="loginForm"/>
                     <register-form :customAction="true" @custom-action-call="registerFormAction"
-                                   submit-label="ثبت نام و ادامه" v-else-if="registerForm"/>
+                                   submit-label="Register and continue" v-else-if="registerForm"/>
                 </div>
 
                 <div class="consultant-modal consultant-modal--register" v-if="showNameModal">
                     <div class="intro-head">
                         <i class="material-icons" data-command="consultant-modal-close">close</i>
                     </div>
-                    <div class="modal-warn modal--error isansFont">
+                    <div class="modal-warn modal--error gadugiFont">
                         <i class="material-icons modal-warn-icon modal-icon--error">
                             info
                         </i>
                         <p>
-                            <strong>لطفا نام و نام خانوادگی خود را وارد کنید.</strong>
+                            <strong>Please enter your full name</strong>
                             <br>
-                            برای رزرو، نیاز هست که نام و نام خانوادگی خودتون رو ثبت کنید تا مشاور شمارو بشناسه.
-                            این اطلاعات  همیشه از طریق پروفایلتان قابل ویرایش است.
+                            In order to smooth reservation and consulting process, your adviser should know your full name.
+                            These information is accessible and editable at all times from your user settings.
                         </p>
                     </div>
-                    <label class="loginForm-label isansFont" for="phone" style="margin-top: 15px">
-                        نام :
+                    <label class="loginForm-label gadugiFont" for="phone" style="margin-top: 15px">
+                        First name :
                         <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
                     </label>
-                    <label class="loginForm-label isansFont" for="password">
-                        نام خانوادگی :
+                    <label class="loginForm-label gadugiFont" for="password">
+                        Last name :
                         <input class="loginForm-control" id="password" v-model.trim="last_name">
                     </label>
-                    <div class="intro-action isansFont">
+                    <div class="intro-action gadugiFont">
                         <button class="intro-action-button intro-action-button--active" @click="setNameAndPay">
-                            ثبت و رزرو وقت
+                            Register and reserve
                         </button>
                         <button @click="addSelectedTimesToCart(true)" data-command="consultant-modal-close"
                                 class="intro-action-button intro-action-button--passive">
-                            بعدا وارد میکنم
+                            Later
                         </button>
                     </div>
                 </div>
             </div>
         </transition>
-        <section class="container">
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="row" id="descBlock">
-                        <div class="col-md-12 consultantBlock">
-                            <div class="meta">
-                                <div class="meta-overlap"></div>
-                            </div>
-                            <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
-                            <mobile-user-calendar
-                                    v-if="consultant.id && windowWidth > 991.8"
-                                    :consultant-id="consultant.id"
-                                    :desktop-mode="true"
-                            />
-                            <comment-section :consultant="consultant" v-if="consultant.id"/>
-                        </div>
+        <div class="profile-container gadugiFont">
+            <div class="profile-sidebar">
+                <div class="profile-sidebar-info">
+                    <transition name="fade">
+                        <img v-if="showSidebarAvatar"
+                             class="profile-sidebar-image"
+                             :src="consultant.profile_picture"
+                             :alt="`${consultant.first_name} ${consultant.last_name}`">
+                    </transition>
+                    <div class="profile-sidebar-info-detail">
+                        <h1 class="profile-sidebar-title">
+                            {{consultant.first_name}} {{consultant.last_name}}
+                        </h1>
+                        <span class="profile-sidebar-rate" v-if="consultant.rate != null"> Rate: {{consultant.rate}} / 5</span>
+                        <span class="profile-sidebar-rate" v-else>W/O Rate</span>
                     </div>
                 </div>
-
-                <div class="col-md-3 sideBarBlockSticky">
-                    <div class="consultantSidebarBlock">
-                        <div class="consultantSidebarBlock--info">
-                            <transition name="fade">
-                                <img v-if="showSidebarAvatar" :src="consultant.profile_picture"
-                                     :alt="consultant.first_name + ' ' + consultant.last_name">
-
-                            </transition>
-                            <div class="consultantSidebarBlock--info_detail">
-                                <h1 class="isansFont--faNum">
-                                    {{consultant.first_name + " " + consultant.last_name}}
-                                </h1>
-                                <span class="isansFont--faNum" v-if="consultant.rate != null"> امتیاز {{consultant.rate}}</span>
-                                <span class="isansFont--faNum" v-else>بدون امتیاز</span>
-                            </div>
-                        </div>
-                        <div class="consultantSidebarBlock--selectedItems isansFont--faNum" style="max-height:400px;overflow: auto">
-                            <ul class="consultantSidebarBlock--selectedItems_list">
-                                <li v-if="stash.length === 0">
-                                    زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
-                                    انتخاب شود.
-                                </li>
-                                <li v-for="item in stash">
-                                   <i class="material-icons" role="button"
-                                   @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
-                                <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <br>
-                                    <span class="stash-item-consultant-name">{{item.consultant.first_name + " " + item.consultant.last_name}}</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <button class="isansFont--faNum addToCartButton"
-                                @click="addSelectedTimesToCart()">رزرو جلسات انتخاب شده
-                        </button>
-                    </div>
+                <div class="profile-sidebar-selectedItems">
+                    <ul class="profile-sidebar-selectedItems-list">
+                        <li class="selectedItems-list-item" v-if="stash.length === 0">
+                            There is no selected slot.
+                            You need to select at least one slot to reserve.
+                        </li>
+                        <li class="selectedItems-list-item" v-for="item in stash">
+                            <i class="material-icons list-item-icon" role="button"
+                               @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">
+                                close
+                            </i>
+                            <span class="list-item-text">{{getJalali(item.start_time).format('dddd - HH:mm') + " till " + getJalali(item.end_time).format('HH:mm') }}</span>
+                            <br>
+                            <span class="stash-item-consultant-name">{{item.consultant.first_name + " " + item.consultant.last_name}}</span>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-
-            <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
-                 @click="toggleMobileCalendar"></div>
-            <div class="consultant-mobile-calendar isansFont"
-                 :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]" v-if="!showModalOverlay">
-                <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
-                    رزرو وقت مشاوره
+                <button class="profile-sidebar-addToCart"
+                        @click="addSelectedTimesToCart()">
+                    Reserve selected slots
                 </button>
-                <div class="mobile-calendar-header" v-if="showMobileCalendar">
-                    <button @click="toggleMobileCalendar" class="mobile-calendar-close">
-                        <i class="material-icons">
-                            close
-                        </i>
-                    </button>
-                    <h2 class="mobile-calendar-header-title isansFont">
-                        تقویم
-                        {{consultant.first_name + " " + consultant.last_name}}
-                    </h2>
-
-                    <div style="height: 100px;overflow:auto;border-top:1px solid #aaa;border-bottom:1px solid #aaa;width: 100%;">
-                        <ul class="consultantSidebarBlock--selectedItems_list">
-                            <li v-if="stash.length === 0">
-                                زمانی برای رزرو انتخاب نشده است. حداقل یک زمان از تقویم باید
-                                انتخاب شود.
-                            </li>
-                            <li v-for="item in stash">
-                                <i class="material-icons" role="button"
-                                   @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
-                                <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <span v-else class="isansFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
-                                <br>
-                                <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.consultant.first_name + " " + item.consultant.last_name}}</strong>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
             </div>
-        </section>
-    </main>
+            <div class="profile-main-img">
+                <div class="profile-main-img-overlay"></div>
+            </div>
+            <div class="profile-main">
+                <consultant-desc-block :consultant="consultant" v-if="consultant.id"/>
+                <mobile-user-calendar
+                        v-if="consultant.id && windowWidth > 991.8"
+                        :consultant-id="consultant.id"
+                        :desktop-mode="true"
+                />
+                <comment-section :consultant="consultant" v-if="consultant.id"/>
+            </div>
+        </div>
+        <div class="consultant-mobile-calendar-overlay" v-if="showMobileCalendar"
+             @click="toggleMobileCalendar"></div>
+        <div class="consultant-mobile-calendar gadugiFont"
+             :class="[{'consultant-mobile-calendar--round' : showMobileCalendar}]" v-if="!showModalOverlay">
+            <button @click="toggleMobileCalendar" class="mobile-calendar-toggler" v-if="!showMobileCalendar">
+                Reserve this adviser
+            </button>
+            <div class="mobile-calendar-header" v-if="showMobileCalendar">
+                <button @click="toggleMobileCalendar" class="mobile-calendar-close">
+                    <i class="material-icons">
+                        close
+                    </i>
+                </button>
+                <h2 class="mobile-calendar-header-title gadugiFont">
+                    {{consultant.first_name + " " + consultant.last_name}}'s Calendar
+                </h2>
 
+                <div style="height: 100px;overflow:auto;border-top:1px solid #aaa;border-bottom:1px solid #aaa;width: 100%;">
+                    <ul class="consultantSidebarBlock--selectedItems_list">
+                        <li v-if="stash.length === 0">
+                            There is no selected slot.
+                            You need to select at least one slot to reserve.
+                        </li>
+                        <li v-for="item in stash">
+                            <i class="material-icons" role="button"
+                               @click="$store.commit('removeItemFromStash',{'itemToRemove': item, type:'time-slot'})">close</i>
+                            <span v-if="$store.getters.isiran">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " تا " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                            <span v-else class="gadugiFont">{{getJalaliLocale(item.start_time).format('dddd - HH:mm') + " till " + getJalaliLocale(item.end_time).format('HH:mm') }}</span>
+                            <br>
+                            <strong class="stash-item-consultant-name" style="margin-right: 5px;">{{item.consultant.first_name + " " + item.consultant.last_name}}</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <mobile-user-calendar :consultant-id="consultant.id"  @add-times-to-cart="addSelectedTimesToCart" v-if="consultant.id && showMobileCalendar"/>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -258,6 +248,9 @@
             user() {
                 return this.$store.getters.getUser;
             },
+            isiran() {
+                return this.$store.getters.isiran;
+            },
             showNameModalAfterLogin() {
                 if (this.user.first_name == null || this.user.last_name == null) {
                     return true
@@ -280,6 +273,10 @@
         },
 
         methods: {
+            getJalali(date) {
+                return jalali(date);
+            },
+
             getJalaliLocale(date) {
                 return jalali(date).locale(this.locale);
             },
@@ -432,57 +429,90 @@
 </script>
 
 <style scoped>
-
-    .main {
+    .profile {
         min-height: 100vh;
-        padding-bottom: 40px;
-        background-color: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    .nav-pills.nav-pills-white > li.active > a {
-        background-color: white;
-        color: #555555;
-        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .consultantSidebarBlock {
-        background-color: white;
+    .profile-container {
         width: 100%;
+        max-width: 1170px;
+        display: grid;
+        grid-gap: 15px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 115px auto;
+        grid-template-areas:
+            ". img img img"
+            "sidebar main main main";
+    }
+
+    .profile-sidebar {
+        grid-area: sidebar;
+        position: sticky;
+        top: 85px;
+        height: fit-content;
+        background-color: #fff;
         border-radius: 15px;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 2px rgba(0,0,0,.2);
+
         display: flex;
         align-items: flex-start;
         justify-content: flex-start;
         flex-direction: column;
-        margin-top: 130px;
     }
 
-    .sideBarBlockSticky {
-        position: sticky;
-        top: 120px;
-        padding-right: 0;
+    .profile-main {
+        grid-area: main;
+
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 0 2px rgba(0,0,0,.2);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
     }
 
-    .consultantSidebarBlock--info {
+    .profile-main-img {
+        grid-area: img;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 0 2px 1px rgba(0,0,0,.2);
+        position: relative;
+        background: url(/sneedsAssets/img/consultant-profile-top-bg.png) no-repeat 0 -300px/cover;
+    }
+
+    .profile-main-img-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(32,184,163,.8);
+        border-radius: 0 0 15px 15px;
+    }
+
+    .profile-sidebar-info {
         display: flex;
         align-items: center;
         justify-content: flex-start;
     }
 
-    .consultantSidebarBlock--info_detail {
+    .profile-sidebar-info-detail {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin-right: 10px;
+        margin: 10px 0 0 10px;
     }
 
-    .consultantSidebarBlock--info_detail h1 {
-        font-size: 1.5rem;
-        margin-right: 10px;
+    .profile-sidebar-title {
+        font-size: 1.3rem;
     }
 
-    .consultantSidebarBlock--info_detail span {
+    .profile-sidebar-rate {
         font-size: 12px;
         background-color: #f0f0f0;
         color: #bababa;
@@ -490,83 +520,30 @@
         padding: 3px 20px;
     }
 
-    .meta {
-        width: 100%;
-        height: 115px;
-        border-radius: 0 0 15px 15px;
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-        position: relative;
-        background: url('/sneedsAssets/img/consultant-profile-top-bg.png') no-repeat 0 -300px / cover;
-    }
-
-    .meta-overlap {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(32, 184, 163, 0.8);
-        border-radius: 0 0 15px 15px;
-    }
-
-    .consultantSidebarBlock--info img {
+    .profile-sidebar-image {
         width: 70px;
         height: 70px;
         border-radius: 10px;
         margin: 10px;
     }
 
-    .consultantSidebarBlock--links {
-        width: 100%;
-        margin-top: 15px;
+    .profile-sidebar-selectedItems {
+        max-height: 400px;
+        overflow: auto;
     }
 
-    .consultantSidebarBlock--links ul {
-        display: flex;
-        list-style: none;
-        padding-right: 0;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-    }
-
-    .consultantSidebarBlock--links ul li button {
-        background: none;
-        border: none;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-right: 10px;
-        margin-top: 5px;
-        color: #b2b2b2;
-        transition: all 0.1s ease-in-out;
-    }
-
-    .consultantSidebarBlock--links ul li button:hover {
-        border-right: inset 3px #8C3DDB;
-        font-weight: bold;
-        color: #4c4c4c;
-        padding-right: 15px;
-    }
-
-    .consultantSidebarBlock--links ul li.active button {
-        border-right: inset 3px #8C3DDB;
-        font-weight: bold;
-        color: #4c4c4c;
-        padding-right: 15px;
-    }
-
-    .consultantSidebarBlock--selectedItems_list {
+    .profile-sidebar-selectedItems-list {
         list-style: none;
         display: flex;
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-        padding-right: 0;
+        padding-left: 0;
         font-size: 13px;
         margin-top: 5px;
     }
 
-    .consultantSidebarBlock--selectedItems_list li {
+    .selectedItems-list-item {
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -574,50 +551,11 @@
         color: #333;
     }
 
-    .consultantSidebarBlock--selectedItems_list li span {
+    .list-item-text {
         margin-right: 5px;
     }
 
-    .consultantSidebarBlock--links_list li i {
-        font-size: 20px;
-    }
-
-    .consultantSidebarBlock--numberDiscounts_list {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        margin-top: 20px;
-        padding: 0 10px;
-        list-style: none;
-    }
-
-    .consultantSidebarBlock--numberDiscounts_list li {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        font-size: 12px;
-        font-weight: bold;
-        color: #b8b8b8;
-        margin-top: 15px;
-    }
-
-    .consultantSidebarBlock--numberDiscounts_list li i {
-        font-size: 20px;
-        margin-left: 5px;
-    }
-
-    .consultantSidebarBlock--numberDiscounts_list mark {
-        color: #3faf54;
-        background: none;
-        border-radius: 50%;
-        width: 10px;
-        height: 10px;
-        font-weight: bold;
-        font-size: 13px;
-    }
-
-    .addToCartButton {
+    .profile-sidebar-addToCart {
         align-self: stretch;
         border-radius: 0 0 15px 15px;
         border: none;
@@ -670,7 +608,7 @@
     .intro-head i {
         color: #B3B3B3;
         font-size: 18px;
-        margin-right: 10px;
+        margin-left: 10px;
         cursor: pointer;
     }
 
@@ -700,7 +638,7 @@
 
     .modal-warn-icon {
         color: #CAA53D;
-        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .modal-warn p {
@@ -745,7 +683,7 @@
     .intro-content-item i {
         color: #00BFD6;
         font-size: 16px;
-        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .intro-action {
@@ -830,13 +768,17 @@
 
 
     @media only screen and (min-width: 0) and (max-width: 991.8px) {
-        .main {
-            padding-bottom: 50px;
-            width: 100%;
-            border-radius: 0;
+        .profile-container {
+            grid-gap: 0;
+            grid-template-areas:
+                "img"
+                "main"
+            ;
+            grid-template-columns: 100%;
+            grid-template-rows: 115px auto  ;
         }
 
-        .meta {
+        .profile-main-img {
             border-radius: 0;
             display: flex;
             align-items: center;
@@ -844,37 +786,12 @@
             background-position: center;
         }
 
-        .meta-overlap {
+        .profile-main-img-overlay {
             border-radius: 0;
         }
 
-        .sideBarBlockSticky {
-            position: static;
-            padding-right: 15px;
-        }
-
-        .consultantSidebarBlock {
+        .profile-sidebar {
             display: none;
-        }
-
-        .container {
-            padding-right: 0;
-            padding-left: 0;
-        }
-
-        .row {
-            margin-right: 0;
-            margin-left: 0;
-        }
-
-        .col-md-9 {
-            padding-right: 0;
-            padding-left: 0;
-        }
-
-        .col-md-12 {
-            padding-right: 0;
-            padding-left: 0;
         }
 
         .consultant-mobile-calendar {

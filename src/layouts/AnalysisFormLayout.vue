@@ -1,0 +1,1433 @@
+<template>
+    <section class="analysis-form">
+        <transition name="fade">
+            <div class="modalOverlay" data-command="consultant-modal-close" v-if="showModalOverlay"
+                 @click="hideAllModals">
+                <div class="consultant-modal consultant-modal--registerIntro gadugiFont" v-if="showRegisterIntro">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn">
+                        <i class="material-icons modal-warn-icon">
+                            info
+                        </i>
+                        <p>
+                            <strong>You need an account before finishing your form.</strong>
+                            <br>
+                            You will be redirected automatically after authorization
+                        </p>
+                    </div>
+                    <div class="intro-content ">
+                        <h2 class="intro-content-head">
+                            Why would i register?
+                        </h2>
+                        <ul class="intro-content-list">
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                You monitor your reserved consulting sessions.
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                You can enter consulting session with one click.
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                You can constantly be in touch with your adviser.
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                You can monitor remaining time to your session.
+                            </li>
+                            <li class="intro-content-item">
+                                <i class="material-icons">done</i>
+                                You can rate your adviser and many more!
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="intro-action">
+                        <button class="intro-action-button intro-action-button--active" @click="continueRegisterFlow">
+                            Login/Register and finishing form
+                        </button>
+                        <button @click="hideAllModals" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            Not now
+                        </button>
+                    </div>
+                </div>
+                <div class="consultant-modal consultant-modal--register" v-if="showRegisterModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="authFormWrapper-switcher">
+                        <button @click="showLoginForm" class="switcher" :class="[{'switcher--active' : loginForm}]">
+                            Login
+                        </button>
+                        <button @click="showRegisterForm" class="switcher"
+                                :class="[{'switcher--active' : registerForm}]">
+                            Register
+                        </button>
+                    </div>
+                    <login-form :customAction="true"
+                                @custom-action-call="loginFormAction"
+                                submit-label="Login and continue"
+                                v-if="loginForm"/>
+                    <register-form :customAction="true"
+                                   @custom-action-call="registerFormAction"
+                                   submit-label="Register and continue"
+                                   v-else-if="registerForm"/>
+                </div>
+
+                <div class="consultant-modal consultant-modal--register gadugiFont" v-if="showNameModal">
+                    <div class="intro-head">
+                        <i class="material-icons" data-command="consultant-modal-close">close</i>
+                    </div>
+                    <div class="modal-warn modal--error">
+                        <i class="material-icons modal-warn-icon modal-icon--error">
+                            info
+                        </i>
+                        <p>
+                            <strong>Please fill out your full name.</strong>
+                            <br>
+                            For better service delivery, adviser needs to know your name. This information is always editable from your profile settings.
+                        </p>
+                    </div>
+                    <label class="loginForm-label" for="phone" style="margin-top: 15px">
+                        First Name:
+                        <input class="loginForm-control" id="phone" type="text" v-model.trim="first_name">
+                    </label>
+                    <label class="loginForm-label" for="password">
+                        Last Name:
+                        <input class="loginForm-control" id="password" v-model.trim="last_name">
+                    </label>
+                    <div class="intro-action">
+                        <button class="intro-action-button intro-action-button--active" @click="setNameAndContinue">
+                            Submit information
+                        </button>
+                        <button @click="setFormUser" data-command="consultant-modal-close"
+                                class="intro-action-button intro-action-button--passive">
+                            Later
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+        <section class="form-container gadugiFont">
+            <aside class="form-title">
+                <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
+                    <h2 class="form-nav-group-title" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                        <span>{{index + 1}}</span>
+                        {{group.label}}
+                    </h2>
+                    <transition name="fade">
+                        <ul class="form-nav-group-items" v-if="group.isOpen">
+                            <li class="form-nav-group-item" v-for="item in group.items">
+                                <router-link :to="item.target" class="form-nav-group-link">{{item.name}}</router-link>
+                            </li>
+                        </ul>
+                    </transition>
+                </div>
+
+                <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">Leave form</router-link>
+                <router-link v-else to="/" class="form-exit-button">Leave form</router-link>
+            </aside>
+            <main class="form-layout-view-wrapper gadugiFont" @click.self="showMobileFormMenu = false">
+                <div class="mobile-form-menu">
+                    <h2 class="mobile-form-current" @click="showMobileFormMenu = !showMobileFormMenu">
+                        {{$route.meta.title}}
+                        <i class="material-icons" v-if="showMobileFormMenu == false">keyboard_arrow_down</i>
+                        <i class="material-icons" v-else>keyboard_arrow_up</i>
+                    </h2>
+                    <transition name="fade">
+                        <div class="mobile-form-collapse" v-if="showMobileFormMenu">
+                            <button class="mobile-form-collapse-close" @click="showMobileFormMenu = false">
+                                <i class="material-icons">close</i>
+                            </button>
+                            <div class="form-nav-group" v-for="(group, index) in formMenuGroups">
+                                <h2 class="form-nav-group-title" :class="[{'group-title--active': group.isOpen}]" @click="group.isOpen = !group.isOpen">
+                                    <span>{{index + 1}}</span>
+                                    {{group.label}}
+                                </h2>
+                                <transition name="fade">
+                                    <ul class="form-nav-group-items" v-if="group.isOpen">
+                                        <li class="form-nav-group-item" v-for="item in group.items">
+                                            <router-link :to="item.target" class="form-nav-group-link">{{item.name}}</router-link>
+                                        </li>
+                                    </ul>
+                                </transition>
+                            </div>
+                            <router-link v-if="isLoggedIn" class="form-exit-button" to="/user/profile">Leave form</router-link>
+                            <router-link v-else to="/" class="form-exit-button">Leave form</router-link>
+                        </div>
+                    </transition>
+                </div>
+                <router-view @langcert-add="sendsubmitlanguagecerts"
+                             @paper-add="submitpaperHandler()"
+                             @education-add="submitlasteducationallevelHandler"
+                             @destination-add="submitdestinationhandler"
+                             @sync-current-page="syncCurrentPage"
+                             :key="$route.fullPath" class="form-layout-view"
+                />
+                <div class="progress-wrapper gadugiFont">
+                    <div class="form-confirm">
+                        <button @click="submitAndMoveNext()" class="form-confirm-next">
+                            <span v-if="!loading">
+                                Next
+                            </span>
+                            <moon-loader class="loading-icon" style="align-self:center;margin-right: auto" color="white" :loading="loading" :size="20" sizeUnit="px"/>
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                        <button @click="goBack()" class="form-confirm-back">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </button>
+                    </div>
+                    <div class="form-progress">
+                        <span class="form-progress-value" :style="currentPageWidthStyle" />
+                    </div>
+                </div>
+            </main>
+        </section>
+    </section>
+</template>
+
+<script>
+    import RegisterForm from '@/components/StandAlone/RegisterForm';
+    import LoginForm from '@/components/StandAlone/LoginForm';
+    import {MoonLoader} from "@saeris/vue-spinners";
+
+export default {
+    name: 'AnalysisFormLayout',
+    components: {
+        "login-form": LoginForm,
+        "register-form": RegisterForm,
+        "moon-loader": MoonLoader
+    },
+    data() {
+        return {
+            startPage: 1,
+            showRegisterIntro: false,
+            showRegisterModal: false,
+            showNameModal: false,
+            loginForm: true,
+            registerForm: false,
+            first_name: '',
+            last_name: '',
+            loading: false,
+            showMobileFormMenu: false,
+            formMenuGroups: [
+                {
+                    label: 'Basic information',
+                    isOpen: true,
+                    items: [
+                        {name: 'Marriage', target: '/analysis/form/marriage'},
+                        {name: 'Age and gender', target: '/analysis/form/gender'},
+                        {name: 'Military service', target: '/analysis/form/militaryservice'},
+                        {name: 'Related work experience', target: '/analysis/form/workexperience'}
+                    ]
+                },
+                {
+                    label: 'Academic resume',
+                    isOpen: false,
+                    items: [
+                        {name: 'Academic gap', target: '/analysis/form/educationalgap'},
+                        {name: 'Add an academic degree', target: '/analysis/form/lasteducationallevel'},
+                        {name: 'Review academic degrees', target: '/analysis/form/educationallevelsitems'},
+                        {name: 'Add a paper', target: '/analysis/form/paper'},
+                        {name: 'Review papers', target: '/analysis/form/paperitems'},
+                        {name: 'Important recommendation', target: '/analysis/form/powerfulrecom'},
+                    ]
+                },
+                {
+                    label: 'Language Certificates',
+                    isOpen: false,
+                    items: [
+                        {name: 'Add a certificate', target: '/analysis/form/languagecerts'},
+                        {name: 'Review certificates', target: '/analysis/form/languagecertsitems'},
+                    ]
+                },
+                {
+                    label: 'Aboard destination',
+                    isOpen: false,
+                    items: [
+                        {name: 'Add and review destinations', target: '/analysis/form/destination'},
+                        {name: 'Funding status', target: '/analysis/form/funds'},
+                    ]
+                },
+                {
+                    label: 'Other information',
+                    isOpen: false,
+                    items: [
+                        {name: 'Other information', target: '/analysis/form/otherinformation'},
+                    ]
+                }
+            ]
+        }
+    },
+    computed: {
+        currentPageWidthStyle() {
+            console.log(this.currentPage)
+            console.log(this.lastPage);
+            console.log(this.$route);
+            console.log(`width:${(this.currentPage / this.lastPage) * 100}%`);
+            return `width:${(this.currentPage / this.lastPage) * 100}%`;
+        },
+
+        currentPage() {
+            for(let entry of this.pageMap.entries()) {
+                //if value was equal to form part name of current route
+                if(entry[1] == this.$route.meta.formPartName) {
+                    //return key as current page number
+                    return entry[0]
+                }
+            }
+            return 1;
+        },
+
+        lastPage() {
+            return this.pageMap.size;
+        },
+
+        nextPageRoute() {
+            let nextPage = this.currentPage + 1;
+            if(nextPage > this.lastPage) {
+                nextPage = this.lastPage;
+            }
+            return `/analysis/form/${this.pageMap.get(nextPage)}`
+        },
+
+        prevPageRoute() {
+            let prevPage = this.currentPage - 1;
+
+            if(prevPage < this.startPage ) {
+                prevPage = this.startPage;
+            }
+
+            return `/analysis/form/${this.pageMap.get(prevPage)}`
+        },
+
+        pageMap() {
+            return this.$store.getters.analysisFormPageMapping;
+        },
+
+        user() {
+            return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+        },
+
+        detailedForm() {
+            return this.$store.getters.detailedForm;
+        },
+
+        detailedFormId() {
+            return this.$store.getters.detailedFormId;
+        },
+
+        api() {
+            return this.$store.getters.getApi
+        },
+
+        httpConfig() {
+            return this.$store.getters.httpConfig
+        },
+
+        multipartHttpConfig() {
+            return this.$store.getters.multipartHttpConfig
+        },
+
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn;
+        },
+
+        showModalOverlay() {
+            return this.showRegisterIntro || this.showRegisterModal || this.showNameModal;
+        },
+
+        showNameModalAfterLogin() {
+            if (this.user.first_name == null || this.user.last_name == null) {
+                return true
+            } else if (this.user.first_name.trim().length === 0 || this.user.last_name.trim().length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+    },
+
+    methods: {
+        syncCurrentPage(currentPageNumber) {
+            this.currentPage = currentPageNumber;
+        },
+
+        openCurrentMenuCollapse() {
+            this.formMenuGroups.forEach(group => group.isOpen = false)
+            let group = this.formMenuGroups.find(group => group.items.some(item => this.$route.path === item.target));
+            group.isOpen = true;
+        },
+
+        hideAllModals(event) {
+            let command = event.target.dataset.command;
+            if (command === 'consultant-modal-close') {
+                this.showRegisterIntro = false;
+                this.showRegisterModal = false;
+                this.showNameModal = false;
+            }
+        },
+
+        showLoginForm() {
+            this.loginForm = true;
+            this.registerForm = false;
+            this.showNameModal = false;
+        },
+
+        showRegisterForm() {
+            this.registerForm = true;
+            this.loginForm = false;
+            this.showNameModal = false;
+        },
+
+        continueRegisterFlow() {
+            this.showRegisterIntro = false;
+            this.showRegisterModal = true;
+            this.showNameModal = false;
+        },
+
+        loginFormAction() {
+            this.showRegisterIntro = false;
+            this.showRegisterModal = false;
+            if (this.showNameModalAfterLogin) {
+                this.showNameModal = true;
+            } else {
+                this.setFormUser();
+            }
+        },
+
+        registerFormAction() {
+            this.showRegisterModal = false;
+            this.showRegisterIntro = false;
+            this.showNameModal = true;
+        },
+
+        setNameAndContinue() {
+            let requests = [];
+            let editReq = this.$api.put(`${this.$store.getters.getApi}/auth/accounts/${this.$store.getters.getUserInfo.id}/`, {
+                "first_name": this.first_name,
+                "last_name": this.last_name
+            }, this.$store.getters.httpConfig);
+            let dispatchUser = this.$store.dispatch('getUserWithId', this.$store.getters.getUserInfo.id);
+            requests.push(editReq);
+            requests.push(dispatchUser);
+            //this.$loading(true);
+            Promise
+                .all(requests)
+                .then(([editRes, dispatchRes]) => {
+                    this.setFormUser();
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+                .finally(() => {
+
+                })
+        },
+
+        async setFormUser() {
+            try {
+                let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {
+                        'user': this.user.id
+                    }, this.httpConfig);
+                console.log(formUserSetResult);
+                this.$router.push('/user/profile')
+            } catch (e) {
+                console.log(e)
+            } finally {
+
+            }
+        },
+
+        async submitAndMoveNext() {
+            if(this.$route.path != this.nextPageRoute) {
+                //try this.submitmarriage() or this.submitmilitaryservice() or this.submit + this route name in store page map()
+                await this[`submit${this.pageMap.get(this.currentPage)}`]();
+            } else {
+                if(this.currentPage == this.lastPage) {
+                    console.log('we are in last page');
+                    // this.showRegisterIntro = true;
+                    this.submitotherinformation();
+                } else {
+                    console.log('nowhere to go.')
+                }
+            }
+        },
+
+        async submitmarriage() {
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.is_married);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'is_married': this.detailedForm.is_married}, this.httpConfig)
+                console.log('marriage status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async submitmilitaryservice() {
+            try {
+                this.loading = true;
+                console.log(this.detailedForm.military_service_status);
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'military_service_status': this.detailedForm.military_service_status}, this.httpConfig)
+                console.log('military_service_status status code', result.status)
+                this.$router.push(this.nextPageRoute);
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
+        },
+
+        async submiteducationalgap() {
+            if(this.$store.getters.educationalGapIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.academic_break);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'academic_break': this.detailedForm.academic_break}, this.httpConfig)
+                    console.log('academic break status code', result.status)
+                    this.$router.push(this.nextPageRoute);
+
+                } catch (e) {
+
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'وقفه تحصیلی: اخطار',
+                    text: 'لطفاً مقدار وقفه تحصیلی را کنترل کنید.',
+                    duration: 3000
+                })
+            }
+        },
+
+        async submitgender() {
+            if(this.$store.getters.ageIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.academic_break);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'gender': this.detailedForm.gender, 'age': this.detailedForm.age}, this.httpConfig)
+                    console.log('academic break status code', result.status)
+                    this.$router.push(this.nextPageRoute);
+
+                } catch (e) {
+
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'سن: اخطار',
+                    text: 'لطفاً مقدار سن را کنترل کنید.',
+                    duration: 3000
+                })
+            }
+        },
+
+        async submitworkexperience() {
+            if(this.$store.getters.workExperienceIsValid) {
+                try {
+                    this.loading = true;
+                    console.log(this.detailedForm.related_work_experience);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, {'related_work_experience': this.detailedForm.related_work_experience}, this.httpConfig)
+                    console.log('work exp status code', result.status)
+                    this.$router.push(this.nextPageRoute);
+
+                } catch (e) {
+
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                this.$notify({
+                    group: 'notif',
+                    type: 'warn',
+                    title: 'سابقه کار مرتبط: اخطار',
+                    text: 'لطفاً مقدار سابقه کار مرتبط را کنترل کنید.',
+                    duration: 3000
+                })
+            }
+        },
+
+        async submitlasteducationallevel() {
+            console.log('last educational level handler')
+            this.$store.commit('setAddEducationPermission', true);
+        },
+
+        submitlasteducationallevelHandler() {
+            if(this.$store.getters.wantsToAddEducation) {
+                this.loading = true;
+                this.$store.dispatch('createEducation')
+                    .then(response => {
+                        console.log(response);
+                        this.$router.push(this.nextPageRoute);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.$notify({
+                            group: 'notif',
+                            title: 'مقطع تحصیلی: خطا',
+                            text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                            type: 'error',
+                            duration: 3000
+                        })
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async submiteducationallevelsitems() {
+            console.log('educationallevelsitems handler')
+            this.$router.push(this.nextPageRoute);
+
+        },
+
+        async submitpaper() {
+            console.log('paper handler ')
+            if(this.$store.getters.wantsToAddPaper) {
+                this.$store.commit('setPaperAddPermission', true)
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async submitpaperHandler() {
+            this.loading = true;
+            this.$store.dispatch('createPaper')
+                .then(response => {
+                    console.log(response)
+                    this.$router.push(this.nextPageRoute);
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.$notify({
+                        group: 'notif',
+                        title: 'مقاله: خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        type: 'error',
+                        duration: 3000
+                    })
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+
+        async submitpaperitems() {
+            console.log('paperitems handler')
+            this.$router.push(this.nextPageRoute);
+        },
+
+        async submitpowerfulrecom() {
+            try {
+                this.loading = true;
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {'powerful_recommendation': this.detailedForm.powerful_recommendation},
+                    this.httpConfig);
+                console.log('powerful recom status code ', result.status)
+                this.$router.push(this.nextPageRoute);
+
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async submitlanguagecerts() {
+            console.log('languagecerts handler')
+            if(this.$store.getters.wantsToAddCert) {
+                console.log('wants to add cert')
+                this.$store.commit('setLangCertAddPermission', true)
+                console.log('toggle lang add permission to true.')
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async sendsubmitlanguagecerts() {
+            console.log('send submit called');
+            this.loading = true;
+            this.$store.dispatch('createLanguageCert')
+                .then(result => {
+                    console.log(result)
+                    this.$router.push(this.nextPageRoute);
+                })
+                .catch(e => {
+                    console.log(e)
+                    this.$notify({
+                        group: 'notif',
+                        title: 'مدرک: خطا',
+                        text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                        type: 'error',
+                        duration: 3000
+                    })
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+
+        },
+
+        async submitlanguagecertsitems() {
+            console.log('languagecertsitems handler')
+            this.$router.push(this.nextPageRoute);
+
+        },
+
+        async submitdestination() {
+            console.log('destination add process, settings permission to true')
+            this.$store.commit('setDestinationAddPermission', true)
+        },
+
+        submitdestinationhandler() {
+            console.log('destination submitting started.')
+            if(this.$store.getters.wantsToAddDestination) {
+                this.loading = true;
+                if(this.$store.getters.hasPrevDestination) {
+                    this.$store.dispatch('overrideDestination')
+                        .then(result => {
+                            console.log(result);
+                            this.$router.push(this.nextPageRoute);
+                        })
+                        .catch(e => {
+                            console.log(e)
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقصد: خطا',
+                                text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                                type: 'error',
+                                duration: 3000
+                            })
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        })
+                } else {
+                    this.$store.dispatch('createDestination')
+                        .then(result => {
+                            console.log(result);
+                            this.$router.push(this.nextPageRoute);
+                        })
+                        .catch(e => {
+                            console.log(e)
+                            this.$notify({
+                                group: 'notif',
+                                title: 'مقصد: خطا',
+                                text: 'خطایی هنگام ارتباط با سرور رخ داد.',
+                                type: 'error',
+                                duration: 3000
+                            })
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        })
+                }
+
+            } else {
+                this.$router.push(this.nextPageRoute);
+            }
+        },
+
+        async submitfunds() {
+            try {
+                this.loading = true;
+                let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                    {
+                        'prefers_full_fund': this.detailedForm.prefers_full_fund,
+                        'prefers_half_fund': this.detailedForm.prefers_half_fund,
+                        'prefers_self_fund': this.detailedForm.prefers_self_fund,
+                        'payment_affordability': this.detailedForm.payment_affordability
+                    },
+                    this.httpConfig)
+                console.log('funds status code', result.status)
+                this.$router.push(this.nextPageRoute);
+
+            } catch (e) {
+
+            } finally {
+                this.loading = false;
+            }
+
+        },
+
+        async submitotherinformation() {
+            try {
+                this.loading = true;
+                if(this.detailedForm.xInputFile) {
+                    let payload = new FormData();
+                    payload.append('homepage_url', this.detailedForm.homepage_url);
+                    payload.append('linkedin_url', this.detailedForm.linkedin_url);
+                    payload.append('comment', this.detailedForm.comment);
+                    payload.append('olympiad', this.detailedForm.olympiad);
+                    payload.append('resume', this.detailedForm.xInputFile);
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                        payload,
+                        this.multipartHttpConfig
+                    )
+                    console.log(result);
+                } else {
+                    let result = await this.$api.patch(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`,
+                        {
+                            'homepage_url': this.detailedForm.homepage_url,
+                            'linkedin_url': this.detailedForm.linkedin_url,
+                            'comment': this.detailedForm.comment,
+                            'olympiad': this.detailedForm.olympiad
+                        },
+                        this.httpConfig
+                    )
+                    console.log('other info result ', result);
+                }
+                this.startLastPageFlow();
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async startLastPageFlow() {
+            console.log('start last page flow')
+            if(this.isLoggedIn) {
+                //user is logged in
+                //check see if form is set or not
+                if(!!this.detailedForm.user) {
+                    //form user is set
+                    //check if its current user
+                    if(this.detailedForm.user.id == this.user.id) {
+                        //yes its us
+                        //everything is good
+                        //show confirmation success message
+                        console.log('form user is set and its current logged in user going to home')
+                        this.$router.push('/user/profile')
+                    } else {
+                        //some serious thing is happening here !
+                        //this is not supposed to happen
+                    }
+                } else {
+                    //form has no user
+                    //set form user to current form
+                    console.log('form has no user, setting current user for form.')
+                    await this.setFormUser();
+                    // console.log(formUserSetResult);
+                }
+            } else {
+                //user is not logged in
+                //start login modal process
+                console.log('user is not logged in, show register intro')
+                this.showRegisterIntro = true;
+                //this.show
+            }
+        },
+
+        goBack() {
+            if(this.$route.path != this.prevPageRoute) {
+                this.$router.push(this.prevPageRoute);
+            } else {
+                if(this.isLoggedIn) {
+                    this.$router.push('/user/profile')
+                } else {
+                    this.$router.push('/')
+                }
+            }
+        }
+    },
+
+    async created() {
+        console.log('is logged in ', this.isLoggedIn)
+        this.openCurrentMenuCollapse();
+        if(this.isLoggedIn) {
+            //user is logged in
+            //check user has form or not;
+            //check if current user has available form
+            if(!(!!this.detailedForm && this.detailedForm.user.id == this.user.id)) {
+                //form obj is not present or is present but the owner is not logged in user
+                try {
+                    console.log('is logged in try getting user form')
+                    let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
+
+                    console.log(formResult)
+                    //user already has form
+                    this.$store.commit('setDetailedForm', formResult.data);
+                } catch (e) {
+                    //this user doesnt have form, try creating one for him and set the user prop of form
+                    console.log(e);
+                    if(e.response) {
+                        console.log(e.response)
+                    }
+                    console.log('exception catched')
+                    console.log('not found')
+                    //create new form.
+                    let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+                    console.log('form create user on user logged in ', formResult);
+                    //set this user id for form
+                    let formUserSetResult = await this.$api.patch(`${this.api}/account/student-detailed-info/${formResult.data.id}/`,
+                        {
+                            'user': this.user.id
+                        }, this.httpConfig);
+
+                    console.log('form patch user id to created form result ', formUserSetResult);
+                    this.$store.commit('setDetailedForm', formUserSetResult.data)
+
+                }
+            }
+
+        } else {
+            //user is not logged in
+            //check if there is form id present in storage
+            console.log('user is not logged in')
+            console.log('detailed form id ', this.detailedFormId)
+            if(!!this.detailedFormId) {
+               //there is an id available
+               console.log('there is id present ', this.detailedFormId)
+               if(!!this.detailedForm) {
+                   //there is form available
+                   //nothing to do here
+                   console.log('there is form with id nothing to add here ', this.detailedForm)
+               } else {
+                   //there is id but there is no form try fetch and set form
+                   console.log('there is id but there is no form, try fetching form')
+                   let formResult = await this.$api.get(`${this.api}/account/student-detailed-info/${this.detailedFormId}/`, this.httpConfig);
+                   console.log(formResult)
+                   this.$store.commit('setDetailedForm', formResult.data)
+               }
+           } else {
+               //there is no id, create an empty form and set form id and empty form data
+               console.log('there is no id present, create an empty form and set form id and form data')
+                let formResult = await this.$api.post(`${this.api}/account/student-detailed-info/`, {}, this.httpConfig);
+               console.log(formResult);
+               this.$store.commit('setDetailedForm', formResult.data)
+           }
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .analysis-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-size: 50%;
+        position: relative;
+    }
+
+    .analysis-form-bluebg {
+        background: #20639b; /* Old browsers */
+        background: -moz-linear-gradient(top,  #20639b 0%, #051c30 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #20639b 0%,#051c30 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #20639b 0%,#051c30 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#20639b', endColorstr='#051c30',GradientType=0 ); /* IE6-9 */
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        min-height: 100vh;
+        z-index: 1;
+    }
+
+    .form-container {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: flex-start;
+        z-index: 5;
+    }
+
+    .form-title {
+        width: 40%;
+        max-width: 600px;
+        align-self: stretch;
+        position: relative;
+        background-color: white;
+        box-shadow: 0 13px 36px #00000029;
+        border-radius: 0 0 0 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-layout-view-wrapper {
+        min-height: 100vh;
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        background-color: white;
+        padding-left: 35px;
+        max-width: 800px;
+    }
+
+    .form-nav-group {
+        display: flex;
+        flex-direction: column;
+        padding: 0 30px;
+    }
+
+    .form-nav-group-title {
+        font-size: 18px;
+        color: #9B9999;
+        display: flex;
+        align-items: center;
+        margin: 0 0 10px 0;
+        cursor: pointer;
+    }
+
+    .form-nav-group-title.group-title--active {
+        font-weight: bold;
+        color: #009FB3;
+    }
+
+    .form-nav-group:not(:first-child) {
+        margin-top: 20px;
+    }
+
+    .form-nav-group:first-child {
+        margin-top: 50px;
+    }
+
+    .form-nav-group-title span {
+        border: 2px solid #B3B3B3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: normal;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+
+    .form-exit-button {
+        background-color: #FEF3F3;
+        color: #B82020;
+        border-radius: 10px;
+        padding: 5px 15px;
+        align-self: center;
+    }
+
+    .form-nav-group-title.group-title--active span{
+        border-color: #009FB3;
+    }
+
+    .form-nav-group-items {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        padding-left: 40px;
+        margin: 0;
+    }
+
+    .form-nav-group-item {
+        margin: 5px 0;
+    }
+
+    .form-nav-group-link {
+        font-size: 14px;
+        color: #707070;
+    }
+
+    .form-nav-group-link.router-link-exact-active {
+        font-weight: bold;
+    }
+
+    .form-nav-group-link:hover {
+        font-weight: bold;
+    }
+
+    .form-layout-view {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        padding-top: 100px;
+    }
+
+    .form-progress {
+        width: calc(100% - 40px);
+        margin: 20px;
+        height: 17px;
+        border-radius: 20px;
+        background-color: #DDEEFC;
+        position: relative;
+        z-index: 10;
+    }
+
+    .form-progress-value {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 17px;
+        background-color: #00A3B6;
+        z-index: 15;
+        border-radius: 20px;
+    }
+
+    .form-confirm {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        flex-direction: row-reverse;
+        height: 45px;
+        max-width: 800px;
+        align-self: flex-end;
+        margin-right: 20px;
+    }
+
+    .form-confirm-next {
+        background-color: #A347FF;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 0 16px 16px 0;
+        font-size: 18px;
+        transition: all 100ms ease-in-out;
+        width: 200px;
+    }
+
+    .form-confirm-next i.material-icons {
+        margin-left: auto;
+    }
+
+    .form-confirm-next span {
+        margin-left: auto;
+    }
+
+    .form-confirm-next:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-confirm-back {
+        border-radius: 16px 0 0 16px;
+        border: none;
+        background-color: #F2F2F2;
+        color: #707070;
+        padding: 0 10px;
+        transition: all 100ms ease-in-out;
+    }
+
+    .form-confirm-back:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1013;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .consultant-modal {
+        width: 100%;
+        max-width: 400px;
+        min-height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        z-index: 1014;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-bottom: 20px
+    }
+
+    .modal-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: flex-start;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    .modal-warn-icon {
+        color: #CAA53D;
+        margin-left: 10px;
+    }
+
+    .modal-warn p {
+        margin-bottom: 0;
+    }
+
+    .modal--error {
+        color: #891B1B;
+        background-color: #FFECEC
+    }
+
+    .modal-icon--error {
+        color: #891B1B;
+    }
+
+    .intro-content {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .intro-content-head {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #585858;
+        font-weight: bold;
+    }
+
+    .intro-content-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .intro-content-item {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #707070;
+    }
+
+    .intro-content-item i {
+        color: #00BFD6;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .intro-action {
+        margin: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .intro-action-button {
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        font-size: 12px;
+    }
+
+    .intro-action-button--active {
+        background-color: #8C3DDB;
+        color: white;
+    }
+
+    .intro-action-button--passive {
+        background-color: white;
+        color: #707070;
+    }
+
+    .intro-head {
+        background-color: #FCFCFC;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .intro-head i {
+        color: #B3B3B3;
+        font-size: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .authFormWrapper-switcher {
+        border-bottom: 3px solid #eee;
+        min-height: 50px;
+        margin: 0;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .switcher {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: #aaa;
+        background: none;
+        border: none;
+    }
+
+    .switcher--active {
+        border-bottom: 3px solid #9038CC;
+        color: #9038CC;
+    }
+
+    .loginForm-label {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .loginForm-label:not(:first-child) {
+        margin-top: 0;
+    }
+
+    .loginForm-control {
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #F8F8F8;
+        margin-top: 10px;
+        color: #999;
+    }
+
+    .loginForm-meta {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    .loginForm-meta.error {
+        color: #c9737c;
+    }
+
+    .mobile-form-menu {
+        display: none;
+    }
+
+    .mobile-form-menu {
+        align-self: center;
+    }
+
+    .mobile-form-current {
+        font-size: 16px;
+        color: #00A2B5;
+        display: flex;
+        align-items: center;
+        margin: 30px 0 0 0;
+        cursor: pointer;
+    }
+
+    .mobile-form-collapse {
+        position: fixed;
+        top: 85px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 40px);
+        overflow: auto;
+        z-index: 14;
+        background-color: white;
+        box-shadow: 0 -7px 26px #00000029;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-form-collapse-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        color: #707070;
+        border: none;
+    }
+
+
+    @media only screen and (max-width: 991.8px ) and (min-width: 767.8px) {
+        .form-title {
+            display: none;
+        }
+
+        .form-container {
+            flex-direction: column;
+        }
+
+        .form-layout-view-wrapper {
+            width: auto;
+            padding: 0;
+            max-width: initial;
+        }
+
+        .mobile-form-menu {
+            display: flex;
+        }
+    }
+
+
+    @media only screen and (max-width: 767.8px) {
+        .form-title {
+            display: none;
+        }
+
+        .mobile-form-menu {
+            display: flex;
+        }
+
+        .form-layout-view-wrapper {
+            width: 100%;
+            padding: 0 0 122px 0;
+        }
+
+        .progress-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -11px 16px #0000001A;
+            justify-content: center;
+        }
+
+        .form-confirm-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #959D9D;
+            padding: 10px;
+            border-radius: 10px;
+            background: none;
+        }
+
+        .form-confirm-back i {
+            font-size: 24px;
+        }
+
+        .form-confirm {
+            align-self: stretch;
+            margin: 20px 20px 0 20px;
+        }
+
+        .form-confirm-next {
+            width: 100%;
+            border-radius: 20px;
+            min-height: 50px;
+        }
+    }
+</style>

@@ -1,13 +1,13 @@
 <template>
     <div class="top-meta">
-        <div class="meta-container isansFont">
+        <div class="meta-container gadugiFont">
             <p class="meta-slogan">
-                تمام سرمایه ما کاربرانمان هستند، همیشه پاسخگوی شما هستیم
-                <router-link to="/contactus" class="slogan-link isansFont--faNum">
+                We care for our users. get into a problem ?
+                <router-link to="/contactus" class="slogan-link">
                     <i class="material-icons">
                         local_phone
                     </i>
-                    021 - 2842 8353
+                    +9821 - 2842 8353
                 </router-link>
             </p>
             <ul class="meta-socials">
@@ -27,11 +27,11 @@
         data() {
             return {
                 socials: [
-                    {name: 'telegram', alt: 'تلگرام اسنیدز', target: 'http://bit.ly/2FPshaR', img: 'teleg.svg'},
-                    {name: 'instagram', alt: 'اینستاگرام اسنیدز', target: 'http://bit.ly/3581UUU', img: 'ins.svg'},
-                    {name: 'youtube', alt: 'یوتیوب اسنیدز', target: 'http://bit.ly/2O1cnNm', img: 'you.svg'},
-                    {name: 'linkedin', alt: 'لینکداین اسنیدز', target: 'https://www.linkedin.com/company/sneeds/', img: 'linked.svg'},
-                    {name: 'aparat', alt: 'آپارات اسنیدز', target: 'https://bit.ly/3fpBq6X', img: 'aparat.svg'}
+                    {name: 'telegram', alt: 'Telegram', target: 'http://bit.ly/2FPshaR', img: 'teleg.svg'},
+                    {name: 'instagram', alt: 'Instagram', target: 'http://bit.ly/3581UUU', img: 'ins.svg'},
+                    {name: 'youtube', alt: 'Youtube', target: 'http://bit.ly/2O1cnNm', img: 'you.svg'},
+                    {name: 'linkedin', alt: 'Linkedin', target: 'https://www.linkedin.com/company/sneeds/', img: 'linked.svg'},
+                    {name: 'aparat', alt: 'Aparat', target: 'https://bit.ly/3fpBq6X', img: 'aparat.svg'}
                 ],
             }
         },
@@ -50,6 +50,8 @@
         display: flex;
         justify-content: center;
         align-items: stretch;
+        z-index: 1015;
+        position: relative;
     }
 
     .meta-container {
@@ -71,13 +73,12 @@
         color: white;
         display: flex;
         align-items: center;
-        flex-direction: row-reverse;
+        flex-direction: row;
         background-color: #8C3DDB;
         font-size: 12px;
-        padding: 5px 10px   ;
+        padding: 5px 10px;
         border-radius: 5px;
-        margin-right: 20px;
-        direction: ltr !important;
+        margin-left: 20px;
     }
 
     .slogan-link i {
@@ -85,7 +86,7 @@
         font-size: 10px;
         border-radius: 50%;
         padding: 2px;
-        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .meta-socials {
@@ -101,7 +102,7 @@
     }
 
     .social-item:not(:last-child) {
-        margin-left: 5px;
+        margin-right: 5px;
     }
     
     @media only screen and (max-width: 767.8px) {

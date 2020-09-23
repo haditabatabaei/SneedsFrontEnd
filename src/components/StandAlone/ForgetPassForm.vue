@@ -1,48 +1,55 @@
 <template>
     <form class="loginForm" @submit.prevent="requestReset()" v-if="!$route.query.token">
-        <label class="loginForm-label isansFont" for="email">
-            ایمیل :
-            <input class="loginForm-control control--ltr" id="email" type="text" v-model.trim="$v.email.$model">
-            <span class="loginForm-meta error" v-if="emailIsInvalid">
-                لطفا یک ایمیل معتبر وارد کنید.
-            </span>
-        </label>
-        <button class="loginForm-button isansFont">
+        <c-simple-input
+            label="Email:"
+            :external-label="true"
+            v-model.trim="$v.email.$model"
+            :error="emailIsInvalid"
+            error-text="Please enter a valid email address."
+
+            class="forget-input"
+        />
+        <button class="loginForm-button gadugiFont">
             {{submitRequestResetLabel}}
         </button>
     </form>
     <form class="loginForm" @submit.prevent="updatePassword()" v-else>
-        <label class="loginForm-label isansFont" for="password">
-            رمز عبور جدید :
-            <input class="loginForm-control control--ltr" id="password" type="password" v-model.trim="$v.newPassword.$model">
-            <span class="loginForm-meta error" v-if="newPasswordIsInvalid">
-                لطفا یک رمز عبور معتبر وارد کنید.
-            </span>
-        </label>
-        <label class="loginForm-label isansFont" for="confirmPassword">
-            تکرار رمز عبور جدید :
-            <input class="loginForm-control control--ltr" id="confirmPassword" type="password" v-model.trim="$v.confirmNewPassword.$model">
-            <span class="loginForm-meta error" v-if="confirmNewPasswordIsInvalid">
-                لطفا تکرار رمز عبور معتبر وارد کنید.
-            </span>
-        </label>
-        <button class="loginForm-button isansFont">
+        <c-password-input
+                label="Password:"
+
+                :external-label="true"
+                :error="newPasswordIsInvalid"
+                error-text="Please enter a valid password."
+                v-model.trim="$v.newPassword.$model"
+                class="forget-input"
+        />
+        <c-password-input
+                label="Confirm password:"
+
+                :external-label="true"
+                :error="confirmNewPasswordIsInvalid"
+                error-text="Please enter a valid password confirmation."
+                v-model.trim="$v.confirmNewPassword.$model"
+                class="forget-input"
+        />
+        <button class="loginForm-button gadugiFont">
             {{submitChangeLabel}}
             <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
-
         </button>
     </form>
 </template>
 
 <script>
-    import axios from 'axios';
     import {required, email, minLength, maxLength, sameAs} from 'vuelidate/lib/validators';
     import {MoonLoader} from "@saeris/vue-spinners";
-
+    import SimpleInput from "@/components/Form/SimpleInput";
+    import PasswordInput from "@/components/Form/PasswordInput";
     export default {
         name: "ForgetPassForm.vue",
         components: {
-            "moon-loader": MoonLoader
+            "moon-loader": MoonLoader,
+            "c-simple-input": SimpleInput,
+            "c-password-input": PasswordInput
         },
         validations: {
             email: {required, email, minLength: minLength(1)},
@@ -61,11 +68,11 @@
         props: {
             submitRequestResetLabel: {
                 type: String,
-                default: () => 'بازیابی رمز عبور'
+                default: () => 'Get reset password instructions on email'
             },
             submitChangeLabel: {
                 type : String,
-                default: () => 'ثبت رمز عبور جدید'
+                default: () => 'Submit new password'
             }
         },
         computed: {
@@ -163,6 +170,10 @@
         align-items: stretch;
         justify-content: center;
         flex-direction: column;
+    }
+
+    .forget-input {
+        margin: 20px;
     }
 
     .loginForm-label {

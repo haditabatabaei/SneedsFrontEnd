@@ -26,3 +26,6 @@ yarn-error.log*
 
 #ignore ux files
 /public/ux
+
+#No-use svgs ignored
+/public/sneedsAssets/img/svgs-ignored

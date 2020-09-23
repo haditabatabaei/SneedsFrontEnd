@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from './store';
+import store from './state/store';
 import router from './router';
 
 const api = axios.create({

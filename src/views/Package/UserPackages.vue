@@ -43,9 +43,9 @@
         data() {
             return {
                 packages: [],
-                activeFilter: {name: 'پکیج ها', value: "soldpackages"},
+                activeFilter: {name: 'Services', value: "soldpackages"},
                 availableFilters: [
-                    {name: 'پکیج ها', value: "soldpackages"},
+                    {name: 'Services', value: "soldpackages"},
                 ],
                 isLoading: false,
             }
@@ -101,7 +101,6 @@
     .userpackages-wrapper {
         display: flex;
         flex-direction: column;
-        margin-top: 30px;
     }
 
     .infoBlock {

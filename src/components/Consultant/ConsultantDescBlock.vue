@@ -1,30 +1,25 @@
 <template>
     <section class="consultantDescBlock">
         <div class="consultantDescBlock--head-info">
-            <p class="isansFont consultantDescBlock--head-name">{{consultant.first_name + ' ' +
-                consultant.last_name}}</p>
+            <p class="isansFont consultantDescBlock--head-name">
+                {{consultant.first_name + ' ' + consultant.last_name}}</p>
             <!-- rate -->
             <star-rating
                     v-if="consultant.rate != null"
-                    :rtl="$store.getters.isiran"
+                    :rtl="false"
                     :star-size="12"
                     :padding="5"
                     :read-only="true"
-                    style="background: none;margin-left: 15px;display:flex;align-items:center"
+                    style="background: none;margin-left: 10px;display:flex;align-items:center"
                     inactive-color="rgba(0,0,0,0)"
                     active-color="#fff"
                     :showRating="false"
                     v-model="consultant.rate"/>
 
-            <!-- consultant minutes -->
-            <p v-if="showMinutesOfConsultations" class="isansFont--faNum consultantDescBlock--head-minutes">
-                <strong>{{Math.floor(Math.random() * 100)}}</strong>
-                دقیقه مشاوره برگزار شده
-            </p>
-            <a v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
-               class="consultantDescBlock--head-resume isansFont">دانلود رزومه</a>
+            <a style="margin-left: 15px" v-if="consultant.resume != null" :href="consultant.resume" target="_blank"
+               class="consultantDescBlock--head-resume gadugiFont">Download CV</a>
         </div>
-        <header class="consultantDescBlock--head isansFont--faNum">
+        <header class="consultantDescBlock--head gadugiFont">
             <img :src="consultant.profile_picture" class="consultantDescBlock--head-image"
                  :alt="consultant.first_name + ' ' + consultant.last_name">
 
@@ -32,7 +27,7 @@
                 <i class="material-icons" v-if="studyInfo.university == undefined">account_balance</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.university.picture"
                      :alt="studyInfo.university.name" v-else/>
-                <p class="consultantDescBlock--head_item_support">دانشگاه</p>
+                <p class="consultantDescBlock--head_item_support">University</p>
                 <p class="consultantDescBlock--head_item_text">{{studyInfo.university.name}}</p>
             </div>
 
@@ -40,7 +35,7 @@
                 <i class="material-icons" v-if="studyInfo.country == undefined">house</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.country.picture"
                      :alt="studyInfo.country.name" v-else/>
-                <p class="consultantDescBlock--head_item_support">کشور در حال تحصیل</p>
+                <p class="consultantDescBlock--head_item_support">Studying Country</p>
                 <p class="consultantDescBlock--head_item_text">{{studyInfo.country.name}}</p>
             </div>
 
@@ -48,12 +43,12 @@
                 <i class="material-icons" v-if="studyInfo.field_of_study == undefined">add</i>
                 <img class="consultantDescBlock--head_item_image" :src="studyInfo.field_of_study.picture"
                      :alt="studyInfo.field_of_study.name" v-else/>
-                <p class="consultantDescBlock--head_item_support">رشته</p>
+                <p class="consultantDescBlock--head_item_support">Major</p>
                 <p class="consultantDescBlock--head_item_text">{{studyInfo.field_of_study.name}}</p>
             </div>
 
         </header>
-        <main class="consultantDescBlock--main isansFont--faNum">
+        <main class="consultantDescBlock--main gadugiFont">
             <div class="consultantDescBlock--main_video" v-if="consultant.aparat_link">
                 <iframe allowfullscreen="true" :src="getVideoFrameLink(consultant.aparat_link)"/>
             </div>
@@ -63,7 +58,13 @@
                 <i class="material-icons consultantBlock-calendar-warn-icon">
                     info
                 </i>
-                مدت زمان هر جلسه مشاوره 40 دقیقه می باشد و هزینه هر جلسه مبلغ {{consultant.time_slot_price}} تومان است.
+                Each session lasts for 40 minutes and costs {{consultant.time_slot_price}} tomans.
+            </div>
+            <div class="consultantBlock-calendar-warn">
+                <i class="material-icons consultantBlock-calendar-warn-icon">
+                    info
+                </i>
+                Calendar time zone is based on {{$store.getters.timezone}}.
             </div>
         </main>
     </section>
@@ -135,9 +136,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         position: relative;
-        margin-top: 15px;
+        margin: 15px 0;
     }
 
     .consultantDescBlock--head {
@@ -160,16 +160,17 @@
         border-radius: 50%;
         border: 5px solid white;
         position: absolute;
-        right: 15px;
+        left: 15px;
         top: -50px;
     }
 
     .consultantDescBlock--head-info {
         position: absolute;
-        right: 185px;
+        left: 185px;
         top: -88px;
         color: white;
         display: flex;
+        justify-content: flex-end;
         align-items: center;
     }
 
@@ -191,7 +192,7 @@
     .consultantDescBlock--head-resume {
         color: white;
         border: 2px solid white;
-        margin-right: 10px;
+        margin-left: 10px;
         border-radius: 10px;
         font-size: 12px;
         padding: 5px 15px;
@@ -244,14 +245,14 @@
 
     .consultantDescBlock--main {
         display: flex;
-        align-items: stretch;
+        justify-content: stretch;
+        align-self: stretch;
         flex-direction: column;
         flex-wrap: wrap;
         padding-top: 60px;
     }
 
     .consultantDescBlock--main_bio {
-        width: 100%;
         padding: 30px;
     }
 
@@ -277,14 +278,14 @@
         color: #8C6D1F;
         display: flex;
         align-items: center;
-        margin: 0 15px;
+        margin: 15px;
         padding: 15px;
         border-radius: 5px;
     }
 
     .consultantBlock-calendar-warn-icon {
         color: #CAA53D;
-        margin-left: 10px;
+        margin-right: 10px;
     }
 
     @media only screen and (max-width: 991.8px) {
@@ -294,18 +295,24 @@
 
         .consultantDescBlock--main {
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: stretch;
             padding-top: 0;
         }
 
         .consultantDescBlock--main_video {
+            width: initial;
+            margin: 10px;
         }
 
         .consultantDescBlock--main_bio {
-            width: 100%;
             margin-top: 10px;
             margin-right: 0;
+            padding: 15px;
+        }
+
+        .consultantBlock-calendar-warn {
+            align-self: stretch;
         }
 
         .consultantDescBlock--main_bio button, p {
@@ -323,14 +330,10 @@
             border-radius: 0;
         }
 
-
         .consultantDescBlock--head-info {
-            right: initial;
             top: -75px;
-        }
-
-        .consultantDescBlock--head-minutes {
-            display: none;
+            right: unset;
+            left: unset;
         }
 
         .consultantDescBlock--head-resume {

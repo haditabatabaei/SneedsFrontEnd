@@ -31,262 +31,349 @@
                         </button>
                     </div>
                 </div>
-                <div class="package-detail-box-items isansFont--faNum">
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            add_location
-                        </i>
-                        <span class="detail-box-item-key">
-                            کشور مقصد
-                        </span>
-                        <p class="detail-box-item-value">
-                            {{userForm.apply_country.name}}
-                        </p>
-                    </div>
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            layers
-                        </i>
-                        <span class="detail-box-item-key">
-                            مقطع مورد نظر
-                        </span>
-                        <p class="detail-box-item-value">
-                            {{userForm.apply_grade.name}}
-                        </p>
-                    </div>
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            bar_chart
-                        </i>
-                        <span class="detail-box-item-key">
-                            معدل
-                        </span>
-                        <p class="detail-box-item-value">
-                            {{userForm.total_average}}
-                        </p>
-                    </div>
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            format_bold
-                        </i>
-                        <span class="detail-box-item-key">
-                            مدرک زبان
-                        </span>
-                        <p class="detail-box-item-value" v-if="userForm.language_certificate">
-                            دارد - {{userForm.language_certificate.name}}
-                        </p>
-                        <p class="detail-box-item-value" v-else>
-                            ندارد
-                        </p>
-                    </div>
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            access_time
-                        </i>
-                        <span class="detail-box-item-key">
-                            ترم مورد نظر
-                        </span>
-                        <p class="detail-box-item-value">
-                            {{`${userForm.apply_semester_year.semester} ${userForm.apply_semester_year.year}`}}
-                        </p>
-                    </div>
-                    <div class="detail-box-item">
-                        <i class="material-icons">
-                            assignment
-                        </i>
-                        <span class="detail-box-item-key">
-                            رشته مورد نظر
-                        </span>
-                        <p class="detail-box-item-value">
-                            {{userForm.apply_major}}
-                        </p>
-                    </div>
+
+                <div class="package-body-switcher no--mobile isansFont">
+                    <ul class="package-body-switcher-items">
+                        <li class=" package-body-switcher-item" v-for="tab in tabs">
+                            <button class="switcher-item-button"
+                                    :class="[{'switcher-item-button--active': currentTab === tab}]"
+                                    @click="currentTab = tab">
+                                {{tab.name}}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div class="package-detail-box-form isansFont--faNum">
-                    <div class="package-detail-box-form-head">
-                        <h2 class="box-form-head-text isansFont--faNum">
-                            <i class="material-icons">
-                                account_circle
-                            </i>
-                            اطلاعات شخصی
-                        </h2>
-                    </div>
-                    <div class="package-detail-box-form-info">
-                        <p class="form-info-field">
+                <c-dropdown-input
+                    class="mobile-switcher"
+                    label="بخش مورد نظر فرم را انتخاب کنید:"
+                    :options="tabs"
+                    :defaultSelectedIndex="0"
+                    @select-option="selectTab">
+                </c-dropdown-input>
+                <div class="package-detail-box-form isansFont--faNum" v-if="hasDestination && currentTab.value === 'dest'">
+                        <div class="package-detail-box-form-info">
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                نام و نام خانوادگی:
+                                کشور های مورد نظر:
                             </span>
-                            <span class="form-info-field-value">
-                                {{`${userForm.user.first_name} ${userForm.user.last_name}`}}
+                                <span v-for="country in destination.countries" class="form-info-field-multivalue isansFont">
+                                {{country.name}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                                <span v-if="destination.countries.length == 0" class="form-info-field-value">
+                                محدودیتی ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                وضعیت تاهل
+                                رشته های مورد نظر:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.marital_status.name}}
+                                <span v-for="major in destination.majors" class="form-info-field-multivalue isansFont">
+                                {{major.name}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                                <span v-if="destination.majors.length == 0" class="form-info-field-value">
+                                محدودیتی ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                سن
+                                مقاطع مورد نظر:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.age}}
+                                <span v-for="grade in destination.grades" class="form-info-field-multivalue isansFont">
+                                {{grade.name}}
                             </span>
-                        </p>
+                                <span v-if="destination.grades.length == 0" class="form-info-field-value">
+                                محدودیتی ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                ترم های مورد نظر:
+                            </span>
+                                <span v-for="semester in destination.semester_years" class="form-info-field-multivalue isansFont--faNum">
+                                {{semester.semester}} {{semester.year}}
+                            </span>
+                                <span v-if="destination.semester_years.length == 0" class="form-info-field-value">
+                                محدودیتی ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                فاند های مورد نظر:
+                            </span>
+                                <span v-for="fund in funds" class="form-info-field-multivalue isansFont--faNum">
+                                {{fund}}
+                            </span>
+                                <span v-if="funds.length == 0" class="form-info-field-value">
+                                محدودیتی ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                توانایی مالی:
+                            </span>
+                                <span class="form-info-field-value">
+                                {{affordability}}
+                            </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="package-detail-box-form isansFont--faNum">
-                    <div class="package-detail-box-form-head">
-                        <h2 class="box-form-head-text isansFont--faNum">
-                            <i class="material-icons">
-                                assignment_ind
-                            </i>
-                            اطلاعات آخرین مقطع تحصیلی
-                        </h2>
-                    </div>
-                    <div class="package-detail-box-form-info">
-                        <p class="form-info-field">
+                <div class="package-detail-box-form isansFont--faNum" v-if="hasEducation && currentTab.value === 'edu'">
+                        <div class="package-detail-box-form-info">
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 مقطع:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.grade.name}}
+                                <span class="form-info-field-value">
+                                {{getReadableGrade(lastEducation.grade)}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 رشته:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.major}}
+                                <span class="form-info-field-value">
+                                {{lastEducation.major.name}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 دانشگاه:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.university}}
+                                <span class="form-info-field-value">
+                                {{lastEducation.university.name}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 معدل کل:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.total_average}}
+                                <span class="form-info-field-value">
+                                {{lastEducation.gpa}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                 عنوان پایان نامه:
+                                سال فارغ التحصیلی:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.thesis_title}}
+                                <span class="form-info-field-value">
+                                {{lastEducation.graduate_in}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                 سال فارغ التحصیلی:
+                                وقفه تحصیلی:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.degree_conferral_year}}
+                                <span v-if="userForm.academic_break" class="form-info-field-value">
+                                سال دارد - {{userForm.academic_break}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                                <span v-else class="form-info-field-value">
+                                ندارد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                مدرک زبان:
+                                توصیه نامه قوی:
                             </span>
-                            <span class="form-info-field-value" v-if="userForm.language_certificate">
-                                {{userForm.language_certificate.name}}
+                                <span v-if="userForm.powerful_recommendation" class="form-info-field-value">
+                                دارد
                             </span>
-                            <span class="form-info-field-multivalue isansFont" v-if="userForm.language_certificate">
-                                Reading: {{userForm.language_reading}} | Listening: {{userForm.language_listening}} | Speaking: {{userForm.language_speaking}} | Writing: {{userForm.language_writing}} | Overall: {{userForm.language_certificate_overall}}
+                                <span v-else class="form-info-field-value">
+                                ندارد
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                عنوان پایان نامه:
+                            </span>
+                                <span v-if="lastEducation.thesis_title" class="form-info-field-value">
+                                {{lastEducation.thesis_title}}
+                            </span>
+                                <span v-else class="form-info-field-value">
+                                نا مشخص
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                <div class="package-detail-box-form isansFont--faNum" v-if="currentTab.value === 'paper'" >
+                        <div class="package-detail-box-form-info">
+                            <p class="form-info-field" v-for="(paper, index) in userForm.publications">
+                            <span class="form-info-field-key">
+                                مقاله {{index + 1}}:
+                            </span>
+                                <span class="form-info-field-value">
+                                {{getPaperSummary(paper)}}
+                            </span>
+                            </p>
+                            <p v-if="userForm.publications.length == 0">
+                            <span class="form-info-field-key">
+                                مقالات:
+                            </span>
+                                <span class="form-info-field-value">
+                                مقاله ای وارد نشده است.
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                <div class="package-detail-box-form isansFont--faNum" v-if="currentTab.value === 'cert'" >
+                        <div class="package-detail-box-form-info">
+                            <div class="form-info-field-double" v-for="(cert, index) in certs">
+                                <p class="form-info-field">
+                                <span class="form-info-field-key">
+                                    مدرک {{index + 1}}:
+                                </span>
+                                    <span class="form-info-field-value">
+                                    {{cert.certificate_type}}
+                                </span>
+                                </p>
+                                <p class="form-info-field">
+                                <span class="form-info-field-key">
+                                    نمره مدرک {{index + 1}}:
+                                </span>
+                                    <span v-for="entry in Object.entries(readableCerts[index])" class="form-info-field-multivalue isansFont">
+                                    {{entry[0]}}:{{entry[1]}}
+                                </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <div class="package-detail-box-form isansFont--faNum" v-if="currentTab.value === 'personal'" >
+                        <div class="package-detail-box-form-info">
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                نام نام خانوادگی:
+                            </span>
+                                <span class="form-info-field-value">
+                                {{userForm.user.first_name}} {{userForm.user.last_name}}
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                جنسیت:
+                            </span>
+                                <span class="form-info-field-value">
+                                {{userForm.gender}}
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                وضعیت تاهل:
+                            </span>
+                                <span class="form-info-field-value" v-if="userForm.is_married">
+                                متاهل
+                            </span>
+                                <span class="form-info-field-value" v-else>
+                                مجرد
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                سن:
+                            </span>
+                                <span class="form-info-field-value">
+                                {{userForm.age}}
+                            </span>
+                            </p>
+                            <p class="form-info-field">
+                            <span class="form-info-field-key">
+                                سابقه کار مرتبط با رشته:
+                            </span>
+                                <span class="form-info-field-value" v-if="userForm.related_work_experience">
+                                دارد | {{userForm.related_work_experience}} ماه
+                            </span>
+                                <span class="form-info-field-value" v-else>
+                                ندارد
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                <div class="package-detail-box-form isansFont--faNum" v-if="currentTab.value === 'other'" >
+                        <div class="package-detail-box-form-info">
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 فایل رزومه:
                             </span>
-                            <a download :href="userForm.resume" class="form-info-field-clickcablevalue" v-if="userForm.resume">
-                                دانلود رزومه
-                                <i class="material-icons">
-                                    keyboard_arrow_down
-                                </i>
-                            </a>
-                            <a class="form-info-field-clickcablevalue" v-else>
-                                آپلود نشده
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="package-detail-box-form isansFont--faNum">
-                    <div class="package-detail-box-form-head">
-                        <h2 class="box-form-head-text isansFont--faNum">
-                            <i class="material-icons">
-                                flight_takeoff
-                            </i>
-                            اطلاعات مورد نیاز برای اپلای
-                        </h2>
-                    </div>
-                    <div class="package-detail-box-form-info">
-                        <p class="form-info-field">
+                                <a download :href="userForm.resume" class="form-info-field-clickcablevalue" v-if="userForm.resume">
+                                    دانلود رزومه
+                                    <i class="material-icons">
+                                        keyboard_arrow_down
+                                    </i>
+                                </a>
+                                <a class="form-info-field-clickcablevalue" v-else>
+                                    آپلود نشده
+                                </a>
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                کشور مقصد:
+                                سابقه المپیاد:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.apply_country.name}}
+                                <span class="form-info-field-value" v-if="userForm.olympiad">
+                                {{userForm.olympiad}}
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                                <span class="form-info-field-value" v-else>
+                                نامشخص
+                            </span>
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                دانشگاه مقصد:
+                                آدرس لینکدین:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.apply_university}}
+                                <a target="_blank" :href="userForm.resume" class="form-info-field-clickcablevalue" v-if="userForm.linkedin_url">
+                                    {{userForm.linkedin_url}}
+                                </a>
+                                <span class="form-info-field-value" v-else>
+                                نامشخص
                             </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
-                                 رشته مورد نظر:
+                                آدرس وبسایت شخصی:
                             </span>
-                            <span class="form-info-field-value">
-                                {{userForm.apply_major}}
+                                <a target="_blank" :href="userForm.homepage_url" class="form-info-field-clickcablevalue" v-if="userForm.homepage_url">
+                                    {{userForm.homepage_url}}
+                                </a>
+                                <span class="form-info-field-value" v-else>
+                                نامشخص
                             </span>
-                        </p>
-                        <p class="form-info-field">
-                            <span class="form-info-field-key">
-                                 ترم مورد نظر:
-                            </span>
-                            <span class="form-info-field-value">
-                                {{`${userForm.apply_semester_year.semester} ${userForm.apply_semester_year.year}`}}
-                            </span>
-                        </p>
-                        <p class="form-info-field">
+                            </p>
+                            <p class="form-info-field">
                             <span class="form-info-field-key">
                                 توضیحات:
                             </span>
-                            <span class="form-info-field-longvalue">
+                                <span class="form-info-field-longvalue" v-if="!!userForm.comment">
                                 {{userForm.comment}}
                             </span>
-                        </p>
+                                <span class="form-info-field-value" v-else>
+                                نامشخص
+                            </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
             </section>
         </div>
     </section>
 </template>
 
 <script>
+    import DropdownInput from "@/components/Form/DropdownInput";
     export default {
         name: "ConsideringPackageDetail",
+        components: {
+            'c-dropdown-input': DropdownInput
+        },
         data() {
             return {
                 package: {},
-                userForm: {}
+                userForm: {},
+                tabs: [
+                    {name: 'مقاصد اپلای', value: 'dest'},
+                    {name: 'آخرین مقطع تحصیلی', value: 'edu'},
+                    {name: 'مدارک زبان', value: 'cert'},
+                    {name: 'مقاله ها', value: 'paper'},
+                    {name: 'اطلاعات شخصی', value: 'personal'},
+                    {name: 'سایر اطلاعات', value: 'other'},
+                ],
+                paymentAffordabilityChoices: [],
+                currentTab: null
             }
         },
         computed: {
@@ -302,10 +389,79 @@
             userInfo() {
                 return this.$store.getters.getUserInfo;
             },
+
+            hasUserForm() {
+                return Object.keys(this.userForm).length > 0;
+            },
+
+            hasDestination() {
+                return this.hasUserForm && !!this.userForm.want_to_applies[0];
+            },
+
+            destination() {
+                return this.userForm.want_to_applies[0];
+            },
+
+            hasEducation() {
+                return this.hasUserForm && this.userForm.universities.length > 0;
+            },
+
+            lastEducation() {
+                return this.userForm.universities[this.userForm.universities.length - 1];
+            },
+
+            funds() {
+                if(this.hasUserForm) {
+                    let toReturn = [];
+                    if(this.userForm.prefers_full_fund) {
+                        toReturn.push('فول فاند')
+                    }
+
+                    if(this.userForm.prefers_half_fund) {
+                        toReturn.push('هف فاند')
+                    }
+
+                    if(this.userForm.prefers_self_fund) {
+                        toReturn.push('سلف فاند')
+                    }
+                    return toReturn;
+                } else {
+                    return ['محدودیتی ندارد']
+                }
+            },
+
+            affordability() {
+                return this.hasUserForm ? this.paymentAffordabilityChoices.find(choice => choice.value === this.userForm.payment_affordability).label : 'مشخص نشده'
+            },
+
+            certs() {
+                return [
+                    ...this.userForm.regular_certificates,
+                    ...this.userForm.gmat_certificates,
+                    ...this.userForm.gre_biology_certificates,
+                    ...this.userForm.gre_general_certificates,
+                    ...this.userForm.gre_physics_certificates,
+                    ...this.userForm.gre_psychology_certificates,
+                    ...this.userForm.gre_subject_certificates,
+                ]
+            },
+
+            readableCerts() {
+                return this.certs.map(cert => {
+                    let certCloned = {};
+                    Object.assign(certCloned, cert);
+                    delete certCloned.id;
+                    delete certCloned.certificate_type
+                    delete certCloned.student_detailed_info;
+                    return certCloned;
+                })
+            },
+
+
             studentSmallDescription() {
-                if (this.userForm.id) {
+                if (this.hasEducation) {
                     return `
-                        دانشجوی ${this.userForm.grade.name} رشته ${this.userForm.major} ${this.userForm.university}
+                        دانشجوی ${this.getReadableGrade(this.lastEducation.grade)} رشته ${this.lastEducation.major.name} ${this.lastEducation.university.name}
                     `
                 } else {
                     return '';
@@ -313,6 +469,60 @@
             },
         },
         methods: {
+            selectTab(tab) {
+                this.currentTab = tab;
+            },
+
+            getPaperType(type) {
+                switch (type.toLowerCase()) {
+                    case 'journal':
+                        return 'مقاله ژورنالی'
+                    case 'conference':
+                        return 'مقاله کنفرانسی';
+                }
+            },
+
+            getPaperAuthorNumber(authorNumber) {
+                switch (authorNumber.toLowerCase()) {
+                    case 'first':
+                        return 'اول'
+                    case 'second':
+                        return 'دوم'
+                    case 'third':
+                        return 'سوم'
+                    case 'fourth_or_more':
+                        return 'چهارم به بعد'
+                }
+            },
+
+            getPaperJournalReputation(rp) {
+                switch (rp.toLowerCase()) {
+                    case 'one_to_three':
+                        return '1 تا 3';
+                    case 'four_to_then':
+                        return '4 تا 10'
+                    case 'above_ten':
+                        return 'بالای 10'
+                }
+            },
+
+            getPaperSummary(item) {
+                return `${this.getPaperType(item.type)}، ${item.publish_year}، نویسنده ${this.getPaperAuthorNumber(item.which_author)} | ضریب تاثیر: ${this.getPaperJournalReputation(item.journal_reputation)} | ${item.title}`
+            },
+
+            getReadableGrade(grade) {
+                switch (grade) {
+                    case 'BACHELOR':
+                        return 'کارشناسی';
+                    case 'MASTER':
+                        return 'کارشناسی ارشد';
+                    case 'DOC':
+                        return 'دکترا';
+                    case 'POST_DOC':
+                        return 'پست دکترا'
+                }
+            },
+
             async getPackage() {
                 try {
                     //this.$loading(true);
@@ -388,10 +598,24 @@
                 } else {
                     return 'خطایی هنگام ارتباط با سرور رخ داد و یا شما قبلا اعلام آمادگی کرده اید.'
                 }
+            },
+
+            async getPaymentAffordabilityChoices() {
+                try {
+                    let result = await this.$api.get(`${this.api}/account/payment-affordability-choices/`, this.httpConfig);
+                    this.paymentAffordabilityChoices = result.data.choices;
+                    console.log(this.paymentAffordabilityChoices);
+                } catch (e) {
+                    console.log(e)
+                } finally {
+
+                }
             }
         },
         created() {
             this.getPackage();
+            this.getPaymentAffordabilityChoices();
+            this.currentTab = this.tabs[0];
         }
     }
 </script>
@@ -541,22 +765,6 @@
         margin-top: 20px;
     }
 
-    .package-detail-box-form-head {
-        padding: 5px 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        background-color: #F8F8F8;
-    }
-
-    .box-form-head-text {
-        color: #585858;
-        margin: 0;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-    }
-
     .box-form-head-text i {
         color: #A347FF;
         font-size: 18px;
@@ -613,6 +821,60 @@
         line-height: 25px;
     }
 
+    .package-body-switcher {
+        display: flex;
+        align-items: center;
+        justify-content: stretch;
+        background-color: #F8F8F8;
+        margin: 20px 0;
+    }
+
+    .package-body-switcher-items {
+        display: flex;
+        padding: 0;
+        list-style: none;
+        align-items: stretch;
+        margin: 0;
+    }
+
+    .package-body-switcher-item {
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+    }
+
+    .switcher-item-button {
+        display: flex;
+        align-items: center;
+        padding: 10px 25px;
+        margin: 0;
+        font-size: 13px;
+        background: none;
+        border: none;
+        color: #9B9999;
+    }
+
+    .switcher-item-button i {
+        font-size: 15px;
+        margin-right: 5px;
+        border: 1px solid #8C3DDB;
+        border-radius: 50%;
+    }
+
+    .switcher-item-button:hover {
+        color: #8C3DDB;
+    }
+
+    .switcher-item-button--active {
+        background: white;
+        color: #8C3DDB;
+        font-weight: bold;
+    }
+
+    .mobile-switcher {
+        display: none;
+    }
+
     @media only screen and (max-width: 991.8px) {
         .package {
             background-color: white;
@@ -641,9 +903,17 @@
         .detail-box-intro-actions {
             flex-wrap: wrap;
         }
+
+        .form-info-field {
+            flex-wrap: wrap;
+        }
     }
 
-    @media only screen and (max-width: 577.8px) {
+    @media only screen and (max-width: 567.8px) {
+        .no--mobile {
+            display: none;
+        }
+
         .package-detail-box-intro {
             flex-direction: column;
             justify-content: center;
@@ -661,5 +931,15 @@
         .detail-box-intro-personal {
             text-align: center;
         }
+
+        .mobile-switcher {
+            display: block;
+            margin: 0 20px;
+        }
+
+        .form-info-field {
+            flex-wrap: wrap;
+        }
+
     }
 </style>

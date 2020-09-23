@@ -6,8 +6,20 @@
     font-family: 'isansFaNum';
     src: url('../font/iranSansFarsiNumber.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: 'gadugi';
+    src: url("../font/gadugi.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'dana';
+    src: url('../font/dana-regular.eot') format("embedded-opentype"),
+    url("../font/dana-regular.woff") format("woff");
+}
+
 .gadugiFont{
-    font-family: 'isans' !important;
+    font-family: 'gadugi' !important;
 }
 
 .isansFont{
@@ -17,4 +29,8 @@
 
 .isansFont--faNum {
     font-family : 'isansFaNum' !important;
+}
+
+.danaFont {
+    font-family: 'dana' !important;
 }

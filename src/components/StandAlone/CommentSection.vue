@@ -1,29 +1,29 @@
 <template>
     <section class="commentSectionWrapper">
-        <h1 class="commentSectionWrapper-title isansFont">
-            نظرات
-            <sub v-if="comments.length > 0" class="commentSectionWrapper-title-meta isansFont--faNum">{{comments.length}} نظر</sub>
+        <h1 class="commentSectionWrapper-title gadugiFont">
+            Comments
+            <sub v-if="comments.length > 0" class="commentSectionWrapper-title-meta">{{comments.length}}</sub>
         </h1>
-        <div class="commentInputSection isansFont--faNum" v-if="isLoggedIn">
+        <div class="commentInputSection gadugiFont" v-if="isLoggedIn">
             <textarea
                 id="comment"
-                placeholder="نظرتون رو بنویسید" rows="6"
+                placeholder="Type your opinion" rows="6"
                 v-model="$v.inputComment.$model">
             </textarea>
 
-            <p class="text-danger" v-if="$v.inputComment.$error">برای ثبت نظر باید حتما فیلد نظر را بنویسید.</p>
+            <p class="text-danger" v-if="$v.inputComment.$error">Your opinion is required!.</p>
             <button @click.prevent="submitComment()" :disabled="$v.inputComment.$error || !$v.inputComment.$dirty">
-                ثبت نظر
+                Submit
             </button>
         </div>
 
-        <div class="col-md-12 text-center comment-login-needed" v-else>
-            <router-link to="/auth/login" class=" isansFont">
-                برای ثبت نظر باید وارد حساب خود شوید. برای ورود کلیک کنید
+        <div class="comment-login-needed" v-else>
+            <router-link to="/auth/login" class="gadugiFont">
+                You need an account for submitting comment.
             </router-link>
         </div>
 
-        <div class="col-md-12 commentsWrapper">
+        <div class="commentsWrapper">
             <comment-block
                 v-for="(comment, index) in comments"
                 :key="index"
@@ -127,11 +127,10 @@
         background-color: white;
         border-radius: 0 0 15px 15px;
         display: flex;
-        align-items: center;
         justify-content: center;
         flex-direction: column;
-        width: 100%;
-        padding: 60px 15px;
+        align-self: stretch;
+        margin: 30px 15px;
     }
 
     .commentSectionWrapper-title {
@@ -139,14 +138,14 @@
         color: #444;
         margin-top: 30px;
         font-weight: bold;
-        text-align: right;
+        text-align: left;
         width: 100%;
     }
 
     .comment-login-needed {
         width: 100%;
-        text-align: right;
-        padding-right: 0;
+        text-align: left;
+        padding-left: 0;
     }
 
     .commentSectionWrapper-title-meta {
@@ -155,12 +154,13 @@
     }
 
     .commentInputSection {
-        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .commentInputSection textarea {
-        width: 100%;
         padding: 10px;
+        margin-top: 15px;
         resize: none;
         border: 1px solid #ccc;
         border-radius: 15px;
@@ -170,17 +170,14 @@
         color: white;
         font-weight: bold;
         border-radius: 5px;
+        margin-top: 15px;
         padding: 10px 30px;
         border: none;
         background-color: #E81E63;
-        float: left;
+        align-self: flex-start;
     }
 
-    .commentsMiniTitle {
-        color: #bbb;
-    }
-
-    button:disabled {
+    .commentInputSection button:disabled {
         background-color: rgba(232,30,99,0.5);
         cursor: not-allowed;
     }

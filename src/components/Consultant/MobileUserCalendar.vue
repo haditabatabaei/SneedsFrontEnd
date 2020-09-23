@@ -1,39 +1,39 @@
 <template>
-    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode}]"
+    <div class="mobile-cal" :class="[{'mobile-cal--desktop': desktopMode, 'cal--rtl': isiran}]"
          v-if="days.length !== 0 && !!activeDay">
-        <p class="timezone-desc isansFont--faNum">
-            تقویم به وقت محلی منطقه زمانی
-            {{$store.getters.timezone}}
-            است.
-        </p>
-        <div class="cal-week-switcher isansFont" :class="[{'cal-week-switcher--desktop': desktopMode}]">
+        <div class="cal-week-switcher" :class="[{'cal-week-switcher--desktop': desktopMode, 'week-switcher--rtl': isiran, 'isansFont': isiran, 'gadugiFont': !isiran}]">
             <button class="cal-week-switcher-button" @click="showPrevWeek"  :class="[{'cal-week-switcher-button--hasfree': prevWeekHasSlots}]" v-if="activeWeekOffset > 0">
-                <i class="material-icons">keyboard_arrow_right</i>
-                هفته قبل
+                <i class="material-icons" v-if="isiran">keyboard_arrow_right</i>
+                <i class="material-icons" v-else>keyboard_arrow_left</i>
+                <span v-if="isiran">هفته قبل</span>
+                <span v-else>Prev week</span>
             </button>
             <button class="cal-week-switcher-button cal-week-switcher-button--disabled" disabled v-else>
 
             </button>
-            <p class="cal-week-switcher-current isansFont" :class="[{'isansFont--faNum': isiran}]"
+            <p class="cal-week-switcher-current" :class="[{'isansFont--faNum': isiran, 'gadugiFont': !isiran}]"
                v-if="days.length > 0">
                 {{days[0].day.locale(locale).format('DD MMMM')}}
-                تا
+                <span v-if="isiran">تا</span>
+                <span v-else>to</span>
                 {{days[6].day.locale(locale).format('DD MMMM')}}
             </p>
 
             <button class="cal-week-switcher-button" @click="showNextWeek" :class="[{'cal-week-switcher-button--hasfree': nextWeekHasSlots}]">
-                هفته بعد
-                <i class="material-icons">keyboard_arrow_left</i>
+                <span v-if="isiran">هفته بعد</span>
+                <span v-else>Next week</span>
+                <i class="material-icons" v-if="isiran">keyboard_arrow_left</i>
+                <i class="material-icons" v-else>keyboard_arrow_right</i>
             </button>
         </div>
-        <div class="cal-week-days" :class="[{'isansFont': desktopMode}]">
+        <div class="cal-week-days" :class="[{'isansFont--faNum': isiran, 'gadugiFont': !isiran}]">
             <ul class="cal-days-list" :class="[{'cal-days-list--desktop' : desktopMode}]">
                 <li class="cal-days-item" v-for="day in days">
                     <button class="cal-days-toggler"
                             :class="[{'cal-days-toggler--active': day.day.locale(locale).format() === activeDay.day.locale(locale).format(), 'cal-days-toggler--hasfree': day.slots.length > 0}]"
                             @click="activeDay = day">
                         {{day.day.format('dddd')}}
-                        <span class="cal-days-toggler-small" :class="[{'isansFont--faNum': isiran}]">
+                        <span class="cal-days-toggler-small" :class="[{'isansFont--faNum': isiran, 'gadugiFont': !isiran}]">
                             {{day.day.format('MM/DD')}}
                         </span>
                     </button>
@@ -42,11 +42,13 @@
             <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="tempLoading" :size="20" sizeUnit="px"/>
 
             <div class="cal-week-days-slots" :class="[{'cal-week-days-slots--desktop': desktopMode}]" v-if="!tempLoading">
-                <p class="cal-week-days-slots-empty" v-if="activeDay.slots.length === 0">زمانی برای این روز تنظیم نشده
-                    است.</p>
+                <p class="cal-week-days-slots-empty" v-if="activeDay.slots.length === 0">
+                    <span v-if="isiran">زمانی برای این روز تنظیم نشده است.</span>
+                    <span v-else>There is no available slot for this day.</span>
+                </p>
 
                 <button class="days-slots-item days-slots-item--free"
-                        :class="[{'isansFont--faNum': isiran, 'days-slots-item--desktop' : desktopMode,  'days-slots-item--selected': !!slot.selected}]"
+                        :class="[{'isansFont--faNum': isiran, 'gadugiFont': !isiran, 'days-slots-item--desktop' : desktopMode,  'days-slots-item--selected': !!slot.selected}]"
                         @click="toggleSlotToStash(slot)"
                         v-for="slot in activeDay.slots">
                     <span v-if="isiran">{{getJalaliLocale(slot.start_time).format('DD MMMM')}}</span>
@@ -56,24 +58,16 @@
                     <span v-if="isiran" style="margin:0 5px">تا</span> <span v-else style="margin:0 5px">till</span>
                     {{getJalaliLocale(slot.end_time).format('HH:mm')}}
                 </button>
-<!--                <button class="days-slots-item days-slots-item&#45;&#45;sold"-->
-<!--                        :class="[{'isansFont&#45;&#45;faNum': isiran, 'days-slots-item&#45;&#45;desktop' : desktopMode}]"-->
-<!--                        v-for="slot in shownSoldSlots">-->
-<!--                    {{slot.start_time_date.format('DD MMMM')}}- -->
-<!--                    {{slot.start_time_date.format('HH:mm')}}-->
-<!--                    <span v-if="isiran">تا</span> <span v-else>till</span>-->
-<!--                    {{slot.end_time_date.format('HH:mm')}}-->
-<!--                </button>-->
             </div>
         </div>
         <button disabled v-if="stash.length == 0 && !desktopMode"
                 class="calendar-reserve-button calendar-reserve-button--disabled">
-            برای رزرو، حداقل یک جلسه انتخاب کنید.
+            !You need to select at least one slot to reserve
         </button>
         <button class="calendar-reserve-button isansFont--faNum" v-else-if="stash.length != 0 && !desktopMode"
                 @click="addSelectedItemsToCart"
                 v-else>
-            رزرو {{stash.length}} جلسه انتخاب شده
+            Reserve {{stash.length}} selected slot(s).
         </button>
     </div>
 
@@ -292,12 +286,21 @@
         background-color: white;
     }
 
+    .cal--rtl {
+        direction: rtl;
+    }
+
     .cal-week-switcher {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
         margin-top: 45px;
+    }
+
+
+    .week-switcher--rtl {
+        direction: rtl;
     }
 
     .cal-week-switcher--desktop {
@@ -318,10 +321,18 @@
     }
 
     .cal-week-switcher-button:first-child {
+        border-radius: 0 15px 15px 0;
+    }
+
+    .week-switcher--rtl .cal-week-switcher-button:first-child {
         border-radius: 15px 0 0 15px;
     }
 
     .cal-week-switcher-button:not(:first-child) {
+        border-radius: 15px 0 0 15px;
+    }
+
+    .week-switcher--rtl .cal-week-switcher-button:not(:first-child) {
         border-radius: 0 15px 15px 0;
     }
 
@@ -483,6 +494,10 @@
         margin-left: 10px;
     }
 
+    .cal--rtl .timezone-desc {
+        align-self: flex-end;
+    }
+
     .timezone-desc {
         background-color: #FFFCF4;
         color: #a28220;
@@ -490,6 +505,22 @@
         font-size: 14px;
         padding: 5px 10px;
         margin: 15px;
+        align-self: flex-start;
+    }
+
+    .consultantBlock-calendar-warn {
+        background-color: #FFFCF4;
+        color: #8C6D1F;
+        display: flex;
+        align-items: center;
+        margin: 0 15px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .consultantBlock-calendar-warn-icon {
+        color: #CAA53D;
+        margin-right: 10px;
     }
 
     @media only screen and (max-width: 767.8px) {

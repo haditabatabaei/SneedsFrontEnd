@@ -1,0 +1,258 @@
+<template>
+    <section class="paper-items gadugiFont">
+        <div class="paper-items-wrapper">
+            <div class="paper-items-item" v-for="item in items">
+                <i class="material-icons paper-item-icon">content_paste</i>
+                <div class="paper-item-info">
+                    <p class="paper-item-summary">{{getSummary(item)}}</p>
+                    <p class="paper-item-title">{{getDesc(item)}}</p>
+                    <p class="paper-item-title">Thesis title: {{item.thesis_title}}</p>
+                </div>
+                <button class="paper-item-remove" @click="deleteUniversityItem(item)">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+
+            <p class="paper-items-empty" v-if="items.length == 0">
+                There is no academic degree available.
+            </p>
+            <moon-loader class="loading-icon" style="align-self:center;margin:20px auto;" color="purple" :loading="loading" :size="20" sizeUnit="px"/>
+
+            <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-if="items.length > 0">
+                Add another academic degree
+            </router-link>
+            <router-link to="/analysis/form/lasteducationallevel" class="paper-items-addnew" v-else>
+                Add an academic degree
+            </router-link>
+        </div>
+    </section>
+</template>
+
+<script>
+    export default {
+        name: "EducationalLevelsItems",
+        data() {
+            return {
+                items: [],
+                loading: false
+            }
+        },
+        computed: {
+            user() {
+                return {...this.$store.getters.getUserInfo, ...this.$store.getters.getUser}
+            },
+
+            detailedForm() {
+                return this.$store.getters.detailedForm;
+            },
+
+            detailedFormId() {
+                return this.$store.getters.detailedFormId;
+            },
+
+            api() {
+                return this.$store.getters.getApi
+            },
+
+            httpConfig() {
+                return this.$store.getters.httpConfig
+            },
+
+            multipartHttpConfig() {
+                return this.$store.getters.multipartHttpConfig
+            }
+        },
+        methods: {
+            getGrade(grade) {
+                switch (grade.toLowerCase()) {
+                    case 'bachelor':
+                        return 'bachelor'
+                    case 'master':
+                        return 'master';
+                    case 'phd':
+                        return 'doctorate';
+                    case 'post_doc':
+                        return 'Ph.D';
+
+                }
+            },
+
+            getSummary(item) {
+                return `${this.getGrade(item.grade)} ${item.university.name}`
+            },
+
+            getDesc(item) {
+                return `${item.major.name} till ${item.graduate_in} with ${item.gpa} GPA`
+            },
+
+            async deleteUniversityItem(item) {
+                try {
+                    this.loading = true;
+                    let result = await this.$api.delete(`${this.api}/account/student-detailed-university-throughs/${item.id}/`, this.httpConfig);
+                    console.log(result);
+                    this.$store.commit('setDetailedFormProperty', {prop: 'universities', value: this.detailedForm.universities.filter(uni => uni.id != item.id)})
+                    this.getUniversityThroughs();
+                } catch (e) {
+                    console.log(e)
+                }
+                finally {
+                    this.loading = false;
+                }
+            },
+
+            async getUniversityThroughs() {
+                try {
+                    this.loading = true;
+                    let result = await this.$api.get(`${this.api}/account/student-detailed-university-throughs/?student-detailed-info=${this.detailedFormId}`, this.httpConfig);
+                    this.items = result.data;
+                    console.log('uni throughs results ', result)
+                } catch (e) {
+                    console.log(e)
+                } finally {
+                    this.loading = false;
+                }
+
+            }
+        },
+        watch: {
+            detailedForm(newDetailedForm) {
+                console.log('detailed form changed ', newDetailedForm);
+                this.getUniversityThroughs();
+            }
+        },
+        created() {
+            if (this.detailedForm) {
+                this.getUniversityThroughs();
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .paper-items {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch !important;
+        padding: 100px 20px 20px 20px;
+    }
+
+    .paper-items-notif {
+        color: white;
+        background-color: #009FB3;
+        border-radius: 15px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+    }
+
+    .paper-items-notif i {
+        margin: 0 15px 0 10px;
+        background-color: white;
+        border-radius: 50%;
+        color: #009FB3;
+        font-size: 20px;
+    }
+
+    .paper-items-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 20px;
+        background-color: #F5F7FA;
+        border: 2px solid #F2F2F2;
+        margin-top: 20px;
+    }
+
+    .paper-items-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .paper-item-info {
+        margin: 20px 0 0 0;
+    }
+
+    .paper-item-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #F4CA64;
+        border: 5px solid white;
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+        color: white;
+        border-radius: 50%;
+        box-shadow: 0 2px 20px #00000029;
+        margin: 20px;
+    }
+
+    .paper-item-remove {
+        margin: 0 auto 0 20px;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        color: #B3B3B3;
+    }
+
+    .paper-item-summary {
+        margin: 0;
+        font-size: 20px;
+        color: #173F5F;
+    }
+
+    .paper-item-title {
+        margin: 5px 0 0 0;
+        font-size: 14px;
+        color: #9B9999;
+    }
+
+    .paper-items-empty {
+        align-self: center;
+        margin-top: 20px;
+    }
+
+    .paper-items-addnew {
+        align-self: flex-end;
+        margin: 20px;
+        background-color: #F5F7FA;
+        border: 2px solid #00BFD6;
+        color: #009FB3;
+        border-radius: 5px;
+        padding: 5px 15px;
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .paper-items-item {
+            flex-direction: column;
+            position: relative;
+        }
+
+        .paper-item-icon {
+            margin: 20px 0 10px 0;
+        }
+
+        .paper-item-info {
+            text-align: center;
+            margin: 10px 0 0 0;
+        }
+
+        .paper-item-remove {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin: 0;
+        }
+
+        .paper-items-addnew {
+            align-self: center;
+        }
+
+        .paper-items-notif {
+            justify-content: center;
+        }
+    }
+
+</style>

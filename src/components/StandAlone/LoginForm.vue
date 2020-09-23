@@ -1,24 +1,26 @@
 <template>
     <form class="loginForm" @submit.prevent="login()">
-        <label class="loginForm-label isansFont" for="email">
-            ایمیل :
-            <input class="loginForm-control control--ltr" id="email" type="text" v-model.trim="$v.userToLogin.email.$model">
-            <span class="loginForm-meta error" v-if="emailIsInvalid">
-                لطفا یک ایمیل معتبر وارد کنید.
-            </span>
-        </label>
-        <label class="loginForm-label isansFont" for="password">
-            رمز عبور :
-            <input class="loginForm-control control--ltr" id="password" :type="passType" v-model.trim="$v.userToLogin.password.$model">
-            <span class="loginForm-meta error" v-if="passwordIsInvalid">
-                لطفا یک رمز عبور معتبر وارد کنید.
-            </span>
-            <span class="loginForm-meta">
-                <router-link to="/auth/forget">رمز عبور خود را فراموش کرده ام؟</router-link>
-            </span>
+        <c-simple-input
+            label="Email:"
 
-        </label>
-        <button class="loginForm-button isansFont">
+            :external-label="true"
+            :error="emailIsInvalid"
+            error-text="Please enter a valid email address."
+            v-model.trim="$v.userToLogin.email.$model"
+            class="login-input"
+        />
+        <c-password-input
+            label="Password:"
+
+            :external-label="true"
+            :error="passwordIsInvalid"
+            error-text="Please enter a valid password."
+            v-model.trim="$v.userToLogin.password.$model"
+            class="login-input"
+        />
+        <router-link class="reset-password" to="/auth/forget">Reset password?</router-link>
+
+        <button class="loginForm-button gadugiFont">
             {{submitLabel}}
             <moon-loader class="loading-icon" color="#fff" :loading="isLoading" :size="15" sizeUnit="px"/>
         </button>
@@ -28,11 +30,14 @@
 <script>
     import {required, email, minLength} from 'vuelidate/lib/validators';
     import {MoonLoader} from '@saeris/vue-spinners'
-
+    import SimpleInput from "@/components/Form/SimpleInput";
+    import PasswordInput from "@/components/Form/PasswordInput"
     export default {
         name: "LoginForm.vue",
         components: {
-            "moon-loader": MoonLoader
+            "moon-loader": MoonLoader,
+            "c-simple-input": SimpleInput,
+            "c-password-input": PasswordInput
         },
         validations: {
             userToLogin: {
@@ -55,7 +60,7 @@
         props: {
             submitLabel: {
                 type: String,
-                default: () => 'ورود'
+                default: () => 'Login'
             },
             customAction: {
                 type: Boolean,
@@ -150,6 +155,19 @@
         margin: 20px;
         display: flex;
         flex-direction: column;
+    }
+
+    .login-input {
+        margin: 20px;
+    }
+
+    .login-input:not(:first-child) {
+        margin-top: 0;
+    }
+
+    .reset-password {
+        font-size: 12px;
+        margin: 0 20px 20px 20px;
     }
 
     .loginForm-label:not(:first-child) {

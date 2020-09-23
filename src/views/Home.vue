@@ -39,7 +39,7 @@
 
 
         <section class="landing-section  structure-section">
-            <div class="structure-section-stages-column">
+            <div class="structure-section-stages-header">
                 <h2 class="structure-section-title">How does it work?</h2>
                 <div class="structure-section-title-line">
 
@@ -354,7 +354,12 @@
 <style scoped>
 
     .landing-section{
-        align-items: center;
+      margin-bottom: 100px;
+      width: 100%;
+      max-width: 1500px;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
     }
 
 
@@ -444,7 +449,7 @@
 
 
     .homepage-intro-info-link {
-        font-size: 10px;
+        font-size: 14px;
         border: 1px solid #00D4ED;
         border-radius: 10px;
         color: #00D4ED;
@@ -464,7 +469,7 @@
         background: transparent linear-gradient(91deg, #00BFD6 0%, #04AEC2 100%) 0% 0%
         no-repeat padding-box;
         border-radius: 10px;
-        font-size: 10px;
+        font-size: 14px;
         margin-right: 10px;
         margin-bottom: 10px;
         padding: 10px 15px;
@@ -504,14 +509,24 @@
         text-align: center;
         margin: 0px ;
     }
+    .structure-section-stages-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      padding: 20px 5%;
+
+    }
 
     .structure-section-stages-column {
         display: flex;
+        min-height: 400px;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         padding: 20px 5%;
     }
+
 
     .structure-section-small-title {
         color: #303143;
@@ -520,6 +535,7 @@
     }
     .structure-section-text {
       color: #707070;
+      margin-top: 15px;
     }
 
     .circle-svg {
@@ -628,16 +644,18 @@
         flex-direction: column;
         justify-content: start;
         align-items:self-start;
-        padding: 50px 20px 0px 20px;
+        padding: 100px 20px 50px 20px;
     }
 
     .blue-box-title {
         color: #FFFFFF;
+         margin-top: 20px ;
     }
 
     .blue-box-text {
         color: #1DFFF6;
         font-size: 10px;
+      margin-top: 15px;
     }
     .blue-box-details {
         align-items: center;
@@ -645,11 +663,10 @@
     }
 
     .white-plane-svg {
-        margin-top: -2%;
-        margin-right: 0px;
-        width: 20%;
-        margin-left: 86%;
-        vertical-align: center;
+      margin-top: -5%;
+      margin-right: 0px;
+      width: 30%;
+      margin-left: 83%;
     }
     .circle-icon {
         background-color: white;
@@ -742,7 +759,7 @@
 
 
     .activities-circle-text {
-        width: 60%;
+        width: 40%;
         margin: 10px;
         color: #303143;
         font-size: 12px;
@@ -760,14 +777,14 @@
 
     .achievements-section-box {
         width: 30%;
-      min-height: 230px;
+        position: relative;
+        min-height: 230px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
         box-shadow: 0px 7px 46px #0000001F;
-        padding:4%;
         margin: 3%;
     }
     .plane-enter {
@@ -789,6 +806,12 @@
         justify-content:flex-start;
         overflow: hidden;
 
+    }
+    .achievements-section-header {
+      margin-top: 20px;
+    }
+    .achievements-section-text {
+      margin-top: 30px;
     }
 
     .center-box {
@@ -1006,6 +1029,13 @@
       .achievements-section-box {
         width: 80%;
         margin: 15px;
+      }
+      .achievements-section-header {
+        padding-top: 20px;
+
+      }
+      .achievements-section-text {
+        margin-top: 30px;
       }
       .pointer-svg {
         display: none;

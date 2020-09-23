@@ -95,6 +95,7 @@
                         <div class="chances-tabs-charts">
                             <div class="charts-box">
                                 <c-gauge
+                                        class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
                                         :value="10"
@@ -117,6 +118,7 @@
                             </div>
                             <div class="charts-box">
                                 <c-gauge
+                                        class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
                                         :value="45"
@@ -139,6 +141,7 @@
                             </div>
                             <div class="charts-box">
                                 <c-gauge
+                                        class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
                                         :value="100"
@@ -193,86 +196,88 @@
                     Your Destinations
                 </h2>
 
-                <table class="grid-table">
-                    <thead class="grid-head">
-                    <tr class="grid-row">
-                        <th class="grid-head-cell">Rank</th>
-                        <th class="grid-head-cell">University</th>
-                        <th class="grid-head-cell cell--centered">
-                            Admission Chance
-                            <i class="material-icons">airplanemode_active</i>
-                        </th>
-                        <th class="grid-head-cell cell--centered">
-                            Scholarship
-                            <i class="material-icons">attach_money</i>
-                        </th>
-                        <th class="grid-head-cell cell--centered">
-                            Full-Fund
-                            <i class="material-icons">attach_money</i>
-                            <i class="material-icons">attach_money</i>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody class="grid-body">
-                    <tr class="grid-row">
-                        <td class="grid-cell">2</td>
-                        <td class="grid-cell">Amirkabir University Of Technology</td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--medium">
-                                Medium
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--low">
-                                Low
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--high">
-                                High
-                            </p>
-                        </td>
-                    </tr>
-                    <tr class="grid-row">
-                        <td class="grid-cell">2</td>
-                        <td class="grid-cell">Amirkabir University Of Technology</td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--medium">
-                                Medium
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--low">
-                                Low
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--high">
-                                High
-                            </p>
-                        </td>
-                    </tr>
-                    <tr class="grid-row">
-                        <td class="grid-cell">2</td>
-                        <td class="grid-cell">Amirkabir University Of Technology</td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--medium">
-                                Medium
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--low">
-                                Low
-                            </p>
-                        </td>
-                        <td class="grid-cell cell--centered">
-                            <p class="chance-prob prob--high">
-                                High
-                            </p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="grid-table-responsive">
+                    <table class="grid-table">
+                        <thead class="grid-head">
+                        <tr class="grid-row">
+                            <th class="grid-head-cell">Rank</th>
+                            <th class="grid-head-cell">University</th>
+                            <th class="grid-head-cell cell--centered">
+                                Admission Chance
+                                <i class="material-icons">airplanemode_active</i>
+                            </th>
+                            <th class="grid-head-cell cell--centered">
+                                Scholarship
+                                <i class="material-icons">attach_money</i>
+                            </th>
+                            <th class="grid-head-cell cell--centered">
+                                Full-Fund
+                                <i class="material-icons">attach_money</i>
+                                <i class="material-icons">attach_money</i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="grid-body">
+                        <tr class="grid-row">
+                            <td class="grid-cell">2</td>
+                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--medium">
+                                    Medium
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--high">
+                                    High
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">2</td>
+                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--medium">
+                                    Medium
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--high">
+                                    High
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">2</td>
+                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--medium">
+                                    Medium
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--high">
+                                    High
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <router-link to="/" class="boost-link">
                     Boost my Chance!
@@ -284,36 +289,25 @@
                 <p class="chances-desc">
                     Rejected and accepted students who had similar CVs.
                 </p>
-                <table class="grid-table table-similar">
-                    <thead class="grid-head">
-                    <tr class="grid-row">
-                        <th class="grid-head-cell">Home University</th>
-                        <th class="grid-head-cell">Dest. University</th>
-                        <th class="grid-head-cell">
-                            Latest Degree
-                        </th>
-                        <th class="grid-head-cell">
-                            GPA (of 20)
-                        </th>
-                        <th class="grid-head-cell">
-                            Scholarships
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody class="grid-body">
+
+                <div class="grid-table-responsive">
+                    <table class="grid-table table-similar">
+                        <thead class="grid-head">
                         <tr class="grid-row">
-                        <td class="grid-cell">Amirkabir University of Technology</td>
-                        <td class="grid-cell">Amirkabir University Of Technology</td>
-                        <td class="grid-cell">
-                            Bachelor of computer science
-                        </td>
-                        <td class="grid-cell">
-                            16.5
-                        </td>
-                        <td class="grid-cell">
-                            23,000 $
-                        </td>
-                    </tr>
+                            <th class="grid-head-cell">Home University</th>
+                            <th class="grid-head-cell">Dest. University</th>
+                            <th class="grid-head-cell">
+                                Latest Degree
+                            </th>
+                            <th class="grid-head-cell">
+                                GPA (of 20)
+                            </th>
+                            <th class="grid-head-cell">
+                                Scholarships
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="grid-body">
                         <tr class="grid-row">
                             <td class="grid-cell">Amirkabir University of Technology</td>
                             <td class="grid-cell">Amirkabir University Of Technology</td>
@@ -340,8 +334,23 @@
                                 23,000 $
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        <tr class="grid-row">
+                            <td class="grid-cell">Amirkabir University of Technology</td>
+                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell">
+                                Bachelor of computer science
+                            </td>
+                            <td class="grid-cell">
+                                16.5
+                            </td>
+                            <td class="grid-cell">
+                                23,000 $
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
 
                 <router-link to="/" class="showMore-link">
                     Show More (Premium)
@@ -359,9 +368,9 @@
                     </div>
                     <div class="comparisons-dropdown">
                         <c-dropdown
-                            label="Select category"
-                            :defaultSelectedIndex="0"
-                            @select-option="selectComparisonCategory"
+                                label="Select category"
+                                :defaultSelectedIndex="0"
+                                @select-option="selectComparisonCategory"
                         />
                     </div>
                 </div>
@@ -381,7 +390,8 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the participants.
+                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                participants.
                             </p>
                         </div>
                     </div>
@@ -394,7 +404,8 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the participants.
+                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                participants.
                             </p>
                         </div>
                     </div>
@@ -407,7 +418,8 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the participants.
+                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                participants.
                             </p>
                         </div>
                     </div>
@@ -420,7 +432,8 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the participants.
+                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                participants.
                             </p>
                         </div>
                     </div>
@@ -433,7 +446,8 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the participants.
+                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                participants.
                             </p>
                         </div>
                     </div>
@@ -499,7 +513,8 @@
             <section class="premium">
                 <h1 class="premium-title">Premium Admission Chance Calculation</h1>
                 <span class="prem-divider"></span>
-                <p class="prem-desc">Our experts review your CV and help you understanding your exact admission chances.</p>
+                <p class="prem-desc">Our experts review your CV and help you understanding your exact admission
+                    chances.</p>
                 <router-link to="/" class="prem-link">Start Now</router-link>
             </section>
         </section>
@@ -511,11 +526,11 @@
     import ScoreOutOfMax from "@/components/FormResult/ScoreOutOfMax";
     import CircleChart from "@/components/FormResult/CircleChart";
     import BarChart from "@/components/FormResult/BarChart";
-    import {VueSvgGauge} from 'vue-svg-gauge'
     import RadarChart from "@/components/FormResult/RadarChart";
     import ResultTab from "@/components/FormResult/ResultTab";
     import VerticalTab from "@/components/FormResult/VerticalTab";
     import DropdownInput from "@/components/Form/DropdownInput";
+    import { VueSvgGauge } from 'vue-svg-gauge'
 
     export default {
         name: "Result",
@@ -607,6 +622,8 @@
                     ]
                 },
                 radarOptions: {
+                    responsive: true,
+                    maintainAspectRatio: true,
                     legend: {
                         display: false
                     }
@@ -1007,6 +1024,122 @@
         padding: 10px 30px;
         font-weight: bold;
         box-shadow: 0 3px 6px #00000029;
+    }
+
+    .grid-table-responsive {
+        /*overflow: auto;*/
+        /*width: 100%;*/
+    }
+
+    @media only screen and (max-width: 991.8px) {
+        .result-container {
+            grid-template-areas: "rank" "score" "grades" "chances" "olympiad" "recom" "paperType" "impactFacotr" "prem";
+            grid-template-columns: 100%;
+            grid-template-rows: auto;
+        }
+
+        .grades {
+            grid-template-areas: "title" "tabs" "radar";
+            grid-template-columns: 100%;
+            grid-template-rows: auto;
+        }
+
+        .grades-radar {
+            margin-left: 0;
+        }
+
+        .charts-box-desc span:first-child {
+            display: none;
+        }
+
+        .charts-box-desc span:last-child {
+            display: none;
+        }
+
+        .charts-box-desc {
+            justify-content: center;
+        }
+
+        .grid-head-cell i {
+            display: none;
+        }
+
+        .grid-table {
+            /*min-width: 400px;*/
+            overflow: auto;
+        }
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .chances-tabs-charts {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .charts-box {
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+
+        .charts-box-desc {
+            margin-top: 5px;
+        }
+
+        .grid-table {
+            grid-template-columns: repeat(5, 150px);
+        }
+
+        .premium {
+            padding: 20px;
+        }
+    }
+
+    @media only screen and (max-width: 533.8px) {
+        .comparisons-head {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .comparisons-dropdown {
+            width: 100%;
+            max-width: unset;
+            margin-top: 10px;
+        }
+
+        .chances-title {
+            margin-left: 0;
+        }
+
+        .chances-desc {
+            margin-left: 0;
+        }
+
+        .guide-progress {
+            display: none;
+        }
+
+        .guide-progress-value {
+            display: none;
+        }
+
+        .guide-item-content {
+            margin-left: 0;
+        }
+
+        .grades-radar {
+            position: relative;
+            width: 100%;
+        }
+
+        .grades-radar-chart {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
     }
 
 </style>

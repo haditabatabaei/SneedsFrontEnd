@@ -8,10 +8,11 @@
                     :showRating="false"
                     :read-only="true"
                     style="background-color: #ffffff;padding:10px 0px 5px 0px; border-radius:20px"
-                    inactive-color="#00BFD6"
+                    inactive-color="#ffffff"
                     active-color="#00BFD6"
                     :border-width="0"
-                    v-model="rate"
+                    v-if="consultant.rate != null"
+                    v-model="consultant.rate"
             />
             <p class="consultant-name">
                 {{consultant.first_name + ' ' + consultant.last_name}}
@@ -35,7 +36,7 @@
         },
         data() {
             return {
-                rate: 2.5
+                rate: consultant.rate
             }
         },
         props: {

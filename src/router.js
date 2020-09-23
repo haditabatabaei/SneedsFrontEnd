@@ -11,7 +11,6 @@ const router = new Router({
         {
             path: '/',
             name: 'Home',
-            redirect: '/consultants',
             component: () => import("@/views/Home"),
             meta: {
                 auth: 'optional'
@@ -229,6 +228,7 @@ const router = new Router({
                 auth: 'optional'
             }
         },
+
         {
             path: '/user',
             redirect: '/user/profile',
@@ -331,6 +331,14 @@ const router = new Router({
             meta: {
                 auth: 'optional'
             },
+        },
+        {
+            path: '/AdmitChance',
+            name: 'AdmitChance',
+            component: () => import("@/components/AdmitChance/AdmitChanceLanding"),
+            meta: {
+                auth : 'optional'
+            }
         },
         {
             path: '/consultants/:consultantSlug',

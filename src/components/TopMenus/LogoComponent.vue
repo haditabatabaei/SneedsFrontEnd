@@ -1,8 +1,8 @@
 <template>
-    <a href="http://sneeds.ir" target="_blank" class="logo gadugiFont">
+    <router-link to="/" class="logo gadugiFont">
         <img class="logoImage" src="/sneedsAssets/img/sneedsLogo.png" alt="Sneeds Logo">
         <span class="logoName gadugiFont">Sneeds</span>
-    </a>
+    </router-link>
 </template>
 
 <script>

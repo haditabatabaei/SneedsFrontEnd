@@ -66,4 +66,39 @@
         margin: 0 10px;
         color: #707070;
     }
+
+    @media only screen and (max-width: 991.8px) {
+        .tabs {
+            grid-template-areas:
+                "selectors"
+                "slots";
+            grid-template-rows: auto;
+            grid-template-columns: 100%;
+        }
+
+        .tabs-selectors {
+            padding-right: 0;
+            flex-direction: row;
+            border-right: none;
+            border-bottom: 1px solid #00D4ED;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (max-width: 767.8px) {
+        .tabs-selectors {
+            justify-content: space-between;
+        }
+        .tabs-selector {
+            margin: 0;
+        }
+
+        .tabs-content {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
 </style>

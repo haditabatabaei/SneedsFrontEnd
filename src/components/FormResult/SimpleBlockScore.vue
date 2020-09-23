@@ -7,10 +7,10 @@
         </div>
         <div class="simple-block-content">
             <div class="simple-block-data">
-                <slot class="" name="data"></slot>
+                <slot name="data"></slot>
             </div>
             <div class="simple-block-image">
-                <slot class="" name="image"></slot>
+                <slot name="image"></slot>
             </div>
         </div>
     </div>
@@ -72,5 +72,11 @@
         margin: 20px;
         width: 150px;
         height: 150px;
+    }
+
+    @media only screen and (max-width: 533.8px) {
+        .simple-block-content {
+            flex-direction: column-reverse;
+        }
     }
 </style>

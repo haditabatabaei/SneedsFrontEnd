@@ -46,11 +46,11 @@
     </section>
     <section class="admit-chance-section admit-chance-demo">
       <div class="admit-chance-demo-div">
-        <img class="admit-chance-image" src="/sneedsAssets/img/image 72.png" alt="">
-        <button class="demo-button">
+        <img class="admit-chance-image" src="/sneedsAssets/img/admit-result.jpg" alt="">
+        <router-link target="_blank" to="/admitresult" class="demo-button">
           <i class="material-icons fullscreen-icon">fullscreen</i>
-          Preview Results Demo
-        </button>
+            <p>Preview Results Demo</p>
+        </router-link>
       </div>
     </section>
 
@@ -130,12 +130,14 @@ export default {
   margin-bottom: 0px;
   margin-top: 10px;
   color: #8C3DDB;
+  font-size: 14px;
 }
 
 .intro-info-title {
 
   color: #303143;
   font-weight: bold;
+  font-size: 30px;
 
 }
 
@@ -153,6 +155,7 @@ export default {
 .intro-info-text {
   padding: 5% 0px;
   font-size: 16px;
+  color: #374957;
 }
 
 .link-start {
@@ -163,7 +166,7 @@ export default {
   justify-content: center;
   background: #A347FF 0% 0% no-repeat padding-box;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 14px;
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 10px 15px;
@@ -215,6 +218,10 @@ export default {
   line-height: inherit;
   font-size: 64px;
 }
+.participants-sub{
+  color: #303143;
+  font-size: 30px;
+}
 
 .participants-link-start {
   color: white;
@@ -224,7 +231,7 @@ export default {
   justify-content: center;
   background: #008DB8 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  font-size: 10px;
+  font-size: 14px;
   padding: 10px 15px;
   margin-top: 20px;
 }
@@ -265,18 +272,23 @@ export default {
 
 .demo-button {
   color: #008DB8;
+  position: relative;
   background-color: white;
   box-shadow: 0px 13px 26px #00000029;
   border-radius: 40px;
   font-size: 14px;
   border: white;
+  align-items: center;
   align-self: flex-start;
   margin-left: 20%;
-  margin-top: -5%;
-  padding: 5px;
+  margin-top: -7%;
+  padding: 7px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-button:hover {
+a:hover {
   background-color: #ecf4ff;
 }
 
@@ -310,16 +322,15 @@ button:hover {
 }
 
 .smart-analysis-info {
-  width: 40%;
+  width: 45%;
   min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 20px;
-  padding-right: 5%;
-  padding-left: 5%;
-  font-size: 14px;
+  padding: 20px 5% 9%;
+  font-size: 20px;
+
 }
 
 .smart-analysis-info-small-title {
@@ -335,7 +346,8 @@ button:hover {
   vertical-align: middle;
   background-color: #00D4ED;
   right: -125px;
-  border-radius: 2px
+  border-radius: 2px;
+  font-size: 24px;
 }
 
 .smart-analysis-info-title {
@@ -347,6 +359,7 @@ button:hover {
 .smart-analysis-info-text {
   padding: 5% 0px;
   font-size: 16px;
+  color: #303143;
 }
 
 .smart-analysis-link-start {
@@ -369,6 +382,9 @@ button:hover {
 }
 
 @media only screen and (max-width: 767.8px) {
+  .intro-container {
+    flex-direction: column;
+  }
   .smart-analysis-container {
     flex-direction: column-reverse;
   }
@@ -404,7 +420,8 @@ button:hover {
 
   .demo-button {
     margin-left: 10%;
-    margin-top: -10%;
+    margin-top: -18%;
+    font-size: 11px;
   }
 }
 </style>

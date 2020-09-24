@@ -25,6 +25,14 @@ const router = new Router({
             }
         },
         {
+            path: '/admitresult',
+            name: 'AdmitResult',
+            component: () => import("@/views/AdmitResult"),
+            meta: {
+                auth: 'optional'
+            }
+        },
+        {
             path: '/analysis/form',
             name: 'analysis-form',
             component: () => import("@/layouts/AnalysisFormLayout"),

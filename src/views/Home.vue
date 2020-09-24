@@ -410,13 +410,14 @@ export default {
   margin-bottom: 0px;
   margin-top: 10px;
   color: #374957;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .homepage-intro-info-title {
 
   color: #303143;
   font-weight: bold;
+  padding:10px 0px;
 
 }
 
@@ -485,12 +486,14 @@ export default {
 
 .structure-section-title {
   color: #303143;
-  font-size: 18px;
+  font-size: 28px;
+  padding:10px 0px;
 
 }
 .structure-section-title-sub {
   color: #707070;
-  padding: 10px;
+  padding: 14px;
+  font-size: 18px;
 
 }
 
@@ -612,7 +615,7 @@ export default {
 
 .consultants-section-title-sub {
   font-weight: lighter;
-  font-size: 14px;
+  font-size: 16px;
   color: #707070;
 }
 
@@ -651,12 +654,13 @@ export default {
 .blue-box-title {
   color: #FFFFFF;
   margin-top: 20px ;
+  font-size: 18px;
 }
 
 .blue-box-text {
   color: #1DFFF6;
   font-size: 14px;
-  margin-top: 15px;
+  margin-top: 16px;
 }
 .blue-box-details {
   align-items: center;
@@ -887,7 +891,8 @@ export default {
 
 .analysis-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
+  color: #374957;
 }
 
 .analysis-info-links {
@@ -953,6 +958,8 @@ export default {
   }
   .homepage-intro-info-text {
     line-height: 30px;
+    font-size: 16px;
+
   }
   .globe-desktop {
     display: none;
@@ -964,6 +971,7 @@ export default {
   }
   .consultants-section-header-line {
     display: block;
+    margin-top: 10px;
   }
   .structure-section-stages {
     flex-direction: column;
@@ -1010,6 +1018,9 @@ export default {
   }
   .consultants-section-header {
     width: 80%;
+  }
+  .consultants-section-title {
+    font-size: 25px;
   }
   .horizontal-items-box {
     flex-direction: column;

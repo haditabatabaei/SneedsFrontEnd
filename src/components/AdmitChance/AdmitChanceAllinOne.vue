@@ -74,6 +74,7 @@ export default {
 
   color: #303143;
   font-weight: bold;
+  font-size: 30px;
 }
 .all-in-one-list {
   padding: 5% 5%;

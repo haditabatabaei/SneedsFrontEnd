@@ -78,6 +78,7 @@ export default {
 
   color: #303143;
   font-weight: bold;
+  font-size: 30px;
 }
 .reminder-info-text {
   padding: 5% 0px;

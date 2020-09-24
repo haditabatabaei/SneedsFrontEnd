@@ -58,7 +58,7 @@ export default {
   background-color: white;
   margin-top: 3%;
   padding: 30px 5%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .reminder-info-small-title {
   margin-bottom: 0px;
@@ -81,7 +81,7 @@ export default {
 }
 .reminder-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .reminder-link-start {
   color: #008DB8;
@@ -90,7 +90,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bolder;
   margin-bottom: 10px;
   padding: 10px 0px;

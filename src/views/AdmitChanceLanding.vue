@@ -1,8 +1,8 @@
 <template>
   <main class="gadugiFont">
     <section class="admit-chance-section intro-section">
-      <div class="intro-container">
-        <div class="intro-img-div">
+      <div class="intro-img-div">
+        <div class="intro-container">
           <div class="admit-intro-info">
                             <span class="intro-info-small-title">
                                 <div class="intro-info-title-line"></div>
@@ -108,7 +108,6 @@ export default {
 .admit-chance-section {
   margin-bottom: 100px;
   width: 100%;
-  max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -153,7 +152,7 @@ export default {
 
 .intro-info-text {
   padding: 5% 0px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .link-start {
@@ -181,9 +180,11 @@ export default {
 .intro-container {
   display: flex;
   flex-direction: row;
+  max-width: 1500px;
   width: 100%;
   justify-content: center;
   align-items: flex-start;
+  margin: 0px auto;
 }
 
 .intro-img-div {
@@ -252,7 +253,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  justify-content: center;
+  margin: 0px auto;
+  max-width: 1500px;
   min-height: 230px;
 }
 
@@ -301,7 +303,10 @@ button:hover {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: -10%;
+  max-width: 1500px;
+  margin-bottom: -8%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .smart-analysis-info {
@@ -341,7 +346,7 @@ button:hover {
 
 .smart-analysis-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .smart-analysis-link-start {

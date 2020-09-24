@@ -59,7 +59,7 @@ export default {
   padding-right: 5%;
   padding-left: 5%;
   padding-top: 10%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .features-info-small-title {
   margin-bottom: 0px;
@@ -82,7 +82,7 @@ export default {
 }
 .features-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .features-link-start {
   color: #008DB8;
@@ -91,7 +91,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bolder;
   margin-bottom: 10px;
   padding: 10px 0px;

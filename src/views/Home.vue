@@ -449,7 +449,7 @@ export default {
 
 
 .homepage-intro-info-link {
-  font-size: 14px;
+  font-size: 12px;
   border: 1px solid #00D4ED;
   border-radius: 10px;
   color: #00D4ED;
@@ -907,7 +907,7 @@ export default {
   justify-content: center;
   background: #A347FF 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 10px 15px;

@@ -54,7 +54,7 @@ export default {
   padding-right: 5%;
   padding-left: 5%;
   padding-top: 10%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .all-in-one-info-small-title {
   margin-bottom: 0px;
@@ -77,10 +77,10 @@ export default {
 }
 .all-in-one-list {
   padding: 5% 5%;
-  font-size: 14px;
+  font-size: 18px;
 }
 all-in-one-list-items{
-  margin: 10px;
+  margin: 18px;
 }
 .all-in-one-img {
   width: 50%;

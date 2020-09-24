@@ -90,7 +90,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bolder;
   margin-bottom: 10px;
   padding: 10px 0px;

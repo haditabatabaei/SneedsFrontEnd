@@ -77,10 +77,10 @@ export default {
 }
 .all-in-one-list {
   padding: 5% 5%;
-  font-size: 18px;
+  font-size: 16px;
 }
 all-in-one-list-items{
-  margin: 18px;
+  margin: 16px;
 }
 .all-in-one-img {
   width: 50%;

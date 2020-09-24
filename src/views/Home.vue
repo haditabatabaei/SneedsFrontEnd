@@ -4,7 +4,7 @@
       <div class="homepage-intro">
         <img class="globe-desktop" src="/sneedsAssets/img/Globe Desktop.png">
         <div class="homepage-intro-info">
-          <h6 class="homepage-intro-info-small-title">with Abroad Path</h6>
+          <h5 class="homepage-intro-info-small-title">with Abroad Path</h5>
           <h1 class="homepage-intro-info-title">You Shouldn't Study Abroad Alone</h1>
           <div class="homepage-intro-info-title-line"></div>
           <p class="homepage-intro-info-text">
@@ -410,6 +410,7 @@ export default {
   margin-bottom: 0px;
   margin-top: 10px;
   color: #374957;
+  font-size: 14px;
 }
 
 .homepage-intro-info-title {
@@ -442,14 +443,14 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
 
 
 .homepage-intro-info-link {
-  font-size: 12px;
+  font-size: 14px;
   border: 1px solid #00D4ED;
   border-radius: 10px;
   color: #00D4ED;
@@ -589,7 +590,7 @@ export default {
   background-color:#DDF3FC;
   color: #009FB3;
   margin: 0px 30px;
-  font-size: 10px;
+  font-size: 14px;
 
 }
 
@@ -654,7 +655,7 @@ export default {
 
 .blue-box-text {
   color: #1DFFF6;
-  font-size: 10px;
+  font-size: 14px;
   margin-top: 15px;
 }
 .blue-box-details {
@@ -762,14 +763,14 @@ export default {
   width: 40%;
   margin: 10px;
   color: #303143;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .achievements-section {
   display: flex;
   flex-direction: row;
   width: 80%;
-  font-size: 12px;
+  font-size: 14px;
   align-items: center;
   justify-content: center;
   margin:50px 0px;
@@ -861,8 +862,9 @@ export default {
 
 .analysis-info-small-title {
   margin-bottom: 0px;
-  margin-top: 10px;
+  margin-top: 12px;
   color: #374957;
+  font-size: 14px;
 }
 
 .analysis-info-title {
@@ -885,7 +887,7 @@ export default {
 
 .analysis-info-text {
   padding: 5% 0px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .analysis-info-links {
@@ -893,7 +895,7 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -907,7 +909,7 @@ export default {
   justify-content: center;
   background: #A347FF 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 14px;
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 10px 15px;

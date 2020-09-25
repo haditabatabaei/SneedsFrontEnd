@@ -1,5 +1,5 @@
 <template>
-    <section class="result gadugiFont">
+    <section class="result gadugiFont" v-if="isLoading">
         <section class="result-container">
             <simple-block title-block="Your Rank" class="rank">
                 <template v-slot:data>
@@ -429,7 +429,8 @@
                             </p>
                         </div>
                     </div>
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.TOEFL && comparisonDataRepository[comparisonKeys.TOEFL].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.TOEFL && comparisonDataRepository[comparisonKeys.TOEFL].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -444,7 +445,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.IELTS && comparisonDataRepository[comparisonKeys.IELTS].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.IELTS && comparisonDataRepository[comparisonKeys.IELTS].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -459,7 +461,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GMAT && comparisonDataRepository[comparisonKeys.GMAT].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.GMAT && comparisonDataRepository[comparisonKeys.GMAT].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -474,7 +477,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.DUOLINGO && comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.DUOLINGO && comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -489,7 +493,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -504,7 +509,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -519,7 +525,8 @@
                         </div>
                     </div>
 
-                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.REL_WORK_EXP && comparisonDataRepository[comparisonKeys.REL_WORK_EXP].rawData.user_status">
+                    <div class="guide-item"
+                         v-if="selectedComparisonCategory.name === comparisonKeys.REL_WORK_EXP && comparisonDataRepository[comparisonKeys.REL_WORK_EXP].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -538,13 +545,14 @@
             <simple-block title-block="Olympiad" class="olympiad">
                 <template v-slot:data>
                     <ul class="items">
-                        <li class="item">Having olympiad exp.</li>
-                        <li class="item">Missing olympiad exp.</li>
+                        <li class="item">Having olympiad experience. ({{olympiadHavingPercent}}%)</li>
+                        <li class="item">Missing olympiad experience. ({{olympiadMissingPercent}}%)</li>
                     </ul>
                 </template>
                 <template v-slot:image>
                     <c-circle-chart
-                            :data="rankData"
+                            v-if="comparisonDataRepository[comparisonKeys.OLYMPIAD]"
+                            :data="comparisonDataRepository[comparisonKeys.OLYMPIAD]"
                             :options="rankOptions"
                     />
                 </template>
@@ -552,13 +560,14 @@
             <simple-block title-block="Recommendation Letter" class="recom">
                 <template v-slot:data>
                     <ul class="items">
-                        <li class="item">Having recommendation letter.</li>
-                        <li class="item">Missing recommendation letter.</li>
+                        <li class="item">Having recommendation letter. ({{recomHavingPercent}}%)</li>
+                        <li class="item">Missing recommendation letter. ({{recomMissingPercent}}%)</li>
                     </ul>
                 </template>
                 <template v-slot:image>
                     <c-circle-chart
-                            :data="rankData"
+                            v-if="comparisonDataRepository[comparisonKeys.POWER_RECOM]"
+                            :data="comparisonDataRepository[comparisonKeys.POWER_RECOM]"
                             :options="rankOptions"
                     />
                 </template>
@@ -566,13 +575,14 @@
             <simple-block title-block="Papers Type" class="papers">
                 <template v-slot:data>
                     <ul class="items">
-                        <li class="item">Conference (75%)</li>
-                        <li class="item">Journal (25%)</li>
+                        <li class="item">Conference ({{conferencePublications}}%)</li>
+                        <li class="item">Journal ({{journalPublications}}%)</li>
                     </ul>
                 </template>
                 <template v-slot:image>
                     <c-circle-chart
-                            :data="rankData"
+                            v-if="comparisonDataRepository[comparisonKeys.PUB_TYPE]"
+                            :data="comparisonDataRepository[comparisonKeys.PUB_TYPE]"
                             :options="rankOptions"
                     />
                 </template>
@@ -629,6 +639,7 @@
         },
         data() {
             return {
+                isLoading: true,
                 comparisonChartLoaded: false,
                 comparisonKeys: Object.freeze({
                     GPA: 'GPA',
@@ -647,7 +658,23 @@
                     OLYMPIAD: 'Olympiad',
                     POWER_RECOM: 'Valuable recommendation',
                 }),
-                comparisonDataRepository: {},
+                comparisonDataRepository: {
+                    'GPA': null,
+                    'IELTS': null,
+                    'TOEFL': null,
+                    'GMAT': null,
+                    'GRE General': null,
+                    'GRE General - Writing': null,
+                    'GRE General - Q&A': null,
+                    'GRE Subject': null,
+                    'Related work experience': null,
+                    'Number of papers': null,
+                    'Publication score': null,
+                    'Publication type': null,
+                    'DUOLINGO': null,
+                    'Olympiad': null,
+                    'Valuable recommendation': null,
+                },
                 comparisonOptionsRepository: {},
 
                 selectedComparisonCategory: null,
@@ -738,7 +765,45 @@
                     {name: this.comparisonKeys.REL_WORK_EXP},
                     {name: this.comparisonKeys.DUOLINGO},
                 ]
+            },
+            olympiadMissingPercent() {
+                if (this.comparisonDataRepository[this.comparisonKeys.OLYMPIAD]) {
+                    return Number(this.comparisonDataRepository[this.comparisonKeys.OLYMPIAD]
+                        .datasets[0].data[1]).toFixed(2);
+                } else {
+                    return 0;
+                }
+            },
+
+            olympiadHavingPercent() {
+                return Number(100 - this.olympiadMissingPercent).toFixed(2);
+            },
+
+            recomMissingPercent() {
+                if (this.comparisonDataRepository[this.comparisonKeys.POWER_RECOM]) {
+                    return Number(this.comparisonDataRepository[this.comparisonKeys.POWER_RECOM].datasets[0].data[1]).toFixed(2);
+                } else {
+                    return 0;
+                }
+            },
+
+            recomHavingPercent() {
+                return Number(100 - this.recomMissingPercent).toFixed(2);
+            },
+
+            journalPublications() {
+                if(this.comparisonDataRepository[this.comparisonKeys.PUB_TYPE]) {
+                    return Number(this.comparisonDataRepository[this.comparisonKeys.PUB_TYPE]
+                        .datasets[0].data[0]).toFixed(2);
+                } else {
+                    return 0;
+                }
+            },
+
+            conferencePublications() {
+                return Number(100 - this.journalPublications).toFixed(2);
             }
+
         },
         methods: {
             selectComparisonCategory(option) {
@@ -974,19 +1039,15 @@
             },
 
             async getDuolingo() {
-                return new Promise((resolve, reject) => {
-                    this.$api
-                        .get(`${this.analyzeApi}/duolingo/`, this.httpConfig)
-                        .then(response => {
-                            console.log(response)
-                            this.fillComparisonDataRepository(this.comparisonKeys.DUOLINGO, response.data);
-                            resolve();
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            reject(err);
-                        })
-                })
+                this.$api
+                    .get(`${this.analyzeApi}/duolingo/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.DUOLINGO, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
 
             },
 
@@ -994,9 +1055,13 @@
         },
         created() {
             // this.getGpa();
+            let allReqs = [];
+            this.isLoading = true;
+
             for (let prop in this) {
                 if (this.hasOwnProperty(prop) && prop.startsWith("get")) {
                     console.log(prop);
+                    // allReqs.push(this[prop]);
                     this[prop]();
                 }
             }
@@ -1259,6 +1324,7 @@
         border-radius: 20px;
         background-color: #F0E6FA;
         position: relative;
+        display: none;
     }
 
     .guide-progress-value {
@@ -1268,6 +1334,7 @@
         border-radius: 20px;
         width: 10%;
         background-color: #A347FF;
+        display: none;
     }
 
     .guide-item-content {

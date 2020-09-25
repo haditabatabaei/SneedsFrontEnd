@@ -370,18 +370,20 @@
                         <c-dropdown
                                 label="Select category"
                                 :defaultSelectedIndex="0"
+                                :options="comparisonCategories"
                                 @select-option="selectComparisonCategory"
                         />
                     </div>
                 </div>
                 <div class="chart-bar">
                     <c-bar-chart
-                            :data="comparisonData"
-                            :options="comparisonOptions"
+                            :chartData="shownComparisonData"
+                            :options="shownComparisonOptions"
+                            v-if="comparisonChartLoaded"
                     />
                 </div>
                 <div class="chart-guide">
-                    <div class="guide-item">
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GPA">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
@@ -390,64 +392,144 @@
                         <div class="guide-item-content">
                             <mark class="guide-item-title">GPA:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                Your GPA score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.GPA].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the
                                 participants.
                             </p>
                         </div>
                     </div>
-                    <div class="guide-item">
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.PUB_COUNT">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
                             </span>
                         </span>
                         <div class="guide-item-content">
-                            <mark class="guide-item-title">GPA:</mark>
+                            <mark class="guide-item-title">Publications:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
+                                You have more publications than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.PUB_COUNT].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the
                                 participants.
                             </p>
                         </div>
                     </div>
-                    <div class="guide-item">
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.PUB_COUNT">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
                             </span>
                         </span>
                         <div class="guide-item-content">
-                            <mark class="guide-item-title">GPA:</mark>
+                            <mark class="guide-item-title">Publications:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
-                                participants.
+                                Your publications score is better than
+                                <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.PUB_SCORE].rawData.user_status.worse_cases_percent
+                                    * 100).toFixed(2)}}%</strong>
+                                of the participants.
                             </p>
                         </div>
                     </div>
-                    <div class="guide-item">
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.TOEFL && comparisonDataRepository[comparisonKeys.TOEFL].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
                             </span>
                         </span>
                         <div class="guide-item-content">
-                            <mark class="guide-item-title">GPA:</mark>
+                            <mark class="guide-item-title">TOEFL:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
-                                participants.
+                                Your total TOEFL score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.TOEFL].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the TOEFL takers.
                             </p>
                         </div>
                     </div>
-                    <div class="guide-item">
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.IELTS && comparisonDataRepository[comparisonKeys.IELTS].rawData.user_status">
                         <span class="guide-progress">
                             <span class="guide-progress-value">
 
                             </span>
                         </span>
                         <div class="guide-item-content">
-                            <mark class="guide-item-title">GPA:</mark>
+                            <mark class="guide-item-title">IELTS:</mark>
                             <p class="guide-item-text">
-                                Your GPA score is better than <strong class="guide-item-value">73%</strong> of the
-                                participants.
+                                Your total IELTS score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.IELTS].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the IELTS takers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GMAT && comparisonDataRepository[comparisonKeys.GMAT].rawData.user_status">
+                        <span class="guide-progress">
+                            <span class="guide-progress-value">
+
+                            </span>
+                        </span>
+                        <div class="guide-item-content">
+                            <mark class="guide-item-title">GMAT:</mark>
+                            <p class="guide-item-text">
+                                Your GMAT score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.GMAT].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the GMAT takers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.DUOLINGO && comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status">
+                        <span class="guide-progress">
+                            <span class="guide-progress-value">
+
+                            </span>
+                        </span>
+                        <div class="guide-item-content">
+                            <mark class="guide-item-title">DUOLINGO:</mark>
+                            <p class="guide-item-text">
+                                Your DUOLINGO score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the DUOLINGO takers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status">
+                        <span class="guide-progress">
+                            <span class="guide-progress-value">
+
+                            </span>
+                        </span>
+                        <div class="guide-item-content">
+                            <mark class="guide-item-title">GRE-General Writing:</mark>
+                            <p class="guide-item-text">
+                                Your GRE-General Writing score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the GRE-General takers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status">
+                        <span class="guide-progress">
+                            <span class="guide-progress-value">
+
+                            </span>
+                        </span>
+                        <div class="guide-item-content">
+                            <mark class="guide-item-title">GRE-General Quantitative and verbal:</mark>
+                            <p class="guide-item-text">
+                                Your GRE-General Q&V score is better than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the GRE-General takers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.REL_WORK_EXP && comparisonDataRepository[comparisonKeys.REL_WORK_EXP].rawData.user_status">
+                        <span class="guide-progress">
+                            <span class="guide-progress-value">
+
+                            </span>
+                        </span>
+                        <div class="guide-item-content">
+                            <mark class="guide-item-title">Work Experience:</mark>
+                            <p class="guide-item-text">
+                                You have more related work experience than <strong class="guide-item-value">{{(comparisonDataRepository[comparisonKeys.REL_WORK_EXP].rawData.user_status.worse_cases_percent
+                                * 100).toFixed(2)}}%</strong> of the participants.
                             </p>
                         </div>
                     </div>
@@ -530,7 +612,7 @@
     import ResultTab from "@/components/FormResult/ResultTab";
     import VerticalTab from "@/components/FormResult/VerticalTab";
     import DropdownInput from "@/components/Form/DropdownInput";
-    import { VueSvgGauge } from 'vue-svg-gauge'
+    import {VueSvgGauge} from 'vue-svg-gauge'
 
     export default {
         name: "Result",
@@ -547,57 +629,31 @@
         },
         data() {
             return {
-                comparisonCategory: null,
-                comparisonData: {
-                    labels: [1, 2, 3, 4, 5, 6, 7, 8],
-                    datasets: [
-                        {
-                            label: 'GPA',
-                            backgroundColor: [
-                                '#F2F2F2',
-                                '#F2F2F2',
-                                '#009FB3',
-                                '#F2F2F2',
-                                '#F2F2F2',
-                                '#F2F2F2',
-                                '#F2F2F2',
-                                '#F2F2F2',
-                            ],
-                            barThickness: 'flex',
-                            hoverBackgroundColor: [
-                                '#DDEEFC',
-                                '#DDEEFC',
-                                '#009FB3',
-                                '#DDEEFC',
-                                '#DDEEFC',
-                                '#DDEEFC',
-                                '#DDEEFC',
-                                '#DDEEFC',
-                            ],
-                            maxBarThickness: 30,
-                            data: [20, 40, 60, 20, 35, 19, 10, 5]
-                        }
-                    ]
-                },
+                comparisonChartLoaded: false,
+                comparisonKeys: Object.freeze({
+                    GPA: 'GPA',
+                    IELTS: 'IELTS',
+                    TOEFL: 'TOEFL',
+                    GMAT: 'GMAT',
+                    GRE_GENERAL: 'GRE General',
+                    GRE_GENERAL_WRITING: 'GRE General - Writing',
+                    GRE_GENERAL_QUANT_VERBAL: 'GRE General - Q&A',
+                    GRE_SUBJECT: 'GRE Subject',
+                    REL_WORK_EXP: 'Related work experience',
+                    PUB_COUNT: 'Number of papers',
+                    PUB_SCORE: 'Publication score',
+                    PUB_TYPE: 'Publication type',
+                    DUOLINGO: 'DUOLINGO',
+                    OLYMPIAD: 'Olympiad',
+                    POWER_RECOM: 'Valuable recommendation',
+                }),
+                comparisonDataRepository: {},
+                comparisonOptionsRepository: {},
 
-                comparisonOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'GPA'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Number'
-                            },
-                        }]
-                    },
-                },
+                selectedComparisonCategory: null,
+                shownComparisonData: null,
+                shownComparisonOptions: null,
+                defaultShownComparisonOptions: {},
 
                 resultTabs: [
                     {title: 'GPA & UNIVERSITY'},
@@ -660,13 +716,290 @@
                 }
             }
         },
-        methods: {
-            selectComparisonCategory(option) {
-                this.comparisonCategory = option;
+        computed: {
+            api() {
+                return this.$store.getters.getApi;
+            },
+            analyzeApi() {
+                return `${this.api}/analyze-and-charts`;
+            },
+            httpConfig() {
+                return this.$store.getters.httpConfig;
+            },
+            comparisonCategories() {
+                return [
+                    {name: this.comparisonKeys.GPA},
+                    {name: this.comparisonKeys.IELTS},
+                    {name: this.comparisonKeys.TOEFL},
+                    {name: this.comparisonKeys.GMAT},
+                    {name: this.comparisonKeys.GRE_GENERAL},
+                    {name: this.comparisonKeys.GRE_SUBJECT},
+                    {name: this.comparisonKeys.PUB_COUNT},
+                    {name: this.comparisonKeys.REL_WORK_EXP},
+                    {name: this.comparisonKeys.DUOLINGO},
+                ]
             }
         },
-        created() {
+        methods: {
+            selectComparisonCategory(option) {
+                this.selectedComparisonCategory = option;
+                if (option.name === this.comparisonKeys.GRE_GENERAL) {
+                    this.shownComparisonData = this.comparisonDataRepository[this.comparisonKeys.GRE_GENERAL_WRITING];
+                    this.shownComparisonOptions = this.comparisonOptionsRepository[this.comparisonKeys.GRE_GENERAL_WRITING];
+                } else {
+                    this.shownComparisonData = this.comparisonDataRepository[option.name];
+                    this.shownComparisonOptions = this.comparisonOptionsRepository[option.name];
+                }
+            },
 
+            fillComparisonDataRepository(key, data) {
+                let chartItems = data.chart_items;
+                let dataset = {
+                    label: data.title,
+                    data: [],
+                    hoverBackgroundColor: [],
+                    backgroundColor: [],
+                    barThickness: 'flex',
+                    maxBarThickness: 30
+                };
+                let labels = [];
+                for (let label in chartItems) {
+                    if (chartItems.hasOwnProperty(label)) {
+                        // console.log(label);
+                        labels.push(label);
+                        dataset.data.push((chartItems[label].percent * 100).toFixed(2));
+                        if (data.user_positions.indexOf(label) == -1) {
+                            //this is not current user bar
+                            dataset.backgroundColor.push('#F2F2F2')
+                            dataset.hoverBackgroundColor.push('#DDEEFC')
+                        } else {
+                            dataset.backgroundColor.push('#009FB3')
+                            dataset.hoverBackgroundColor.push('#009FB3')
+                        }
+                    }
+                }
+                console.log(labels);
+                console.log(dataset);
+                this.comparisonDataRepository[key] = {labels, datasets: [dataset], rawData: data};
+                this.comparisonOptionsRepository[key] = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: data.title
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Percent %"
+                            },
+                        }]
+                    },
+                }
+                console.log(this.comparisonDataRepository);
+            },
+
+
+            async getGpa() {
+                // this.comparisonChartLoaded = false;
+                this.$api
+                    .get(`${this.analyzeApi}/grade-point-average/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response);
+                        this.fillComparisonDataRepository(this.comparisonKeys.GPA, response.data);
+                        this.selectComparisonCategory(this.comparisonCategories[0]);
+                        this.comparisonChartLoaded = true;
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+            async getPublicationsCount() {
+                this.$api
+                    .get(`${this.analyzeApi}/publications-count/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.PUB_COUNT, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getPublicationsType() {
+                this.$api
+                    .get(`${this.analyzeApi}/publications-type/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.PUB_TYPE, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getPublicationsScore() {
+                this.$api
+                    .get(`${this.analyzeApi}/publications-score/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.PUB_SCORE, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getPublicationsImpactFactor() {
+                this.$api
+                    .get(`${this.analyzeApi}/publications-impact-factor/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getPowerfulRecommendation() {
+                this.$api
+                    .get(`${this.analyzeApi}/powerful-recommendation/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.POWER_RECOM, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getOlympiad() {
+                this.$api
+                    .get(`${this.analyzeApi}/olympiad/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.OLYMPIAD, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getRelatedWorkExperience() {
+                this.$api
+                    .get(`${this.analyzeApi}/related-work-experience/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.REL_WORK_EXP, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getToefl() {
+                this.$api
+                    .get(`${this.analyzeApi}/toefl/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.TOEFL, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getIelts() {
+                this.$api
+                    .get(`${this.analyzeApi}/ielts/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.IELTS, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+
+            },
+
+            async getGmat() {
+                this.$api
+                    .get(`${this.analyzeApi}/gmat/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.GMAT, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getGreGeneralWriting() {
+                this.$api
+                    .get(`${this.analyzeApi}/gre-general-writing/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.GRE_GENERAL_WRITING, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getGreGeneralQV() {
+                this.$api
+                    .get(`${this.analyzeApi}/gre-general-quantitative-and-verbal/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.GRE_GENERAL_QUANT_VERBAL, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getGreSubjectTotal() {
+                this.$api
+                    .get(`${this.analyzeApi}/gre-subject-total/`, this.httpConfig)
+                    .then(response => {
+                        console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.GRE_SUBJECT, response.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            },
+
+            async getDuolingo() {
+                return new Promise((resolve, reject) => {
+                    this.$api
+                        .get(`${this.analyzeApi}/duolingo/`, this.httpConfig)
+                        .then(response => {
+                            console.log(response)
+                            this.fillComparisonDataRepository(this.comparisonKeys.DUOLINGO, response.data);
+                            resolve();
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            reject(err);
+                        })
+                })
+
+            },
+
+
+        },
+        created() {
+            // this.getGpa();
+            for (let prop in this) {
+                if (this.hasOwnProperty(prop) && prop.startsWith("get")) {
+                    console.log(prop);
+                    this[prop]();
+                }
+            }
         }
     }
 </script>

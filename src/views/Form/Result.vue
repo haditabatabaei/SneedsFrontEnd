@@ -382,11 +382,20 @@
                             v-if="comparisonChartLoaded"
                     />
                 </div>
+                <div class="chart-bar-switcher" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL">
+                    <button class="switcher-item" @click="toggleBarChart(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)"
+                            :class="[{'switcher--active': shownComparisonData === comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL]}]">
+                        Q + V
+                    </button>
+                    <button class="switcher-item" @click="toggleBarChart(comparisonKeys.GRE_GENERAL_WRITING)"
+                            :class="[{'switcher--active': shownComparisonData === comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING]}]">
+                        Writing
+                    </button>
+                </div>
                 <div class="chart-guide">
                     <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GPA">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GPA)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GPA)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -399,9 +408,8 @@
                         </div>
                     </div>
                     <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.PUB_COUNT">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.PUB_COUNT)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.PUB_COUNT)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -414,9 +422,8 @@
                         </div>
                     </div>
                     <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.PUB_COUNT">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.PUB_SCORE)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.PUB_SCORE)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -431,9 +438,8 @@
                     </div>
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.TOEFL && comparisonDataRepository[comparisonKeys.TOEFL].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.TOEFL)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.TOEFL)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -447,9 +453,8 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.IELTS && comparisonDataRepository[comparisonKeys.IELTS].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.IELTS)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.IELTS)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -463,9 +468,8 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.GMAT && comparisonDataRepository[comparisonKeys.GMAT].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GMAT)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GMAT)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -478,10 +482,10 @@
                     </div>
 
                     <div class="guide-item"
-                         v-if="selectedComparisonCategory.name === comparisonKeys.DUOLINGO && comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                         v-if="selectedComparisonCategory.name === comparisonKeys.DUOLINGO &&
+                          comparisonDataRepository[comparisonKeys.DUOLINGO].rawData.user_status">
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.DUOLINGO)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.DUOLINGO)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -495,9 +499,8 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                       <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -511,9 +514,8 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -527,9 +529,8 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.REL_WORK_EXP && comparisonDataRepository[comparisonKeys.REL_WORK_EXP].rawData.user_status">
-                        <span class="guide-progress">
-                            <span class="guide-progress-value">
-
+                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.REL_WORK_EXP)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.REL_WORK_EXP)" class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -587,7 +588,7 @@
                     />
                 </template>
             </simple-block>
-            <simple-block title-block="Papers Impact" class="impact">
+            <simple-block title-block="Papers Impact (static - will be fixed)" class="impact">
                 <template v-slot:data>
                     <ul class="items">
                         <li class="item">1-3 (65%)</li>
@@ -792,7 +793,7 @@
             },
 
             journalPublications() {
-                if(this.comparisonDataRepository[this.comparisonKeys.PUB_TYPE]) {
+                if (this.comparisonDataRepository[this.comparisonKeys.PUB_TYPE]) {
                     return Number(this.comparisonDataRepository[this.comparisonKeys.PUB_TYPE]
                         .datasets[0].data[0]).toFixed(2);
                 } else {
@@ -809,13 +810,61 @@
             selectComparisonCategory(option) {
                 this.selectedComparisonCategory = option;
                 if (option.name === this.comparisonKeys.GRE_GENERAL) {
-                    this.shownComparisonData = this.comparisonDataRepository[this.comparisonKeys.GRE_GENERAL_WRITING];
-                    this.shownComparisonOptions = this.comparisonOptionsRepository[this.comparisonKeys.GRE_GENERAL_WRITING];
+                    this.toggleBarChart(this.comparisonKeys.GRE_GENERAL_WRITING)
                 } else {
-                    this.shownComparisonData = this.comparisonDataRepository[option.name];
-                    this.shownComparisonOptions = this.comparisonOptionsRepository[option.name];
+                    this.toggleBarChart(option.name)
                 }
             },
+
+            toggleBarChart(key) {
+                this.shownComparisonData = this.comparisonDataRepository[key];
+                this.shownComparisonOptions = this.comparisonOptionsRepository[key];
+            },
+
+            calcDescStyleByPercent(widthPercent) {
+                return `width:${widthPercent}%;background-color:${this.calcDescColorByPercent(widthPercent)};`;
+            },
+
+            calcDescStyleByKey(key) {
+                return this.calcDescStyleByPercent(this.calcWidthByKey(key))
+            },
+
+            calcWrapperDescStyleByKey(key) {
+                return this.calcWrapperDescBgStyle(this.calcWidthByKey(key));
+            },
+
+            calcWrapperDescBgStyle(widthPercent) {
+                return `background-color: ${this.calcDescBgByPercent(widthPercent)}`
+            },
+
+            calcWidthByKey(key) {
+                console.log('calc width with key ', key);
+                return Number(
+                    this.comparisonDataRepository[key].rawData.user_status.worse_cases_percent * 100
+                    ).toFixed(2);
+            },
+
+            calcDescBgByPercent(widthPercent) {
+                if (widthPercent >= 0 && widthPercent <= 25) {
+                    return '#FFECEC'
+                } else if (widthPercent > 25 && widthPercent <= 65) {
+                    return '#FBF8DE';
+                } else if (widthPercent > 65 && widthPercent <= 100) {
+                    return '#DDEEFC'
+                }
+            },
+
+
+            calcDescColorByPercent(widthPercent) {
+                if (widthPercent >= 0 && widthPercent <= 25) {
+                    return '#DC3030'
+                } else if (widthPercent > 25 && widthPercent <= 65) {
+                    return '#F4CA64';
+                } else if (widthPercent > 65 && widthPercent <= 100) {
+                    return '#008DB8'
+                }
+            },
+
 
             fillComparisonDataRepository(key, data) {
                 let chartItems = data.chart_items;
@@ -1324,7 +1373,7 @@
         border-radius: 20px;
         background-color: #F0E6FA;
         position: relative;
-        display: none;
+        /*display: none;*/
     }
 
     .guide-progress-value {
@@ -1334,7 +1383,7 @@
         border-radius: 20px;
         width: 10%;
         background-color: #A347FF;
-        display: none;
+        /*display: none;*/
     }
 
     .guide-item-content {
@@ -1429,6 +1478,32 @@
     .grid-table-responsive {
         /*overflow: auto;*/
         /*width: 100%;*/
+    }
+
+    .chart-bar-switcher {
+        align-self: flex-end;
+        display: flex;
+    }
+
+
+    .switcher-item {
+        background: none;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 5px;
+    }
+
+    .switcher-item:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .switcher-item:first-child {
+        margin-right: 10px;
+    }
+
+    .switcher--active {
+        border-bottom: 2px solid #00A2C6;
+        font-weight: bold;
     }
 
     @media only screen and (max-width: 991.8px) {

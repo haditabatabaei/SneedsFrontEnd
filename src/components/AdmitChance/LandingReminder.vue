@@ -10,7 +10,7 @@
                     <div class="reminder-info-title-line"></div>
                     Reminder
                 </span>
-        <h4 class="reminder-info-title">Don't miss another deadline</h4>
+        <h2 class="reminder-info-title">Don't miss another deadline</h2>
         <p class="reminder-info-text">
           get weekly reminder on your shortlisted university deadlines and always stay on track.
         </p>
@@ -33,13 +33,20 @@ export default {
 </script>
 
 <style scoped>
-
+.reminder {
+  margin-bottom: 100px;
+  width: 100%;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .reminder-container {
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: center;
   align-items: flex-start;
+  overflow-x: hidden;
 }
 .reminder-intro-info {
   width: 40%;
@@ -51,7 +58,7 @@ export default {
   background-color: white;
   margin-top: 3%;
   padding: 30px 5%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .reminder-info-small-title {
   margin-bottom: 0px;
@@ -71,10 +78,11 @@ export default {
 
   color: #303143;
   font-weight: bold;
+  font-size: 30px;
 }
 .reminder-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .reminder-link-start {
   color: #008DB8;
@@ -83,7 +91,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bolder;
   margin-bottom: 10px;
   padding: 10px 0px;
@@ -112,7 +120,7 @@ export default {
 
   }
   .reminder-intro-info {
-    width: 100%;
+    width: 90%;
     text-align: center;
     align-items: center;
   }

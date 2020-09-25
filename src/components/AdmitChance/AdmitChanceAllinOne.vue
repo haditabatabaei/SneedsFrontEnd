@@ -3,7 +3,7 @@
   <section class="admit-chance-section all-in-one">
     <div class="all-in-one-container">
       <div class="all-in-one-intro-info">
-        <h4 class="all-in-one-info-title">To help you through the procsess</h4>
+        <h2 class="all-in-one-info-title">To help you through the procsess</h2>
         <span class="all-in-one-info-small-title">
                                 <div class="all-in-one-info-title-line"></div>
                                you will get complete insights on:</span>
@@ -30,6 +30,10 @@ export default {
 <style scoped>
 .admit-chance-section {
   margin-bottom: 100px;
+  width: 100%;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .all-in-one-container {
   display: flex;
@@ -37,6 +41,7 @@ export default {
   width: 100%;
   justify-content: center;
   align-items: flex-start;
+  overflow-x: hidden;
 }
 .all-in-one-intro-info {
   width: 40%;
@@ -49,7 +54,7 @@ export default {
   padding-right: 5%;
   padding-left: 5%;
   padding-top: 10%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .all-in-one-info-small-title {
   margin-bottom: 0px;
@@ -69,13 +74,14 @@ export default {
 
   color: #303143;
   font-weight: bold;
+  font-size: 30px;
 }
 .all-in-one-list {
   padding: 5% 5%;
-  font-size: 14px;
+  font-size: 16px;
 }
 all-in-one-list-items{
-  margin: 10px;
+  margin: 16px;
 }
 .all-in-one-img {
   width: 50%;
@@ -92,7 +98,7 @@ all-in-one-list-items{
 
   }
   .all-in-one-intro-info {
-    width: 100%;
+    width: 90%;
     text-align: center;
     align-items: center;
   }

@@ -5,7 +5,7 @@
                             <span class="features-info-small-title">
                                 <div class="features-info-title-line"></div>
                                 Unique featurs</span>
-        <h4 class="features-info-title">To help you through the procsess</h4>
+        <h2 class="features-info-title">To help you through the procsess</h2>
         <p class="features-info-text">
           We are here for you in this long and challenging journey to study abroad.
         </p>
@@ -32,10 +32,18 @@ export default {
 </script>
 
 <style scoped>
+.features {
+  margin-bottom: 100px;
+  width: 100%;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .features-container {
   display: flex;
   flex-direction: row;
   width: 100%;
+  overflow-x: hidden;
   justify-content: center;
   align-items: flex-start;
 }
@@ -51,7 +59,7 @@ export default {
   padding-right: 5%;
   padding-left: 5%;
   padding-top: 10%;
-  font-size: 14px;
+  font-size: 16px;
 }
 .features-info-small-title {
   margin-bottom: 0px;
@@ -74,7 +82,7 @@ export default {
 }
 .features-info-text {
   padding: 5% 0px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .features-link-start {
   color: #008DB8;
@@ -83,7 +91,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bolder;
   margin-bottom: 10px;
   padding: 10px 0px;
@@ -96,6 +104,7 @@ export default {
 @media only screen and (max-width: 767.8px) {
   .features-container {
     flex-direction: column-reverse;
+    align-items: center;
   }
   .features-img {
     width: 70%;
@@ -103,7 +112,7 @@ export default {
 
   }
   .features-intro-info {
-    width: 100%;
+    width: 90%;
     text-align: center;
     align-items: center;
   }

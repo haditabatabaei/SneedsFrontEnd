@@ -287,7 +287,7 @@
 
     </section>
 
-    <app-question></app-question>
+<!--    <app-question></app-question>-->
 
   </main>
 

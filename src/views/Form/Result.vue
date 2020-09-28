@@ -310,41 +310,54 @@
                         <tbody class="grid-body">
                         <tr class="grid-row">
                             <td class="grid-cell">Amirkabir University of Technology</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell">British Columbia</td>
                             <td class="grid-cell">
                                 Bachelor of computer science
                             </td>
                             <td class="grid-cell">
-                                16.5
+                                17.8
                             </td>
                             <td class="grid-cell">
-                                23,000 $
+                                22,000 $
                             </td>
                         </tr>
                         <tr class="grid-row">
                             <td class="grid-cell">Amirkabir University of Technology</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell">EPFL</td>
                             <td class="grid-cell">
-                                Bachelor of computer science
+                                Bachelor
                             </td>
                             <td class="grid-cell">
-                                16.5
+                                16.7
                             </td>
                             <td class="grid-cell">
-                                23,000 $
+                                10,000 $
                             </td>
                         </tr>
                         <tr class="grid-row">
-                            <td class="grid-cell">Amirkabir University of Technology</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell">Sharif University of Technology</td>
+                            <td class="grid-cell">British Columbia</td>
                             <td class="grid-cell">
-                                Bachelor of computer science
+                                Master
                             </td>
                             <td class="grid-cell">
-                                16.5
+                                18.1
                             </td>
                             <td class="grid-cell">
-                                23,000 $
+                                26,000 $
+                            </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">University of Tehran</td>
+                            <td class="grid-cell">The University of Texas</td>
+                            <td class="grid-cell">
+                                Bachelor
+                            </td>
+                            <td class="grid-cell">
+                                16.4
+                            </td>
+                            <td class="grid-cell">
+                                29,000 $
                             </td>
                         </tr>
                         </tbody>

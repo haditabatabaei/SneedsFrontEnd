@@ -20,7 +20,7 @@
               </router-link>
             </div>
           </div>
-          <img class="intro-img" src="/sneedsAssets/img/Hero.png">
+          <img class="intro-img" src="/sneedsAssets/img/AdmitLanding/Hero.png">
 
         </div>
 
@@ -46,10 +46,10 @@
     </section>
     <section class="admit-chance-section admit-chance-demo">
       <div class="admit-chance-demo-div">
-        <img class="admit-chance-image" src="/sneedsAssets/img/admit-result.jpg" alt="">
+        <img class="admit-chance-image" src="/sneedsAssets/img/AdmitLanding/admit-result.jpg" alt="">
         <router-link target="_blank" to="/admitresult" class="demo-button">
           <i class="material-icons fullscreen-icon">fullscreen</i>
-            <p>Preview Results Demo</p>
+          <p>Preview Results Demo</p>
         </router-link>
       </div>
     </section>
@@ -59,7 +59,7 @@
     <section class="admit-chance-section smart-analysis">
       <div class="smart-analysis-img-div">
         <div class="smart-analysis-container">
-          <img class="smart-analysis-img" src="/sneedsAssets/img/mob.png">
+          <img class="smart-analysis-img" src="/sneedsAssets/img/AdmitLanding/smart-analysis.png">
           <div class="smart-analysis-info">
                           <span class="smart-analysis-info-small-title">
                                 <div class="smart-analysis-info-title-line"></div>
@@ -83,7 +83,7 @@
     </section>
     <all-in-one/>
     <landing-reminder/>
-<!--    <freq-asked-questions/>-->
+    <freq-asked-questions/>
   </main>
 </template>
 
@@ -254,15 +254,20 @@ export default {
   right: -125px;
   border-radius: 2px;
 }
+.admit-chance-demo {
+  margin-bottom: 150px;
+
+}
 
 .admit-chance-demo-div {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0px auto;
+  display: grid;
+  grid-template-rows: 10% 10%  40% auto 10% 10%;
+  grid-template-columns: 10% 10%  25% auto 10% 10%;
+  width:100%;
+  min-height: 180px;
   max-width: 1500px;
-  min-height: 230px;
+  margin:10px auto;
+
 }
 
 .fullscreen-icon {
@@ -272,30 +277,30 @@ export default {
 
 .demo-button {
   color: #008DB8;
-  position: relative;
   background-color: white;
   box-shadow: 0px 13px 26px #00000029;
   border-radius: 40px;
-  font-size: 14px;
+  font-size: 16px;
+  grid-column: 3/span 1;
+  grid-row: 5/span 1;
   border: white;
   align-items: center;
   align-self: flex-start;
-  margin-left: 20%;
-  margin-top: -7%;
-  padding: 7px;
+  padding:10px 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
 a:hover {
-  background-color: #ecf4ff;
+  filter: brightness(95%);
 }
 
 .admit-chance-image {
-  width: 65%;
+  grid-column: 2/span 4;
+  grid-row: 2 /span 5;
   border-radius: 30px;
-
+  width: 100%;
 }
 
 .smart-analysis-img-div {
@@ -380,11 +385,18 @@ a:hover {
   height: auto;
   margin-bottom: -10%;
 }
+@media only screen and (max-width: 991.8px) {
+  .demo-button {
+    font-size: 12px;
+    padding: 3px;
+  }
+}
 
 @media only screen and (max-width: 767.8px) {
   .intro-container {
     flex-direction: column;
   }
+
   .smart-analysis-container {
     flex-direction: column-reverse;
   }
@@ -414,14 +426,18 @@ a:hover {
     width: 90%;
   }
 
-  .admit-chance-image {
-    width: 95%;
-  }
-
   .demo-button {
-    margin-left: 10%;
-    margin-top: -18%;
-    font-size: 11px;
+    font-size: 10px;
+  }
+}
+@media only screen and (max-width: 567.8px) {
+  .admit-chance-image {
+    grid-row: 1/span 6;
+    grid-column: 1/span 6;
+  }
+  .demo-button{
+    grid-row: 4/span 1;
+    grid-column: 2/span 2;
   }
 }
 </style>

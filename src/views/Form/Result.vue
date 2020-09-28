@@ -1,11 +1,11 @@
 <template>
-    <section class="result gadugiFont" v-if="isLoading">
+    <section class="result gadugiFont" v-if="!isLoadingSafe">
         <section class="result-container">
-            <simple-block title-block="Your Rank" class="rank">
+            <simple-block title-block="Your Rank" class="rank" v-if="comments">
                 <template v-slot:data>
                     <score-of-max
-                            :score-value="120"
-                            :score-max="1000"
+                            :score-value="comments.rank_among"
+                            :score-max="comments.rank"
                     />
                 </template>
                 <template v-slot:image>
@@ -15,10 +15,10 @@
                     />
                 </template>
             </simple-block>
-            <simple-block title-block="Your Score" class="score">
+            <simple-block title-block="Your Score" class="score" v-if="comments">
                 <template v-slot:data>
                     <score-of-max
-                            :score-value="3.5"
+                            :score-value="Number((comments.total_value * 5).toFixed(1))"
                             :score-max="5"
                     />
                 </template>
@@ -30,52 +30,58 @@
                 </template>
             </simple-block>
             <section class="grades">
-                <div class="grades-tabs">
+                <div class="grades-tabs" v-if="comments">
                     <h1 class="grades-title">
                         Your Grades
                     </h1>
                     <result-tab :tabs="resultTabs">
                         <template v-slot:TAB0>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p v-if="comments['university and gpa'].data.bachelor">
+                                {{comments['university and gpa'].data.bachelor}}
+                            </p>
+                            <p v-if="comments['university and gpa'].data.master">
+                                {{comments['university and gpa'].data.master}}
+                            </p>
+                            <p v-if="comments['university and gpa'].data.phd">
+                                {{comments['university and gpa'].data.phd}}
+                            </p>
                         </template>
                         <template v-slot:TAB1>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p v-if="comments['language']['ielts-academic']">
+                                {{comments['language']['ielts-academic'].comment}}
+                            </p>
+                            <p v-if="comments['language']['ielts-general']">
+                                {{comments['language']['ielts-general'].comment}}
+                            </p>
+                            <p v-if="comments['language'].toefl">
+                                {{comments['language'].toefl.comment}}
+                            </p>
                         </template>
                         <template v-slot:TAB2>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p v-if="comments.publication">
+                                {{comments.publication.data}}
+                            </p>
                         </template>
                         <template v-slot:TAB3>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p v-if="comments['age and gap']">
+                                {{comments['age and gap'].data}}
+                            </p>
+                        </template>
+                        <template v-slot:TAB4>
+                            <p v-if="comments['others']">
+                                {{comments['others'].data}}
+                            </p>
                         </template>
                     </result-tab>
                 </div>
                 <div class="grades-radar">
                     <c-radar-chart
-                            :data="radarData"
+                            :chartData="radarData"
                             :options="radarOptions"
+                            v-if="comments"
                             class="grades-radar-chart"
                     />
-                    <p class="grades-radar-text">Total score: 3.5/5</p>
+                    <p class="grades-radar-text" v-if="comments">Total score: {{Number((comments.total_value * 5).toFixed(1))}}/5</p>
                 </div>
             </section>
             <section class="chances">
@@ -90,15 +96,16 @@
                 <vertical-tabs
                         :tabs="verticalTabs"
                         class="chances-tabs"
+                        v-if="chanceData"
                 >
-                    <template v-slot:TAB0>
+                    <template v-slot:[`TAB${index}`] v-for="(tab, index) in Object.entries(chanceData)">
                         <div class="chances-tabs-charts">
                             <div class="charts-box">
                                 <c-gauge
                                         class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
-                                        :value="10"
+                                        :value="Number((tab[1].admission * 100).toFixed(2))"
                                         :separator-step="0"
                                         :inner-radius="85"
                                         :min="0"
@@ -121,7 +128,7 @@
                                         class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
-                                        :value="45"
+                                        :value="Number((tab[1].scholarship * 100).toFixed(2))"
                                         :separator-step="0"
                                         :inner-radius="85"
                                         :min="0"
@@ -144,7 +151,7 @@
                                         class="chart-gauge"
                                         :start-angle="-90"
                                         :end-angle="90"
-                                        :value="100"
+                                        :value="Number((tab[1]['full-fund'] * 100).toFixed(2))"
                                         :separator-step="0"
                                         :inner-radius="85"
                                         :min="0"
@@ -159,32 +166,6 @@
                                 <p class="charts-box-desc">
                                     <span>Low</span>
                                     <span>Full-Fund</span>
-                                    <span>High</span>
-                                </p>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-slot:TAB1>
-                        <div class="chances-tabs-charts">
-                            <div class="charts-box">
-                                <c-gauge
-                                        :start-angle="-90"
-                                        :end-angle="90"
-                                        :value="100"
-                                        :separator-step="0"
-                                        :inner-radius="85"
-                                        :min="0"
-                                        :max="100"
-                                        :gauge-color="[
-                                            {offset: 0, color: '#891B1B'},
-                                            {offset: 50, color: '#F4CA64'},
-                                            {offset: 100, color: '#00A2C6'}
-                                        ]"
-                                        :scale-interval="10"
-                                />
-                                <p class="charts-box-desc">
-                                    <span>Low</span>
-                                    <span>Title</span>
                                     <span>High</span>
                                 </p>
                             </div>
@@ -382,7 +363,7 @@
                             v-if="comparisonChartLoaded"
                     />
                 </div>
-                <div class="chart-bar-switcher" v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL">
+                <div class="chart-bar-switcher" v-if="selectedComparisonCategory && selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL">
                     <button class="switcher-item" @click="toggleBarChart(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)"
                             :class="[{'switcher--active': shownComparisonData === comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL]}]">
                         Q + V
@@ -392,7 +373,7 @@
                         Writing
                     </button>
                 </div>
-                <div class="chart-guide">
+                <div class="chart-guide" v-if="selectedComparisonCategory">
                     <div class="guide-item" v-if="selectedComparisonCategory.name === comparisonKeys.GPA">
                         <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GPA)">
                             <span :style="calcDescStyleByKey(comparisonKeys.GPA)" class="guide-progress-value">
@@ -499,8 +480,10 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_WRITING].rawData.user_status">
-                       <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)">
-                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)" class="guide-progress-value">
+                       <span class="guide-progress"
+                             :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_WRITING)"
+                                  class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -514,8 +497,10 @@
 
                     <div class="guide-item"
                          v-if="selectedComparisonCategory.name === comparisonKeys.GRE_GENERAL && comparisonDataRepository[comparisonKeys.GRE_GENERAL_QUANT_VERBAL].rawData.user_status">
-                        <span class="guide-progress" :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)">
-                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)" class="guide-progress-value">
+                        <span class="guide-progress"
+                              :style="calcWrapperDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)">
+                            <span :style="calcDescStyleByKey(comparisonKeys.GRE_GENERAL_QUANT_VERBAL)"
+                                  class="guide-progress-value">
                             </span>
                         </span>
                         <div class="guide-item-content">
@@ -588,17 +573,19 @@
                     />
                 </template>
             </simple-block>
-            <simple-block title-block="Papers Impact (static - will be fixed)" class="impact">
+            <simple-block title-block="Papers Impact Factor" class="impact">
                 <template v-slot:data>
-                    <ul class="items">
-                        <li class="item">1-3 (65%)</li>
-                        <li class="item">4-10 (35%)</li>
-                        <li class="item">+10 (20%)</li>
+                    <ul class="items" v-if="comparisonDataRepository[comparisonKeys.IMPACT_FACTOR]">
+                        <li v-for="entry of Object.entries(comparisonDataRepository[comparisonKeys.IMPACT_FACTOR].rawData.chart_items)"
+                            class="item">
+                            {{entry[0]}} ({{Number(entry[1].percent * 100).toFixed(2)}}%)
+                        </li>
                     </ul>
                 </template>
                 <template v-slot:image>
                     <c-circle-chart
-                            :data="rankData"
+                            v-if="comparisonDataRepository[comparisonKeys.IMPACT_FACTOR]"
+                            :data="comparisonDataRepository[comparisonKeys.IMPACT_FACTOR]"
                             :options="rankOptions"
                     />
                 </template>
@@ -611,6 +598,9 @@
                 <router-link to="/" class="prem-link">Start Now</router-link>
             </section>
         </section>
+    </section>
+    <section class="result gadugiFont" v-else>
+        Loading...
     </section>
 </template>
 
@@ -640,8 +630,10 @@
         },
         data() {
             return {
-                isLoading: true,
+                isLoading: false,
                 comparisonChartLoaded: false,
+                chanceData: null,
+                comments: null,
                 comparisonKeys: Object.freeze({
                     GPA: 'GPA',
                     IELTS: 'IELTS',
@@ -655,6 +647,7 @@
                     PUB_COUNT: 'Number of papers',
                     PUB_SCORE: 'Publication score',
                     PUB_TYPE: 'Publication type',
+                    IMPACT_FACTOR: 'Impact Factor',
                     DUOLINGO: 'DUOLINGO',
                     OLYMPIAD: 'Olympiad',
                     POWER_RECOM: 'Valuable recommendation',
@@ -664,7 +657,7 @@
                     'IELTS': null,
                     'TOEFL': null,
                     'GMAT': null,
-                    'GRE General': null,
+                    'GRE General': {},
                     'GRE General - Writing': null,
                     'GRE General - Q&A': null,
                     'GRE Subject': null,
@@ -675,6 +668,7 @@
                     'DUOLINGO': null,
                     'Olympiad': null,
                     'Valuable recommendation': null,
+                    'Impact Factor': null
                 },
                 comparisonOptionsRepository: {},
 
@@ -688,6 +682,7 @@
                     {title: 'LANG TESTS'},
                     {title: 'PUBLICATIONS'},
                     {title: 'AGE & GAP'},
+                    {title: 'OTHERS'}
                 ],
                 verticalTabs: [
                     {title: '0-150'},
@@ -699,9 +694,9 @@
                     labels: ['Universities', 'GPA', 'Publications', 'Others', 'Languages'],
                     datasets: [
                         {
-                            data: [10, 20, 20, 30, 20],
-                            backgroundColor: ['#009FB3', '#009FB3', '#009FB3', '#009FB3', '#009FB3', '#009FB3'],
-                            label: 'Student dataset'
+                            data: [],
+                            backgroundColor: ['#009FB3', '#009FB3', '#009FB3', '#009FB3', '#009FB3'],
+                            label: 'Student Overall'
                         }
                     ]
                 },
@@ -748,11 +743,17 @@
             api() {
                 return this.$store.getters.getApi;
             },
+            user() {
+                return this.$store.getters.getUserInfo;
+            },
             analyzeApi() {
                 return `${this.api}/analyze-and-charts`;
             },
             httpConfig() {
                 return this.$store.getters.httpConfig;
+            },
+            isLoadingSafe() {
+                return Object.entries(this.comparisonDataRepository).some(entry => entry[1] == null);
             },
             comparisonCategories() {
                 return [
@@ -839,9 +840,13 @@
 
             calcWidthByKey(key) {
                 console.log('calc width with key ', key);
-                return Number(
-                    this.comparisonDataRepository[key].rawData.user_status.worse_cases_percent * 100
+                if(this.comparisonDataRepository[key]) {
+                    return Number(
+                        this.comparisonDataRepository[key].rawData.user_status.worse_cases_percent * 100
                     ).toFixed(2);
+                } else {
+                    return 0
+                }
             },
 
             calcDescBgByPercent(widthPercent) {
@@ -972,6 +977,7 @@
                     .get(`${this.analyzeApi}/publications-impact-factor/`, this.httpConfig)
                     .then(response => {
                         console.log(response)
+                        this.fillComparisonDataRepository(this.comparisonKeys.IMPACT_FACTOR, response.data)
                     })
                     .catch(err => {
                         console.log(err)
@@ -1100,13 +1106,50 @@
 
             },
 
+            async getUserFormData() {
+                let formResult = await this.$api.get(`${this.api}/account/user-student-detailed-info/${this.user.id}/`, this.httpConfig);
+                console.log(formResult);
+                let topReqs = [
+                    this.$api.get(`${this.api}/estimation/form/${formResult.data.id}/admission-ranking-chance/`, this.httpConfig),
+                    this.$api.get(`${this.api}/estimation/form/${formResult.data.id}/form-comments/`, this.httpConfig)
+                ];
+
+                Promise.all(topReqs)
+                    .then(([admissionRankingChanceResponse, commentsResponse]) => {
+                        this.chanceData = admissionRankingChanceResponse.data;
+                        let tempComments = commentsResponse.data;
+                        this.radarData.datasets[0].data = [
+                            Number((tempComments['university and gpa'].university_value * 100).toFixed(2)),
+                            Number((tempComments['university and gpa'].gpa_value * 100).toFixed(2)),
+                            Number((tempComments['publication'].total_value * 100).toFixed(2)),
+                            Number((tempComments['others'].value * 100).toFixed(2)),
+                            Number((tempComments['language'].total_value * 100).toFixed(2)),
+                        ];
+                        console.log('radar data here ==> ', this.radarData);
+                        this.comments = tempComments;
+                        this.verticalTabs = Object.keys(this.chanceData).map(key => {
+                            return {title: key}
+                        });
+                        console.log('admission ranking chance res', admissionRankingChanceResponse)
+                        console.log('comment response ', commentsResponse)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                    .finally(() => {
+
+                    })
+
+                console.log('top reqs ', topReqs);
+            },
+
 
         },
         created() {
             // this.getGpa();
             let allReqs = [];
             this.isLoading = true;
-
+            // this.getUserFormData();
             for (let prop in this) {
                 if (this.hasOwnProperty(prop) && prop.startsWith("get")) {
                     console.log(prop);
@@ -1114,6 +1157,7 @@
                     this[prop]();
                 }
             }
+            this.isLoading = false;
         }
     }
 </script>
@@ -1161,7 +1205,6 @@
         grid-area: tabs;
         display: flex;
         flex-direction: column;
-        justify-content: center;
     }
 
     .grades-radar {

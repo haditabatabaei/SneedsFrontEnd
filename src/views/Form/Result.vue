@@ -4,8 +4,8 @@
             <simple-block title-block="Your Rank" class="rank" v-if="comments">
                 <template v-slot:data>
                     <score-of-max
-                            :score-value="comments.rank_among"
-                            :score-max="comments.rank"
+                            :score-value="comments.rank"
+                            :score-max="comments.rank_among"
                     />
                 </template>
                 <template v-slot:image>

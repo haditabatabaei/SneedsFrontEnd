@@ -141,12 +141,12 @@
     }
 
     .package-section {
-        width: 70%;
-        min-height: calc(100vh - 70px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
+      width: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      max-width: 1500px;
     }
 
 

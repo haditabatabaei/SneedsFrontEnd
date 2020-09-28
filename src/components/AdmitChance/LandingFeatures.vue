@@ -16,7 +16,7 @@
           </a>
         </div>
       </div>
-      <img class="features-img" src="/sneedsAssets/img/features.png">
+      <img class="features-img" src="/sneedsAssets/img/AdmitLanding/features.png">
 
 
     </div>

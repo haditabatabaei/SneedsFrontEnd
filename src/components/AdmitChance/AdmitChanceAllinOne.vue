@@ -15,7 +15,7 @@
           <li  class="all-in-one-list-items">Timeline And Deadlines</li>
         </ul>
       </div>
-      <img class="all-in-one-img" src="/sneedsAssets/img/all in one.png">
+      <img class="all-in-one-img" src="/sneedsAssets/img/AdmitLanding/all-in-one.png">
     </div>
   </section>
 

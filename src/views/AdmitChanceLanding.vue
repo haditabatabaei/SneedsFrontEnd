@@ -83,7 +83,7 @@
     </section>
     <all-in-one/>
     <landing-reminder/>
-    <freq-asked-questions/>
+    <!-- <freq-asked-questions/> comment for now -->
   </main>
 </template>
 

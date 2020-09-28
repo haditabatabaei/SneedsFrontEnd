@@ -135,12 +135,15 @@
     }
 
     .marriage-wrapper  {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        /*flex-wrap: wrap;*/
     }
 
     .marriage-holder {
-        width: calc(50% - 40px);
+        /*width: calc(50% - 40px);*/
         border-radius: 12px;
         background-color: white;
         box-shadow:0 3px 26px rgba(0,0,0,0.1);

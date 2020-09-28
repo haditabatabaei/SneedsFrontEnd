@@ -84,7 +84,6 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        /* padding-right: 50px; */
     }
 
     .marriage-wrapper  {
@@ -96,7 +95,6 @@ export default {
     }
 
     .marriage-holder {
-        /*width: calc(100% - 360px);*/
         border-radius: 12px;
         background-color: white;
         box-shadow: 0 3px 26px rgba(0,0,0,0.1);
@@ -104,11 +102,9 @@ export default {
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        /*margin: 20px;*/
         padding: 20px;
         cursor: pointer;
         transition: all 100ms ease-in-out;
-        /*grid-area: item1;*/
     }
 
     .holder-item1 {
@@ -176,17 +172,7 @@ export default {
         .marriage-holder {
             margin: 0;
             padding: 10px;
-            width: calc(50%);
         }
-
-        .marriage-holder[for*="single"] {
-            margin-left: 10px;
-        }
-
-        .marriage-holder[for*="married"] {
-            margin-right: 10px;
-        }
-
         .marriage-holder-image {
             width: 80%;
         }

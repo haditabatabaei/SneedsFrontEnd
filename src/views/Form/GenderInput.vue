@@ -223,11 +223,9 @@
         }
 
         .militaryservice-holder[for*="-have"] {
-            margin-left: 10px;
         }
 
         .militaryservice-holder[for*="-donthave"] {
-            margin-right: 10px;
         }
 
         .militaryservice-holder-image {

@@ -7,11 +7,9 @@
         props: ['chartData', 'options'],
         watch: {
             options(newVal) {
-                this._chart.destroy();
                 this.renderChart(this.chartData, newVal);
             }
         },
-        methods: {},
         mounted() {
             this.renderChart(this.chartData, this.options);
         }

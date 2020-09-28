@@ -292,7 +292,7 @@
 
     </section>
 
-    <app-question></app-question>
+    <!-- <app-question></app-question> comment for demo -->
 
   </main>
 

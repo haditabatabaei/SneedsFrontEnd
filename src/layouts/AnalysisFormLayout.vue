@@ -435,7 +435,7 @@ export default {
                         'user': this.user.id
                     }, this.httpConfig);
                 console.log(formUserSetResult);
-                this.$router.push('/user/profile')
+                this.$router.push('/analysis/result')
             } catch (e) {
                 console.log(e)
             } finally {
@@ -817,7 +817,7 @@ export default {
                         //everything is good
                         //show confirmation success message
                         console.log('form user is set and its current logged in user going to home')
-                        this.$router.push('/user/profile')
+                        this.$router.push('/analysis/result')
                     } else {
                         //some serious thing is happening here !
                         //this is not supposed to happen

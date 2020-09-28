@@ -34,41 +34,41 @@
                     <h1 class="grades-title">
                         Your Grades
                     </h1>
-                    <result-tab :tabs="resultTabs">
-                        <template v-slot:TAB0>
-                            <p v-if="comments['university and gpa'].data.bachelor">
+                    <result-tab :tabs="resultTabs" class="isansFont">
+                        <template v-slot:TAB0 style="direction: rtl">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['university and gpa'].data.bachelor">
                                 {{comments['university and gpa'].data.bachelor}}
                             </p>
-                            <p v-if="comments['university and gpa'].data.master">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['university and gpa'].data.master">
                                 {{comments['university and gpa'].data.master}}
                             </p>
-                            <p v-if="comments['university and gpa'].data.phd">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['university and gpa'].data.phd">
                                 {{comments['university and gpa'].data.phd}}
                             </p>
                         </template>
-                        <template v-slot:TAB1>
-                            <p v-if="comments['language']['ielts-academic']">
+                        <template v-slot:TAB1 style="direction: rtl">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['language']['ielts-academic']">
                                 {{comments['language']['ielts-academic'].comment}}
                             </p>
-                            <p v-if="comments['language']['ielts-general']">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['language']['ielts-general']">
                                 {{comments['language']['ielts-general'].comment}}
                             </p>
-                            <p v-if="comments['language'].toefl">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['language'].toefl">
                                 {{comments['language'].toefl.comment}}
                             </p>
                         </template>
-                        <template v-slot:TAB2>
-                            <p v-if="comments.publication">
+                        <template v-slot:TAB2 style="direction: rtl">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments.publication">
                                 {{comments.publication.data}}
                             </p>
                         </template>
-                        <template v-slot:TAB3>
+                        <template v-slot:TAB3 >
                             <p v-if="comments['age and gap']">
                                 {{comments['age and gap'].data}}
                             </p>
                         </template>
                         <template v-slot:TAB4>
-                            <p v-if="comments['others']">
+                            <p style="direction: rtl !important;text-align: right" v-if="comments['others']">
                                 {{comments['others'].data}}
                             </p>
                         </template>
@@ -200,8 +200,32 @@
                         </thead>
                         <tbody class="grid-body">
                         <tr class="grid-row">
-                            <td class="grid-cell">2</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
+                            <td class="grid-cell">1</td>
+                            <td class="grid-cell">Massachusetts Institute of Technology</td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--low">
+                                    Low
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">51</td>
+                            <td class="grid-cell">British Columbia</td>
+                            <td class="grid-cell cell--centered">
+                                <p class="chance-prob prob--medium">
+                                    Medium
+                                </p>
+                            </td>
                             <td class="grid-cell cell--centered">
                                 <p class="chance-prob prob--medium">
                                     Medium
@@ -212,42 +236,37 @@
                                     Low
                                 </p>
                             </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">98</td>
+                            <td class="grid-cell">The University of Texas</td>
                             <td class="grid-cell cell--centered">
                                 <p class="chance-prob prob--high">
                                     High
                                 </p>
                             </td>
-                        </tr>
-                        <tr class="grid-row">
-                            <td class="grid-cell">2</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
                             <td class="grid-cell cell--centered">
                                 <p class="chance-prob prob--medium">
                                     Medium
                                 </p>
                             </td>
                             <td class="grid-cell cell--centered">
-                                <p class="chance-prob prob--low">
-                                    Low
+                                <p class="chance-prob prob--medium">
+                                    Medium
                                 </p>
                             </td>
+                        </tr>
+                        <tr class="grid-row">
+                            <td class="grid-cell">224</td>
+                            <td class="grid-cell">TELECOM Paris</td>
                             <td class="grid-cell cell--centered">
                                 <p class="chance-prob prob--high">
                                     High
                                 </p>
                             </td>
-                        </tr>
-                        <tr class="grid-row">
-                            <td class="grid-cell">2</td>
-                            <td class="grid-cell">Amirkabir University Of Technology</td>
                             <td class="grid-cell cell--centered">
-                                <p class="chance-prob prob--medium">
-                                    Medium
-                                </p>
-                            </td>
-                            <td class="grid-cell cell--centered">
-                                <p class="chance-prob prob--low">
-                                    Low
+                                <p class="chance-prob prob--high">
+                                    High
                                 </p>
                             </td>
                             <td class="grid-cell cell--centered">
@@ -599,7 +618,7 @@
             </section>
         </section>
     </section>
-    <section class="result gadugiFont" v-else>
+    <section class="result gadugiFont" style="padding-top: 50px;" v-else>
         Loading...
     </section>
 </template>

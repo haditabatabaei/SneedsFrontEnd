@@ -8,9 +8,11 @@
         <table class="grid-table">
           <thead class="grid-head">
           <tr class="grid-row">
-            <th class="grid-head-cell">Time</th>
+            <th class="grid-head-cell">
+              ID
+            </th >
             <th class="grid-head-cell cell--centered">
-             ID
+              Time
             </th>
             <th class="grid-head-cell cell--centered">
               Amount
@@ -23,11 +25,12 @@
           <tbody class="grid-body">
           <tr class="grid-row" v-for="(payment, index) in payments" :key="index">
             <td class="grid-cell">
-              {{getJalali(payment.updated).format('	YYYY, MMM, Do, h:mm:ss a')}}
+              {{payment.consultant_deposit_info_id}}
+
             </td>
             <td class="grid-cell cell--centered">
               <p>
-                {{payment.consultant_deposit_info_id}}
+                {{getJalali(payment.updated).format('	YYYY, MMM, Do, h:mm:ss a')}}
               </p>
             </td>
             <td class="grid-cell cell--centered">

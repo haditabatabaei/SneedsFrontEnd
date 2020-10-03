@@ -78,8 +78,7 @@ export default {
           .catch(error => {
             console.log(error)
           })
-          .finally(() => {
-              }
+          .finally(() => {}
           )
     },
     getJalali(date) {
@@ -89,7 +88,7 @@ export default {
 
 }
 </script>
-]<style scoped>
+<style scoped>
 
 .deposit-title {
   color: #374957;

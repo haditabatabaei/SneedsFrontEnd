@@ -26,17 +26,17 @@
           <td class="grid-cell">{{index+1}}</td>
           <td class="grid-cell">{{getJalali(payment.updated).format('	YYYY, MMM, Do, h:mm:ss a')}}</td>
           <td class="grid-cell cell--centered">
-            <p class="chance-prob prob--low">
+            <p>
               {{payment.consultant_deposit_info_id}}
             </p>
           </td>
           <td class="grid-cell cell--centered">
-            <p class="chance-prob">
+            <p>
               {{payment.amount}}
             </p>
           </td>
           <td class="grid-cell cell--centered">
-            <p class="chance-prob">
+            <p>
               {{payment.comment}}
             </p>
           </td>

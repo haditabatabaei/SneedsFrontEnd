@@ -31,12 +31,12 @@
             </p>
           </td>
           <td class="grid-cell cell--centered">
-            <p class="chance-prob prob--low">
+            <p class="chance-prob">
               {{payment.amount}}
             </p>
           </td>
           <td class="grid-cell cell--centered">
-            <p class="chance-prob prob--low">
+            <p class="chance-prob">
               {{payment.comment}}
             </p>
           </td>
@@ -69,7 +69,7 @@ export default {
     this.getPayments()
   },
   methods: {
-    async getPayments() {
+    getPayments() {
       this.$api
           .get(`${this.api}/payment/consultant-deposits/`, this.httpConfig)
           .then(response => {
@@ -151,5 +151,11 @@ export default {
   justify-content: center;
 }
 
+@media only screen and (max-width: 767.8px) {
+  .grid-table {
+    grid-template-columns: repeat(5, 150px);
+    overflow: auto;
+  }
 
+}
 </style>

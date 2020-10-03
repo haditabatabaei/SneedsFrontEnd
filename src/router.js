@@ -275,6 +275,14 @@ const router = new Router({
                     }
                 },
                 {
+                    path: 'deposit',
+                    name: 'user-deposit',
+                    component: () => import("@/views/Consultant/ConsultantDeposit"),
+                    meta: {
+                        auth: 'req'
+                    }
+                },
+                {
                     path: 'sessions',
                     name: 'user-reserved-sessions',
                     component: () => import("@/views/UserReservedSessions"),

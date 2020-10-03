@@ -236,6 +236,14 @@
                         hasSubmenu: false,
                         submenu: []
                     },
+                  {
+                    name: "Deposit",
+                    target: '/user/deposit',
+                    icon: 'circle',
+                    tag: 0,
+                    hasSubmenu: false,
+                    submenu: []
+                  },
                     {name: "Chatroom", target: '/user/chatroom', icon: 'circle', tag: 0, hasSubmenu: false, submenu: []},
                 ],
 

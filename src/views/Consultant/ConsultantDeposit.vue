@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="chances-destinations-title">
+    <h2 class="deposit-title">
       Deposit
     </h2>
 
@@ -91,7 +91,7 @@ export default {
 </script>
 ]<style scoped>
 
-.chances-destinations-title {
+.deposit-title {
   color: #374957;
   font-size: 26px;
   margin: 50px 0 10px 10px;
@@ -150,7 +150,6 @@ export default {
   text-align: center;
   justify-content: center;
 }
-
 
 
 </style>

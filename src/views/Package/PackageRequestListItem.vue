@@ -102,7 +102,7 @@
             },
             studyText() {
                 if (this.consultant != null && this.consultant.study_info.length != 0) {
-                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.major.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
                 } else {
                     return " ";
                 }
@@ -110,7 +110,7 @@
 
             studyTextMobile() {
                 if (this.consultant != null && this.consultant.study_info.length != 0) {
-                    return ` دانشجوی  ${this.studyInfo.field_of_study.name} در ${this.studyInfo.country.name} `
+                    return ` دانشجوی  ${this.studyInfo.major.name} در ${this.studyInfo.country.name} `
                 } else {
                     return " ";
                 }

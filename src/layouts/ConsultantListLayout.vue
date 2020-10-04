@@ -144,7 +144,7 @@
 
                 this.fields.forEach(item => {
                     if (item.select) {
-                        query += `&field_of_study=${item.id}`;
+                        query += `&major=${item.id}`;
                     }
                 });
 
@@ -167,6 +167,8 @@
                     console.log(result);
                     this.consultants = result.data.results;
                     this.allItems = result.data.count;
+                    console.log('consultants ', this.consultants);
+                    console.log('active consultants ', this.activeConsultants);
                     if (result.data.results.length === 0) {
                         this.printMessage("متاسفانه مشاوری با این اطلاعات یافت نشد.", "لیست مشاوران : اخطار", "warn", 4000, "notif");
                     }

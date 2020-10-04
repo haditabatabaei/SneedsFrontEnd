@@ -69,7 +69,7 @@
         computed: {
             studyText() {
                 if (this.consultant != null) {
-                    return `Studying ${this.studyInfo.grade} of ${this.studyInfo.field_of_study.name} at ${this.studyInfo.university.name} in ${this.studyInfo.country.name}`
+                    return `Studying ${this.studyInfo.grade} of ${this.studyInfo.major.name} at ${this.studyInfo.university.name} in ${this.studyInfo.country.name}`
                 } else {
                     return " ";
                 }
@@ -77,7 +77,7 @@
 
             studyTextMobile() {
                 if (this.consultant != null) {
-                    return `Studying ${this.studyInfo.field_of_study.name} in ${this.studyInfo.country.name}`;
+                    return `Studying ${this.studyInfo.major.name} in ${this.studyInfo.country.name}`;
                 } else {
                     return " ";
                 }

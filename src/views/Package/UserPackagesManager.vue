@@ -269,7 +269,7 @@
 
             studyText() {
                 if (this.hasStudyInfo) {
-                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.field_of_study.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
+                    return ` دانشجوی  ${this.persianGrade} ${this.studyInfo.major.name} در دانشگاه ${this.studyInfo.university.name} ${this.studyInfo.country.name} `
                 } else {
                     return " ";
                 }

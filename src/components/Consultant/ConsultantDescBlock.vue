@@ -40,11 +40,11 @@
             </div>
 
             <div class="consultantDescBlock--head_item" v-if="hasStudyInfo">
-                <i class="material-icons" v-if="studyInfo.field_of_study == undefined">add</i>
-                <img class="consultantDescBlock--head_item_image" :src="studyInfo.field_of_study.picture"
-                     :alt="studyInfo.field_of_study.name" v-else/>
+                <i class="material-icons" v-if="studyInfo.major == undefined">add</i>
+                <img class="consultantDescBlock--head_item_image" :src="studyInfo.major.picture"
+                     :alt="studyInfo.major.name" v-else/>
                 <p class="consultantDescBlock--head_item_support">Major</p>
-                <p class="consultantDescBlock--head_item_text">{{studyInfo.field_of_study.name}}</p>
+                <p class="consultantDescBlock--head_item_text">{{studyInfo.major.name}}</p>
             </div>
 
         </header>
